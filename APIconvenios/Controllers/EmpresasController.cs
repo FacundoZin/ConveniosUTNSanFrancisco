@@ -16,6 +16,7 @@ namespace APIconvenios.Controllers
         {
             _ServicioEmpresas = servicioempresas;
         }
+
         [HttpGet]
         public async Task<IActionResult> ListaEmpresas()
         {

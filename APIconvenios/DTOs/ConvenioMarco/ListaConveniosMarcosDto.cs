@@ -1,0 +1,18 @@
+﻿using APIconvenios.Models;
+using APIconvenios.Validations;
+using System.ComponentModel.DataAnnotations;
+
+namespace APIconvenios.DTOs.ConvenioMarco
+{
+    public class ListaConveniosMarcosDto
+    {
+        public int Id { get; set; }
+        public string Titulo { get; set; } = string.Empty;  
+        public int numeroconvenio { get; set; }
+        public string NombreEmpresa { get; set; }  
+        public DateOnly FechaFirmaConvenio { get; set; }
+        public DateOnly FechaFin { get; set; }
+        public string ComentarioOpcional { get; set; }
+
+    }
+}
