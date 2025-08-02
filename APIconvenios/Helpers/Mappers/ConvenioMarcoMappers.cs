@@ -1,5 +1,6 @@
 ﻿using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.Models;
+using System.Runtime.CompilerServices;
 
 namespace APIconvenios.Helpers.Mappers
 {
@@ -24,6 +25,17 @@ namespace APIconvenios.Helpers.Mappers
             }
 
             return conveniosDto;
+        }
+
+        public static ConvenioMarco UpdateConvenio(this ConvenioMarco convenio, UpdateConvenioMarcoDto convenioActualizado)
+        {
+            convenio.numeroconvenio = convenioActualizado.numeroconvenio;
+            convenio.Titulo = convenioActualizado.Titulo;
+            convenio.FechaFirmaConvenio = convenioActualizado.FechaFirmaConvenio;
+            convenio.FechaFin = convenioActualizado.FechaFin;
+            convenio.ComentarioOpcional = convenioActualizado.ComentarioOpcional;
+
+            return convenio;
         }
     }
 }

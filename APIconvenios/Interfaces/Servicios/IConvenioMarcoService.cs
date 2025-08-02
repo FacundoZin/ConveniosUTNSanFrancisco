@@ -9,6 +9,6 @@ namespace APIconvenios.Interfaces.Servicios
         Task<Result<List<ListaConveniosMarcosDto>>> ListarConveniosMarcos(ConvenioQueryObject queryObject);
         Task<Result<InfoConvenioMarcoDto?>> ObtenerConvenioMarcoCompleto(int id);
         Task<Result<bool>> BorrarConvenioMarco(int id);
-        Task ActualizarConvenioMarco(UpdateConvenioMarcoDto convenioActualizado);
+        Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoDto convenioActualizado);
     }
 }

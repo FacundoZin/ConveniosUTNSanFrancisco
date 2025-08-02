@@ -28,14 +28,51 @@ namespace APIconvenios.Services
             _ReadRepo = readRepo;
             _logger = logger;
         }
-        public Task ActualizarConvenioMarco(UpdateConvenioMarcoDto convenioActualizado)
+        public async Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoDto convenioActualizado)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var ConvOriginal = await _Repo.GetByid(convenioActualizado.Id);
+                if (ConvOriginal == null) return Result<bool>.Error("No se encontró el convenio marco solicitado", 404);
+
+                var exit = await _Repo.ModificarConvenioMarco(ConvOriginal.UpdateConvenio(convenioActualizado));
+                if (!exit)
+                {
+                    _logger.LogError($"el convenio marco  {convenioActualizado.Id} no se pudo actualizar");
+                    return Result<bool>.Error("Ocurrio un error al actualizar el convenio marco", 500);
+                }
+
+                return Result<bool>.Exito(true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"el convenio marco  {convenioActualizado.Id} no se pudo actualizar, error: {ex.Message}");
+                return Result<bool>.Error("Ocurrio un error al actualizar el convenio marco", 500);
+            }
         }
 
-        public Task<Result<bool>> BorrarConvenioMarco(int id)
+        public async Task<Result<bool>> BorrarConvenioMarco(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var convenio = await _Repo.GetByid(id);
+
+                if (convenio == null) return Result<bool>.Error("El convenio que quiere borrar no existe", 404);
+
+                bool exit = await _Repo.Delete(convenio);
+                if (!exit)
+                {
+                    _logger.LogError($"el convenio marco  {id} no se pudo eliminar");
+                    return Result<bool>.Error("Ocurrio un error al eliminar el convenio marco", 500);
+                }
+
+                return Result<bool>.Exito(true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"el convenio marco  {id} no se pudo eliminar, error: {ex.Message}");
+                return Result<bool>.Error("Ocurrio un error al eliminar el convenio marco", 500);
+            }
         }
 
         public async Task<Result<List<ListaConveniosMarcosDto>>> ListarConveniosMarcos(ConvenioQueryObject queryObject)
@@ -114,7 +151,4 @@ namespace APIconvenios.Services
             }
         }
     }
-
-
-    
 }

@@ -1,4 +1,5 @@
-﻿using APIconvenios.Data;
+﻿using APIconvenios.Common;
+using APIconvenios.Data;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Models;
@@ -15,32 +16,32 @@ namespace APIconvenios.Repositorio
             _Context = context;
         }
 
-        public async Task<ConvenioMarco> GetByid(int id)
+        public async Task<ConvenioMarco?> GetByid(int id)
         {
-            return await _Context.ConveniosMarcos.FirstAsync(c => c.Id == id);
+            var convenio = await _Context.ConveniosMarcos.FirstAsync(c => c.Id == id);
+            if (convenio == null) return null;
+            return convenio;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> Delete(ConvenioMarco convenio)
         {
-            var convenio = await _Context.ConveniosMarcos.FindAsync(id);
-            if (convenio == null)
-                return false; // o throw new NotFoundException();
-
             _Context.ConveniosMarcos.Remove(convenio);
             var affected = await _Context.SaveChangesAsync();
             return affected > 0;
         }
 
-        public async Task CreateConvenio(ConvenioMarco convenioMarco)
+        public async Task<bool> CreateConvenio(ConvenioMarco convenioMarco)
         {
             await _Context.ConveniosMarcos.AddAsync(convenioMarco);
-            await _Context.SaveChangesAsync();  
+            int affected = await _Context.SaveChangesAsync();  
+            return affected > 0;    
         }
 
-        public async Task ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado)
+        public async Task<bool> ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado)
         {
             _Context.ConveniosMarcos.Update(convenioMarcoActualizado);  
-            await _Context.SaveChangesAsync();
+            int rowsaffected = await _Context.SaveChangesAsync();
+            return rowsaffected > 0;
         }
     }
 }
