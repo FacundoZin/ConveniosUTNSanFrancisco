@@ -1,7 +1,7 @@
 ﻿using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.Models;
 
-namespace APIconvenios.Helpers
+namespace APIconvenios.Helpers.Mappers
 {
     public static class ConvenioMarcoMappers
     {

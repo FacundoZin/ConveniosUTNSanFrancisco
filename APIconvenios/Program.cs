@@ -1,4 +1,9 @@
 using APIconvenios.Data;
+using APIconvenios.Helpers.Validators;
+using APIconvenios.Interfaces.Repositorio;
+using APIconvenios.Interfaces.Servicios;
+using APIconvenios.Repositorio;
+using APIconvenios.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +17,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ConvenioQueryObjectValidator>();
+
+builder.Services.AddScoped<IConvenioMarcoService, ConveniosMarcosServices>();
+builder.Services.AddScoped<IConvenioMarcoRepository, ConveniosMarcoRepository>();
+builder.Services.AddScoped<IConvenioMarcoReadRepository, ConvenioMarcoReadRepository>();    
 
 var app = builder.Build();
 

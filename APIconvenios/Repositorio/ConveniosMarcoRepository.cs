@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIconvenios.Repositorio
 {
-    public class ConveniosRepository : IConvenioMarcoRepository
+    public class ConveniosMarcoRepository : IConvenioMarcoRepository
     {
         public ApplicationDbContext _Context { get; set; }
 
-        public ConveniosRepository(ApplicationDbContext context)
+        public ConveniosMarcoRepository(ApplicationDbContext context)
         {
             _Context = context;
         }

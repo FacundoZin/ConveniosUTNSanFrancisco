@@ -60,6 +60,8 @@ namespace APIconvenios.Repositorio
                 }).ToList(),
             }).AsNoTracking().FirstOrDefaultAsync();
 
+            if (convenio == null) return null;
+
             return convenio;
         }
     }
