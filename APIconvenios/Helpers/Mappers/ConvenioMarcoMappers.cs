@@ -37,5 +37,18 @@ namespace APIconvenios.Helpers.Mappers
 
             return convenio;
         }
+
+        public static ConvenioMarco ConverToConvenioMarco(this CreateConvenioMarcoDto ConvenioDto)
+        {
+            return new ConvenioMarco
+            {
+                numeroconvenio = ConvenioDto.numeroconvenio,
+                Titulo = ConvenioDto.Titulo,
+                EmpresaId = ConvenioDto.EmpresaId,
+                FechaFirmaConvenio = ConvenioDto.FechaFirmaConvenio,
+                FechaFin = ConvenioDto.FechaFin,
+                ComentarioOpcional = ConvenioDto.ComentarioOpcional,
+            };
+        }
     }
 }

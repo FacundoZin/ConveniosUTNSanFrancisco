@@ -1,4 +1,4 @@
-﻿using APIconvenios.Validations;
+﻿using APIconvenios.Helpers.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioMarco
@@ -21,6 +21,6 @@ namespace APIconvenios.DTOs.ConvenioMarco
         [ValidacionFechas("FechaFirmaConvenio", ErrorMessage = "La fecha de finalización debe ser posterior a la fecha de firma.")]
         public DateOnly FechaFin { get; set; }
 
-        public string ComentarioOpcional { get; set; }
+        public string? ComentarioOpcional { get; set; }
     }
 }

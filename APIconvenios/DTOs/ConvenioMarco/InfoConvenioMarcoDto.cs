@@ -1,7 +1,6 @@
 ﻿using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Models;
-using APIconvenios.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioMarco

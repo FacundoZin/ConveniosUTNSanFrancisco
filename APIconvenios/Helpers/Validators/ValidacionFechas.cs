@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace APIconvenios.Validations
+namespace APIconvenios.Helpers.Validators
 {
     public class ValidacionFechas : ValidationAttribute
     {

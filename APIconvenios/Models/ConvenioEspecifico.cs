@@ -1,5 +1,5 @@
 ﻿using APIconvenios.Enums;
-using APIconvenios.Validations;
+using APIconvenios.Helpers.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.Models

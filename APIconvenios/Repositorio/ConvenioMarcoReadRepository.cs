@@ -19,18 +19,17 @@ namespace APIconvenios.Repositorio
             _Context = context;
         }
 
-        public async Task<List<ConvenioMarco>> GetAllConveniosMarcos(Expression<Func<ConvenioMarco, bool>> filtro)
-        {
-            return await _Context.ConveniosMarcos.Where(filtro).ToListAsync();
-        }
 
-        public async Task<List<ConvenioMarco>> GetAllConveniosMarcos(Expression<Func<ConvenioMarco, bool>> filtro, 
-            Func<IQueryable<ConvenioMarco>, IOrderedQueryable<ConvenioMarco>>? ordenamiento = null)
+        public async Task<List<ConvenioMarco>> GetAllConveniosMarcos(int SaltoPaginas, int CantidadPaginas, 
+            Expression<Func<ConvenioMarco, bool>> filtro, Func<IQueryable<ConvenioMarco>, IOrderedQueryable<ConvenioMarco>>? ordenamiento = null)
         {
             var query = _Context.ConveniosMarcos.Where(filtro);
 
             if (ordenamiento != null)
                 query = ordenamiento(query);
+
+            query.Skip(SaltoPaginas);
+            query.Take(CantidadPaginas);
 
             return await query.ToListAsync();
         }

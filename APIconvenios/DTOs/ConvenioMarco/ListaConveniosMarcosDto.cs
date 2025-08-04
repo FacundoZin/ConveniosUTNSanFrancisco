@@ -1,5 +1,4 @@
 ﻿using APIconvenios.Models;
-using APIconvenios.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioMarco

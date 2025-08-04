@@ -98,8 +98,10 @@ namespace APIconvenios.Services
                     ordenamiento = c => c.OrderBy(c => c.FechaFin);
                 }
 
+                int SaltoDePaginas = (queryObject.PaginaActual - 1) * queryObject.CantidadResultados;
 
-                var convenios = await _ReadRepo.GetAllConveniosMarcos(filtro, ordenamiento);
+                var convenios = await _ReadRepo.GetAllConveniosMarcos(SaltoDePaginas, queryObject.CantidadResultados, filtro, ordenamiento);
+
                 if (convenios == null)
                     return Result<List<ListaConveniosMarcosDto>>.Error("No hay convenios marcos disponibles", 204);
 
@@ -149,6 +151,29 @@ namespace APIconvenios.Services
                 _logger.LogError(ex, $"excpecion no esperada {ex.Message}");
                 return Result<InfoConvenioMarcoDto?>.Error("Error inesperado", 500);
             }
+        }
+
+        public async Task<Result<bool>> CargarConvenioMarco(CreateConvenioMarcoDto createConvenioMarcoDto)
+        {
+            try
+            {
+                bool exit = await _Repo.CreateConvenio(createConvenioMarcoDto.ConverToConvenioMarco());
+
+                if (!exit)
+                {
+                    _logger.LogError("error al cargar un convenio");
+                    return Result<bool>.Error("algo salio mal", 500);
+                }
+
+                return Result<bool>.Exito(true);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("error al cargar un convenio");
+                return Result<bool>.Error("algo salio mal", 500);
+            }
+
+
         }
     }
 }

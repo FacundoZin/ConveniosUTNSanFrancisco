@@ -8,5 +8,8 @@
         public bool AntiguedadDescendente { get; set; } = false;
         public bool AntiguedadAscendente { get; set; } = false;
 
+        public int PaginaActual { get; set; } = 1;
+        public int CantidadResultados { get; set; } = 10;
+
     }
 }
