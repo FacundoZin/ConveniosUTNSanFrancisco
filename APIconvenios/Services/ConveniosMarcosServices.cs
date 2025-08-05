@@ -21,12 +21,15 @@ namespace APIconvenios.Services
         private readonly IConvenioMarcoRepository _Repo;
         private readonly IConvenioMarcoReadRepository _ReadRepo;
         private readonly ILogger _logger;
+        private readonly ConvenioQueryObjectValidator _QueryValidator;
 
-        public ConveniosMarcosServices(IConvenioMarcoRepository repo, IConvenioMarcoReadRepository readRepo, ILogger logger)
+        public ConveniosMarcosServices(IConvenioMarcoRepository repo, IConvenioMarcoReadRepository readRepo, ILogger logger, 
+            ConvenioQueryObjectValidator queryValidator)
         {
             _Repo = repo;
             _ReadRepo = readRepo;
             _logger = logger;
+            _QueryValidator = queryValidator;
         }
         public async Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoDto convenioActualizado)
         {
@@ -35,7 +38,11 @@ namespace APIconvenios.Services
                 var ConvOriginal = await _Repo.GetByid(convenioActualizado.Id);
                 if (ConvOriginal == null) return Result<bool>.Error("No se encontró el convenio marco solicitado", 404);
 
+                if(await _ReadRepo.TitleExist(convenioActualizado.Titulo)) 
+                    return Result<bool>.Error("El titulo ingresado coincide con un convenio existente", 409);
+
                 var exit = await _Repo.ModificarConvenioMarco(ConvOriginal.UpdateConvenio(convenioActualizado));
+
                 if (!exit)
                 {
                     _logger.LogError($"el convenio marco  {convenioActualizado.Id} no se pudo actualizar");
@@ -79,6 +86,10 @@ namespace APIconvenios.Services
         {
             try
             {
+                var errores = _QueryValidator.Validate(queryObject);
+                if (errores.Count > 0)
+                    return Result<List<ListaConveniosMarcosDto>>.Error(string.Join(", ", errores), 400);
+
                 Expression<Func<ConvenioMarco, bool>> filtro = c =>
                 (string.IsNullOrEmpty(queryObject.empresa) || c.Empresa.Nombre.Contains(queryObject.empresa)) &&
                 (string.IsNullOrEmpty(queryObject.titulo) || c.Titulo.Contains(queryObject.titulo));
@@ -157,6 +168,9 @@ namespace APIconvenios.Services
         {
             try
             {
+                if (await _ReadRepo.TitleExist(createConvenioMarcoDto.Titulo))
+                    return Result<bool>.Error("el nombre de convenio ingresado ya existe", 409);
+
                 bool exit = await _Repo.CreateConvenio(createConvenioMarcoDto.ConverToConvenioMarco());
 
                 if (!exit)
@@ -172,8 +186,6 @@ namespace APIconvenios.Services
                 _logger.LogError("error al cargar un convenio");
                 return Result<bool>.Error("algo salio mal", 500);
             }
-
-
         }
     }
 }

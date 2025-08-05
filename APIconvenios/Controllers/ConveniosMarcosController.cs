@@ -23,10 +23,6 @@ namespace APIconvenios.Controllers
         [HttpGet]
         public async Task<IActionResult> ListaConvenios([FromQuery] ConvenioQueryObject queryObject)
         {
-            _QueryValidator.Validate(queryObject);
-            if(_QueryValidator.Errors.Count != 0) return BadRequest(_QueryValidator.Errors);
-
-
             var result = await _ConvenioService.ListarConveniosMarcos(queryObject);
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
