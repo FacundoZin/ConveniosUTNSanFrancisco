@@ -1,10 +1,9 @@
-﻿using APIconvenios.Enums;
-using APIconvenios.Helpers.Validators;
+﻿using APIconvenios.Helpers.Validators;
 using System.ComponentModel.DataAnnotations;
 
-namespace APIconvenios.Models
+namespace APIconvenios.DTOs.ConvenioEspecifico
 {
-    public class ConvenioEspecifico
+    public class UpdateConvenioEspecificoDto
     {
         public int Id { get; set; }
 
@@ -23,15 +22,9 @@ namespace APIconvenios.Models
         public DateOnly FechaInicioActividades { get; set; }
 
         [Required(ErrorMessage = "La fecha de finalización del convenio es obligatoria.")]
-        [ValidacionFechas("FechaInicioActividades", ErrorMessage ="La fecha de finalizacion de actividades debe ser posterior a la fecha de inicio de las mismas")]
+        [ValidacionFechas("FechaInicioActividades", ErrorMessage = "La fecha de finalizacion de actividades debe ser posterior a la fecha de inicio de las mismas")]
         public DateOnly FechaFinConvenio { get; set; }
 
-        [Required(ErrorMessage = "El convenio especifico debe estar asociado a un convenio marco")]
-        public int ConvenioMarcoId { get; set; }
-        public ConvenioMarco ConvenioMarco { get; set; }
-
         public string ComentarioOpcional { get; set; }
-
-        public List <Involucrados> Involucrados { get; set; }
     }
 }

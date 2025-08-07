@@ -7,8 +7,6 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
 {
     public class CreateConvenioEspecificoDto
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "El número de convenio es obligatorio.")]
         [Range(1, int.MaxValue, ErrorMessage = "El número de convenio debe ser mayor a 0.")]
         public int numeroconvenio { get; set; }
@@ -30,8 +28,5 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         [Required(ErrorMessage = "El convenio especifico debe estar asociado a un convenio marco")]
         public int ConvenioMarcoId { get; set; }
         public string ComentarioOpcional { get; set; }
-
-        public List<Involucrados> Involucrados { get; set; }
-        public Secretarias SecretariaInvolucrada { get; set; }
     }
 }
