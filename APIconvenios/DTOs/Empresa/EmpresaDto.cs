@@ -2,6 +2,7 @@
 {
     public class EmpresaDto
     {
+        public int Id { get; set; } 
         public string Nombre_Empresa { get; set; }
         public string RazonSocial { get; set; }
         public int Cuit { get; set; }

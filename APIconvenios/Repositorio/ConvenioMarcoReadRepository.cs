@@ -52,7 +52,7 @@ namespace APIconvenios.Repositorio
                     Telefono_Empresa = c.Empresa.Telefono,
                     Email_Empresa = c.Empresa.Email
                 },
-                ConveniosEspecificos = c.ConveniosEspecificos.Select(ce => new ListConvenioEspecificoDto
+                ConveniosEspecificos = c.ConveniosEspecificos.Select(ce => new ConvenioEspecificoDto
                 {
                     Id = ce.Id,
                     Nombre = ce.Titulo

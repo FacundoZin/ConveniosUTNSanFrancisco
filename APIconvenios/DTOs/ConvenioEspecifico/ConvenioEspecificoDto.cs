@@ -1,10 +1,9 @@
-﻿using APIconvenios.DTOs.Involucrados;
-using APIconvenios.Helpers.Validators;
+﻿using APIconvenios.Helpers.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioEspecifico
 {
-    public class InfoConvenioEspeficoDto
+    public class ConvenioEspecificoDto
     {
         public int Id { get; set; }
         public int numeroconvenio { get; set; }
@@ -12,8 +11,5 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         public DateOnly FechaFirmaConvenio { get; set; }
         public DateOnly FechaInicioActividades { get; set; }
         public DateOnly FechaFinConvenio { get; set; }
-        public int ConvenioMarcoId { get; set; }
-        public string ComentarioOpcional { get; set; }
-        public List<InvolucradosDto> Involucrados { get; set; }
     }
 }

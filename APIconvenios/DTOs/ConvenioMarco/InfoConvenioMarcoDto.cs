@@ -14,7 +14,7 @@ namespace APIconvenios.DTOs.ConvenioMarco
         public string ComentarioOpcional { get; set; }
         public EmpresaDto empresa { get; set; }
 
-        public List<ListConvenioEspecificoDto> ConveniosEspecificos { get; set; }
+        public List<ConvenioEspecificoDto> ConveniosEspecificos { get; set; }
 
     }
 }

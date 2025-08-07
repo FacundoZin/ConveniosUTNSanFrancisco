@@ -6,13 +6,13 @@ namespace APIconvenios.Helpers.Mappers
 {
     public static class ConvenioMarcoMappers
     {
-        public static List<ListaConveniosMarcosDto> ConvertToList(this List<ConvenioMarco> convenios)
+        public static List<ConvenioMarcoDto> ConvertToList(this List<ConvenioMarco> convenios)
         {
-            List<ListaConveniosMarcosDto> conveniosDto = new List<ListaConveniosMarcosDto>();
+            List<ConvenioMarcoDto> conveniosDto = new List<ConvenioMarcoDto>();
 
             foreach (var Convenio in convenios)
             {
-                conveniosDto.Add(new ListaConveniosMarcosDto
+                conveniosDto.Add(new ConvenioMarcoDto
                 {
                     Id = Convenio.Id,
                     Titulo = Convenio.Titulo,

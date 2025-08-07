@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioMarco
 {
-    public class ListaConveniosMarcosDto
+    public class ConvenioMarcoDto
     {
         public int Id { get; set; }
         public string Titulo { get; set; } = string.Empty;  

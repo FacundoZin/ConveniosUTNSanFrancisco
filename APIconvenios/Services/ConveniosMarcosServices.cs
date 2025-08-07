@@ -82,13 +82,13 @@ namespace APIconvenios.Services
             }
         }
 
-        public async Task<Result<List<ListaConveniosMarcosDto>>> ListarConveniosMarcos(ConvenioQueryObject queryObject)
+        public async Task<Result<List<ConvenioMarcoDto>>> ListarConveniosMarcos(ConvenioQueryObject queryObject)
         {
             try
             {
                 var errores = _QueryValidator.Validate(queryObject);
                 if (errores.Count > 0)
-                    return Result<List<ListaConveniosMarcosDto>>.Error(string.Join(", ", errores), 400);
+                    return Result<List<ConvenioMarcoDto>>.Error(string.Join(", ", errores), 400);
 
                 Expression<Func<ConvenioMarco, bool>> filtro = c =>
                 (string.IsNullOrEmpty(queryObject.empresa) || c.Empresa.Nombre.Contains(queryObject.empresa)) &&
@@ -114,24 +114,24 @@ namespace APIconvenios.Services
                 var convenios = await _ReadRepo.GetAllConveniosMarcos(SaltoDePaginas, queryObject.CantidadResultados, filtro, ordenamiento);
 
                 if (convenios == null)
-                    return Result<List<ListaConveniosMarcosDto>>.Error("No hay convenios marcos disponibles", 204);
+                    return Result<List<ConvenioMarcoDto>>.Error("No hay convenios marcos disponibles", 204);
 
-                return Result<List<ListaConveniosMarcosDto>>.Exito(convenios.ConvertToList());
+                return Result<List<ConvenioMarcoDto>>.Exito(convenios.ConvertToList());
             }
             catch (SqlException ex)
             {
                 _logger.LogError(ex, $"errro en db: {ex.Message}");
-                return Result<List<ListaConveniosMarcosDto>>.Error("error en la DB", 503);
+                return Result<List<ConvenioMarcoDto>>.Error("error en la DB", 503);
             }
             catch (InvalidOperationException ex)
             {
                 _logger.LogError(ex, $"datos no validos al listar convenios {ex.Message}");
-                return Result<List<ListaConveniosMarcosDto>>.Error("Estado del sistema no válido", 500);
+                return Result<List<ConvenioMarcoDto>>.Error("Estado del sistema no válido", 500);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"excpecion no esperada {ex.Message}");
-                return Result<List<ListaConveniosMarcosDto>>.Error("Error inesperado", 500);
+                return Result<List<ConvenioMarcoDto>>.Error("Error inesperado", 500);
             }
         }
         public async Task<Result<InfoConvenioMarcoDto?>> ObtenerConvenioMarcoCompleto(int id)
