@@ -12,11 +12,9 @@ namespace APIconvenios.Repositorio
         {
             _Context = context;
         }
-        public async Task<bool> CreateConvenio(ConvenioEspecifico convenio)
+        public async Task CreateConvenio(ConvenioEspecifico convenio)
         {
             await _Context.ConveniosEspecificos.AddAsync(convenio);
-            int affected = await _Context.SaveChangesAsync();
-            return affected > 0;
         }
 
         public async Task<bool> Delete(ConvenioEspecifico convenio)
@@ -31,11 +29,9 @@ namespace APIconvenios.Repositorio
             return await _Context.ConveniosEspecificos.FirstOrDefaultAsync(C => C.Id == id);
         }
 
-        public async Task<bool> ModificarConvenioMarco(ConvenioEspecifico convenio)
+        public void ModificarConvenioMarco(ConvenioEspecifico convenio)
         {
             _Context.ConveniosEspecificos.Update(convenio);
-            int rowsaffected = await _Context.SaveChangesAsync();
-            return rowsaffected > 0;
         }
     }
 }
