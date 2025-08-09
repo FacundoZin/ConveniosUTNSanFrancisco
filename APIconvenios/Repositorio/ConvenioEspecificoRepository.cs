@@ -12,9 +12,9 @@ namespace APIconvenios.Repositorio
         {
             _Context = context;
         }
-        public async Task CreateConvenio(ConvenioEspecifico convenio)
+        public void CreateConvenio(ConvenioEspecifico convenio)
         {
-            await _Context.ConveniosEspecificos.AddAsync(convenio);
+            _Context.ConveniosEspecificos.Add(convenio);
         }
 
         public async Task<bool> Delete(ConvenioEspecifico convenio)

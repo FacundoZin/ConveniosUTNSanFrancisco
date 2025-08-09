@@ -1,10 +1,13 @@
 ﻿using APIconvenios.Enums;
+using APIconvenios.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.Involucrados
 {
-    public class CreateInvolucradosDto
+    public class InsertInvolucradosDto
     {
+        public int id { get; set; } = 0;
+
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         [StringLength(50, ErrorMessage = "El nombre no puede superar los 50 caracteres.")]
         public string Nombre { get; set; }

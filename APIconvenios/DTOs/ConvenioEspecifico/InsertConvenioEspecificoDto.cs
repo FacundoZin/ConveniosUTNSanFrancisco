@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioEspecifico
 {
-    public class CreateConvenioEspecificoDto
+    public class InsertConvenioEspecificoDto
     {
         [Required(ErrorMessage = "El número de convenio es obligatorio.")]
         [Range(1, int.MaxValue, ErrorMessage = "El número de convenio debe ser mayor a 0.")]

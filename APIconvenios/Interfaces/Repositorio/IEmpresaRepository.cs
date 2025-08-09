@@ -6,6 +6,6 @@ namespace APIconvenios.Interfaces.Repositorio
     {
         Task<List<Empresa>> GetAll();
         Task<Empresa> GetById(int id);
-        Task Add(Empresa empresa);
+        void Add(Empresa empresa);
     }
 }

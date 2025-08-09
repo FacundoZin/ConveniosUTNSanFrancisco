@@ -4,6 +4,8 @@ namespace APIconvenios.Interfaces.Repositorio
 {
     public interface IInvolucradosRepository
     {
-        public Task Create(List<Involucrados> involucrados);
+        Task Create(List<Involucrados> involucrados);
+        Task<List<Involucrados>> GetInvolucrados(List<int> Ids);
+        
     }
 }

@@ -29,10 +29,9 @@ namespace APIconvenios.Repositorio
             return empresa;
         }
 
-        public async Task Add(Empresa empresa)
+        public void Add(Empresa empresa)
         {
             _Context.Empresas.Add(empresa);
-            await _Context.SaveChangesAsync();
         }
     }
 }
