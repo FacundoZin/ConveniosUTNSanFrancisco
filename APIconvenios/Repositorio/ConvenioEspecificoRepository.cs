@@ -26,12 +26,15 @@ namespace APIconvenios.Repositorio
 
         public async Task<ConvenioEspecifico?> GetByid(int id)
         {
-            return await _Context.ConveniosEspecificos.FirstOrDefaultAsync(C => C.Id == id);
+            var convenio = await _Context.ConveniosEspecificos.FirstOrDefaultAsync(C => C.Id == id);
+            return convenio;
         }
 
-        public void ModificarConvenioMarco(ConvenioEspecifico convenio)
+        public async Task<bool> ModificarConvenioEspecifico(ConvenioEspecifico convenio)
         {
             _Context.ConveniosEspecificos.Update(convenio);
+            var affected = await _Context.SaveChangesAsync();
+            return affected > 0;    
         }
     }
 }

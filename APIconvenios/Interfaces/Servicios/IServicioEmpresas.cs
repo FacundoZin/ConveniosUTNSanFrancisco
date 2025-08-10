@@ -5,8 +5,7 @@ namespace APIconvenios.Interfaces.Servicios
 {
     public interface IServicioEmpresas
     {
-        Task<List<Empresa>> ObtenerListaEmpresas();
-        Task<Empresa> ObtenerEmpresaPorId(int id);
+        Task<List<EmpresaDto>> ObtenerListaEmpresas();
         Task CargarNuevaEmpresa(CreateEmpresaDto dto);   
     }
 }

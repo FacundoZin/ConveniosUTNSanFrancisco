@@ -55,11 +55,9 @@ namespace APIconvenios.Repositorio
                 ConveniosEspecificos = c.ConveniosEspecificos.Select(ce => new ConvenioEspecificoDto
                 {
                     Id = ce.Id,
-                    Nombre = ce.Titulo
+                    Titulo = ce.Titulo
                 }).ToList(),
             }).AsNoTracking().FirstOrDefaultAsync();
-
-            if (convenio == null) return null;
 
             return convenio;
         }

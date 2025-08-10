@@ -7,6 +7,6 @@ namespace APIconvenios.Interfaces.Repositorio
         Task<ConvenioEspecifico?> GetByid(int id);
         Task<bool> Delete(ConvenioEspecifico convenio);
         void CreateConvenio(ConvenioEspecifico convenio);
-        void ModificarConvenioMarco(ConvenioEspecifico convenio);
+        Task<bool> ModificarConvenioEspecifico(ConvenioEspecifico convenio);
     }
 }

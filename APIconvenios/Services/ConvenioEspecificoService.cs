@@ -59,14 +59,46 @@ namespace APIconvenios.Services
             }
         }
 
-        public Task<Result<object?>> DeleteConvenioEspecifico(int id)
+        public async Task<Result<object?>> DeleteConvenioEspecifico(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var convenio = await _UnitOfWork._ConvenioEspecificoRepository.GetByid(id);
+                
+                if(convenio == null)
+                    return Result<object?>.Error($"el convenio no existe", 404);
+
+                if(! await _UnitOfWork._ConvenioEspecificoRepository.Delete(convenio))
+                {
+                    _Logger.LogError($"Error al eliminar el convenio especifico con id {id}");  
+                    return Result<object?>.Error($"Error al eliminar el convenio especifico", 500);
+                }
+
+                return Result<object?>.Exito(null);
+            }
+            catch (Exception ex)
+            {
+                _Logger.LogError($"Error al eliminar el convenio especifico: {ex.Message} ");
+                return Result<object?>.Error($"Error al eliminar el convenio especifico", 500);
+            }
         }
 
-        public Task<Result<object?>> EditarConvenioEspecifico(UpdateConvenioEspecificoDto Dto)
+        public async Task<Result<object?>> EditarConvenioEspecifico(UpdateConvenioEspecificoDto Dto)
         {
-            throw new NotImplementedException();
+            var ConvenioOriginal = await _UnitOfWork._ConvenioEspecificoRepository.GetByid(Dto.Id);
+
+            if (ConvenioOriginal == null)
+                return Result<object?>.Error($"el convenio no existe", 404);
+
+            bool exit = await _UnitOfWork._ConvenioEspecificoRepository.ModificarConvenioEspecifico(ConvenioOriginal.UpdateConvenio(Dto));
+
+            if (!exit)
+            {
+                _Logger.LogError($"Error al editar el convenio especifico con id {Dto.Id}");
+                return Result<object?>.Error($"Error al editar el convenio especifico", 500);
+            }
+
+            return Result<Object?>.Exito(null); 
         }
 
         public Task<Result<List<ConvenioEspecificoDto>>> ListarConveniosEspecificos(ConvenioQueryObject queryObject)

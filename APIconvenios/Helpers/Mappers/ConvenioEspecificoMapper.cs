@@ -22,7 +22,7 @@ namespace APIconvenios.Helpers.Mappers
 
                 Involucrados = involucradosDtos.Select(i =>  new Involucrados
                 {
-                    Id = i.id == 
+                    Id = i.id,
                     Nombre = i.Nombre,
                     Apellido = i.Apellido,
                     Email = i.Email,
@@ -31,6 +31,31 @@ namespace APIconvenios.Helpers.Mappers
                     RolInvolucrado = i.RolInvolucrado
                 }).ToList() 
             };
+        }
+
+        public static ConvenioEspecifico UpdateConvenio (this ConvenioEspecifico ConvenioOriginal, UpdateConvenioEspecificoDto dto)
+        {
+            ConvenioOriginal.Titulo = dto.Titulo;
+            ConvenioOriginal.numeroconvenio = dto.numeroconvenio;
+            ConvenioOriginal.FechaFirmaConvenio = dto.FechaFirmaConvenio;
+            ConvenioOriginal.FechaInicioActividades = dto.FechaInicioActividades;
+            ConvenioOriginal.FechaFinConvenio = dto.FechaFinConvenio;
+            ConvenioOriginal.ComentarioOpcional = dto.ComentarioOpcional;
+
+            return ConvenioOriginal;
+        }
+
+        public static List<ConvenioEspecificoDto> ToDto (this List<ConvenioEspecifico> convenios)
+        {
+            return convenios.Select(c => new ConvenioEspecificoDto
+            {
+                Id = c.Id,
+                numeroconvenio = c.numeroconvenio,
+                Titulo = c.Titulo,
+                FechaFirmaConvenio = c.FechaFirmaConvenio,
+                FechaInicioActividades = c.FechaInicioActividades,
+                FechaFinConvenio = c.FechaFinConvenio
+            }).ToList();
         }
     }
 }
