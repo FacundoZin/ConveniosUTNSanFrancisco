@@ -13,7 +13,7 @@ namespace APIconvenios.Interfaces.Servicios
         Task<Result<object?>> CreateConvenioEspecifico(InsertConvenioEspecificoDto DtoConvenio,
             List<InsertInvolucradosDto> DtoInvolucrados);
         Task<Result<object?>> DeleteConvenioEspecifico(int id);
-        Task<Result<InfoConvenioMarcoDto>> ObtenerConvenioEspecificoCompleto(int id);
+        Task<Result<InfoConvenioEspeficoDto>> ObtenerConvenioEspecificoCompleto(int id);
         Task<Result<object?>> EditarConvenioEspecifico(UpdateConvenioEspecificoDto Dto);
     }
 }
