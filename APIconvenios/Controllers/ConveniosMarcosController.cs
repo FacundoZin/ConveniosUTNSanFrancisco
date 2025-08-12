@@ -1,4 +1,5 @@
 ﻿using APIconvenios.DTOs.ConvenioMarco;
+using APIconvenios.DTOs.Empresa;
 using APIconvenios.Filters;
 using APIconvenios.Helpers.Validators;
 using APIconvenios.Interfaces.Servicios;
@@ -62,11 +63,11 @@ namespace APIconvenios.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CargarConvenio([FromBody] CreateConvenioMarcoDto Dto)
+        public async Task<IActionResult> CargarConvenio([FromBody] CargarConvenioMarcoRequestDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var result = await _ConvenioService.CargarConvenioMarco(Dto);
+            var result = await _ConvenioService.CargarConvenioMarco(dto.ConvenioDto,dto.EmpresaDto);
 
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 

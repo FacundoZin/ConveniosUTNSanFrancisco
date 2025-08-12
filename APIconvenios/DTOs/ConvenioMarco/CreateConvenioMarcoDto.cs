@@ -11,10 +11,6 @@ namespace APIconvenios.DTOs.ConvenioMarco
 
         [Required(ErrorMessage = "El convenio debe tener un titulo que lo identifique")]
         public string Titulo { get; set; }
-
-        [Required(ErrorMessage = "El convenio marco debe estar asociado a una empresa")]
-        public int EmpresaId { get; set; }
-
         [Required(ErrorMessage = "La fecha de firma del convenio es obligatoria.")]
         public DateOnly FechaFirmaConvenio { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using APIconvenios.DTOs.ConvenioMarco;
+using APIconvenios.DTOs.Empresa;
 using APIconvenios.Models;
 using System.Runtime.CompilerServices;
 
@@ -38,16 +39,25 @@ namespace APIconvenios.Helpers.Mappers
             return convenio;
         }
 
-        public static ConvenioMarco ConverToConvenioMarco(this CreateConvenioMarcoDto ConvenioDto)
+        public static ConvenioMarco ConverToConvenioMarco(this CreateConvenioMarcoDto ConvenioDto, InsertEmpresaDto empresaDto)
         {
             return new ConvenioMarco
             {
                 numeroconvenio = ConvenioDto.numeroconvenio,
                 Titulo = ConvenioDto.Titulo,
-                EmpresaId = ConvenioDto.EmpresaId,
                 FechaFirmaConvenio = ConvenioDto.FechaFirmaConvenio,
                 FechaFin = ConvenioDto.FechaFin,
                 ComentarioOpcional = ConvenioDto.ComentarioOpcional,
+
+                Empresa = new Empresa
+                {
+                    Nombre = empresaDto.Nombre,
+                    RazonSocial = empresaDto.RazonSocial,
+                    Cuit = empresaDto.Cuit,
+                    Direccion = empresaDto.Direccion,
+                    Telefono = empresaDto.Telefono,
+                    Email = empresaDto.Email
+                }
             };
         }
     }

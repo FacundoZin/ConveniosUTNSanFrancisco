@@ -17,9 +17,9 @@ namespace APIconvenios.Services
     public class ConvenioEspecificoService : IConvenioEspecifcoService
     {
         private readonly _UnitOfWork _UnitOfWork;
-        private readonly ILogger _Logger;
+        private readonly ILogger<ConvenioEspecificoService> _Logger;
         private readonly ConvenioQueryObjectValidator _QueryVallidator;
-        public ConvenioEspecificoService(_UnitOfWork unitOfWork, ILogger logger, ConvenioQueryObjectValidator queryvalidator)
+        public ConvenioEspecificoService(_UnitOfWork unitOfWork, ILogger<ConvenioEspecificoService> logger, ConvenioQueryObjectValidator queryvalidator)
         {
             _UnitOfWork = unitOfWork;
             _Logger = logger;

@@ -1,5 +1,6 @@
 ﻿using APIconvenios.Common;
 using APIconvenios.DTOs.ConvenioMarco;
+using APIconvenios.DTOs.Empresa;
 using APIconvenios.Filters;
 
 namespace APIconvenios.Interfaces.Servicios
@@ -10,7 +11,7 @@ namespace APIconvenios.Interfaces.Servicios
         Task<Result<InfoConvenioMarcoDto?>> ObtenerConvenioMarcoCompleto(int id);
         Task<Result<bool>> BorrarConvenioMarco(int id);
         Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoDto convenioActualizado);
-        Task<Result<bool>> CargarConvenioMarco(CreateConvenioMarcoDto createConvenioMarcoDto);
+        Task<Result<bool>> CargarConvenioMarco(CreateConvenioMarcoDto createConvenioMarcoDto,InsertEmpresaDto EmpresaDto);
 
     }
 }

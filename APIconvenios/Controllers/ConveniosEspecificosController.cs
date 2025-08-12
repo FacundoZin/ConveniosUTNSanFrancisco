@@ -39,12 +39,11 @@ namespace APIconvenios.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CargarConvenio ([FromBody] InsertConvenioEspecificoDto Conveniodto, 
-            List<InsertInvolucradosDto> involucradosDto)
+        public async Task<IActionResult> CargarConvenio ([FromBody] CargarConvenioEspecificoRequestDto dto)
         {
             if (!ModelState.IsValid) return BadRequest("los datos ingresados no son validos");
 
-            var result = await _ConvenioEspecifcoService.CreateConvenioEspecifico(Conveniodto,involucradosDto);
+            var result = await _ConvenioEspecifcoService.CreateConvenioEspecifico(dto.ConvenioDto,dto.InvolucradosDto);
 
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 

@@ -5,18 +5,26 @@ namespace APIconvenios.UnitOfWork
 {
     public class _UnitOfWork
     {
+
         private readonly ApplicationDbContext _Context;
+
+
         public IConvenioEspecificoRepository _ConvenioEspecificoRepository { get; }
-        public IInvolucradosRepository _InvolucradosRepository { get; }
         public IConvenioEspecificoReadRepository _ConvEspReadRepository { get; }
+        public IConvenioMarcoRepository _ConvenioMarcoRepository { get; }
+        public IConvenioMarcoReadRepository _ConvenioMarcoReadRepository { get; }
+
+
 
         public _UnitOfWork(ApplicationDbContext applicationDbContext, IConvenioEspecificoRepository convenioEspecificorepo,
-            IInvolucradosRepository involucradosRepository, IConvenioEspecificoReadRepository convespreadrepo)
+            IConvenioEspecificoReadRepository convespreadrepo,
+            IConvenioMarcoRepository convmarcRepository, IConvenioMarcoReadRepository convmarcReadRepo)
         {
             _Context = applicationDbContext;
             _ConvenioEspecificoRepository = convenioEspecificorepo;
-            _InvolucradosRepository = involucradosRepository;
             _ConvEspReadRepository = convespreadrepo;
+            _ConvenioMarcoRepository = convmarcRepository;
+            _ConvenioMarcoReadRepository = convmarcReadRepo;
         }   
 
         public async Task<int> Save ()

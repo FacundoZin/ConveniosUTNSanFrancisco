@@ -13,21 +13,20 @@ using Microsoft.Data.SqlClient;
 using APIconvenios.Helpers.Mappers;
 using APIconvenios.Helpers.Validators;
 using Microsoft.IdentityModel.Tokens;
+using APIconvenios.UnitOfWork;
+using APIconvenios.DTOs.Empresa;
 
 namespace APIconvenios.Services
 {
     public class ConveniosMarcosServices : IConvenioMarcoService
     {
-        private readonly IConvenioMarcoRepository _Repo;
-        private readonly IConvenioMarcoReadRepository _ReadRepo;
-        private readonly ILogger _logger;
+        private readonly _UnitOfWork _UnitOfWork;
+        private readonly ILogger<ConveniosMarcosServices> _logger;
         private readonly ConvenioQueryObjectValidator _QueryValidator;
 
-        public ConveniosMarcosServices(IConvenioMarcoRepository repo, IConvenioMarcoReadRepository readRepo, ILogger logger, 
-            ConvenioQueryObjectValidator queryValidator)
+        public ConveniosMarcosServices(_UnitOfWork unitOfWork,ILogger<ConveniosMarcosServices> logger, ConvenioQueryObjectValidator queryValidator)
         {
-            _Repo = repo;
-            _ReadRepo = readRepo;
+            _UnitOfWork = unitOfWork;
             _logger = logger;
             _QueryValidator = queryValidator;
         }
@@ -35,13 +34,13 @@ namespace APIconvenios.Services
         {
             try
             {
-                var ConvOriginal = await _Repo.GetByid(convenioActualizado.Id);
+                var ConvOriginal = await _UnitOfWork._ConvenioMarcoRepository.GetByid(convenioActualizado.Id);
                 if (ConvOriginal == null) return Result<bool>.Error("No se encontró el convenio marco solicitado", 404);
 
-                if(await _ReadRepo.TitleExist(convenioActualizado.Titulo)) 
+                if(await _UnitOfWork._ConvenioMarcoReadRepository.TitleExist(convenioActualizado.Titulo)) 
                     return Result<bool>.Error("El titulo ingresado coincide con un convenio existente", 409);
 
-                var exit = await _Repo.ModificarConvenioMarco(ConvOriginal.UpdateConvenio(convenioActualizado));
+                var exit = await _UnitOfWork._ConvenioMarcoRepository.ModificarConvenioMarco(ConvOriginal.UpdateConvenio(convenioActualizado));
 
                 if (!exit)
                 {
@@ -62,11 +61,12 @@ namespace APIconvenios.Services
         {
             try
             {
-                var convenio = await _Repo.GetByid(id);
+                var convenio = await _UnitOfWork._ConvenioMarcoRepository.GetByid(id);
 
                 if (convenio == null) return Result<bool>.Error("El convenio que quiere borrar no existe", 404);
 
-                bool exit = await _Repo.Delete(convenio);
+                bool exit = await _UnitOfWork._ConvenioMarcoRepository.Delete(convenio);
+
                 if (!exit)
                 {
                     _logger.LogError($"el convenio marco  {id} no se pudo eliminar");
@@ -111,7 +111,7 @@ namespace APIconvenios.Services
 
                 int SaltoDePaginas = (queryObject.PaginaActual - 1) * queryObject.CantidadResultados;
 
-                var convenios = await _ReadRepo.GetAllConveniosMarcos(SaltoDePaginas, queryObject.CantidadResultados, filtro, ordenamiento);
+                var convenios = await _UnitOfWork._ConvenioMarcoReadRepository.GetAllConveniosMarcos(SaltoDePaginas, queryObject.CantidadResultados, filtro, ordenamiento);
 
                 if (convenios == null)
                     return Result<List<ConvenioMarcoDto>>.Error("No hay convenios marcos disponibles", 204);
@@ -138,14 +138,14 @@ namespace APIconvenios.Services
         {
             try
             {
-                var repo = await _ReadRepo.GetConvenioMarcosCompleto(id);
+                var InfoConvenio = await _UnitOfWork._ConvenioMarcoReadRepository.GetConvenioMarcosCompleto(id);
 
-                if (repo == null)
+                if (InfoConvenio == null)
                 {
                     return Result<InfoConvenioMarcoDto?>.Error("No se encontró el convenio marco solicitado", 404);
                 }
 
-                return Result<InfoConvenioMarcoDto?>.Exito(repo);
+                return Result<InfoConvenioMarcoDto?>.Exito(InfoConvenio);
             }
             catch (SqlException ex)
             {
@@ -164,14 +164,17 @@ namespace APIconvenios.Services
             }
         }
 
-        public async Task<Result<bool>> CargarConvenioMarco(CreateConvenioMarcoDto createConvenioMarcoDto)
+        public async Task<Result<bool>> CargarConvenioMarco(CreateConvenioMarcoDto createConvenioMarcoDto, 
+            InsertEmpresaDto EmpresaDto)
         {
             try
             {
-                if (await _ReadRepo.TitleExist(createConvenioMarcoDto.Titulo))
+                if (await _UnitOfWork._ConvenioMarcoReadRepository.TitleExist(createConvenioMarcoDto.Titulo))
                     return Result<bool>.Error("el nombre de convenio ingresado ya existe", 409);
 
-                bool exit = await _Repo.CreateConvenio(createConvenioMarcoDto.ConverToConvenioMarco());
+                _UnitOfWork._ConvenioMarcoRepository.CreateConvenio(createConvenioMarcoDto.ConverToConvenioMarco(EmpresaDto));
+
+                bool exit = await _UnitOfWork.Save() > 0;
 
                 if (!exit)
                 {

@@ -30,11 +30,9 @@ namespace APIconvenios.Repositorio
             return affected > 0;
         }
 
-        public async Task<bool> CreateConvenio(ConvenioMarco convenioMarco)
+        public void CreateConvenio(ConvenioMarco convenioMarco)
         {
-            await _Context.ConveniosMarcos.AddAsync(convenioMarco);
-            int affected = await _Context.SaveChangesAsync();  
-            return affected > 0;    
+            _Context.ConveniosMarcos.Add(convenioMarco);  
         }
 
         public async Task<bool> ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado)
