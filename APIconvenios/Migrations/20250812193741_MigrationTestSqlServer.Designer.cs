@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIconvenios.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250702203207_PrimeraMigracion")]
-    partial class PrimeraMigracion
+    [Migration("20250812193741_MigrationTestSqlServer")]
+    partial class MigrationTestSqlServer
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,10 @@ namespace APIconvenios.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ComentarioOpcional")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ConvenioMarcoId")
                         .HasColumnType("int");
 
@@ -44,9 +48,6 @@ namespace APIconvenios.Migrations
 
                     b.Property<DateOnly>("FechaInicioActividades")
                         .HasColumnType("date");
-
-                    b.Property<int>("SecretariaInvolucrada")
-                        .HasColumnType("int");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
@@ -70,6 +71,9 @@ namespace APIconvenios.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ComentarioOpcional")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("EmpresaId")
                         .HasColumnType("int");
 
@@ -78,6 +82,10 @@ namespace APIconvenios.Migrations
 
                     b.Property<DateOnly>("FechaFirmaConvenio")
                         .HasColumnType("date");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("numeroconvenio")
                         .HasColumnType("int");
@@ -97,24 +105,31 @@ namespace APIconvenios.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Cuit")
-                        .HasColumnType("int");
+                    b.Property<long>("Cuit")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Direccion")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("RazonSocial")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("Telefono")
-                        .HasColumnType("int");
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -134,9 +149,10 @@ namespace APIconvenios.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Legajo")
+                    b.Property<int>("Legajo")
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
@@ -147,6 +163,7 @@ namespace APIconvenios.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Telefono")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
