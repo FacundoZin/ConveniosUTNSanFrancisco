@@ -102,8 +102,9 @@ namespace APIconvenios.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("Cuit")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Cuit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Direccion")
                         .IsRequired()

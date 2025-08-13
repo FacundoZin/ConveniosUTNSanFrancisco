@@ -16,7 +16,7 @@ namespace APIconvenios.Models
 
         [Required(ErrorMessage = "El CUIT es obligatorio.")]
         [Range(20000000000, 27999999999, ErrorMessage = "CUIT inválido.")]
-        public long Cuit { get; set; } // Ojo: cambié a `long` porque un CUIT puede superar `int.MaxValue`.
+        public string Cuit { get; set; } // Ojo: cambié a `long` porque un CUIT puede superar `int.MaxValue`.
 
         [Required(ErrorMessage = "La dirección es obligatoria.")]
         [StringLength(200, ErrorMessage = "La dirección no puede superar los 200 caracteres.")]

@@ -30,6 +30,7 @@ namespace APIconvenios.Controllers
             return Ok(result.Data);
         }
 
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> VerConvenioMarcoCompleto([FromRoute] int id)
         {

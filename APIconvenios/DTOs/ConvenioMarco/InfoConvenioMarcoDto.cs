@@ -8,6 +8,7 @@ namespace APIconvenios.DTOs.ConvenioMarco
     public class InfoConvenioMarcoDto
     {
         public int Idconvenio { get; set; }
+        public string Titulo { get; set; } 
         public int numeroconvenio { get; set; }
         public DateOnly FechaFirmaConvenio { get; set; }
         public DateOnly FechaFin { get; set; }

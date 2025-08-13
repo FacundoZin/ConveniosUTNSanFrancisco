@@ -39,6 +39,7 @@ namespace APIconvenios.Repositorio
             var convenio = await _Context.ConveniosMarcos.Where(c => c.Id == id).Select(c => new InfoConvenioMarcoDto
             {
                 Idconvenio = c.Id,
+                Titulo = c.Titulo,
                 numeroconvenio = c.numeroconvenio,
                 FechaFirmaConvenio = c.FechaFirmaConvenio,
                 FechaFin = c.FechaFin,

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIconvenios.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250812193741_MigrationTestSqlServer")]
-    partial class MigrationTestSqlServer
+    [Migration("20250813192227_newmigration")]
+    partial class newmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,8 +105,9 @@ namespace APIconvenios.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("Cuit")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Cuit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
