@@ -91,8 +91,8 @@ namespace APIconvenios.Services
                     return Result<List<ConvenioMarcoDto>>.Error(string.Join(", ", errores), 400);
 
                 Expression<Func<ConvenioMarco, bool>> filtro = c =>
-                (string.IsNullOrEmpty(queryObject.empresa) || c.Empresa.Nombre.Contains(queryObject.empresa)) &&
-                (string.IsNullOrEmpty(queryObject.titulo) || c.Titulo.Contains(queryObject.titulo));
+                (string.IsNullOrEmpty(queryObject.Nombre_empresa) || c.Empresa.Nombre.Contains(queryObject.Nombre_empresa)) &&
+                (string.IsNullOrEmpty(queryObject.TituloConvenio)|| c.Titulo.Contains(queryObject.TituloConvenio));
 
                 Func<IQueryable<ConvenioMarco>, IOrderedQueryable<ConvenioMarco>>? ordenamiento = null;
 

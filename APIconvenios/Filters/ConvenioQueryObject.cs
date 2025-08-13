@@ -2,8 +2,8 @@
 {
     public class ConvenioQueryObject
     {
-        public string titulo { get; set; } = string.Empty;
-        public string empresa { get; set; } = string.Empty;
+        public string TituloConvenio { get; set; } = string.Empty;
+        public string Nombre_empresa { get; set; } = string.Empty;
         public bool ProximosAterminar { get; set; } = false;
         public bool AntiguedadDescendente { get; set; } = false;
         public bool AntiguedadAscendente { get; set; } = false;

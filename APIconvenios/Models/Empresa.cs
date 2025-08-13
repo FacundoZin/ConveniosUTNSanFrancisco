@@ -15,8 +15,8 @@ namespace APIconvenios.Models
         public string RazonSocial { get; set; }
 
         [Required(ErrorMessage = "El CUIT es obligatorio.")]
-        [Range(20000000000, 27999999999, ErrorMessage = "CUIT inválido.")]
-        public string Cuit { get; set; } // Ojo: cambié a `long` porque un CUIT puede superar `int.MaxValue`.
+        [RegularExpression(@"^\d{11}$", ErrorMessage = "El CUIT debe tener exactamente 11 dígitos numéricos y sin guiones")]
+        public string Cuit { get; set; } 
 
         [Required(ErrorMessage = "La dirección es obligatoria.")]
         [StringLength(200, ErrorMessage = "La dirección no puede superar los 200 caracteres.")]
@@ -24,7 +24,7 @@ namespace APIconvenios.Models
 
         [Required(ErrorMessage = "El teléfono es obligatorio.")]
         [RegularExpression(@"^\d{10}$", ErrorMessage = "El número de teléfono debe tener exactamente 10 dígitos(sin caracteristica de pais, ni espacios).")]
-        public string Telefono { get; set; } // Cambié a string por formato y validación más flexible.
+        public string Telefono { get; set; } 
 
         [Required(ErrorMessage = "El email es obligatorio.")]
         [EmailAddress(ErrorMessage = "Email inválido.")]

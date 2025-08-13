@@ -23,7 +23,7 @@ namespace APIconvenios.Repositorio
         public async Task<List<ConvenioMarco>> GetAllConveniosMarcos(int SaltoPaginas, int CantidadPaginas, 
             Expression<Func<ConvenioMarco, bool>> filtro, Func<IQueryable<ConvenioMarco>, IOrderedQueryable<ConvenioMarco>>? ordenamiento = null)
         {
-            var query = _Context.ConveniosMarcos.Where(filtro);
+            var query = _Context.ConveniosMarcos.Include(c => c.Empresa).Where(filtro);
 
             if (ordenamiento != null)
                 query = ordenamiento(query);

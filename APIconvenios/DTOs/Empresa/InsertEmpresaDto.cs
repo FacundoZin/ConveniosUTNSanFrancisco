@@ -13,7 +13,7 @@ namespace APIconvenios.DTOs.Empresa
         public string RazonSocial { get; set; }
 
         [Required(ErrorMessage = "El CUIT es obligatorio.")]
-        [RegularExpression(@"^\d{11}$", ErrorMessage = "El CUIT debe tener exactamente 11 dígitos numéricos.")]
+        [RegularExpression(@"^\d{11}$", ErrorMessage = "El CUIT debe tener exactamente 11 dígitos numéricos y sin guiones")]
         public string Cuit { get; set; }
 
         [Required(ErrorMessage = "La dirección es obligatoria.")]
