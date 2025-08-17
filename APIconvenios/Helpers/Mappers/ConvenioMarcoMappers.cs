@@ -7,7 +7,7 @@ namespace APIconvenios.Helpers.Mappers
 {
     public static class ConvenioMarcoMappers
     {
-        public static List<ConvenioMarcoDto> ConvertToList(this List<ConvenioMarco> convenios)
+        public static List<ConvenioMarcoDto> ToDto(this List<ConvenioMarco> convenios)
         {
             List<ConvenioMarcoDto> conveniosDto = new List<ConvenioMarcoDto>();
 
@@ -21,8 +21,7 @@ namespace APIconvenios.Helpers.Mappers
                     NombreEmpresa = Convenio.Empresa.Nombre,
                     FechaFirmaConvenio = Convenio.FechaFirmaConvenio,
                     FechaFin = Convenio.FechaFin,
-                    ComentarioOpcional = Convenio.ComentarioOpcional
-                });
+             });
             }
 
             return conveniosDto;

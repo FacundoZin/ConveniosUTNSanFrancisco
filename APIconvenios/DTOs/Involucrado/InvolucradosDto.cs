@@ -1,5 +1,4 @@
-﻿using APIconvenios.Enums;
-
+﻿
 namespace APIconvenios.DTOs.Involucrados
 {
     public class InvolucradosDto

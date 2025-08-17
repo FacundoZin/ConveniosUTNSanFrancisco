@@ -1,6 +1,4 @@
-﻿using APIconvenios.Enums;
-using APIconvenios.Helpers.Validators;
-using APIconvenios.Models;
+﻿using APIconvenios.Helpers.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioEspecifico

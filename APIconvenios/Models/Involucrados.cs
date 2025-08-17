@@ -1,4 +1,4 @@
-﻿using APIconvenios.Enums;
+﻿using APIconvenios.Common.Enums;
 
 namespace APIconvenios.Models
 {

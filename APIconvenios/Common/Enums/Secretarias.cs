@@ -1,4 +1,4 @@
-﻿namespace APIconvenios.Enums
+﻿namespace APIconvenios.Common.Enums
 {
     public enum Secretarias
     {

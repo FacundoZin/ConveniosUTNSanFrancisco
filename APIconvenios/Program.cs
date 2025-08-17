@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationDbContext>(opt =>
+builder.Services.AddDbContextFactory<ApplicationDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ConvenioQueryObjectValidator>();
@@ -30,7 +30,8 @@ builder.Services.AddScoped<ConvenioQueryObjectValidator>();
 builder.Services.AddScoped<IConvenioEspecificoRepository, ConvenioEspecificoRepository>();
 builder.Services.AddScoped<IConvenioEspecificoReadRepository, ConvenioEspecificoReadRepository>();
 builder.Services.AddScoped<IConvenioMarcoRepository, ConveniosMarcoRepository>();
-builder.Services.AddScoped<IConvenioMarcoReadRepository, ConvenioMarcoReadRepository>();    
+builder.Services.AddScoped<IConvenioMarcoReadRepository, ConvenioMarcoReadRepository>();
+builder.Services.AddScoped<ConveniosFilterService>();
 
 var app = builder.Build();
 

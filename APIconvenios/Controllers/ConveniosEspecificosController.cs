@@ -1,6 +1,6 @@
-﻿using APIconvenios.DTOs.ConvenioEspecifico;
+﻿using APIconvenios.Common;
+using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.Involucrados;
-using APIconvenios.Filters;
 using APIconvenios.Interfaces.Servicios;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,16 +16,6 @@ namespace APIconvenios.Controllers
         public ConveniosEspecificosController(IConvenioEspecifcoService convenioEspecifcoService) 
         {
             _ConvenioEspecifcoService = convenioEspecifcoService;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ListarConveniosEspecificos([FromQuery] ConvenioQueryObject convenioQueryObject)
-        {
-            var result = await _ConvenioEspecifcoService.ListarConveniosEspecificos(convenioQueryObject);
-
-            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
-
-            return Ok(result.Data);
         }
 
         [HttpGet("{id}")]

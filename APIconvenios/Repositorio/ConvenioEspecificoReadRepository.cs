@@ -11,11 +11,14 @@ namespace APIconvenios.Repositorio
 {
     public class ConvenioEspecificoReadRepository : IConvenioEspecificoReadRepository
     {
+        private readonly IDbContextFactory<ApplicationDbContext> _ContextFactory;
         private readonly ApplicationDbContext _context;
 
-        public ConvenioEspecificoReadRepository(ApplicationDbContext context)
+        public ConvenioEspecificoReadRepository(ApplicationDbContext context,
+            IDbContextFactory<ApplicationDbContext> contextFactory)
         {
             _context = context;
+            _ContextFactory = contextFactory;
         }
 
         public async Task<InfoConvenioEspeficoDto> GetConvenioEspecificoCompleto(int id)
@@ -45,11 +48,13 @@ namespace APIconvenios.Repositorio
             return convenio;
         }
 
-        public async Task<List<ConvenioEspecificoDto>> ListarConveniosEspecificos(int SaltoPaginas, int CantidadPaginas, 
+        public async Task<List<ConvenioEspecifico>> ListarConveniosEspecificos(int SaltoPaginas, int CantidadPaginas, 
             Expression<Func<ConvenioEspecifico, bool>> filtro, Func<IQueryable<ConvenioEspecifico>, 
                 IOrderedQueryable<ConvenioEspecifico>>? ordenamiento = null)
         {
-            var query = _context.ConveniosEspecificos.Where(filtro);
+            await using var context = _ContextFactory.CreateDbContext();
+
+            var query = context.ConveniosEspecificos.Where(filtro);
 
             if (ordenamiento != null)
                 query = ordenamiento(query);
@@ -57,9 +62,7 @@ namespace APIconvenios.Repositorio
             query.Skip(SaltoPaginas);
             query.Take(CantidadPaginas);
 
-            var convenios = await query.ToListAsync();
-
-            return convenios.ToDto();
+            return await query.ToListAsync();
         }
     }
 }

@@ -16,7 +16,5 @@ namespace APIconvenios.Data
         public DbSet<Empresa> Empresas { get; set; }
         public DbSet<Involucrados> Involucrados { get; set; }
 
-
-
     }
 }

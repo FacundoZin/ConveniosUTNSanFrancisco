@@ -12,6 +12,7 @@ namespace APIconvenios.Repositorio
         {
             _Context = context;
         }
+
         public void CreateConvenio(ConvenioEspecifico convenio)
         {
             _Context.ConveniosEspecificos.Add(convenio);

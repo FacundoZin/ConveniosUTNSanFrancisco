@@ -1,5 +1,4 @@
-﻿using APIconvenios.Enums;
-using APIconvenios.Models;
+﻿using APIconvenios.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.Involucrados

@@ -1,4 +1,4 @@
-﻿using APIconvenios.Filters;
+﻿using APIconvenios.Common;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 

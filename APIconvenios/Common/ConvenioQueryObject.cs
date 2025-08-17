@@ -1,4 +1,4 @@
-﻿namespace APIconvenios.Filters
+﻿namespace APIconvenios.Common
 {
     public class ConvenioQueryObject
     {

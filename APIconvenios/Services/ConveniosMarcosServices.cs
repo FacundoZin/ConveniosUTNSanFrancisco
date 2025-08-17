@@ -1,5 +1,4 @@
 ﻿using APIconvenios.DTOs.ConvenioMarco;
-using APIconvenios.Filters;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Interfaces.Servicios;
 using APIconvenios.Models;
@@ -22,13 +21,11 @@ namespace APIconvenios.Services
     {
         private readonly _UnitOfWork _UnitOfWork;
         private readonly ILogger<ConveniosMarcosServices> _logger;
-        private readonly ConvenioQueryObjectValidator _QueryValidator;
 
         public ConveniosMarcosServices(_UnitOfWork unitOfWork,ILogger<ConveniosMarcosServices> logger, ConvenioQueryObjectValidator queryValidator)
         {
             _UnitOfWork = unitOfWork;
             _logger = logger;
-            _QueryValidator = queryValidator;
         }
         public async Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoDto convenioActualizado)
         {
@@ -82,58 +79,6 @@ namespace APIconvenios.Services
             }
         }
 
-        public async Task<Result<List<ConvenioMarcoDto>>> ListarConveniosMarcos(ConvenioQueryObject queryObject)
-        {
-            try
-            {
-                var errores = _QueryValidator.Validate(queryObject);
-                if (errores.Count > 0)
-                    return Result<List<ConvenioMarcoDto>>.Error(string.Join(", ", errores), 400);
-
-                Expression<Func<ConvenioMarco, bool>> filtro = c =>
-                (string.IsNullOrEmpty(queryObject.Nombre_empresa) || c.Empresa.Nombre.Contains(queryObject.Nombre_empresa)) &&
-                (string.IsNullOrEmpty(queryObject.TituloConvenio)|| c.Titulo.Contains(queryObject.TituloConvenio));
-
-                Func<IQueryable<ConvenioMarco>, IOrderedQueryable<ConvenioMarco>>? ordenamiento = null;
-
-                if (queryObject.AntiguedadDescendente)
-                {
-                    ordenamiento = c => c.OrderByDescending(c => c.FechaFirmaConvenio);
-                }
-                if (queryObject.AntiguedadAscendente)
-                {
-                    ordenamiento = c => c.OrderBy(c => c.FechaFirmaConvenio);
-                }
-                if (queryObject.ProximosAterminar)
-                {
-                    ordenamiento = c => c.OrderBy(c => c.FechaFin);
-                }
-
-                int SaltoDePaginas = (queryObject.PaginaActual - 1) * queryObject.CantidadResultados;
-
-                var convenios = await _UnitOfWork._ConvenioMarcoReadRepository.GetAllConveniosMarcos(SaltoDePaginas, queryObject.CantidadResultados, filtro, ordenamiento);
-
-                if (convenios == null)
-                    return Result<List<ConvenioMarcoDto>>.Error("No hay convenios marcos disponibles", 204);
-
-                return Result<List<ConvenioMarcoDto>>.Exito(convenios.ConvertToList());
-            }
-            catch (SqlException ex)
-            {
-                _logger.LogError(ex, $"errro en db: {ex.Message}");
-                return Result<List<ConvenioMarcoDto>>.Error("error en la DB", 503);
-            }
-            catch (InvalidOperationException ex)
-            {
-                _logger.LogError(ex, $"datos no validos al listar convenios {ex.Message}");
-                return Result<List<ConvenioMarcoDto>>.Error("Estado del sistema no válido", 500);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"excpecion no esperada {ex.Message}");
-                return Result<List<ConvenioMarcoDto>>.Error("Error inesperado", 500);
-            }
-        }
         public async Task<Result<InfoConvenioMarcoDto?>> ObtenerConvenioMarcoCompleto(int id)
         {
             try

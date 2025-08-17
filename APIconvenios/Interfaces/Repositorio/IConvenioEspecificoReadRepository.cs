@@ -6,7 +6,7 @@ namespace APIconvenios.Interfaces.Repositorio
 {
     public interface IConvenioEspecificoReadRepository
     {
-        Task<List<ConvenioEspecificoDto>> ListarConveniosEspecificos(int SaltoPaginas, int CantidadPaginas,
+        Task<List<ConvenioEspecifico>> ListarConveniosEspecificos(int SaltoPaginas, int CantidadPaginas,
             Expression<Func<ConvenioEspecifico, bool>> filtro,
             Func<IQueryable<ConvenioEspecifico>, IOrderedQueryable<ConvenioEspecifico>>? ordenamiento = null);
 

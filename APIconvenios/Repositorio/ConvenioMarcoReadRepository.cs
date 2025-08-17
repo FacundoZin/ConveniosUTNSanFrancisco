@@ -2,7 +2,6 @@
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
-using APIconvenios.Filters;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,18 +11,23 @@ namespace APIconvenios.Repositorio
 {
     public class ConvenioMarcoReadRepository : IConvenioMarcoReadRepository
     {
+        private readonly IDbContextFactory<ApplicationDbContext> _ContextFactory;   
         private readonly ApplicationDbContext _Context;
 
-        public ConvenioMarcoReadRepository(ApplicationDbContext context)
+        public ConvenioMarcoReadRepository(ApplicationDbContext context, 
+            IDbContextFactory<ApplicationDbContext> contextfactory)
         {
             _Context = context;
+            _ContextFactory = contextfactory;
         }
 
 
         public async Task<List<ConvenioMarco>> GetAllConveniosMarcos(int SaltoPaginas, int CantidadPaginas, 
             Expression<Func<ConvenioMarco, bool>> filtro, Func<IQueryable<ConvenioMarco>, IOrderedQueryable<ConvenioMarco>>? ordenamiento = null)
         {
-            var query = _Context.ConveniosMarcos.Include(c => c.Empresa).Where(filtro);
+            await using var context = _ContextFactory.CreateDbContext();
+
+            var query = context.ConveniosMarcos.Include(c => c.Empresa).Where(filtro);
 
             if (ordenamiento != null)
                 query = ordenamiento(query);
@@ -32,6 +36,7 @@ namespace APIconvenios.Repositorio
             query.Take(CantidadPaginas);
 
             return await query.ToListAsync();
+
         }
 
         public async Task<InfoConvenioMarcoDto?> GetConvenioMarcosCompleto(int id)

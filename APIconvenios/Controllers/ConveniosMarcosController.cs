@@ -1,6 +1,6 @@
-﻿using APIconvenios.DTOs.ConvenioMarco;
+﻿using APIconvenios.Common;
+using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
-using APIconvenios.Filters;
 using APIconvenios.Helpers.Validators;
 using APIconvenios.Interfaces.Servicios;
 using Microsoft.AspNetCore.Mvc;
@@ -19,15 +19,6 @@ namespace APIconvenios.Controllers
         {
             _ConvenioService = convenioservice;
             _QueryValidator = validator;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ListaConvenios([FromQuery] ConvenioQueryObject queryObject)
-        {
-            var result = await _ConvenioService.ListarConveniosMarcos(queryObject);
-            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
-
-            return Ok(result.Data);
         }
 
 
