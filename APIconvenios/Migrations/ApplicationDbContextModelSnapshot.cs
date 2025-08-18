@@ -31,7 +31,6 @@ namespace APIconvenios.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ComentarioOpcional")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ConvenioMarcoId")
@@ -45,6 +44,9 @@ namespace APIconvenios.Migrations
 
                     b.Property<DateOnly>("FechaInicioActividades")
                         .HasColumnType("date");
+
+                    b.Property<string>("RutaArchivo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
@@ -79,6 +81,9 @@ namespace APIconvenios.Migrations
 
                     b.Property<DateOnly>("FechaFirmaConvenio")
                         .HasColumnType("date");
+
+                    b.Property<string>("RutaArchivo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Titulo")
                         .IsRequired()

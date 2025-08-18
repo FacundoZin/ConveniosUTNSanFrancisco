@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIconvenios.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250813192227_newmigration")]
-    partial class newmigration
+    [Migration("20250818200040_AddFileRouteToConveniosDocuments")]
+    partial class AddFileRouteToConveniosDocuments
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,6 @@ namespace APIconvenios.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ComentarioOpcional")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ConvenioMarcoId")
@@ -48,6 +47,9 @@ namespace APIconvenios.Migrations
 
                     b.Property<DateOnly>("FechaInicioActividades")
                         .HasColumnType("date");
+
+                    b.Property<string>("RutaArchivo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
@@ -82,6 +84,9 @@ namespace APIconvenios.Migrations
 
                     b.Property<DateOnly>("FechaFirmaConvenio")
                         .HasColumnType("date");
+
+                    b.Property<string>("RutaArchivo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Titulo")
                         .IsRequired()

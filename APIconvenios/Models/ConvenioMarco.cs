@@ -26,7 +26,8 @@ namespace APIconvenios.Models
         [ValidacionFechas("FechaFirmaConvenio", ErrorMessage = "La fecha de finalización debe ser posterior a la fecha de firma.")]
         public DateOnly FechaFin { get; set; }
 
-        public string? ComentarioOpcional { get; set; }  
+        public string? ComentarioOpcional { get; set; }
+        public string? RutaArchivo { get; set; }
 
         public List<ConvenioEspecifico> ConveniosEspecificos { get; set; }
     }

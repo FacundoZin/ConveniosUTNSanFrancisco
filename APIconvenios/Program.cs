@@ -23,6 +23,9 @@ builder.Services.AddScoped<ConvenioQueryObjectValidator>();
 
 builder.Services.AddScoped<IConvenioMarcoService, ConveniosMarcosServices>();
 builder.Services.AddScoped<IConvenioEspecifcoService, ConvenioEspecificoService>();
+builder.Services.AddScoped<ConveniosFilterService>();
+builder.Services.AddScoped<IConveniosDocumentManager, ConveniosDocumentsManager>();
+
 
 builder.Services.AddScoped<_UnitOfWork>();
 builder.Services.AddScoped<ConvenioQueryObjectValidator>();
@@ -31,7 +34,6 @@ builder.Services.AddScoped<IConvenioEspecificoRepository, ConvenioEspecificoRepo
 builder.Services.AddScoped<IConvenioEspecificoReadRepository, ConvenioEspecificoReadRepository>();
 builder.Services.AddScoped<IConvenioMarcoRepository, ConveniosMarcoRepository>();
 builder.Services.AddScoped<IConvenioMarcoReadRepository, ConvenioMarcoReadRepository>();
-builder.Services.AddScoped<ConveniosFilterService>();
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿using APIconvenios.Data;
 using APIconvenios.Interfaces.Repositorio;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace APIconvenios.UnitOfWork
 {
@@ -32,6 +33,9 @@ namespace APIconvenios.UnitOfWork
 
         public void MarkAsExisting<TEntity>(TEntity entity) where TEntity : class
             => _Context.Attach(entity);
+
+        public async Task<IDbContextTransaction> BeginTransaction ()
+            => await _Context.Database.BeginTransactionAsync();
 
     }
 }

@@ -29,7 +29,9 @@ namespace APIconvenios.Models
         public int ConvenioMarcoId { get; set; }
         public ConvenioMarco ConvenioMarco { get; set; }
 
-        public string ComentarioOpcional { get; set; }
+        public string? ComentarioOpcional { get; set; }
+        public string? RutaArchivo { get; set; }
+
 
         public List <Involucrados> Involucrados { get; set; }
     }
