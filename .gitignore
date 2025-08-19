@@ -67,3 +67,19 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# Bases de datos locales
+*.db
+
+# Configs locales de .NET
+Properties/launchSettings.json
+
+# Builds de Electron
+out/
+build/
+release/
+.electron-builder/
+
+# Archivos de entorno adicionales
+.env.*.local
+
