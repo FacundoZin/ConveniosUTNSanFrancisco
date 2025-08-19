@@ -11,5 +11,6 @@ namespace APIconvenios.DTOs.ConvenioMarco
         public string NombreEmpresa { get; set; }  
         public DateOnly FechaFirmaConvenio { get; set; }
         public DateOnly FechaFin { get; set; }
+        public string ConvenioType { get; set; } = "marco"; 
     }
 }

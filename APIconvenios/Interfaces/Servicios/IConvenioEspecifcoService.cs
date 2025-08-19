@@ -1,6 +1,7 @@
 ﻿using APIconvenios.Common;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
+using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrados;
 
@@ -8,7 +9,7 @@ namespace APIconvenios.Interfaces.Servicios
 {
     public interface IConvenioEspecifcoService
     {
-        Task<Result<object?>> CreateConvenioEspecifico(InsertConvenioEspecificoDto DtoConvenio,
+        Task<Result<ConvenioCreated>> CreateConvenioEspecifico(InsertConvenioEspecificoDto DtoConvenio,
             List<InsertInvolucradosDto> DtoInvolucrados);
         Task<Result<object?>> DeleteConvenioEspecifico(int id);
         Task<Result<InfoConvenioEspeficoDto>> ObtenerConvenioEspecificoCompleto(int id);

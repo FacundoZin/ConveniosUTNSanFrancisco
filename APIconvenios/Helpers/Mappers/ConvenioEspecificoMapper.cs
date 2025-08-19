@@ -8,7 +8,7 @@ namespace APIconvenios.Helpers.Mappers
     public static class ConvenioEspecificoMapper
     {
         public static ConvenioEspecifico ToConvenioEspecifico (this InsertConvenioEspecificoDto dto, 
-            List<InsertInvolucradosDto>  involucradosDtos)
+            List<Involucrados>  involucrados)
         {
             return new ConvenioEspecifico
             {
@@ -19,17 +19,7 @@ namespace APIconvenios.Helpers.Mappers
                 FechaFinConvenio = dto.FechaFinConvenio,
                 ConvenioMarcoId = dto.ConvenioMarcoId,
                 ComentarioOpcional = dto.ComentarioOpcional,
-
-                Involucrados = involucradosDtos.Select(i =>  new Involucrados
-                {
-                    Id = i.id,
-                    Nombre = i.Nombre,
-                    Apellido = i.Apellido,
-                    Email = i.Email,
-                    Telefono = i.Telefono,
-                    Legajo = i.Legajo,
-                    RolInvolucrado = i.RolInvolucrado
-                }).ToList() 
+                Involucrados = involucrados
             };
         }
 

@@ -1,6 +1,7 @@
 ﻿using APIconvenios.Common;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
+using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Helpers.Mappers;
@@ -8,6 +9,7 @@ using APIconvenios.Helpers.Validators;
 using APIconvenios.Interfaces.Servicios;
 using APIconvenios.Models;
 using APIconvenios.UnitOfWork;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Linq.Expressions;
 
@@ -23,11 +25,15 @@ namespace APIconvenios.Services
             _Logger = logger;
         }
 
-        public async Task<Result<object?>> CreateConvenioEspecifico(InsertConvenioEspecificoDto DtoConvenio,
+        public async Task<Result<ConvenioCreated>> CreateConvenioEspecifico(InsertConvenioEspecificoDto DtoConvenio,
             List<InsertInvolucradosDto> DtoInvolucrados)
         {
             try
             {
+                if(await _UnitOfWork._ConvenioMarcoReadRepository.TitleExist(DtoConvenio.Titulo))
+                    return Result<ConvenioCreated>.Error("el nombre de convenio ingresado ya existe", 409);
+
+
                 var Involucrados = DtoInvolucrados.ToInvolucrados();
 
                 foreach (var inv in Involucrados)
@@ -38,25 +44,24 @@ namespace APIconvenios.Services
                     }
                 }
 
-                _UnitOfWork._ConvenioEspecificoRepository.CreateConvenio(new ConvenioEspecifico
-                {
+                var convenio = DtoConvenio.ToConvenioEspecifico(Involucrados);
 
-                    numeroconvenio = DtoConvenio.numeroconvenio,
-                    FechaFirmaConvenio = DtoConvenio.FechaFirmaConvenio,
-                    FechaInicioActividades = DtoConvenio.FechaInicioActividades,
-                    FechaFinConvenio = DtoConvenio.FechaFinConvenio,
-                    ComentarioOpcional = DtoConvenio.ComentarioOpcional,
-                    Involucrados = Involucrados
-                });
+                _UnitOfWork._ConvenioEspecificoRepository.CreateConvenio(convenio);
 
                 await _UnitOfWork.Save();
 
-                return Result<object?>.Exito(null);
+                var result = new ConvenioCreated
+                {
+                    Id = convenio.Id,
+                    ConvenioType = "especifico",
+                };
+
+                return Result<ConvenioCreated>.Exito(result);
             }
             catch (Exception ex)
             {
                 _Logger.LogError($"Error al crear el convenio especifico: {ex.Message} ");
-                return Result<object?>.Error($"Error al crear el convenio especifico", 500);
+                return Result<ConvenioCreated>.Error($"Error al crear el convenio especifico", 500);
             }
         }
 

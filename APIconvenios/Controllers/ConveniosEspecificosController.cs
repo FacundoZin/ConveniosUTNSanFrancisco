@@ -37,7 +37,7 @@ namespace APIconvenios.Controllers
 
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
-            return Ok();
+            return Created(string.Empty, result.Data);
         }
 
         [HttpPut]

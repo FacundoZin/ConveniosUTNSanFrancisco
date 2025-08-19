@@ -1,6 +1,8 @@
 ﻿using APIconvenios.Common;
 using APIconvenios.DTOs.ConvenioMarco;
+using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Empresa;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace APIconvenios.Interfaces.Servicios
 {
@@ -9,7 +11,7 @@ namespace APIconvenios.Interfaces.Servicios
         Task<Result<InfoConvenioMarcoDto?>> ObtenerConvenioMarcoCompleto(int id);
         Task<Result<bool>> BorrarConvenioMarco(int id);
         Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoDto convenioActualizado);
-        Task<Result<bool>> CargarConvenioMarco(CreateConvenioMarcoDto createConvenioMarcoDto,InsertEmpresaDto EmpresaDto);
+        Task<Result<ConvenioCreated>> CargarConvenioMarco(CreateConvenioMarcoDto createConvenioMarcoDto,InsertEmpresaDto EmpresaDto);
 
     }
 }

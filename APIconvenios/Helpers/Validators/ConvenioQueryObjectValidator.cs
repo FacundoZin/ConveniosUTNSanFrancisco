@@ -1,5 +1,4 @@
 ﻿using APIconvenios.Common;
-using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.Helpers.Validators
