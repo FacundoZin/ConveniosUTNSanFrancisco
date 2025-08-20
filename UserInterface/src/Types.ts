@@ -78,3 +78,9 @@ export interface UpdateConvenioEspecificoDto {
   fechaFinConvenio: string;
   comentarioOpcional: string | null;
 }
+
+export interface UploadConvenioDocument{
+  File: File
+  ConvenioId: number
+  ConvenioType: 'marco' | 'especifico'
+}

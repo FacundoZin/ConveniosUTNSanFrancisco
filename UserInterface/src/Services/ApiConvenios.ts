@@ -1,24 +1,28 @@
-import type { CargarConvenioEspecificoRequestDto, CargarConvenioMarcoRequestDto, ConvenioFilters, UpdateConvenioEspecificoDto, UpdateConvenioMarcoDto } from '@/Types';
-import axios from 'axios'
+import type { CargarConvenioEspecificoRequestDto, CargarConvenioMarcoRequestDto, ConvenioFilters, UpdateConvenioEspecificoDto, UpdateConvenioMarcoDto, UploadConvenioDocument } from '@/Types';
+import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // ajustá al endpoint real
+  baseURL: 'http://localhost:5000/api',
 });
 
 
 export default{
 
     GetConvenios: (params: ConvenioFilters) => {
-        return api.get('/convenios', { params })},
-        
+        return api.get('/convenios',  {params} );
+    },
+
     GetConvenioMarcoCompleto: (id: number) => {
-        return api.get(`/ConveniosMarcos/${id}`)},
+        return api.get(`/ConveniosMarcos/${id}`);
+    },
 
     GetConvenioEspecificoCompleto: (id: number) => {
-        return api.get(`/ConveniosEspecificos/${id}`)},
+        return api.get(`/ConveniosEspecificos/${id}`);
+
+    },
 
     DeleteConvenioMarco: (id: number) => {
-        return api.delete(`/ConveniosMarcos/${id}`)
+        return api.delete(`/ConveniosMarcos/${id}`);
     },
 
     DeleteConvenioEspecifico: (id: number) => {
@@ -26,22 +30,42 @@ export default{
     },
 
     CreateConvenioMarco: (Dto: CargarConvenioMarcoRequestDto) => {
-        return api.post(`/ConveniosMarcos`, {Dto})
+        return api.post(`/ConveniosMarcos`, Dto);
     },
 
     CreateConvenioEspecifico: (Dto: CargarConvenioEspecificoRequestDto) => {
-        return api.post(`/ConveniosEspecificos`, {Dto})
+        return api.post(`/ConveniosEspecificos`, Dto);
     },
 
     EditarConvenioMarco: (Dto: UpdateConvenioMarcoDto) => {
-        return api.put(`/ConveniosMarcos`, {Dto})
+        return api.put(`/ConveniosMarcos`, Dto)
     },
 
     EditarConvenioEspecifico: (Dto: UpdateConvenioEspecificoDto) => {
-        return api.put(`/ConveniosEspecificos`, {Dto})
+        return api.put(`/ConveniosEspecificos`, Dto)
     },
 
-    
+    UploadDocument: (data: UploadConvenioDocument) => {
+
+        const formData = new FormData();
+        formData.append('file', data.File);
+        formData.append('convenioId', data.ConvenioId.toString());
+        formData.append('convenioType', data.ConvenioType);
+
+        return api.post(`/Documents`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+      }})
+    },
+
+    DownloadDocument: async (id: number, ConvenioType: string) => {
+        const Document = await api.get(`/Documents/${id}/${ConvenioType}`,
+      {
+        responseType: 'blob', 
+      });
+
+      return Document.data; 
+    }
+
+
 }
-
-
