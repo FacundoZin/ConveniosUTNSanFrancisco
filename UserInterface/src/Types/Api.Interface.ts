@@ -1,4 +1,4 @@
-export interface ConvenioFilters {
+export interface ConvenioQueryObject {
   TituloConvenio?: string
   Nombre_empresa?: string
   ProximosAterminar?: boolean
@@ -6,6 +6,10 @@ export interface ConvenioFilters {
   AntiguedadAscendente?: boolean
   PaginaActual?: number
   CantidadResultados?: number
+}
+
+export interface FilterConvenios{
+  
 }
 
 export interface CreateConvenioMarcoDto {
