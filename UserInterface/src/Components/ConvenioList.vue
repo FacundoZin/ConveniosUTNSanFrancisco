@@ -1,32 +1,66 @@
 <!-- src/Components/ConvenioList.vue -->
 <template>
-  <div>
-    <div v-if="convenios.length === 0" class="p-4 text-gray-500">
+  <div class="convenio-list-container">
+    <div v-if="convenios.length === 0" class="empty-msg">
       No hay convenios para mostrar
     </div>
 
-    <table v-else class="w-full border-collapse">
+    <table v-else class="convenio-table">
       <thead>
-        <tr class="bg-gray-200">
-          <th class="border px-4 py-2 text-left">numero de convenio</th>
-          <th class="border px-4 py-2 text-left">Título</th>
-          <th class="border px-4 py-2 text-left">Fecha de firma</th>
-          <th class="border px-4 py-2 text-left">Fecha de vencimiento</th>
-          <th class="border px-4 py-2 text-left">Tipo</th>
+        <tr>
+          <th>Numero de convenio</th>
+          <th>Título</th>
+          <th>Fecha de firma</th>
+          <th>Fecha de vencimiento</th>
+          <th>Tipo</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="conv in convenios" :key="conv.Id" class="hover:bg-gray-100">
-          <td class="border px-4 py-2">{{ conv.numeroconvenio }}</td>
-          <td class="border px-4 py-2">{{ conv.Titulo }}</td>
-          <td class="border px-4 py-2">{{ conv.FechaFirmaConvenio }}</td>
-          <td class="border px-4 py-2">{{ conv.FechaFinConvenio }}</td>
-          <td class="border px-4 py-2">{{ conv.ConvenioType }}</td>
+        <tr v-for="conv in convenios" :key="conv.Id">
+          <td>{{ conv.numeroconvenio }}</td>
+          <td>{{ conv.Titulo }}</td>
+          <td>{{ conv.FechaFirmaConvenio }}</td>
+          <td>{{ conv.FechaFinConvenio }}</td>
+          <td>{{ conv.ConvenioType }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
+
+<style scoped>
+.convenio-list-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.empty-msg {
+  color: #777;
+  padding: 10px;
+}
+
+.convenio-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.convenio-table th {
+  background-color: #00a1e4;
+  color: white;
+  text-align: left;
+  padding: 10px;
+}
+
+.convenio-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.convenio-table tr:hover {
+  background-color: #e6f7ff;
+}
+</style>
 
 <script setup lang="ts">
 import type { Convenioview } from '@/Types/Models';

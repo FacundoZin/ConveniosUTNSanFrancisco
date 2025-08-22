@@ -1,30 +1,22 @@
 <template>
-  <div class="w-full bg-black p-3 flex items-center justify-center gap-3">
-    <!-- Input -->
+  <div class="searchbar-container">
     <input
       v-model="Busqueda"
       type="text"
       placeholder="Escribí tu búsqueda..."
-      class="p-2 rounded w-1/2 text-black"
+      class="search-input"
     />
 
-    <!-- Botones toggle -->
     <button
       @click="PrametroBusqueda = 'titulo'"
-      :class="[
-        'px-4 py-2 rounded',
-        PrametroBusqueda === 'titulo' ? 'bg-blue-500 text-white' : 'bg-white text-black'
-      ]"
+      :class="['toggle-btn', PrametroBusqueda === 'titulo' ? 'active' : '']"
     >
       Título
     </button>
 
     <button
       @click="PrametroBusqueda = 'empresa'"
-      :class="[
-        'px-4 py-2 rounded',
-        PrametroBusqueda === 'empresa' ? 'bg-blue-500 text-white' : 'bg-white text-black'
-      ]"
+      :class="['toggle-btn', PrametroBusqueda === 'empresa' ? 'active' : '']"
     >
       Empresa
     </button>
@@ -44,3 +36,39 @@ watch([Busqueda, PrametroBusqueda], () => {
   emit('update', { Busqueda: Busqueda.value, Parametro: PrametroBusqueda.value })
 })
 </script>
+
+<style scoped>
+.searchbar-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 200px;
+}
+
+.toggle-btn {
+  padding: 8px 15px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  color: #000;
+  transition: background 0.3s;
+}
+
+.toggle-btn.active {
+  background-color: #00a1e4; /* celeste UTN */
+  color: white;
+}
+
+.toggle-btn:hover {
+  background-color: #0091cc;
+  color: white;
+}
+</style>

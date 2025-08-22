@@ -1,27 +1,30 @@
 <template>
-  <div>
-    <SearchBar @update="onSearchUpdate" />
-    <OrderOptions :query="Query"/>
+  <div class="dashboard-container">
+    <div class="filters-container">
+      <SearchBar @update="onSearchUpdate" />
+      <OrderOptions :query="Query"/>
+    </div>
+
     <ConvenioList :convenios="ListadoConvenios" />
     <Pagination :query="Query" @pagina-cambiada="ObtenerConvenios"/>
 
-    <!-- Botón que realmente llama a la API -->
-    <button @click="ObtenerConvenios" class="bg-green-500 text-white px-4 py-2 rounded mt-3">
+    <button @click="ObtenerConvenios" class="buscar-btn">
       Buscar
     </button>
   </div>
 </template>
 
+
 <script lang="ts" setup>
 import ConvenioList from '@/Components/ConvenioList.vue';
 import OrderOptions from '@/Components/OrderOptions.vue';
 import Pagination from '@/Components/Pagination.vue';
-import SearchBar from '@/Components/SearchBar.vue'
-import ApiService from '@/Services/ApiService'
-import type { ConvenioQueryObject } from '@/Types/Api.Interface'
+import SearchBar from '@/Components/SearchBar.vue';
+import ApiService from '@/Services/ApiService';
+import type { ConvenioQueryObject } from '@/Types/Api.Interface';
 import type { Convenioview } from '@/Types/Models';
 import { isAxiosError } from 'axios';
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 const ListadoConvenios = ref<(Convenioview[])>([]);
 const errorMensaje = ref('');
@@ -57,3 +60,36 @@ const ObtenerConvenios = async () => {
   }
 }
 </script>
+
+<style scoped>
+.dashboard-container {
+  background-color: #f5f5f5; /* gris claro */
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.filters-container {
+  background-color: #1a1a1a; /* negro para contraste */
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.buscar-btn {
+  background-color: #0077c8; /* azul UTN */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.buscar-btn:hover {
+  background-color: #005ea3;
+}
+</style>

@@ -13,12 +13,12 @@ function irPagina(nuevaPagina: number) {
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
-    <button @click="irPagina(1)" class="px-3 py-1 border rounded">1</button>
-    <button @click="irPagina(2)" class="px-3 py-1 border rounded">2</button>
-    <button @click="irPagina(3)" class="px-3 py-1 border rounded">3</button>
-    <button @click="irPagina(4)" class="px-3 py-1 border rounded">4</button>
-    <button @click="irPagina(5)" class="px-3 py-1 border rounded">5</button>
+  <div class="pagination-container">
+    <button @click="irPagina(1)">1</button>
+    <button @click="irPagina(2)">2</button>
+    <button @click="irPagina(3)">3</button>
+    <button @click="irPagina(4)">4</button>
+    <button @click="irPagina(5)">5</button>
 
     <button @click="irPagina(props.query.PaginaActual - 1)" :disabled="props.query.PaginaActual <= 1">
       Prev
@@ -29,3 +29,30 @@ function irPagina(nuevaPagina: number) {
     </button>
   </div>
 </template>
+
+<style scoped>
+.pagination-container {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.pagination-container button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pagination-container button:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+</style>
