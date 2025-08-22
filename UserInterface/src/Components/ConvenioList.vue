@@ -16,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="conv in convenios" :key="conv.Id">
+        <tr v-for="conv in convenios" :key="conv.Id"  @click="VerConvenioCompleto(conv.Id,conv.ConvenioType)">
           <td>{{ conv.numeroconvenio }}</td>
           <td>{{ conv.Titulo }}</td>
           <td>{{ conv.FechaFirmaConvenio }}</td>
@@ -63,8 +63,15 @@
 </style>
 
 <script setup lang="ts">
+import router from '@/router';
 import type { Convenioview } from '@/Types/Models';
 
+function VerConvenioCompleto(id: number, TypeConvenio: string) {
+
+  if(TypeConvenio == "marco") router.push({ name:'VistaConvenioMarco', params: { id } });
+  
+  router.push({ name:'VistaConvenioEspecifico' , params: {id}})
+}
 
 const props = defineProps<{
   convenios: Convenioview[]

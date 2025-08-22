@@ -66,6 +66,7 @@ const ObtenerConvenios = async () => {
   background-color: #f5f5f5; /* gris claro */
   padding: 20px;
   min-height: 100vh;
+    padding-top: 80px; /* si tu header mide 80px */
 }
 
 .filters-container {
