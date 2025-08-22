@@ -49,7 +49,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowVueApp",
         builder =>
         {
-            builder.WithOrigins("http://localhost:5173/") // Reemplaza con la URL de tu frontend de Vue
+            builder.WithOrigins("http://localhost:5173/") 
                    .AllowAnyHeader()
                    .AllowAnyMethod();
         });

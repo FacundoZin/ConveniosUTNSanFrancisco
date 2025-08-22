@@ -2,14 +2,14 @@ import type { CargarConvenioEspecificoRequestDto, CargarConvenioMarcoRequestDto,
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'http://localhost:5194/api',
 });
 
 
 export default{
 
     GetConvenios: (params: ConvenioQueryObject) => {
-        return api.get('/convenios',  {params} );
+        return api.get('/Convenios',  {params} );
     },
 
     GetConvenioMarcoCompleto: (id: number) => {
