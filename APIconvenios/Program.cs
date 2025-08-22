@@ -43,6 +43,18 @@ builder.Services.AddScoped<IConvenioEspecificoReadRepository, ConvenioEspecifico
 builder.Services.AddScoped<IConvenioMarcoRepository, ConveniosMarcoRepository>();
 builder.Services.AddScoped<IConvenioMarcoReadRepository, ConvenioMarcoReadRepository>();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowVueApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5173/") // Reemplaza con la URL de tu frontend de Vue
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
