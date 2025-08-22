@@ -1,33 +1,33 @@
 <template>
-  <div class="w-full bg-black p-3 flex items-center justify-center gap-3">
-    <!-- Input -->
-    <input
-      v-model="Busqueda"
-      type="text"
-      placeholder="Escribí tu búsqueda..."
-      class="p-2 rounded w-1/2 text-black"
-    />
-
-    <!-- Botones toggle -->
-    <button
-      @click="PrametroBusqueda = 'titulo'"
-      :class="[
-        'px-4 py-2 rounded',
-        PrametroBusqueda === 'titulo' ? 'bg-blue-500 text-white' : 'bg-white text-black'
-      ]"
-    >
-      Título
-    </button>
-
-    <button
-      @click="PrametroBusqueda = 'empresa'"
-      :class="[
-        'px-4 py-2 rounded',
-        PrametroBusqueda === 'empresa' ? 'bg-blue-500 text-white' : 'bg-white text-black'
-      ]"
-    >
-      Empresa
-    </button>
+  <div class="bg-white p-4 rounded-lg shadow-md">
+    <div class="flex items-center gap-4">
+      <input
+        v-model="Busqueda"
+        type="text"
+        placeholder="Escribí tu búsqueda..."
+        class="flex-grow p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      />
+      <div class="flex items-center gap-2">
+        <button
+          @click="PrametroBusqueda = 'titulo'"
+          :class="[
+            'px-4 py-2 rounded-lg transition-colors',
+            PrametroBusqueda === 'titulo' ? 'bg-blue-600 text-white shadow' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          ]"
+        >
+          Título
+        </button>
+        <button
+          @click="PrametroBusqueda = 'empresa'"
+          :class="[
+            'px-4 py-2 rounded-lg transition-colors',
+            PrametroBusqueda === 'empresa' ? 'bg-blue-600 text-white shadow' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          ]"
+        >
+          Empresa
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
