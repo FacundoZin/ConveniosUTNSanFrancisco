@@ -1,3 +1,8 @@
+export interface ConveniosResponse {
+  conveniosEspecificos: Convenioview[];
+  conveniosMarco: Convenioview[];
+}
+
 export interface Convenioview {
   Id: number
   numeroconvenio: number

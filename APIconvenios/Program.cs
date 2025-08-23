@@ -43,19 +43,19 @@ builder.Services.AddScoped<IConvenioEspecificoReadRepository, ConvenioEspecifico
 builder.Services.AddScoped<IConvenioMarcoRepository, ConveniosMarcoRepository>();
 builder.Services.AddScoped<IConvenioMarcoReadRepository, ConvenioMarcoReadRepository>();
 
-
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowVueApp",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:5173/") 
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
-        });
+    options.AddPolicy("PermitirFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // Reemplazar con el puerto del frontend
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
 });
 
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -65,6 +65,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("PermitirFrontend");
 
 app.UseAuthorization();
 

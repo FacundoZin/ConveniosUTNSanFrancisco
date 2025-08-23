@@ -50,7 +50,8 @@ const ObtenerConvenios = async () => {
   errorMensaje.value = '';
   try{  
     const response = await ApiService.GetConvenios(Query.value);
-    ListadoConvenios.value = response.data;
+    ListadoConvenios.value = response.data.conveniosMarco;
+    ListadoConvenios.value = response.data.conveniosEspecificos;
   }catch(error){
     if(isAxiosError(error) && error.response){
       errorMensaje.value = ` ${error.response.data}`;

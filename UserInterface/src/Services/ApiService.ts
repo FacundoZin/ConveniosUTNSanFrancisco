@@ -1,4 +1,5 @@
 import type { CargarConvenioEspecificoRequestDto, CargarConvenioMarcoRequestDto, ConvenioQueryObject, UpdateConvenioEspecificoDto, UpdateConvenioMarcoDto, UploadConvenioDocument } from '@/Types/Api.Interface';
+import type { ConveniosResponse } from '@/Types/Models';
 import axios from 'axios';
 
 const api = axios.create({
@@ -9,7 +10,7 @@ const api = axios.create({
 export default{
 
     GetConvenios: (params: ConvenioQueryObject) => {
-        return api.get('/Convenios',  {params} );
+        return api.get<ConveniosResponse>('/Convenios', { params });
     },
 
     GetConvenioMarcoCompleto: (id: number) => {
