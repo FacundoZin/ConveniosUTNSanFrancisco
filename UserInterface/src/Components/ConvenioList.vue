@@ -16,12 +16,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="conv in convenios" :key="conv.Id"  @click="VerConvenioCompleto(conv.Id,conv.ConvenioType)">
+        <tr v-for="conv in convenios" :key="conv.id"  @click="VerConvenioCompleto(conv.id,conv.convenioType)">
           <td>{{ conv.numeroconvenio }}</td>
-          <td>{{ conv.Titulo }}</td>
-          <td>{{ conv.FechaFirmaConvenio }}</td>
-          <td>{{ conv.FechaFinConvenio }}</td>
-          <td>{{ conv.ConvenioType }}</td>
+          <td>{{ conv.titulo }}</td>
+          <td>{{ conv.fechaFirmaConvenio }}</td>
+          <td>{{ conv.fechaFin }}</td>
+          <td>{{ conv.convenioType }}</td>
         </tr>
       </tbody>
     </table>

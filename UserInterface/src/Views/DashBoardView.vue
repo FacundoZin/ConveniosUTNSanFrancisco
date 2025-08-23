@@ -26,7 +26,7 @@ import type { Convenioview } from '@/Types/Models';
 import { isAxiosError } from 'axios';
 import { ref } from 'vue';
 
-const ListadoConvenios = ref<(Convenioview[])>([]);
+const ListadoConvenios = ref<Convenioview[]>([]);
 const errorMensaje = ref('');
 
 const Query = ref<ConvenioQueryObject>({
@@ -50,8 +50,10 @@ const ObtenerConvenios = async () => {
   errorMensaje.value = '';
   try{  
     const response = await ApiService.GetConvenios(Query.value);
-    ListadoConvenios.value = response.data.conveniosMarco;
-    ListadoConvenios.value = response.data.conveniosEspecificos;
+    ListadoConvenios.value = [
+      ...response.data.conveniosMarco,
+      ...response.data.conveniosEspecificos
+    ];
   }catch(error){
     if(isAxiosError(error) && error.response){
       errorMensaje.value = ` ${error.response.data}`;

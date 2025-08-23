@@ -4,12 +4,13 @@ export interface ConveniosResponse {
 }
 
 export interface Convenioview {
-  Id: number
+  id: number
   numeroconvenio: number
-  Titulo: string
-  FechaFirmaConvenio: string 
-  FechaFinConvenio: string
-  ConvenioType: string
+  titulo: string
+  nombreEmpresa: string
+  fechaFirmaConvenio: string 
+  fechaFin: string
+  convenioType: string
 }
 
 export interface ConvenioMarcoCompleto{
