@@ -72,5 +72,11 @@ namespace APIconvenios.Repositorio
         {
             return await _Context.ConveniosMarcos.AnyAsync(c => c.Titulo.ToLower() == Title.ToLower());
         }
+
+        public async Task<bool> TitleExistForUpdate(string Title, int idConvenio)
+        {
+            return await _Context.ConveniosMarcos
+                .AnyAsync(c => c.Titulo.ToLower() == Title.ToLower() && c.Id != idConvenio);
+        }
     }
 }

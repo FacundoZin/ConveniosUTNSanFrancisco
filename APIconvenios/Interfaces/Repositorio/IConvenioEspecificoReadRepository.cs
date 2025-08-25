@@ -11,5 +11,8 @@ namespace APIconvenios.Interfaces.Repositorio
             Func<IQueryable<ConvenioEspecifico>, IOrderedQueryable<ConvenioEspecifico>>? ordenamiento = null);
 
         Task<InfoConvenioEspeficoDto> GetConvenioEspecificoCompleto(int id);
+        Task<bool> TitleExist(string title);
+        Task<bool> TitleExistForUpdate(string title, int idConvenio);
+
     }
 }

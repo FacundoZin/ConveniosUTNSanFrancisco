@@ -34,7 +34,7 @@ namespace APIconvenios.Services
                 var ConvOriginal = await _UnitOfWork._ConvenioMarcoRepository.GetByid(convenioActualizado.Id);
                 if (ConvOriginal == null) return Result<bool>.Error("No se encontró el convenio marco solicitado", 404);
 
-                if(await _UnitOfWork._ConvenioMarcoReadRepository.TitleExist(convenioActualizado.Titulo)) 
+                if(await _UnitOfWork._ConvenioMarcoReadRepository.TitleExistForUpdate(convenioActualizado.Titulo, ConvOriginal.Id)) 
                     return Result<bool>.Error("El titulo ingresado coincide con un convenio existente", 409);
 
                 var exit = await _UnitOfWork._ConvenioMarcoRepository.ModificarConvenioMarco(ConvOriginal.UpdateConvenio(convenioActualizado));

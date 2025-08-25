@@ -64,5 +64,15 @@ namespace APIconvenios.Repositorio
 
             return await query.ToListAsync();
         }
+
+        public async Task<bool> TitleExist(string title)
+        {           
+            return await _context.ConveniosEspecificos.AnyAsync(c => c.Titulo == title);
+        }
+
+        public async Task<bool> TitleExistForUpdate(string title, int idConvenio)
+        {
+            return await _context.ConveniosEspecificos.AnyAsync(c => c.Titulo == title && c.Id != idConvenio);
+        }
     }
 }

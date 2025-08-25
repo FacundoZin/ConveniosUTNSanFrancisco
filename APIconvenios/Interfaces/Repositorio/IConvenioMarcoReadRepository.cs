@@ -11,5 +11,7 @@ namespace APIconvenios.Interfaces.Repositorio
             Func<IQueryable<ConvenioMarco>, IOrderedQueryable<ConvenioMarco>>? ordenamiento = null);
         Task<InfoConvenioMarcoDto?> GetConvenioMarcosCompleto(int id);
         Task<bool> TitleExist(string Title);
+
+        Task<bool> TitleExistForUpdate(string Title, int idConvenio);
     }
 }

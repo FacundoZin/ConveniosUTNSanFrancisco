@@ -30,8 +30,8 @@ namespace APIconvenios.Services
         {
             try
             {
-                if(await _UnitOfWork._ConvenioMarcoReadRepository.TitleExist(DtoConvenio.Titulo))
-                    return Result<ConvenioCreated>.Error("el nombre de convenio ingresado ya existe", 409);
+                if(await _UnitOfWork._ConvEspReadRepository .TitleExist(DtoConvenio.Titulo))
+                    return Result<ConvenioCreated>.Error("el titulo de convenio ingresado ya existe", 409);
 
 
                 var Involucrados = DtoInvolucrados.ToInvolucrados();
@@ -96,6 +96,9 @@ namespace APIconvenios.Services
             if (ConvenioOriginal == null)
                 return Result<object?>.Error($"el convenio no existe", 404);
 
+            if (await _UnitOfWork._ConvEspReadRepository.TitleExistForUpdate(ConvenioOriginal.Titulo, ConvenioOriginal.Id))
+                return Result<object?>.Error("error: ya hay un convenio especifico con el titulo que ha ingresado", 409);
+
             bool exit = await _UnitOfWork._ConvenioEspecificoRepository.ModificarConvenioEspecifico(ConvenioOriginal.UpdateConvenio(Dto));
 
             if (!exit)
@@ -112,6 +115,7 @@ namespace APIconvenios.Services
             var convenio = await _UnitOfWork._ConvEspReadRepository.GetConvenioEspecificoCompleto(id);
 
             if(convenio == null) return Result<InfoConvenioEspeficoDto>.Error("El convenio especifico no existe", 404);
+            
 
             return Result<InfoConvenioEspeficoDto>.Exito(convenio);
         }
