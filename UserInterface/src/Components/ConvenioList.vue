@@ -68,9 +68,12 @@ import type { Convenioview } from '@/Types/Models';
 
 function VerConvenioCompleto(id: number, TypeConvenio: string) {
 
-  if(TypeConvenio == "marco") router.push({ name:'VistaConvenioMarco', params: { id } });
-  
-  router.push({ name:'VistaConvenioEspecifico' , params: {id}})
+  if(TypeConvenio === "marco"){
+    router.push({ name:'VistaConvenioMarco', params: { id,  } })
+  } 
+  else {
+    router.push({ name:'VistaConvenioEspecifico' , params: {id}})
+  }
 }
 
 const props = defineProps<{

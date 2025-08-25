@@ -14,24 +14,24 @@ export interface Convenioview {
 }
 
 export interface ConvenioMarcoCompleto{
-  Idconvenio: number;
-  Titulo: string;
+  idconvenio: number;
+  titulo: string;
   numeroconvenio: number;
-  FechaFirmaConvenio: string;
-  FechaFin: string;
-  ComentarioOpcional: string;
+  fechaFirmaConvenio: string;
+  fechaFin: string;
+  comentarioOpcional: string;
   empresa: EmpresaDto;
-  ConveniosEspecificos: ConvenioEspecificoDto[]
+  conveniosEspecificos: ConvenioEspecificoDto[]
 }
 
 export interface EmpresaDto {
-  Id: number;
-  Nombre_Empresa: string;
-  RazonSocial: string;
-  Cuit: string;
-  Direccion_Empresa: string;
-  Telefono_Empresa: string;
-  Email_Empresa: string;
+  id: number;
+  nombre_Empresa: string;
+  razonSocial: string;
+  cuit: string;
+  direccion_Empresa: string;
+  telefono_Empresa: string;
+  email_Empresa: string;
 }
 
 export interface ConvenioEspecificoDto{

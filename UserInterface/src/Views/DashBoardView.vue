@@ -26,6 +26,7 @@ import type { Convenioview } from '@/Types/Models';
 import { isAxiosError } from 'axios';
 import { ref } from 'vue';
 
+
 const ListadoConvenios = ref<Convenioview[]>([]);
 const errorMensaje = ref('');
 
@@ -62,6 +63,8 @@ const ObtenerConvenios = async () => {
     }
   }
 }
+
+
 </script>
 
 <style scoped>

@@ -66,7 +66,7 @@ export interface CargarConvenioEspecificoRequestDto {
 
 export interface UpdateConvenioMarcoDto {
   id: number                          
-  numeroConvenio: number              
+  numeroconvenio: number              
   titulo: string                      
   fechaFirmaConvenio: string          
   fechaFin: string                    
@@ -75,7 +75,7 @@ export interface UpdateConvenioMarcoDto {
 
 export interface UpdateConvenioEspecificoDto {
   id: number;
-  numeroConvenio: number;
+  numeroconvenio: number;
   titulo: string;
   fechaFirmaConvenio: string;
   fechaInicioActividades: string;

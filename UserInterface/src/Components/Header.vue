@@ -8,8 +8,7 @@
 
       <!-- Links -->
       <nav class="nav-links">
-        <RouterLink :to="{ hash: '#home' }">Cargar nuevo Convenio</RouterLink>
-        <RouterLink :to="{ hash: '#about' }">Panel de busqueda</RouterLink>
+        <router-link to="/">Panel de búsqueda</router-link>
       </nav>
     </div>
   </header>
