@@ -13,7 +13,7 @@ export interface FilterConvenios{
 }
 
 export interface CreateConvenioMarcoDto {
-  numeroConvenio: number          
+  numeroconvenio: number          
   titulo: string                  
   fechaFirmaConvenio: string      
   fechaFin: string                

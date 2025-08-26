@@ -30,7 +30,9 @@ import type { ConvenioMarcoCompleto } from '@/Types/Models';
 import { isAxiosError } from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { POSITION, useToast } from 'vue-toastification';
 
+const toast = useToast();
 const route = useRoute();
 const convenioData = ref<ConvenioMarcoCompleto | null>(null);
 const loading = ref(true);
@@ -63,10 +65,12 @@ const submitForm = async () => {
     comentarioOpcional: convenioData.value?.comentarioOpcional || '',
   }
 
-  try{
-    const response = await ApiService.EditarConvenioMarco(dto);
+  try {
+    await ApiService.EditarConvenioMarco(dto);
+    toast.success("Convenio editado con éxito");
   } catch (error) {
-       if (isAxiosError(error)) {
+    toast.error("Error al editar el convenio", { position: POSITION.BOTTOM_CENTER });
+    if (isAxiosError(error)) {
       if (error.response) {
         console.log(`Error al editar el convenio (${error.response.status}):`, error.response.data);
       } else {

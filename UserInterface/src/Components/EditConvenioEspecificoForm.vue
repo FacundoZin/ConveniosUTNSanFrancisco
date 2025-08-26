@@ -3,19 +3,19 @@
     <div v-if="loading">Cargando formulario...</div>
     <div v-else-if="error">Error al cargar el convenio.</div>
     <div v-else-if="convenioData">
-      <h2>Editando Convenio: {{ convenioData.Titulo }}</h2>
+      <h2>Editando Convenio: {{ convenioData.titulo }}</h2>
       <form @submit.prevent="submitForm">
         <div class="form-group">
           <label for="titulo">Título:</label>
-          <input type="text" id="titulo" v-model="convenioData.Titulo" />
+          <input type="text" id="titulo" v-model="convenioData.titulo" />
           <label for="numeroConvenio">Numero de convenio:</label>
           <input type="text" id="numeroConvenio" v-model="convenioData.numeroconvenio" />
           <label for="fechaFirma">Fecha de firma:</label>
-          <input type="date" id="fechaFirma" v-model="convenioData.FechaFirmaConvenio" />
+          <input type="date" id="fechaFirma" v-model="convenioData.fechaFirmaConvenio" />
           <label for="fechaFin">Fecha de finalizacion:</label>
-          <input type="date" id="fechaFin" v-model="convenioData.FechaFinConvenio" />
+          <input type="date" id="fechaFin" v-model="convenioData.fechaFinConvenio" />
           <label for="comentario">Comentario:</label>
-          <input type="text" id="comentario" v-model="convenioData.ComentarioOpcional" />
+          <input type="text" id="comentario" v-model="convenioData.comentarioOpcional" />
         </div>
         <button type="submit" class="save-btn">Guardar Cambios</button>
       </form>
@@ -30,7 +30,9 @@ import type { ConvenioEspecificoCompleto } from '@/Types/Models';
 import { isAxiosError } from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { POSITION, useToast } from 'vue-toastification';
 
+const toast = useToast();
 const route = useRoute();
 const convenioData = ref<ConvenioEspecificoCompleto | null>(null);
 const loading = ref(true);
@@ -57,24 +59,26 @@ const submitForm = async () => {
   const dto: UpdateConvenioEspecificoDto = {
     id: id.value,
     numeroconvenio: convenioData.value?.numeroconvenio || 0,
-    titulo: convenioData.value?.Titulo || '',
-    fechaFirmaConvenio: convenioData.value?.FechaFirmaConvenio || '',
-    fechaInicioActividades: convenioData.value?.FechaInicioActividades || '',
-    fechaFinConvenio: convenioData.value?.FechaFinConvenio || '',
-    comentarioOpcional: convenioData.value?.ComentarioOpcional || '',
+    titulo: convenioData.value?.titulo || '',
+    fechaFirmaConvenio: convenioData.value?.fechaFirmaConvenio || '',
+    fechaInicioActividades: convenioData.value?.fechaInicioActividades || '',
+    fechaFinConvenio: convenioData.value?.fechaFinConvenio || '',
+    comentarioOpcional: convenioData.value?.comentarioOpcional || '',
   }
 
-  try{
+  try {
     const response = await ApiService.EditarConvenioEspecifico(dto);
+    toast.success("Convenio editado con éxito");
   } catch (error) {
-       if (isAxiosError(error)) {
+    if (isAxiosError(error)) {
+      toast.error("Error al editar el convenio", { position: POSITION.BOTTOM_CENTER });
       if (error.response) {
         console.log(`Error al editar el convenio (${error.response.status}):`, error.response.data);
       } else {
-        console.log("Error al editar el convenio: no se recibió respuesta del servidor");
+        console.log(`Error al editar el convenio: no se recibió respuesta del servidor, ${error}`);
       }
     } else {
-      console.log("Lo sentimos, algo salió mal fuera del entorno HTTP");
+      console.log(`Lo sentimos, algo salió mal fuera del entorno HTTP, ${error}`);
     }
   }
 };

@@ -10,6 +10,9 @@
       <nav class="nav-links">
         <router-link to="/">Panel de búsqueda</router-link>
       </nav>
+      <nav class="nav-links">
+        <router-link to="/CargarConvenioMarco">Cargar Convenio Marco</router-link>
+      </nav>
     </div>
   </header>
 </template>

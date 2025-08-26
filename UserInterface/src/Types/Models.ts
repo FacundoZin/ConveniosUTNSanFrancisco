@@ -45,23 +45,23 @@ export interface ConvenioEspecificoDto{
 }
 
 export interface ConvenioEspecificoCompleto{
-  Id: number;
+  id: number;
   numeroconvenio: number;
-  Titulo: string;
-  FechaFirmaConvenio: string;
-  FechaInicioActividades: string;
-  FechaFinConvenio: string;
-  ConvenioMarcoId: number;
-  ComentarioOpcional: string;
-  Involucrados: InvolucradoDto[];
+  titulo: string;
+  fechaFirmaConvenio: string;
+  fechaInicioActividades: string;
+  fechaFinConvenio: string;
+  convenioMarcoId: number;
+  comentarioOpcional: string;
+  involucrados: InvolucradoDto[];
 }
 
 export interface InvolucradoDto {
-  Id: number;
-  Nombre: string;
-  Apellido: string;
-  Email: string;
-  Telefono: string;
-  Legajo: number;
-  RolInvolucrado: string;
+  id: number;
+  nombre: string;
+  apellido: string;
+  email: string;
+  telefono: string;
+  legajo: number;
+  rolInvolucrado: string;
 }
