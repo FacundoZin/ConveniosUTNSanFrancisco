@@ -42,13 +42,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="conv in ConvenioMarco.conveniosEspecificos" :key="conv.Id">
+            <tr v-for="conv in ConvenioMarco.conveniosEspecificos" :key="conv.id">
               <td>{{ conv.numeroconvenio }}</td>
-              <td>{{ conv.Titulo }}</td>
-              <td>{{ conv.FechaFirmaConvenio }}</td>
-              <td>{{ conv.FechaInicioActividades }}</td>
-              <td>{{ conv.FechaFinConvenio }}</td>
-              <td>{{ conv.ConvenioType }}</td>
+              <td>{{ conv.titulo }}</td>
+              <td>{{ conv.fechaFinConvenio }}</td>
+              <td>{{ conv.fechaInicioActividades }}</td>
+              <td>{{ conv.fechaFinConvenio }}</td>
+              <td>{{ conv.convenioType }}</td>
             </tr>
           </tbody>
         </table>

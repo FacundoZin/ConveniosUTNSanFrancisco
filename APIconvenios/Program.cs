@@ -1,4 +1,5 @@
 using APIconvenios.Data;
+using APIconvenios.Helpers.JsonConverters;
 using APIconvenios.Helpers.Validators;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Interfaces.Servicios;
@@ -53,6 +54,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+    });
 
 var app = builder.Build();
 

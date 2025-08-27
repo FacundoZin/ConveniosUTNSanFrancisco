@@ -44,17 +44,24 @@ export interface InsertConvenioEspecificoDto {
   comentarioOpcional?: string          
 }
 
-export type Roles = 'Responsable' | 'Colaborador' | 'Supervisor' 
-
-
-export interface InsertInvolucradosDto {
-  id?: number                           
+export interface InsertInvolucradosFormDto {
+  id: number                           
   nombre: string
   apellido: string
   email: string
   telefono: string
-  legajo?: string                       
-  rolInvolucrado: Roles
+  legajo: string                       
+  rolInvolucrado: number
+}
+
+export interface InsertInvolucradosDto {
+  id: number                           
+  nombre: string
+  apellido: string
+  email: string
+  telefono: string
+  legajo: number                      
+  rolInvolucrado: number
 }
 
 export interface CargarConvenioEspecificoRequestDto {

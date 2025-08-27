@@ -35,13 +35,13 @@ export interface EmpresaDto {
 }
 
 export interface ConvenioEspecificoDto{
-  Id: number;
+  id: number;
   numeroconvenio: number;
-  Titulo: string;
-  FechaFirmaConvenio: string;
-  FechaInicioActividades: string;
-  FechaFinConvenio: string;
-  ConvenioType: string;
+  titulo: string;
+  fechaFirmaConvenio: string;
+  fechaInicioActividades: string;
+  fechaFinConvenio: string;
+  convenioType: string;
 }
 
 export interface ConvenioEspecificoCompleto{
