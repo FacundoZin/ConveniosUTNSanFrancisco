@@ -61,7 +61,11 @@ namespace APIconvenios.Repositorio
                 ConveniosEspecificos = c.ConveniosEspecificos.Select(ce => new ConvenioEspecificoDto
                 {
                     Id = ce.Id,
-                    Titulo = ce.Titulo
+                    numeroconvenio = ce.numeroconvenio,
+                    Titulo = ce.Titulo,
+                    FechaFirmaConvenio = ce.FechaFirmaConvenio,
+                    FechaInicioActividades = ce.FechaInicioActividades,
+                    FechaFinConvenio = ce.FechaFinConvenio,
                 }).ToList(),
             }).AsNoTracking().FirstOrDefaultAsync();
 
