@@ -1,13 +1,14 @@
 <script lang="ts" setup>
+import '@/Styles/Pagination.css';
 import type { ConvenioQueryObject } from '@/Types/Api.Interface';
 
 
-const props = defineProps<{query: ConvenioQueryObject }>()
+const props = defineProps<{ query: ConvenioQueryObject }>()
 
 const emit = defineEmits(["paginaCambiada"]) // un solo evento
 
 function irPagina(nuevaPagina: number) {
-    props.query.PaginaActual = 1;
+  props.query.PaginaActual = 1;
   emit("paginaCambiada", nuevaPagina)
 }
 </script>
@@ -29,30 +30,3 @@ function irPagina(nuevaPagina: number) {
     </button>
   </div>
 </template>
-
-<style scoped>
-.pagination-container {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-  margin-top: 15px;
-}
-
-.pagination-container button {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: white;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.pagination-container button:hover {
-  background-color: #f0f0f0;
-}
-
-.pagination-container button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-</style>

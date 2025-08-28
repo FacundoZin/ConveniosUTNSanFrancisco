@@ -1,0 +1,31 @@
+.involucrado-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    background: #f9fafb;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+.involucrado-form input,
+.involucrado-form select {
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.agregar-btn {
+    grid-column: 1 / -1;
+    background: #0b2242;
+    color: #fff;
+    padding: 0.7rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.agregar-btn:hover {
+    background: #143d73;
+}

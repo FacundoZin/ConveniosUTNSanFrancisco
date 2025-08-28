@@ -1,0 +1,31 @@
+.convenio-list-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.empty-msg {
+  color: #777;
+  padding: 10px;
+}
+
+.convenio-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.convenio-table th {
+  background-color: #00a1e4;
+  color: white;
+  text-align: left;
+  padding: 10px;
+}
+
+.convenio-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.convenio-table tr:hover {
+  background-color: #e6f7ff;
+}

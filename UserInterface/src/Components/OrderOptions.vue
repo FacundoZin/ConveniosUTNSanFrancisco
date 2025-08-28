@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import '@/Styles/OrderOptions.css';
 import type { ConvenioQueryObject } from '@/Types/Api.Interface';
 
 const props = defineProps<{ query: ConvenioQueryObject }>();
@@ -10,22 +11,22 @@ const ordenSeleccionado = ref('ProximosAterminar');
 
 // cada vez que cambia el radio, actualizamos los booleanos
 watch(ordenSeleccionado, (nuevoValor) => {
-  if(nuevoValor==='ProximosAterminar') {
-      props.query.ProximosAterminar = true;
-      props.query.AntiguedadAscendente = false;
-      props.query.AntiguedadDescendente = false;
+  if (nuevoValor === 'ProximosAterminar') {
+    props.query.ProximosAterminar = true;
+    props.query.AntiguedadAscendente = false;
+    props.query.AntiguedadDescendente = false;
   };
-  if(nuevoValor==="AntiguedadAscendente") {
-      props.query.ProximosAterminar = false;
-      props.query.AntiguedadAscendente = true;
-      props.query.AntiguedadDescendente = false;
+  if (nuevoValor === "AntiguedadAscendente") {
+    props.query.ProximosAterminar = false;
+    props.query.AntiguedadAscendente = true;
+    props.query.AntiguedadDescendente = false;
   };
-  if(nuevoValor==="AntiguedadDescendente") {
-      props.query.ProximosAterminar = false;
-      props.query.AntiguedadAscendente = false;
-      props.query.AntiguedadDescendente = false;
+  if (nuevoValor === "AntiguedadDescendente") {
+    props.query.ProximosAterminar = false;
+    props.query.AntiguedadAscendente = false;
+    props.query.AntiguedadDescendente = false;
   }
-  
+
 });
 </script>
 
@@ -47,28 +48,3 @@ watch(ordenSeleccionado, (nuevoValor) => {
     </label>
   </div>
 </template>
-
-<style scoped>
-.order-options {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  color: white;
-}
-
-.radio-label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-}
-
-.radio-label input[type="radio"] {
-  accent-color: #00a1e4; /* celeste UTN */
-  cursor: pointer;
-}
-
-.radio-label:hover {
-  opacity: 0.8;
-}
-</style>

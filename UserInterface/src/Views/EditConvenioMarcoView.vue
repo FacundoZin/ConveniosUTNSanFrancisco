@@ -13,7 +13,7 @@
           <label for="fechaFirma">Fecha de firma:</label>
           <input type="date" id="fechaFirma" v-model="convenioData.fechaFirmaConvenio" />
           <label for="fechaFin">Fecha de finalizacion:</label>
-          <input type="date" id="fechaFin" v-model="convenioData.fechaFinConvenio" />
+          <input type="date" id="fechaFin" v-model="convenioData.fechaFin" />
           <label for="comentario">Comentario:</label>
           <input type="text" id="comentario" v-model="convenioData.comentarioOpcional" />
         </div>
@@ -25,8 +25,9 @@
 
 <script setup lang="ts">
 import ApiService from '@/Services/ApiService';
-import type { UpdateConvenioEspecificoDto } from '@/Types/Api.Interface';
-import type { ConvenioEspecificoCompleto } from '@/Types/Models';
+import '@/Styles/EditConvenioMarcoForm.css';
+import type { UpdateConvenioMarcoDto } from '@/Types/Api.Interface';
+import type { ConvenioMarcoCompleto } from '@/Types/Models';
 import { isAxiosError } from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -34,7 +35,7 @@ import { POSITION, useToast } from 'vue-toastification';
 
 const toast = useToast();
 const route = useRoute();
-const convenioData = ref<ConvenioEspecificoCompleto | null>(null);
+const convenioData = ref<ConvenioMarcoCompleto | null>(null);
 const loading = ref(true);
 const error = ref(false);
 const id = ref(0);
@@ -56,74 +57,29 @@ onMounted(async () => {
 });
 
 const submitForm = async () => {
-  const dto: UpdateConvenioEspecificoDto = {
+  const dto: UpdateConvenioMarcoDto = {
     id: id.value,
     numeroconvenio: convenioData.value?.numeroconvenio || 0,
     titulo: convenioData.value?.titulo || '',
     fechaFirmaConvenio: convenioData.value?.fechaFirmaConvenio || '',
-    fechaInicioActividades: convenioData.value?.fechaInicioActividades || '',
-    fechaFinConvenio: convenioData.value?.fechaFinConvenio || '',
+    fechaFin: convenioData.value?.fechaFin || '',
     comentarioOpcional: convenioData.value?.comentarioOpcional || '',
   }
 
   try {
-    const response = await ApiService.EditarConvenioEspecifico(dto);
+    await ApiService.EditarConvenioMarco(dto);
     toast.success("Convenio editado con éxito");
   } catch (error) {
+    toast.error("Error al editar el convenio", { position: POSITION.BOTTOM_CENTER });
     if (isAxiosError(error)) {
-      toast.error("Error al editar el convenio", { position: POSITION.BOTTOM_CENTER });
       if (error.response) {
         console.log(`Error al editar el convenio (${error.response.status}):`, error.response.data);
       } else {
-        console.log(`Error al editar el convenio: no se recibió respuesta del servidor, ${error}`);
+        console.log("Error al editar el convenio: no se recibió respuesta del servidor");
       }
     } else {
-      console.log(`Lo sentimos, algo salió mal fuera del entorno HTTP, ${error}`);
+      console.log("Lo sentimos, algo salió mal fuera del entorno HTTP");
     }
   }
 };
 </script>
-
-<style scoped>
-.edit-form-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #1a1a1a;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-.save-btn {
-  background-color: #00a1e4;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.save-btn:hover {
-  background-color: #0077c8;
-}
-</style>
