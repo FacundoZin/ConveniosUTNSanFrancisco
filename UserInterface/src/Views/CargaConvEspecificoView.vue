@@ -55,6 +55,8 @@
 </template>
 
 <script setup lang="ts">
+import InvolucradoForm from '@/Components/InvolucradoForm.vue'
+import InvolucradosCard from '@/Components/InvolucradosCard.vue'
 import ApiService from '@/Services/ApiService'
 import '@/Styles/FormCargaConvEspecifico.css'
 import type { InsertConvenioEspecificoDto, InsertInvolucradosDto } from '@/Types/Api.Interface'
@@ -62,8 +64,6 @@ import { isAxiosError } from 'axios'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import InvolucradoForm from './InvolucradoForm.vue'
-import InvolucradosCard from './InvolucradosCard.vue'
 
 const route = useRoute()
 const GetIdConvenioMarco = async (): Promise<number> => {
