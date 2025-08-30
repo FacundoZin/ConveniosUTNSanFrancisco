@@ -65,7 +65,7 @@ namespace APIconvenios.Repositorio
                     Titulo = ce.Titulo,
                     FechaFirmaConvenio = ce.FechaFirmaConvenio,
                     FechaInicioActividades = ce.FechaInicioActividades,
-                    FechaFinConvenio = ce.FechaFinConvenio,
+                    FechaFin = ce.FechaFinConvenio,
                 }).ToList(),
             }).AsNoTracking().FirstOrDefaultAsync();
 

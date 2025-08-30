@@ -10,7 +10,7 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         public string Titulo { get; set; }
         public DateOnly FechaFirmaConvenio { get; set; }
         public DateOnly FechaInicioActividades { get; set; }
-        public DateOnly FechaFinConvenio { get; set; }
+        public DateOnly FechaFin { get; set; }
         public string ConvenioType { get; set; } = "especifico";
     }
 }

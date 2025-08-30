@@ -44,7 +44,7 @@ namespace APIconvenios.Helpers.Mappers
                 Titulo = c.Titulo,
                 FechaFirmaConvenio = c.FechaFirmaConvenio,
                 FechaInicioActividades = c.FechaInicioActividades,
-                FechaFinConvenio = c.FechaFinConvenio
+                FechaFin = c.FechaFinConvenio
             }).ToList();
         }
     }

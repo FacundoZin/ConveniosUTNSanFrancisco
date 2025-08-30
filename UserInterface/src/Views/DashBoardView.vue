@@ -20,9 +20,9 @@ import ConvenioList from '@/Components/ConvenioList.vue';
 import OrderOptions from '@/Components/OrderOptions.vue';
 import Pagination from '@/Components/Pagination.vue';
 import SearchBar from '@/Components/SearchBar.vue';
+import { createConvenioQuery } from '@/Composables/CreateConvenioQueryObject';
 import ApiService from '@/Services/ApiService';
 import '@/Styles/Dashboard.css';
-import type { ConvenioQueryObject } from '@/Types/Api.Interface';
 import type { Convenioview } from '@/Types/Models';
 import { isAxiosError } from 'axios';
 import { ref } from 'vue';
@@ -31,15 +31,7 @@ import { ref } from 'vue';
 const ListadoConvenios = ref<Convenioview[]>([]);
 const errorMensaje = ref('');
 
-const Query = ref<ConvenioQueryObject>({
-  TituloConvenio: '',
-  Nombre_empresa: '',
-  ProximosAterminar: false,
-  AntiguedadAscendente: false,
-  AntiguedadDescendente: false,
-  PaginaActual: 1,
-  CantidadResultados: 10
-})
+const Query = ref(createConvenioQuery())
 
 // Cada vez que el usuario escribe o cambia tipo, actualizamos filtros
 function onSearchUpdate({ Busqueda, Parametro }: { Busqueda: string, Parametro: 'titulo' | 'empresa' }) {
@@ -51,11 +43,13 @@ function onSearchUpdate({ Busqueda, Parametro }: { Busqueda: string, Parametro: 
 const ObtenerConvenios = async () => {
   errorMensaje.value = '';
   try {
+    console.log(` estos son los parametros que se envian a la api`, Query.value);
     const response = await ApiService.GetConvenios(Query.value);
     ListadoConvenios.value = [
       ...response.data.conveniosMarco,
       ...response.data.conveniosEspecificos
     ];
+    Query.value = createConvenioQuery();
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       errorMensaje.value = ` ${error.response.data}`;
