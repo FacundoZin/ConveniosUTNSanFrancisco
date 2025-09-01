@@ -1,22 +1,27 @@
 .order-options {
   display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  color: white;
+  gap: 1.5rem;
+  margin-top: 1rem;
 }
 
+/* --- RADIO --- */
 .radio-label {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 0.4rem;
+  font-weight: 500;
+  color: #ffffff; /* azul UTN */
   cursor: pointer;
-}
-
-.radio-label input[type="radio"] {
-  accent-color: #00a1e4; /* celeste UTN */
-  cursor: pointer;
+  transition: color 0.2s ease;
 }
 
 .radio-label:hover {
-  opacity: 0.8;
+  color: #ffffffba; /* azul un poco más claro al pasar el mouse */
+}
+
+.radio-label input[type="radio"] {
+  accent-color: #00a1e4; /* circulito azul UTN */
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }

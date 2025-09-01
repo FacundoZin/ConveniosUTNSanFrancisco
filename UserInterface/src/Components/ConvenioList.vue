@@ -1,6 +1,9 @@
 <!-- src/Components/ConvenioList.vue -->
 <template>
   <div class="convenio-list-container">
+
+    <div class="spinner" v-if="isloading === true"></div>
+
     <div v-if="convenios.length === 0" class="empty-msg">
       No hay convenios para mostrar
     </div>
@@ -45,6 +48,7 @@ function VerConvenioCompleto(id: number, TypeConvenio: string) {
 }
 
 const props = defineProps<{
-  convenios: Convenioview[]
+  convenios: Convenioview[],
+  isloading?: boolean
 }>()
 </script>

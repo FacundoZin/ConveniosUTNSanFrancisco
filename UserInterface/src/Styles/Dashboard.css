@@ -16,7 +16,7 @@
 }
 
 .buscar-btn {
-  background-color: #0077c8; /* azul UTN */
+  background-color: #00a1e4; /* azul UTN */
   color: white;
   padding: 10px 20px;
   border: none;
@@ -27,5 +27,5 @@
 }
 
 .buscar-btn:hover {
-  background-color: #005ea3;
+  background-color: #0091cc;
 }

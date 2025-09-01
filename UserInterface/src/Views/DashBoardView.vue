@@ -5,7 +5,7 @@
       <OrderOptions :query="Query" />
     </div>
 
-    <ConvenioList :convenios="ListadoConvenios" />
+    <ConvenioList :convenios="ListadoConvenios" :isloading="isloading" />
     <Pagination :query="Query" @pagina-cambiada="ObtenerConvenios" />
 
     <button @click="ObtenerConvenios" class="buscar-btn">
@@ -30,6 +30,7 @@ import { ref } from 'vue';
 
 const ListadoConvenios = ref<Convenioview[]>([]);
 const errorMensaje = ref('');
+const isloading = ref(false);
 
 const Query = ref(createConvenioQuery())
 
@@ -42,9 +43,11 @@ function onSearchUpdate({ Busqueda, Parametro }: { Busqueda: string, Parametro: 
 
 const ObtenerConvenios = async () => {
   errorMensaje.value = '';
+  isloading.value = true;
   try {
     console.log(` estos son los parametros que se envian a la api`, Query.value);
     const response = await ApiService.GetConvenios(Query.value);
+
     ListadoConvenios.value = [
       ...response.data.conveniosMarco,
       ...response.data.conveniosEspecificos
@@ -56,6 +59,8 @@ const ObtenerConvenios = async () => {
     } else {
       errorMensaje.value = "Lo sentimos, algo a salido mal"
     }
+  }finally{
+    isloading.value = false;
   }
 }
 </script>
