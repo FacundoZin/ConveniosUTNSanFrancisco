@@ -10,8 +10,8 @@ namespace APIconvenios.Interfaces.Servicios
     {
         Task<Result<InfoConvenioMarcoDto?>> ObtenerConvenioMarcoCompleto(int id);
         Task<Result<bool>> BorrarConvenioMarco(int id);
-        Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoDto convenioActualizado);
-        Task<Result<ConvenioCreated>> CargarConvenioMarco(CreateConvenioMarcoDto createConvenioMarcoDto,InsertEmpresaDto EmpresaDto);
+        Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoRequetsDto requetsDto);
+        Task<Result<ConvenioCreated>> CargarConvenioMarco(CargarConvenioMarcoRequestDto);
 
     }
 }

@@ -21,9 +21,11 @@ const emit = defineEmits(['update'])
 
 const Busqueda = ref('')
 const PrametroBusqueda = ref('titulo')
+const resetInput = ref(0)
 
 // Cada vez que term o tipo cambian, se emite automáticamente
 watch([Busqueda, PrametroBusqueda], () => {
   emit('update', { Busqueda: Busqueda.value, Parametro: PrametroBusqueda.value })
 })
+
 </script>

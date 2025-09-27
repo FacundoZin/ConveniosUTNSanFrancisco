@@ -5,29 +5,13 @@ namespace APIconvenios.Models
     public class Empresa
     {
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "El nombre es obligatorio.")]
-        [StringLength(100, ErrorMessage = "El nombre no puede superar los 100 caracteres.")]
         public string Nombre { get; set; }
+        public string? RazonSocial { get; set; }
+        public string? Cuit { get; set; } 
+        public string? Direccion { get; set; }
+        public string? Telefono { get; set; } 
 
-        [Required(ErrorMessage = "La razón social es obligatoria.")]
-        [StringLength(150, ErrorMessage = "La razón social no puede superar los 150 caracteres.")]
-        public string RazonSocial { get; set; }
-
-        [Required(ErrorMessage = "El CUIT es obligatorio.")]
-        [RegularExpression(@"^\d{11}$", ErrorMessage = "El CUIT debe tener exactamente 11 dígitos numéricos y sin guiones")]
-        public string Cuit { get; set; } 
-
-        [Required(ErrorMessage = "La dirección es obligatoria.")]
-        [StringLength(200, ErrorMessage = "La dirección no puede superar los 200 caracteres.")]
-        public string Direccion { get; set; }
-
-        [Required(ErrorMessage = "El teléfono es obligatorio.")]
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "El número de teléfono debe tener exactamente 10 dígitos(sin caracteristica de pais, ni espacios).")]
-        public string Telefono { get; set; } 
-
-        [Required(ErrorMessage = "El email es obligatorio.")]
         [EmailAddress(ErrorMessage = "Email inválido.")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
     }
 }

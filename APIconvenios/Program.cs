@@ -1,14 +1,23 @@
+using APIconvenios.Commands.ConvenioEspecificoCommands;
+using APIconvenios.Commands.ConvenioMarcoCommands;
 using APIconvenios.Data;
 using APIconvenios.Helpers.JsonConverters;
+using APIconvenios.Helpers.Logger;
 using APIconvenios.Helpers.Validators;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Interfaces.Servicios;
+using APIconvenios.Middlewares;
 using APIconvenios.Repositorio;
 using APIconvenios.Services;
 using APIconvenios.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseWindowsService(Options => Options.ServiceName = "API Convenios UTN"); 
+
+//builder.WebHost.UseUrls("http://localhost:8888");
 
 // Add services to the container.
 
@@ -17,11 +26,31 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+/*var dbPath = Path.Combine(
+    appDirectory,
+    "SistemaConveniosUTN",
+    "SistemaConveniosUTN.db"
+);
+var LogPath = Path.Combine(
+    appDirectory,
+    "SistemaConveniosUTN",
+    "Logs"
+);*/
+
+var LogPath = Path.Combine(
+    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+    "SistemaConveniosUTN",
+    "Logs"
+);
+
 var dbPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
     "SistemaConveniosUTN",
     "SistemaConveniosUTN.db"
 );
+
+
 
 Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
 
@@ -43,12 +72,14 @@ builder.Services.AddScoped<IConvenioEspecificoRepository, ConvenioEspecificoRepo
 builder.Services.AddScoped<IConvenioEspecificoReadRepository, ConvenioEspecificoReadRepository>();
 builder.Services.AddScoped<IConvenioMarcoRepository, ConveniosMarcoRepository>();
 builder.Services.AddScoped<IConvenioMarcoReadRepository, ConvenioMarcoReadRepository>();
+builder.Services.AddSingleton<ILogger>(new FileLogger(LogPath));
+
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("PermitirFrontend", policy =>
+    options.AddPolicy("MiPolicyElectron", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Reemplazar con el puerto del frontend
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -62,6 +93,12 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
+// database migration
+/*using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}*/
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -70,8 +107,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<GlobalExceptionHandler>();
 app.UseHttpsRedirection();
-app.UseCors("PermitirFrontend");
+app.UseCors("MiPolicyElectron");
 
 app.UseAuthorization();
 

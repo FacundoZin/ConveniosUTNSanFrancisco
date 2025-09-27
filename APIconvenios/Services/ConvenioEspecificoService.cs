@@ -1,4 +1,6 @@
-﻿using APIconvenios.Common;
+﻿using APIconvenios.Commands.ConvenioEspecificoCommands;
+using APIconvenios.Commands.ConvenioEspecificoCommands.Commands;
+using APIconvenios.Common;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Convenios;
@@ -18,51 +20,38 @@ namespace APIconvenios.Services
     public class ConvenioEspecificoService : IConvenioEspecifcoService
     {
         private readonly _UnitOfWork _UnitOfWork;
-        private readonly ILogger<ConvenioEspecificoService> _Logger;
-        public ConvenioEspecificoService(_UnitOfWork unitOfWork, ILogger<ConvenioEspecificoService> logger, ConvenioQueryObjectValidator queryvalidator)
+        public ConvenioEspecificoService(_UnitOfWork unitOfWork, ConvenioQueryObjectValidator queryvalidator)
         {
             _UnitOfWork = unitOfWork;
-            _Logger = logger;
         }
 
-        public async Task<Result<ConvenioCreated>> CreateConvenioEspecifico(InsertConvenioEspecificoDto DtoConvenio,
-            List<InsertInvolucradosDto> DtoInvolucrados)
+        public async Task<Result<ConvenioCreated>> CreateConvenioEspecifico(CargarConvenioEspecificoRequestDto Dto)
         {
-            try
-            {
-                if(await _UnitOfWork._ConvEspReadRepository .TitleExist(DtoConvenio.Titulo))
-                    return Result<ConvenioCreated>.Error("el titulo de convenio ingresado ya existe", 409);
+            var Convenio = Dto.InsertConvenioDto.UploadData();
 
+            List<IConvEspCommand> Commnands = new List<IConvEspCommand>();
 
-                var Involucrados = DtoInvolucrados.ToInvolucrados();
+            if (Dto.InsertInvolucradosDto != null)
+                Commnands.Add(new InsertInvolucradorToConvEspCmd(Dto.InsertInvolucradosDto));
 
-                foreach (var inv in Involucrados)
-                {
-                    if (inv.Id != 0)
-                    {
-                        _UnitOfWork.MarkAsExisting(inv);
-                    }
-                }
+            if (Dto.idCarreras != null)
+                Commnands.Add(new LinkCarrerasCmd(Dto.idCarreras));
 
-                var convenio = DtoConvenio.ToConvenioEspecifico(Involucrados);
+            if (Dto.empresaDto != null)
+                Commnands.Add(new LinkEmpresaToEspecificoCmd(Dto.empresaDto));
 
-                _UnitOfWork._ConvenioEspecificoRepository.CreateConvenio(convenio);
+            if (Dto.IdConvenioMarcoVinculado != null)
+                Commnands.Add(new LinkerConvMarcoCmd((int)Dto.IdConvenioMarcoVinculado));
 
-                await _UnitOfWork.Save();
+            foreach(var command in Commnands)
+                await command.ExecuteAsync(Convenio, _UnitOfWork);
 
-                var result = new ConvenioCreated
-                {
-                    Id = convenio.Id,
-                    ConvenioType = "especifico",
-                };
+            int rowsAffected = await _UnitOfWork.Save();
 
-                return Result<ConvenioCreated>.Exito(result);
-            }
-            catch (Exception ex)
-            {
-                _Logger.LogError($"Error al crear el convenio especifico: {ex.Message} ");
-                return Result<ConvenioCreated>.Error($"Error al crear el convenio especifico", 500);
-            }
+            if (rowsAffected > 0)
+                return Result<ConvenioCreated>.Exito(new ConvenioCreated { Id = Convenio.Id, ConvenioType = "especifico" });
+            else
+                return Result<ConvenioCreated>.Error("No se pudo crear el convenio especifico.", 500);
         }
 
         public async Task<Result<object?>> DeleteConvenioEspecifico(int id)
@@ -76,7 +65,6 @@ namespace APIconvenios.Services
 
                 if (!await _UnitOfWork._ConvenioEspecificoRepository.Delete(convenio))
                 {
-                    _Logger.LogError($"Error al eliminar el convenio especifico con id {id}");
                     return Result<object?>.Error($"Error al eliminar el convenio especifico", 500);
                 }
 
@@ -84,30 +72,45 @@ namespace APIconvenios.Services
             }
             catch (Exception ex)
             {
-                _Logger.LogError($"Error al eliminar el convenio especifico: {ex.Message} ");
                 return Result<object?>.Error($"Error al eliminar el convenio especifico", 500);
             }
         }
 
-        public async Task<Result<object?>> EditarConvenioEspecifico(UpdateConvenioEspecificoDto Dto)
+        public async Task<Result<object?>> EditarConvenioEspecifico(UpdateConvenioEspecificoRequestDto Dto)
         {
-            var ConvenioOriginal = await _UnitOfWork._ConvenioEspecificoRepository.GetByid(Dto.Id);
+            var Convenio = await _UnitOfWork._ConvenioEspecificoRepository.GetByid(Dto.UpdateConvenioDto.Id);
 
-            if (ConvenioOriginal == null)
-                return Result<object?>.Error($"el convenio no existe", 404);
+            if(Convenio == null) return Result<object?>.Error("El convenio que quiere actualizar no existe", 404);
 
-            if (await _UnitOfWork._ConvEspReadRepository.TitleExistForUpdate(ConvenioOriginal.Titulo, ConvenioOriginal.Id))
-                return Result<object?>.Error("error: ya hay un convenio especifico con el titulo que ha ingresado", 409);
+            var commands = new List<IConvEspCommand>();
 
-            bool exit = await _UnitOfWork._ConvenioEspecificoRepository.ModificarConvenioEspecifico(ConvenioOriginal.UpdateConvenio(Dto));
+            Convenio.UpdateConvenio(Dto.UpdateConvenioDto);
 
-            if (!exit)
-            {
-                _Logger.LogError($"Error al editar el convenio especifico con id {Dto.Id}");
-                return Result<object?>.Error($"Error al editar el convenio especifico", 500);
-            }
+            if(Dto.InsertInvolucradosDtos != null && Dto.InsertInvolucradosDtos.Any())
+                commands.Add(new InsertInvolucradorToConvEspCmd(Dto.InsertInvolucradosDtos));
+            if(Dto.idCarreras != null && Dto.idCarreras.Length > 0)
+                commands.Add(new LinkCarrerasCmd(Dto.idCarreras));
+            if(Dto.empresaDto != null)
+                commands.Add(new LinkEmpresaToEspecificoCmd(Dto.empresaDto));
+            if(Dto.IdsInvolucraodsEliminados != null && Dto.IdsInvolucraodsEliminados.Any())
+                commands.Add(new UnlinkInvolucradosCmd(Dto.IdsInvolucraodsEliminados));
+            if (Dto.IdConvenioMarcoVinculado != null)
+                commands.Add(new LinkerConvMarcoCmd((int)Dto.IdConvenioMarcoVinculado));
+            if (Dto.DesvincularConvenioMarco)
+                commands.Add(new UnlinkConvMarcoCmd());
+            if(Dto.DesvincularEmpresa)
+                commands.Add(new UnlinkEmpresaFromEspecificoCmd());
 
-            return Result<Object?>.Exito(null);
+            foreach (var command in commands)
+                await command.ExecuteAsync(Convenio, _UnitOfWork);
+
+            int rowsAffected = await _UnitOfWork.Save();
+
+
+            if (rowsAffected > 0)
+                return Result<object?>.Exito(new ConvenioCreated { Id = Convenio.Id, ConvenioType = "especifico" });
+            else
+                return Result<object?>.Error("No se pudo actualizar el convenio especifico.", 500);
         }
 
         public async Task<Result<InfoConvenioEspeficoDto>> ObtenerConvenioEspecificoCompleto(int id)

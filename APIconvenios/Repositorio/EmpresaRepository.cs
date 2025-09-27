@@ -29,9 +29,10 @@ namespace APIconvenios.Repositorio
             return empresa;
         }
 
-        public void Add(Empresa empresa)
+        public async Task<int> Add(Empresa empresa)
         {
-            _Context.Empresas.Add(empresa);
+            await _Context.Empresas.AddAsync(empresa);
+            return empresa.Id;
         }
     }
 }

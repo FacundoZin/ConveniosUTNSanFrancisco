@@ -21,11 +21,11 @@ function irPagina(nuevaPagina: number) {
     <button @click="irPagina(4)">4</button>
     <button @click="irPagina(5)">5</button>
 
-    <button @click="irPagina(props.query.PaginaActual - 1)" :disabled="props.query.PaginaActual <= 1">
+    <button @click="irPagina(props.query.PaginaActual! - 1)" :disabled="props.query.PaginaActual! <= 1">
       Prev
     </button>
 
-    <button @click="irPagina(props.query.PaginaActual + 1)">
+    <button @click="irPagina(props.query.PaginaActual! + 1)">
       Next
     </button>
   </div>

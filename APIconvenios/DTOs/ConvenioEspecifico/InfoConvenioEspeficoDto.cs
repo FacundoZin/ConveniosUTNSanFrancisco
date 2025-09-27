@@ -1,5 +1,7 @@
-﻿using APIconvenios.DTOs.Involucrados;
+﻿using APIconvenios.Common.Enums;
+using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Helpers.Validators;
+using APIconvenios.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioEspecifico
@@ -7,13 +9,25 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
     public class InfoConvenioEspeficoDto
     {
         public int Id { get; set; }
-        public int numeroconvenio { get; set; }
-        public string Titulo { get; set; }
-        public DateOnly FechaFirmaConvenio { get; set; }
-        public DateOnly FechaInicioActividades { get; set; }
-        public DateOnly FechaFinConvenio { get; set; }
-        public int ConvenioMarcoId { get; set; }
-        public string ComentarioOpcional { get; set; }
-        public List<InvolucradosDto> Involucrados { get; set; }
+        public string? numeroconvenio { get; set; }
+        public string? Titulo { get; set; }
+        public DateOnly? FechaFirmaConvenio { get; set; }
+        public DateOnly? FechaInicioActividades { get; set; }
+        public DateOnly? FechaFinConvenio { get; set; }
+        public string? ComentarioOpcional { get; set; }
+        public EstadoConvenio? Estado { get; set; }
+        public bool EsActa { get; set; } = false;
+        public List<Carreras>? CarrerasInvolucradas { get; set; }
+        public string? NumeroResolucion { get; set; }
+        public bool Refrendado { get; set; } = false;
+
+
+        public int? ConvenioMarcoId { get; set; }
+
+        public List<InvolucradosDto>? Involucrados { get; set; }
+        public List<ArchivosAdjuntos>? DocumentosAdjuntos { get; set; }
+        public List<Carreras>? carreras { get; set; }
+
+
     }
 }

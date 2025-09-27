@@ -2,51 +2,51 @@ import type { CargarConvenioEspecificoRequestDto, CargarConvenioMarcoRequestDto,
 import type { ConveniosResponse } from '@/Types/Models';
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: 'http://localhost:5194/api',
-});
 
+const api = axios.create({
+  baseURL: 'http://localhost:8888/api',
+});
 
 export default{
 
-    GetConvenios: (params: ConvenioQueryObject) => {
+    GetConvenios: async (params: ConvenioQueryObject) => {
         return api.get<ConveniosResponse>('/Convenios', { params });
     },
 
-    GetConvenioMarcoCompleto: (id: number) => {
+    GetConvenioMarcoCompleto: async (id: number) => {
         return api.get(`/ConveniosMarcos/${id}`);
     },
 
-    GetConvenioEspecificoCompleto: (id: number) => {
+    GetConvenioEspecificoCompleto: async (id: number) => {
         return api.get(`/ConveniosEspecificos/${id}`);
 
     },
 
-    DeleteConvenioMarco: (id: number) => {
+    DeleteConvenioMarco: async (id: number) => {
         return api.delete(`/ConveniosMarcos/${id}`);
     },
 
-    DeleteConvenioEspecifico: (id: number) => {
-        return api.delete(`/ConveniosEspecificos/${id}`)
+    DeleteConvenioEspecifico: async (id: number) => {
+        return api.delete(`/ConveniosEspecificos/${id}`);
     },
 
-    CreateConvenioMarco: (Dto: CargarConvenioMarcoRequestDto) => {
+    CreateConvenioMarco: async (Dto: CargarConvenioMarcoRequestDto) => {
         return api.post(`/ConveniosMarcos`, Dto);
     },
 
-    CreateConvenioEspecifico: (Dto: CargarConvenioEspecificoRequestDto) => {
+    CreateConvenioEspecifico: async (Dto: CargarConvenioEspecificoRequestDto) => {
         return api.post(`/ConveniosEspecificos`, Dto);
     },
 
-    EditarConvenioMarco: (Dto: UpdateConvenioMarcoDto) => {
-        return api.put(`/ConveniosMarcos`, Dto)
+    EditarConvenioMarco: async (Dto: UpdateConvenioMarcoDto) => {
+        return api.put(`/ConveniosMarcos`, Dto);
     },
 
-    EditarConvenioEspecifico: (Dto: UpdateConvenioEspecificoDto) => {
-        return api.put(`/ConveniosEspecificos`, Dto)
+    EditarConvenioEspecifico: async (Dto: UpdateConvenioEspecificoDto) => {
+        return api.put(`/ConveniosEspecificos`, Dto);
     },
 
-    UploadDocument: (data: UploadConvenioDocument) => {
+    UploadDocument: async (data: UploadConvenioDocument) => {
 
         const formData = new FormData();
         formData.append('file', data.File);

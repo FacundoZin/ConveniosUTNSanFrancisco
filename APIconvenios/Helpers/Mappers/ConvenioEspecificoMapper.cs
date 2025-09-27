@@ -7,30 +7,35 @@ namespace APIconvenios.Helpers.Mappers
 {
     public static class ConvenioEspecificoMapper
     {
-        public static ConvenioEspecifico ToConvenioEspecifico (this InsertConvenioEspecificoDto dto, 
-            List<Involucrados>  involucrados)
+        public static ConvenioEspecifico UploadData (this InsertConvenioEspecificoDto dto)
         {
             return new ConvenioEspecifico
             {
-                Titulo = dto.Titulo,
+                TituloConvenio = dto.Titulo,
                 numeroconvenio = dto.numeroconvenio,
                 FechaFirmaConvenio = dto.FechaFirmaConvenio,
                 FechaInicioActividades = dto.FechaInicioActividades,
                 FechaFinConvenio = dto.FechaFinConvenio,
-                ConvenioMarcoId = dto.ConvenioMarcoId,
                 ComentarioOpcional = dto.ComentarioOpcional,
-                Involucrados = involucrados
+                Estado = dto.Estado,
+                EsActa = dto.EsActa,
+                Refrendado = dto.Refrendado,
+                NumeroResolucion = dto.NumeroResolucion,
             };
         }
 
         public static ConvenioEspecifico UpdateConvenio (this ConvenioEspecifico ConvenioOriginal, UpdateConvenioEspecificoDto dto)
         {
-            ConvenioOriginal.Titulo = dto.Titulo;
+            ConvenioOriginal.TituloConvenio = dto.Titulo;
             ConvenioOriginal.numeroconvenio = dto.numeroconvenio;
             ConvenioOriginal.FechaFirmaConvenio = dto.FechaFirmaConvenio;
             ConvenioOriginal.FechaInicioActividades = dto.FechaInicioActividades;
             ConvenioOriginal.FechaFinConvenio = dto.FechaFinConvenio;
             ConvenioOriginal.ComentarioOpcional = dto.ComentarioOpcional;
+            ConvenioOriginal.Estado = dto.Estado;
+            ConvenioOriginal.EsActa = dto.EsActa;
+            ConvenioOriginal.Refrendado = dto.Refrendado;
+            ConvenioOriginal.NumeroResolucion = dto.NumeroResolucion;
 
             return ConvenioOriginal;
         }
@@ -38,13 +43,17 @@ namespace APIconvenios.Helpers.Mappers
         public static List<ConvenioEspecificoDto> ToDto (this List<ConvenioEspecifico> convenios)
         {
             return convenios.Select(c => new ConvenioEspecificoDto
-            {
+            {  
                 Id = c.Id,
                 numeroconvenio = c.numeroconvenio,
-                Titulo = c.Titulo,
+                Titulo = c.TituloConvenio,
+                NombreEmpresa = c.empresa?.Nombre,
                 FechaFirmaConvenio = c.FechaFirmaConvenio,
                 FechaInicioActividades = c.FechaInicioActividades,
-                FechaFin = c.FechaFinConvenio
+                FechaFin = c.FechaFinConvenio,
+                Estado = c.Estado,
+                EsActa = c.EsActa,
+                Refrendado = c.Refrendado
             }).ToList();
         }
     }

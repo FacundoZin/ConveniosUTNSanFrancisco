@@ -1,5 +1,6 @@
 ﻿using APIconvenios.Data;
 using APIconvenios.Interfaces.Repositorio;
+using APIconvenios.Repositorio;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace APIconvenios.UnitOfWork
@@ -14,18 +15,21 @@ namespace APIconvenios.UnitOfWork
         public IConvenioEspecificoReadRepository _ConvEspReadRepository { get; }
         public IConvenioMarcoRepository _ConvenioMarcoRepository { get; }
         public IConvenioMarcoReadRepository _ConvenioMarcoReadRepository { get; }
-
+        public IEmpresaRepository _EmpresaRepository { get; }
+        public ICarreraRepository _CarreraRepository { get; } 
 
 
         public _UnitOfWork(ApplicationDbContext applicationDbContext, IConvenioEspecificoRepository convenioEspecificorepo,
             IConvenioEspecificoReadRepository convespreadrepo,
-            IConvenioMarcoRepository convmarcRepository, IConvenioMarcoReadRepository convmarcReadRepo)
+            IConvenioMarcoRepository convmarcRepository, IConvenioMarcoReadRepository convmarcReadRepo, 
+            IEmpresaRepository empresaRepository)
         {
             _Context = applicationDbContext;
             _ConvenioEspecificoRepository = convenioEspecificorepo;
             _ConvEspReadRepository = convespreadrepo;
             _ConvenioMarcoRepository = convmarcRepository;
             _ConvenioMarcoReadRepository = convmarcReadRepo;
+            _EmpresaRepository = empresaRepository;
         }   
 
         public async Task<int> Save ()

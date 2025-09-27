@@ -1,10 +1,12 @@
 ﻿using APIconvenios.DTOs.Empresa;
+using APIconvenios.Models;
 
 namespace APIconvenios.DTOs.ConvenioMarco
 {
     public class CargarConvenioMarcoRequestDto
     {
-        public CreateConvenioMarcoDto ConvenioDto { get; set; }
-        public InsertEmpresaDto EmpresaDto { get; set; }   
+        public InsertConvenioMarcoDto InsertConvenioDto { get; set; }
+        public InsertEmpresaDto? InsertEmpresaDto { get; set; }   
+        public int[]? IdsConveniosEspecificosParaVincular { get; set; }
     }
 }

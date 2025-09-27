@@ -14,44 +14,52 @@ using APIconvenios.UnitOfWork;
 using APIconvenios.DTOs.Empresa;
 using Microsoft.Data.Sqlite;
 using APIconvenios.DTOs.Convenios;
+using APIconvenios.Commands.ConvenioMarco.commands;
+using APIconvenios.Commands.ConvenioMarcoCommands.commands;
+using APIconvenios.Commands.ConvenioMarcoCommands;
 
 namespace APIconvenios.Services
 {
     public class ConveniosMarcosServices : IConvenioMarcoService
     {
         private readonly _UnitOfWork _UnitOfWork;
-        private readonly ILogger<ConveniosMarcosServices> _logger;
 
         public ConveniosMarcosServices(_UnitOfWork unitOfWork,ILogger<ConveniosMarcosServices> logger, ConvenioQueryObjectValidator queryValidator)
         {
             _UnitOfWork = unitOfWork;
-            _logger = logger;
         }
-        public async Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoDto convenioActualizado)
+
+        public async Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoRequetsDto requetsDto)
         {
-            try
-            {
-                var ConvOriginal = await _UnitOfWork._ConvenioMarcoRepository.GetByid(convenioActualizado.Id);
-                if (ConvOriginal == null) return Result<bool>.Error("No se encontró el convenio marco solicitado", 404);
+            var Convenio = await _UnitOfWork._ConvenioMarcoRepository.GetByid(requetsDto.UpdateConvenioMarcoDto.Id);
+            if (Convenio == null) return Result<bool>.Error("El convenio que quiere actualizar no existe", 404);
 
-                if(await _UnitOfWork._ConvenioMarcoReadRepository.TitleExistForUpdate(convenioActualizado.Titulo, ConvOriginal.Id)) 
-                    return Result<bool>.Error("El titulo ingresado coincide con un convenio existente", 409);
+            var commands = new List<IConvMarcoCommand>();
 
-                var exit = await _UnitOfWork._ConvenioMarcoRepository.ModificarConvenioMarco(ConvOriginal.UpdateConvenio(convenioActualizado));
+            if (requetsDto.UpdateConvenioMarcoDto != null)
+                commands.Add(new UpdateConvMarcoDataCmd(requetsDto.UpdateConvenioMarcoDto));
 
-                if (!exit)
-                {
-                    _logger.LogError($"el convenio marco  {convenioActualizado.Id} no se pudo actualizar");
-                    return Result<bool>.Error("Ocurrio un error al actualizar el convenio marco", 500);
-                }
+            if (requetsDto.InsertEmpresaDto != null && requetsDto.InsertEmpresaDto.Id != null)
+                commands.Add(new LinkEmpresaToMarcoCmd(requetsDto.InsertEmpresaDto));
 
+            if (requetsDto.EmpresaDesvinculada)
+                commands.Add(new UnlinkEmpresaFromMarcoCmd());
+
+            if (requetsDto.IdsConveniosEspecificosParaVincular?.Any() == true)
+                commands.Add(new LinkerConvEspCmd(requetsDto.IdsConveniosEspecificosParaVincular));
+
+            if (requetsDto.IdsConveniosEspecificosParaDesvincular?.Any() == true)
+                commands.Add(new UnlinkConvEspCmd(requetsDto.IdsConveniosEspecificosParaDesvincular));
+
+            foreach (var cmd in commands)
+                await cmd.ExecuteAsync(Convenio, _UnitOfWork);
+
+            int rowsAffected = await _UnitOfWork.Save();
+
+            if (rowsAffected > 0)
                 return Result<bool>.Exito(true);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"el convenio marco  {convenioActualizado.Id} no se pudo actualizar, error: {ex.Message}");
-                return Result<bool>.Error("Ocurrio un error al actualizar el convenio marco", 500);
-            }
+            else
+                return Result<bool>.Error("No se pudo actualizar el convenio marco.", 500);
         }
 
         public async Task<Result<bool>> BorrarConvenioMarco(int id)
@@ -66,7 +74,6 @@ namespace APIconvenios.Services
 
                 if (!exit)
                 {
-                    _logger.LogError($"el convenio marco  {id} no se pudo eliminar");
                     return Result<bool>.Error("Ocurrio un error al eliminar el convenio marco", 500);
                 }
 
@@ -74,7 +81,6 @@ namespace APIconvenios.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"el convenio marco  {id} no se pudo eliminar, error: {ex.Message}");
                 return Result<bool>.Error("Ocurrio un error al eliminar el convenio marco", 500);
             }
         }
@@ -94,54 +100,43 @@ namespace APIconvenios.Services
             }
             catch (SqliteException ex)
             {
-                _logger.LogError(ex, $"errro en db: {ex.Message}");
                 return Result<InfoConvenioMarcoDto?>.Error("error en la DB", 503);
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError(ex, $"datos no validos al buscar el convenio {ex.Message}");
                 return Result<InfoConvenioMarcoDto?>.Error("Estado del sistema no válido", 500);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"excpecion no esperada {ex.Message}");
                 return Result<InfoConvenioMarcoDto?>.Error("Error inesperado", 500);
             }
         }
 
-        public async Task<Result<ConvenioCreated>> CargarConvenioMarco(CreateConvenioMarcoDto createConvenioMarcoDto, 
-            InsertEmpresaDto EmpresaDto)
+        public async Task<Result<ConvenioCreated>> CargarConvenioMarco(CargarConvenioMarcoRequestDto requestDto)
         {
-            try
-            {
-                if (await _UnitOfWork._ConvenioMarcoReadRepository.TitleExist(createConvenioMarcoDto.Titulo))
-                    return Result<ConvenioCreated>.Error("el nombre de convenio ingresado ya existe", 409);
+            var convenio = new ConvenioMarco();
 
-                var convenio = createConvenioMarcoDto.ConverToConvenioMarco(EmpresaDto);
+            convenio.UploadData(requestDto.InsertConvenioDto);
 
-                _UnitOfWork._ConvenioMarcoRepository.CreateConvenio(convenio);
+            var commands = new List<IConvMarcoCommand>();
 
-                bool exit = await _UnitOfWork.Save() > 0;
+            if (requestDto.InsertEmpresaDto != null && requestDto.InsertEmpresaDto.Id != null)
+                commands.Add(new LinkEmpresaToMarcoCmd(requestDto.InsertEmpresaDto));
 
-                if (!exit)
-                {
-                    _logger.LogError("error al cargar un convenio");
-                    return Result<ConvenioCreated>.Error("algo salio mal", 500);
-                }
+            if (requestDto.IdsConveniosEspecificosParaVincular?.Any() == true)
+                commands.Add(new LinkerConvEspCmd(requestDto.IdsConveniosEspecificosParaVincular));
 
-                var result = new ConvenioCreated
-                {
-                    Id = convenio.Id,
-                    ConvenioType = "marco",
-                };
 
-                return Result<ConvenioCreated>.Exito(result);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError("error al cargar un convenio");
-                return Result<ConvenioCreated>.Error("algo salio mal", 500);
-            }
+            foreach (var cmd in commands)
+                await cmd.ExecuteAsync(convenio, _UnitOfWork);
+
+            int rowsAffected = await _UnitOfWork.Save();
+
+            if (rowsAffected > 0)
+                return Result<ConvenioCreated>.Exito(new ConvenioCreated { Id = convenio.Id, ConvenioType = "marco" });
+            else
+                return Result<ConvenioCreated>.Error("No se pudo crear el convenio marco.", 500);
+
         }
     }
 }

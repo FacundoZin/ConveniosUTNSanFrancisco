@@ -9,7 +9,6 @@ namespace APIconvenios.Helpers.Mappers
         {
             return involucradosDtos.Select(i => new Involucrados
             {
-                Id = i.id,
                 Nombre = i.Nombre,
                 Apellido = i.Apellido,
                 Email = i.Email,

@@ -1,4 +1,5 @@
-﻿using APIconvenios.Helpers.Validators;
+﻿using APIconvenios.Common.Enums;
+using APIconvenios.Helpers.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioEspecifico
@@ -6,25 +7,17 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
     public class UpdateConvenioEspecificoDto
     {
         public int Id { get; set; }
+        public string? numeroconvenio { get; set; }
+        public string? Titulo { get; set; }
+        public DateOnly? FechaFirmaConvenio { get; set; }
+        public DateOnly? FechaInicioActividades { get; set; }
+        public DateOnly? FechaFinConvenio { get; set; }
+        public string? ComentarioOpcional { get; set; }
+        public EstadoConvenio? Estado { get; set; }
+        public bool EsActa { get; set; }
+        public string? NumeroResolucion { get; set; }
+        public bool Refrendado { get; set; }
 
-        [Required(ErrorMessage = "El número de convenio es obligatorio.")]
-        [Range(1, int.MaxValue, ErrorMessage = "El número de convenio debe ser mayor a 0.")]
-        public int numeroconvenio { get; set; }
-
-        [Required(ErrorMessage = "El convenio debe tener un titulo que lo identifique.")]
-        public string Titulo { get; set; }
-
-        [Required(ErrorMessage = "La fecha de firma del convenio es obligatoria.")]
-        public DateOnly FechaFirmaConvenio { get; set; }
-
-        [Required(ErrorMessage = "La fecha de inicio de actividades es obligatoria")]
-        [ValidacionFechas("FechaFirmaConvenio", ErrorMessage = "La fecha de inicio de actividades debe ser posterior a la fecha de firma.")]
-        public DateOnly FechaInicioActividades { get; set; }
-
-        [Required(ErrorMessage = "La fecha de finalización del convenio es obligatoria.")]
-        [ValidacionFechas("FechaInicioActividades", ErrorMessage = "La fecha de finalizacion de actividades debe ser posterior a la fecha de inicio de las mismas")]
-        public DateOnly FechaFinConvenio { get; set; }
-
-        public string ComentarioOpcional { get; set; }
+        public int? ConvenioMarcoId { get; set; }
     }
 }

@@ -54,12 +54,13 @@ const ObtenerConvenios = async () => {
     ];
     Query.value = createConvenioQuery();
   } catch (error) {
+    Query.value = createConvenioQuery();
     if (isAxiosError(error) && error.response) {
       errorMensaje.value = ` ${error.response.data}`;
     } else {
       errorMensaje.value = "Lo sentimos, algo a salido mal"
     }
-  }finally{
+  } finally {
     isloading.value = false;
   }
 }
