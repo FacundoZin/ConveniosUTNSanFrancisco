@@ -5,6 +5,6 @@ namespace APIconvenios.Commands.FilterCommands
 {
     public interface IFilterCommands
     {
-        Task<List<Result<object?>>> ExecuteAsync(_UnitOfWork _UnitOfWork);
+        Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork);
     }
 }
