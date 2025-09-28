@@ -1,17 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using APIconvenios.DTOs.Filters;
+using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.Common
 {
     public class ConvenioQueryObject
     {
-        [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string TituloConvenio { get; set; } = string.Empty;
+        public ByTitleDto? Titulo { get; set; }
+        public ByRefrendadoDto? Refrendado { get; set; }
+        public ByNumeroResolucionDto? NumeroResolucion { get; set; }
+        public ByNumeroConvenioDto? NumeroConvenio { get; set; }
+        public ByIsActaDto? IsActa { get; set; }
+        public ByFechaFirmaDto? FechaFirma { get; set; }
+        public ByFechaFinDto? FechaInicio { get; set; }
+        public ByEstadoConvenioDto? Estado { get; set; }
+        public ByEmpresaDto? Empresa { get; set; }
+        public ByCarreraInvolucradaDto? Carrera { get; set; }
+        public ByAntiguedadDto? AntiguedadDto { get; set; }
+        public ByProximosAvencerDto? ProximosAvencer { get; set; }
 
-        [DisplayFormat(ConvertEmptyStringToNull = false)]
-        public string Nombre_empresa { get; set; } = string.Empty;
-        public bool ProximosAterminar { get; set; } = false;
-        public bool AntiguedadDescendente { get; set; } = false;
-        public bool AntiguedadAscendente { get; set; } = false;
 
         public int PaginaActual { get; set; } = 1;
         public int CantidadResultados { get; set; } = 10;

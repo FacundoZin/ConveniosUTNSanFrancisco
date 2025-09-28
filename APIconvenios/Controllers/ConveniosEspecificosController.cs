@@ -33,7 +33,7 @@ namespace APIconvenios.Controllers
         {
             if (!ModelState.IsValid) return BadRequest("los datos ingresados no son validos");
 
-            var result = await _ConvenioEspecifcoService.CreateConvenioEspecifico(dto.ConvenioDto,dto.InvolucradosDto);
+            var result = await _ConvenioEspecifcoService.CreateConvenioEspecifico(dto);
 
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
@@ -41,7 +41,7 @@ namespace APIconvenios.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditarConvenio([FromBody] UpdateConvenioEspecificoDto dto)
+        public async Task<IActionResult> EditarConvenio([FromBody] UpdateConvenioEspecificoRequestDto dto)
         {
             if(!ModelState.IsValid) return BadRequest("los datos ingresados no son correctos");
 

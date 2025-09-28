@@ -9,5 +9,6 @@ namespace APIconvenios.Interfaces.Repositorio
         Task<bool> Delete(ConvenioEspecifico convenio);
         void CreateConvenio(ConvenioEspecifico convenio);
         Task<bool> ModificarConvenioEspecifico(ConvenioEspecifico convenio);
+        IQueryable<ConvenioEspecifico> GetQuery();
     }
 }

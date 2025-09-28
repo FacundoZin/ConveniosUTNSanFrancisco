@@ -41,5 +41,10 @@ namespace APIconvenios.Repositorio
             int rowsaffected = await _Context.SaveChangesAsync();
             return rowsaffected > 0;
         }
+
+        public IQueryable<ConvenioMarco> GetQuery()
+        {
+            return _Context.ConveniosMarcos.AsQueryable();
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace APIconvenios.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> ActualizarConvenioMarco([FromBody] UpdateConvenioMarcoDto Dto)
+        public async Task<IActionResult> ActualizarConvenioMarco([FromBody] UpdateConvenioMarcoRequetsDto Dto)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -59,7 +59,7 @@ namespace APIconvenios.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var result = await _ConvenioService.CargarConvenioMarco(dto.ConvenioDto,dto.EmpresaDto);
+            var result = await _ConvenioService.CargarConvenioMarco(dto);
 
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
