@@ -23,29 +23,9 @@ namespace APIconvenios.Repositorio
 
         public async Task<InfoConvenioEspeficoDto> GetConvenioEspecificoCompleto(int id)
         {
-            var convenio = await _context.ConveniosEspecificos.Where(c => c.Id == id).Select(c => new InfoConvenioEspeficoDto
-            {
-                Id = c.Id,
-                ConvenioMarcoId = c.ConvenioMarcoId,
-                numeroconvenio = c.ConvenioMarco.numeroconvenio,
-                Titulo = c.Titulo,
-                FechaFirmaConvenio = c.FechaFirmaConvenio,
-                FechaFinConvenio = c.FechaFinConvenio,
-                FechaInicioActividades = c.FechaInicioActividades,
-                ComentarioOpcional = c.ComentarioOpcional,
-                Involucrados = c.Involucrados.Select(i => new InvolucradosDto
-                {
-                    Id = i.Id,
-                    Nombre = i.Nombre,
-                    Apellido = i.Apellido,
-                    Email = i.Email,
-                    Telefono = i.Telefono,
-                    Legajo = i.Legajo,
-                    RolInvolucrado = i.RolInvolucrado.ToString(),
-                }).ToList()
-            }).AsNoTracking().FirstAsync();
+            var convenio = await _context.ConveniosEspecificos.FirstAsync(c => c.Id == id);
 
-            return convenio;
+            return convenio.ToFullInfo();
         }
 
         public async Task<List<ConvenioEspecifico>> ListarConveniosEspecificos(int SaltoPaginas, int CantidadPaginas, 

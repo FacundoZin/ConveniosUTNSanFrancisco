@@ -20,11 +20,9 @@ namespace APIconvenios.Services
     public class ConvenioEspecificoService : IConvenioEspecifcoService
     {
         private readonly _UnitOfWork _UnitOfWork;
-        private readonly ConveniosFilterService _FilterService;
-        public ConvenioEspecificoService(_UnitOfWork unitOfWork, ConveniosFilterService filterService)
+        public ConvenioEspecificoService(_UnitOfWork unitOfWork)
         {
             _UnitOfWork = unitOfWork;
-            _FilterService = filterService;
         }
 
         public async Task<Result<ConvenioCreated>> CreateConvenioEspecifico(CargarConvenioEspecificoRequestDto Dto)
@@ -123,15 +121,6 @@ namespace APIconvenios.Services
             
 
             return Result<InfoConvenioEspeficoDto>.Exito(convenio);
-        }
-
-        public async Task<Result<object>> ObtenerConveniosEspecificos(ConvenioQueryObject Dto)
-        {
-            var result = await _FilterService.ListarConvenios(Dto);
-
-            if (!result.Exit) return Result<object>.Error("Lo sentimos algo salio mal", 500);
-
-            return result;
         }
     }
 }

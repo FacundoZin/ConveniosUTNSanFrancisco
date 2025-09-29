@@ -21,5 +21,6 @@ namespace APIconvenios.DTOs.ConvenioMarco
 
         public EmpresaDto? empresa { get; set; }
         public List<ConvenioEspecificoDto>? ConveniosEspecificos { get; set; }
+        public List<ArchivosAdjuntos>? ArchivosAdjuntos { get; set; }
     }
 }

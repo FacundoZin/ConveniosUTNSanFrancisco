@@ -1,4 +1,5 @@
 ﻿using APIconvenios.Common.Enums;
+using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Models;
@@ -77,6 +78,55 @@ namespace APIconvenios.Helpers.Mappers
             convenio.Estado = (convenioDto.Estado;
             convenio.NumeroResolucion = convenioDto.NumeroResolucion;
             convenio.Refrendado = convenioDto.Refrendado;
+        }
+
+        public static InfoConvenioMarcoDto ToFullInfo(this ConvenioMarco convenio)
+        {
+            return new InfoConvenioMarcoDto
+            {
+                Id = convenio.Id,
+                numeroconvenio = convenio.numeroconvenio,
+                Titulo = convenio.Titulo,
+                FechaFirmaConvenio = convenio.FechaFirmaConvenio,
+                FechaFin = convenio.FechaFin,
+                ComentarioOpcional = convenio.ComentarioOpcional,
+                Estado = convenio.Estado,
+                NumeroResolucion = convenio.NumeroResolucion,
+                Refrendado = convenio.Refrendado,
+                empresa = new EmpresaDto
+                {
+                    Id = convenio.Empresa!.Id,
+                    Nombre_Empresa = convenio.Empresa.Nombre,
+                    RazonSocial = convenio.Empresa.RazonSocial,
+                    Cuit = convenio.Empresa.Cuit,
+                    Direccion_Empresa = convenio.Empresa.Direccion,
+                    Telefono_Empresa = convenio.Empresa.Telefono,
+                    Email_Empresa = convenio.Empresa.Email
+                },
+                ConveniosEspecificos = convenio.ConveniosEspecificos?.Select(ce => new ConvenioEspecificoDto
+                {
+                    Id = ce.Id,
+                    Titulo = ce.TituloConvenio,
+                    numeroconvenio = ce.numeroconvenio,
+                    FechaFirmaConvenio = ce.FechaFirmaConvenio,
+                    FechaInicioActividades = ce.FechaInicioActividades
+                    FechaFin = ce.FechaFinConvenio,
+                    Estado = ce.Estado,
+                    Refrendado = ce.Refrendado,
+                    EsActa = ce.EsActa,
+                    ConvenioType = "especifico"
+                }).ToList(),
+
+                ArchivosAdjuntos = convenio.ArchivosAdjuntos.Select(aa => new ArchivosAdjuntos
+                {
+                    Id = aa.Id,
+                    NombreArchivo = aa.NombreArchivo,
+                    RutaArchivo = aa.RutaArchivo,
+                    ConvenioMarcoId = aa.ConvenioMarcoId,
+                    ConvenioEspecificoId = aa.ConvenioEspecificoId
+                }).ToList() 
+
+            };
         }
     }
 }

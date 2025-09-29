@@ -2,6 +2,7 @@
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
+using APIconvenios.Helpers.Mappers;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Models;
 using Microsoft.EntityFrameworkCore;
@@ -21,55 +22,11 @@ namespace APIconvenios.Repositorio
             _ContextFactory = contextfactory;
         }
 
-
-        public async Task<List<ConvenioMarco>> GetAllConveniosMarcos(int SaltoPaginas, int CantidadPaginas, 
-            Expression<Func<ConvenioMarco, bool>> filtro, Func<IQueryable<ConvenioMarco>, IOrderedQueryable<ConvenioMarco>>? ordenamiento = null)
-        {
-            await using var context = _ContextFactory.CreateDbContext();
-
-            var query = context.ConveniosMarcos.Include(c => c.Empresa).Where(filtro);
-
-            if (ordenamiento != null)
-                query = ordenamiento(query);
-
-            query.Skip(SaltoPaginas);
-            query.Take(CantidadPaginas);
-
-            return await query.ToListAsync();
-
-        }
-
         public async Task<InfoConvenioMarcoDto?> GetConvenioMarcosCompleto(int id)
         {
-            var convenio = await _Context.ConveniosMarcos.Where(c => c.Id == id).Select(c => new InfoConvenioMarcoDto
-            {
-                Idconvenio = c.Id,
-                Titulo = c.Titulo,
-                numeroconvenio = c.numeroconvenio,
-                FechaFirmaConvenio = c.FechaFirmaConvenio,
-                FechaFin = c.FechaFin,
-                ComentarioOpcional = c.ComentarioOpcional,
-                empresa = new EmpresaDto
-                {
-                    Nombre_Empresa = c.Empresa.Nombre,
-                    RazonSocial = c.Empresa.RazonSocial,
-                    Cuit = c.Empresa.Cuit,
-                    Direccion_Empresa = c.Empresa.Direccion,
-                    Telefono_Empresa = c.Empresa.Telefono,
-                    Email_Empresa = c.Empresa.Email
-                },
-                ConveniosEspecificos = c.ConveniosEspecificos.Select(ce => new ConvenioEspecificoDto
-                {
-                    Id = ce.Id,
-                    numeroconvenio = ce.numeroconvenio,
-                    Titulo = ce.Titulo,
-                    FechaFirmaConvenio = ce.FechaFirmaConvenio,
-                    FechaInicioActividades = ce.FechaInicioActividades,
-                    FechaFin = ce.FechaFinConvenio,
-                }).ToList(),
-            }).AsNoTracking().FirstOrDefaultAsync();
+            var convenio = await _Context.ConveniosMarcos.FirstAsync(c => c.Id == id);
 
-            return convenio;
+            return convenio.ToFullInfo();
         }
 
         public async Task<bool> TitleExist(string Title)

@@ -23,12 +23,10 @@ namespace APIconvenios.Services
     public class ConveniosMarcosServices : IConvenioMarcoService
     {
         private readonly _UnitOfWork _UnitOfWork;
-        private readonly ConveniosFilterService _FilterService;
 
         public ConveniosMarcosServices(_UnitOfWork unitOfWork, ConveniosFilterService FilterService)
         {
             _UnitOfWork = unitOfWork;
-            _FilterService = FilterService;
         }
 
         public async Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoRequetsDto requetsDto)
@@ -139,15 +137,6 @@ namespace APIconvenios.Services
             else
                 return Result<ConvenioCreated>.Error("No se pudo crear el convenio marco.", 500);
 
-        }
-
-        public async Task<Result<object>> ObtenerConveniosMarcos(ConvenioQueryObject queryObject)
-        {
-            var result = await _FilterService.ListarConvenios(queryObject);
-
-            if (!result.Exit) return Result<object>.Error("Lo sentimos algo salio mal", 500);
-
-            return result;
         }
     }
 }

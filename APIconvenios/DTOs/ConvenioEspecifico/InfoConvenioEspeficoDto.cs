@@ -1,4 +1,5 @@
 ﻿using APIconvenios.Common.Enums;
+using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Helpers.Validators;
 using APIconvenios.Models;
@@ -17,17 +18,14 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         public string? ComentarioOpcional { get; set; }
         public EstadoConvenio? Estado { get; set; }
         public bool EsActa { get; set; } = false;
-        public List<Carreras>? CarrerasInvolucradas { get; set; }
         public string? NumeroResolucion { get; set; }
         public bool Refrendado { get; set; } = false;
 
 
         public int? ConvenioMarcoId { get; set; }
-
+        public EmpresaDto? empresa { get; set; }
         public List<InvolucradosDto>? Involucrados { get; set; }
         public List<ArchivosAdjuntos>? DocumentosAdjuntos { get; set; }
-        public List<Carreras>? carreras { get; set; }
-
-
+        public List<Carreras>? CarrerasInvolucradas { get; set; }
     }
 }

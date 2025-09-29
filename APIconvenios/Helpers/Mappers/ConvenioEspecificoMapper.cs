@@ -1,4 +1,5 @@
 ﻿using APIconvenios.DTOs.ConvenioEspecifico;
+using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Models;
 using System.Runtime.CompilerServices;
@@ -7,7 +8,7 @@ namespace APIconvenios.Helpers.Mappers
 {
     public static class ConvenioEspecificoMapper
     {
-        public static ConvenioEspecifico UploadData (this InsertConvenioEspecificoDto dto)
+        public static ConvenioEspecifico UploadData(this InsertConvenioEspecificoDto dto)
         {
             return new ConvenioEspecifico
             {
@@ -24,7 +25,7 @@ namespace APIconvenios.Helpers.Mappers
             };
         }
 
-        public static ConvenioEspecifico UpdateConvenio (this ConvenioEspecifico ConvenioOriginal, UpdateConvenioEspecificoDto dto)
+        public static ConvenioEspecifico UpdateConvenio(this ConvenioEspecifico ConvenioOriginal, UpdateConvenioEspecificoDto dto)
         {
             ConvenioOriginal.TituloConvenio = dto.Titulo;
             ConvenioOriginal.numeroconvenio = dto.numeroconvenio;
@@ -40,10 +41,10 @@ namespace APIconvenios.Helpers.Mappers
             return ConvenioOriginal;
         }
 
-        public static List<ConvenioEspecificoDto> ToDto (this List<ConvenioEspecifico> convenios)
+        public static List<ConvenioEspecificoDto> ToDto(this List<ConvenioEspecifico> convenios)
         {
             return convenios.Select(c => new ConvenioEspecificoDto
-            {  
+            {
                 Id = c.Id,
                 numeroconvenio = c.numeroconvenio,
                 Titulo = c.TituloConvenio,
@@ -55,6 +56,63 @@ namespace APIconvenios.Helpers.Mappers
                 EsActa = c.EsActa,
                 Refrendado = c.Refrendado
             }).ToList();
+        }
+
+        public static InfoConvenioEspeficoDto ToFullInfo(this ConvenioEspecifico convenio)
+        {
+            return new InfoConvenioEspeficoDto
+            {
+                Id = convenio.Id,
+                numeroconvenio = convenio.numeroconvenio,
+                Titulo = convenio.TituloConvenio,
+                FechaFirmaConvenio = convenio.FechaFirmaConvenio,
+                FechaInicioActividades = convenio.FechaInicioActividades,
+                FechaFinConvenio = convenio.FechaFinConvenio,
+                ComentarioOpcional = convenio.ComentarioOpcional,
+                Estado = convenio.Estado,
+                EsActa = convenio.EsActa,
+                NumeroResolucion = convenio.NumeroResolucion,
+                Refrendado = convenio.Refrendado,
+
+                CarrerasInvolucradas = convenio.CarrerasInvolucradas?.Select(c => new Carreras
+                {
+                    Id = c.Id,
+                    Nombre = c.Nombre
+                }).ToList(),
+
+                ConvenioMarcoId = convenio.ConvenioMarcoId,
+
+                empresa = new EmpresaDto
+                {
+                    Id = convenio.empresa!.Id,
+                    Nombre_Empresa = convenio.empresa.Nombre,
+                    RazonSocial = convenio.empresa.RazonSocial,
+                    Cuit = convenio.empresa.Cuit,
+                    Direccion_Empresa = convenio.empresa.Direccion,
+                    Telefono_Empresa = convenio.empresa.Telefono,
+                    Email_Empresa = convenio.empresa.Email
+                },
+
+                Involucrados = convenio.Involucrados?.Select(i => new InvolucradosDto
+                {
+                    Id = i.Id,
+                    Nombre = i.Nombre,
+                    Apellido = i.Apellido,
+                    RolInvolucrado = i.RolInvolucrado.ToString(),
+                    Email = i.Email,
+                    Telefono = i.Telefono,
+                    Legajo = i.Legajo
+                }).ToList(),
+
+                DocumentosAdjuntos = convenio.ArchivosAdjuntos?.Select(a => new ArchivosAdjuntos
+                {
+                    Id = a.Id,
+                    NombreArchivo = a.NombreArchivo,
+                    RutaArchivo = a.RutaArchivo,
+                    ConvenioMarcoId = a.ConvenioMarcoId,
+                    ConvenioEspecificoId = a.ConvenioEspecificoId
+                }).ToList()
+            };
         }
     }
 }
