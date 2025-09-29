@@ -22,7 +22,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
 
                 var convenios = await query.Where(c => c.Estado == _Dto.Estado).ToListAsync();
 
-                if(convenios is null) return Result<object>.Error("No se encontraron convenios con el estado especificado.", 404);
+                if(convenios.Count == 0) return Result<object>.Error("No se encontraron convenios con el estado especificado.", 404);
 
                 return Result<object>.Exito(convenios.ToDto());
             }
@@ -32,7 +32,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
 
                 var convenios = await query.Where(c => c.Estado == _Dto.Estado).ToListAsync();
 
-                if (convenios is null) return Result<object>.Error("No se encontraron convenios con el estado especificado.", 404);
+                if (convenios.Count == 0) return Result<object>.Error("No se encontraron convenios con el estado especificado.", 404);
 
                 return Result<object>.Exito(convenios.ToDto());
             }

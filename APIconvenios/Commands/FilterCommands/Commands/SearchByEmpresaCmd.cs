@@ -24,7 +24,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                     _Dto.EmpresaName, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
 
-                if (convenios == null) return Result<object>.Error("No se encontraron convenios con la empresa especificada.", 404);
+                if (convenios.Count == 0) return Result<object>.Error("No se encontraron convenios con la empresa especificada.", 404);
 
                 return Result<object>.Exito(convenios.ToDto());
             }
@@ -35,7 +35,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var convenios = await query.Where(c => c.empresa.Nombre.Contains(
                     _Dto.EmpresaName, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-                if (convenios == null) return Result<object>.Error("No se encontraron convenios con la empresa especificada.", 404);
+                if (convenios.Count == 0) return Result<object>.Error("No se encontraron convenios con la empresa especificada.", 404);
 
                 return Result<object>.Exito(convenios.ToDto());
             }

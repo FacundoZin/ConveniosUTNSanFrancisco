@@ -4,7 +4,7 @@ namespace APIconvenios.DTOs.Filters
 {
     public class ByAntiguedadDto
     {
-        public bool asendente { get; set; } = true;
+        public bool ascendente { get; set; } = true;
         public ConvenioType ConvenioType { get; set; }
     }
 }

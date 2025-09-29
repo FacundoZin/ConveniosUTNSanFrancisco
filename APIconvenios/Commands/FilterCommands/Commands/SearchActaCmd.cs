@@ -19,7 +19,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
 
             var convenios = await query.Where(c => c.EsActa == true).ToListAsync();
 
-            if(convenios == null) return Result<object>.Error("No se encontraron convenios especificos de tipo acta", 404);
+            if(convenios.Count == 0) return Result<object>.Error("No se encontraron convenios especificos de tipo acta", 404);
 
             return Result<object>.Exito(convenios.ToDto());
         }

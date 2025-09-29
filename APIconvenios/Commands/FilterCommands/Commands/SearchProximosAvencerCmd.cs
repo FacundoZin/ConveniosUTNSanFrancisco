@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIconvenios.Commands.FilterCommands.Commands
 {
-    public class SearchByFechaFirmaCmd : IFilterCommands
+    public class SearchProximosAvencerCmd : IFilterCommands
     {
-        private readonly ByFechaFirmaDto _Dto;
-        public SearchByFechaFirmaCmd(ByFechaFirmaDto fechaFirma)
+        private readonly ByProximosAvencerDto _Dto;
+        public SearchProximosAvencerCmd(ByProximosAvencerDto dto)
         {
-            _Dto = fechaFirma;
+            _Dto = dto;
         }
 
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
@@ -19,20 +19,22 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             if(_Dto.convenioType.Type == "marco")
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
-                var convenios = await query.Where(c => c.FechaFirmaConvenio == _Dto.FechaInicio).ToListAsync();
 
-                if(convenios.Count == 0) return Result<object>.
-                        Error("No se encontraron convenios marco con la fecha de firma especificada.", 404);
+                var convenios = await query.OrderByDescending(c => c.FechaFin).Take(30).ToListAsync();
+
+                if (convenios.Count == 0) return Result<object>.
+                        Error("no hay convenios marcos registrados", 404);
 
                 return Result<object>.Exito(convenios.ToDto());
             }
             else
             {
                 var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
-                var convenios = await query.Where(c => c.FechaFirmaConvenio == _Dto.FechaInicio).ToListAsync();
+
+                var convenios = await query.OrderByDescending(c => c.FechaFinConvenio).Take(30).ToListAsync();
 
                 if (convenios.Count == 0) return Result<object>.
-                        Error("No se encontraron convenios especificos con la fecha de firma especificada.", 404);
+                        Error("no hay convenios marcos registrados", 404);
 
                 return Result<object>.Exito(convenios.ToDto());
             }

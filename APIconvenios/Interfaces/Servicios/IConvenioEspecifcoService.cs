@@ -13,5 +13,6 @@ namespace APIconvenios.Interfaces.Servicios
         Task<Result<object?>> DeleteConvenioEspecifico(int id);
         Task<Result<InfoConvenioEspeficoDto>> ObtenerConvenioEspecificoCompleto(int id);
         Task<Result<object?>> EditarConvenioEspecifico(UpdateConvenioEspecificoRequestDto Dto);
+        Task<Result<object>> ObtenerConveniosEspecificos(ConvenioQueryObject Dto);
     }
 }

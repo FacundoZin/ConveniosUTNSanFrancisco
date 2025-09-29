@@ -57,7 +57,6 @@ Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
 builder.Services.AddDbContextFactory<ApplicationDbContext>(opt =>
     opt.UseSqlite($"Data Source={dbPath}"));
 
-builder.Services.AddScoped<ConvenioQueryObjectValidator>();
 
 builder.Services.AddScoped<IConvenioMarcoService, ConveniosMarcosServices>();
 builder.Services.AddScoped<IConvenioEspecifcoService, ConvenioEspecificoService>();
@@ -66,7 +65,6 @@ builder.Services.AddScoped<IConveniosDocumentManager, ConveniosDocumentsManager>
 
 
 builder.Services.AddScoped<_UnitOfWork>();
-builder.Services.AddScoped<ConvenioQueryObjectValidator>();
 
 builder.Services.AddScoped<IConvenioEspecificoRepository, ConvenioEspecificoRepository>();
 builder.Services.AddScoped<IConvenioEspecificoReadRepository, ConvenioEspecificoReadRepository>();
@@ -101,6 +99,7 @@ var app = builder.Build();
 }*/
 
 // Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

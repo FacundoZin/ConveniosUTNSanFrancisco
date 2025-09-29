@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIconvenios.Commands.FilterCommands.Commands
 {
-    public class SearchByNumeroConvenio : IFilterCommands
+    public class SearchByNumeroConvenioCmd : IFilterCommands
     {
         private readonly ByNumeroConvenioDto _dto;
-        public SearchByNumeroConvenio(ByNumeroConvenioDto dto)
+        public SearchByNumeroConvenioCmd(ByNumeroConvenioDto dto)
         {
             _dto = dto;
         }
@@ -21,7 +21,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var Convenios = await query.Where(c => c.numeroconvenio.Contains(
                     _dto.NumeroConvenio, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-                if (Convenios == null) return Result<object>.Error("convenio no encontrado", 404);
+                if (Convenios.Count == 0) return Result<object>.Error("convenio no encontrado", 404);
 
                 return Result<object>.Exito(Convenios.ToDto());
             }
@@ -31,7 +31,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var Convenios = await query.Where(c => c.NumeroResolucion.Contains(
                     _dto.NumeroConvenio, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-                if (Convenios == null) return Result<object>.Error("convenio  no encontrado", 404);
+                if (Convenios.Count == 0) return Result<object>.Error("convenio  no encontrado", 404);
 
                 return Result<object>.Exito(Convenios.ToDto());
             }

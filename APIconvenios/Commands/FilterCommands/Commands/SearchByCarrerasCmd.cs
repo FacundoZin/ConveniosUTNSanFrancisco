@@ -1,6 +1,8 @@
 ﻿using APIconvenios.Common;
 using APIconvenios.DTOs.Filters;
+using APIconvenios.Helpers.Mappers;
 using APIconvenios.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace APIconvenios.Commands.FilterCommands.Commands
 {
@@ -12,11 +14,17 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             _Dto = dto;
         }
 
-        public Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
+        public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
            var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
 
-            var convenios = query.Where(c => c.CarrerasInvolucradas.Any());
+            var convenios = await query.Where(convenio => convenio.CarrerasInvolucradas
+            .Any(carrera => carrera.Nombre.ToLower() == _Dto.nombreCarrera.ToLower())).ToListAsync();
+
+            if (convenios.Count == 0) return Result<object>.Error("no se encontraron convenios asociados a la carrera seleccionada", 404);
+
+
+            return Result<object>.Exito(convenios.ToDto());
         }
     }
 }

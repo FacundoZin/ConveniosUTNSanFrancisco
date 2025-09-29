@@ -11,7 +11,8 @@ namespace APIconvenios.Interfaces.Servicios
         Task<Result<InfoConvenioMarcoDto?>> ObtenerConvenioMarcoCompleto(int id);
         Task<Result<bool>> BorrarConvenioMarco(int id);
         Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoRequetsDto requetsDto);
-        Task<Result<ConvenioCreated>> CargarConvenioMarco(CargarConvenioMarcoRequestDto);
+        Task<Result<ConvenioCreated>> CargarConvenioMarco(CargarConvenioMarcoRequestDto requestDto);
+        Task<Result<object>> ObtenerConveniosMarcos(ConvenioQueryObject queryObject);
 
     }
 }

@@ -22,7 +22,8 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var Convenios = await query.Where(c => c.TituloConvenio.Contains(
                     _dto.Title, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-                if (Convenios == null) return Result<object>.Error("No se encontraron convenios con ese título", 404);
+                if (Convenios.Count == 0) return Result<object>.
+                        Error("No se encontraron convenios con ese título", 404);
 
                 return Result<object>.Exito(Convenios.ToDto());
             }
@@ -33,7 +34,8 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var Convenios = await query.Where(c => c.Titulo.Contains(
                     _dto.Title, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-                if (Convenios == null) return Result<object>.Error("No se encontraron convenios con ese título", 404);
+                if (Convenios.Count == 0) return Result<object>.
+                        Error("No se encontraron convenios con ese título", 404);
 
                 return Result<object>.Exito(Convenios.ToDto());
             }

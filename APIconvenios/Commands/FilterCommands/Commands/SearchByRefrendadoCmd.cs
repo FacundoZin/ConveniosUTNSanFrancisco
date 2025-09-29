@@ -21,7 +21,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
                 var Convenios = await query.Where(c => c.Refrendado == true).ToListAsync();
 
-                if(Convenios == null) return Result<object>.Error("No se encontraron convenios refrendados", 404);
+                if(Convenios.Count == 0) return Result<object>.Error("No se encontraron convenios refrendados", 404);
 
                 return Result<object>.Exito(Convenios.ToDto());
             }
@@ -30,7 +30,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
                 var Convenios = await query.Where(c => c.Refrendado == true).ToListAsync();
 
-                if (Convenios == null) return Result<object>.Error("No se encontraron convenios refrendados", 404);
+                if (Convenios.Count == 0) return Result<object>.Error("No se encontraron convenios refrendados", 404);
 
                 return Result<object>.Exito(Convenios.ToDto());
             }

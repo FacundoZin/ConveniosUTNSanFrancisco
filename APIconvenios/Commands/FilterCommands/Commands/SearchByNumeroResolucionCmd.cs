@@ -22,7 +22,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var Convenios = await query.Where(c => c.NumeroResolucion.Contains(
                     _dto.NumeroResolucion, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-                if (Convenios == null) return Result<object>.Error("convenio no encontrado", 404);
+                if (Convenios.Count == 0) return Result<object>.Error("convenio no encontrado", 404);
 
                 return Result<object>.Exito(Convenios.ToDto());
             }
@@ -32,7 +32,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var Convenios = await query.Where(c => c.NumeroResolucion.Contains(
                     _dto.NumeroResolucion, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 
-                if (Convenios == null) return Result<object>.Error("convenio  no encontrado", 404);
+                if (Convenios.Count == 0) return Result<object>.Error("convenio  no encontrado", 404);
 
                 return Result<object>.Exito(Convenios.ToDto());
             }
