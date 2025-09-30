@@ -1,4 +1,5 @@
 ﻿using APIconvenios.Common.Enums;
+using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Helpers.Validators;
@@ -25,7 +26,7 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         public int? ConvenioMarcoId { get; set; }
         public EmpresaDto? empresa { get; set; }
         public List<InvolucradosDto>? Involucrados { get; set; }
-        public List<ArchivosAdjuntos>? DocumentosAdjuntos { get; set; }
+        public List<viewArchivoDto>? DocumentosAdjuntos { get; set; }
         public List<Carreras>? CarrerasInvolucradas { get; set; }
     }
 }

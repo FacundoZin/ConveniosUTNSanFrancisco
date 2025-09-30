@@ -2,18 +2,11 @@
 using APIconvenios.Commands.ConvenioEspecificoCommands.Commands;
 using APIconvenios.Common;
 using APIconvenios.DTOs.ConvenioEspecifico;
-using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Convenios;
-using APIconvenios.DTOs.Empresa;
-using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Helpers.Mappers;
-using APIconvenios.Helpers.Validators;
 using APIconvenios.Interfaces.Servicios;
-using APIconvenios.Models;
 using APIconvenios.UnitOfWork;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System;
-using System.Linq.Expressions;
+
 
 namespace APIconvenios.Services
 {

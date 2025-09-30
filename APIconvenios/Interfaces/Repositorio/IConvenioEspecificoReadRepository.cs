@@ -6,10 +6,6 @@ namespace APIconvenios.Interfaces.Repositorio
 {
     public interface IConvenioEspecificoReadRepository
     {
-        Task<List<ConvenioEspecifico>> ListarConveniosEspecificos(int SaltoPaginas, int CantidadPaginas,
-            Expression<Func<ConvenioEspecifico, bool>> filtro,
-            Func<IQueryable<ConvenioEspecifico>, IOrderedQueryable<ConvenioEspecifico>>? ordenamiento = null);
-
         Task<InfoConvenioEspeficoDto> GetConvenioEspecificoCompleto(int id);
         Task<bool> TitleExist(string title);
         Task<bool> TitleExistForUpdate(string title, int idConvenio);

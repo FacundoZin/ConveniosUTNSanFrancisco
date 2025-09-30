@@ -1,7 +1,10 @@
 ﻿using APIconvenios.Common;
+using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.Convenios;
+using APIconvenios.Helpers.Mappers;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Interfaces.Servicios;
+using APIconvenios.Models;
 using APIconvenios.UnitOfWork;
 
 namespace APIconvenios.Services
@@ -9,47 +12,24 @@ namespace APIconvenios.Services
     public class ConveniosDocumentsManager : IConveniosDocumentManager
     {
         private readonly _UnitOfWork _UnitOfWork;
+        private readonly string directorioArchivos = @"C:\conveniosdocuments\";
         public ConveniosDocumentsManager(_UnitOfWork unitOfWork)
         {
             _UnitOfWork = unitOfWork;
         }
 
-        public async Task<Result<ConvenioFileContentDto>> DownloadDocument(int idconvenio, string conveniotype)
+        public async Task<Result<ConvenioFileContentDto>> DownloadDocument(int idconvenio)
         {
-            string rutaArchivo = string.Empty;
-
             try
             {
-                if (conveniotype == "marco")
-                {
-                    var convenio = await _UnitOfWork._ConvenioMarcoRepository.GetByid(idconvenio);
-                    if (convenio == null || string.IsNullOrEmpty(convenio.RutaArchivo))
-                    {
-                        return Result<ConvenioFileContentDto>.Error("Este convenio no tiene un documento asociado", 404);
-                    }
-                    rutaArchivo = convenio.RutaArchivo;
-                }
-                else if (conveniotype == "especifico")
-                {
-                    var convenio = await _UnitOfWork._ConvenioEspecificoRepository.GetByid(idconvenio);
-                    if (convenio == null || string.IsNullOrEmpty(convenio.RutaArchivo))
-                    {
-                        return Result<ConvenioFileContentDto>.Error("Este convenio no tiene un docuumento asociado", 404);
-                    }
-                    rutaArchivo = convenio.RutaArchivo;
-                }
-                else
-                {
-                    return Result<ConvenioFileContentDto>.Error("Tipo de convenio no válido", 400);
-                }
+                var archivo = await _UnitOfWork._ArchivosRepository.GetArchivo(idconvenio);
 
-                if (!File.Exists(rutaArchivo))
+                if (!File.Exists(archivo.RutaArchivo))
                     return Result<ConvenioFileContentDto>.Error("El archivo no se encuentra en el servidor", 404);
                 
 
-                // Lee los bytes del archivo del disco.
-                byte[] fileBytes = await File.ReadAllBytesAsync(rutaArchivo);
-                string nombreArchivo = Path.GetFileName(rutaArchivo);
+                byte[] fileBytes = await File.ReadAllBytesAsync(archivo.RutaArchivo);
+                string nombreArchivo = Path.GetFileName(archivo.RutaArchivo);
 
                 var fileContent = new ConvenioFileContentDto
                 {
@@ -66,21 +46,23 @@ namespace APIconvenios.Services
             }
         }
 
-        public async Task<Result<bool>> UploadDocuemnt(IFormFile file, int idconvenio, string conveniotype)
+        public async Task<Result<bool>> UploadDocuemnt(InsertArchivoDto archivoDto)
         {
             try
             {
-                if (file == null || file.Length == 0)
+                if (archivoDto.file == null || archivoDto.file.Length == 0)
                     return Result<bool>.Error("No se seleccionó ningún archivo para subir", 400);
 
+                if(await _UnitOfWork._ArchivosRepository.NameArchivoExist(archivoDto.NombreArchivo))
+                    return Result<bool>.Error($"Ya existe un archivo con el nombre {archivoDto.NombreArchivo}, " +
+                        $"porfavor cambie el nombre para que el documento sea unico ", 400);
 
-                string uploadsFolder = @"C:\conveniosdocuments\";
 
-                if (!Directory.Exists(uploadsFolder))
+                if (!Directory.Exists(directorioArchivos))
                 {
                     try
                     {
-                        Directory.CreateDirectory(uploadsFolder);
+                        Directory.CreateDirectory(directorioArchivos);
                     }
                     catch (Exception ex)
                     {
@@ -88,10 +70,13 @@ namespace APIconvenios.Services
                     }
                 }
 
-                string nombreUnico = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string rutaCompleta = Path.Combine(uploadsFolder, nombreUnico);
+                string rutaCompleta = Path.Combine(directorioArchivos,archivoDto.NombreArchivo);
 
-                await FileUploadTransaction(file, rutaCompleta, idconvenio, conveniotype);
+                bool exit = await FileUploadTransaction(archivoDto.ToModel(), archivoDto.file, rutaCompleta);
+
+                if(!exit)
+                    return Result<bool>.Error("se produjo un error inesperado al cargar el documento en el servidor...",
+                        500);
 
                 return Result<bool>.Exito(true);
             }
@@ -102,30 +87,28 @@ namespace APIconvenios.Services
         }
 
 
-        private async Task FileUploadTransaction(IFormFile file, string rutaCompleta, int id, string convenioType)
+        private async Task<bool> FileUploadTransaction(ArchivosAdjuntos Archivo, IFormFile file, string RutaCompleta)
         {
-            using (var transaction = await _UnitOfWork.BeginTransaction())
+            try
             {
-                if (convenioType == "marco")
+                using (var transaction = await _UnitOfWork.BeginTransaction())
                 {
-                    var convenio = await _UnitOfWork._ConvenioMarcoRepository.GetByid(id);
-                    convenio.RutaArchivo = rutaCompleta;
-                }
-                else
-                {
-                    var convenio = await _UnitOfWork._ConvenioEspecificoRepository.GetByid(id);
-                    convenio.RutaArchivo = rutaCompleta;
-                }
+                    await _UnitOfWork._ArchivosRepository.InsertArchivo(Archivo);
 
-                await _UnitOfWork.Save(); 
+                    using (var stream = new FileStream(RutaCompleta, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
 
-                using (var stream = new FileStream(rutaCompleta, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
+                    await transaction.CommitAsync();
                 }
-
-                await transaction.CommitAsync();
+                return true;
             }
+            catch(Exception ex)
+            {
+                return false;
+            }
+
         }
     }
 }

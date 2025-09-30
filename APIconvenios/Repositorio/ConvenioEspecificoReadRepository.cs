@@ -28,31 +28,14 @@ namespace APIconvenios.Repositorio
             return convenio.ToFullInfo();
         }
 
-        public async Task<List<ConvenioEspecifico>> ListarConveniosEspecificos(int SaltoPaginas, int CantidadPaginas, 
-            Expression<Func<ConvenioEspecifico, bool>> filtro, Func<IQueryable<ConvenioEspecifico>, 
-                IOrderedQueryable<ConvenioEspecifico>>? ordenamiento = null)
-        {
-            await using var context = _ContextFactory.CreateDbContext();
-
-            var query = context.ConveniosEspecificos.Where(filtro);
-
-            if (ordenamiento != null)
-                query = ordenamiento(query);
-
-            query.Skip(SaltoPaginas);
-            query.Take(CantidadPaginas);
-
-            return await query.ToListAsync();
-        }
-
         public async Task<bool> TitleExist(string title)
         {           
-            return await _context.ConveniosEspecificos.AnyAsync(c => c.Titulo == title);
+            return await _context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio == title);
         }
 
         public async Task<bool> TitleExistForUpdate(string title, int idConvenio)
         {
-            return await _context.ConveniosEspecificos.AnyAsync(c => c.Titulo == title && c.Id != idConvenio);
+            return await _context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio == title && c.Id != idConvenio);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using APIconvenios.Common.Enums;
+using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
@@ -117,13 +118,10 @@ namespace APIconvenios.Helpers.Mappers
                     ConvenioType = "especifico"
                 }).ToList(),
 
-                ArchivosAdjuntos = convenio.ArchivosAdjuntos.Select(aa => new ArchivosAdjuntos
+                ArchivosAdjuntos = convenio.ArchivosAdjuntos.Select(aa => new viewArchivoDto
                 {
-                    Id = aa.Id,
+                    IdArchivo = aa.Id,
                     NombreArchivo = aa.NombreArchivo,
-                    RutaArchivo = aa.RutaArchivo,
-                    ConvenioMarcoId = aa.ConvenioMarcoId,
-                    ConvenioEspecificoId = aa.ConvenioEspecificoId
                 }).ToList() 
 
             };

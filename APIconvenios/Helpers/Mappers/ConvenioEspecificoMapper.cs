@@ -1,4 +1,5 @@
-﻿using APIconvenios.DTOs.ConvenioEspecifico;
+﻿using APIconvenios.DTOs.Archivo;
+using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Models;
@@ -104,13 +105,10 @@ namespace APIconvenios.Helpers.Mappers
                     Legajo = i.Legajo
                 }).ToList(),
 
-                DocumentosAdjuntos = convenio.ArchivosAdjuntos?.Select(a => new ArchivosAdjuntos
+                DocumentosAdjuntos = convenio.ArchivosAdjuntos?.Select(a => new viewArchivoDto
                 {
-                    Id = a.Id,
+                    IdArchivo = a.Id,
                     NombreArchivo = a.NombreArchivo,
-                    RutaArchivo = a.RutaArchivo,
-                    ConvenioMarcoId = a.ConvenioMarcoId,
-                    ConvenioEspecificoId = a.ConvenioEspecificoId
                 }).ToList()
             };
         }

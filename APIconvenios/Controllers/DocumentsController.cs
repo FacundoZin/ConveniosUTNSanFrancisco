@@ -1,4 +1,5 @@
-﻿using APIconvenios.DTOs.Convenios;
+﻿using APIconvenios.DTOs.Archivo;
+using APIconvenios.DTOs.Convenios;
 using APIconvenios.Interfaces.Servicios;
 using APIconvenios.Services;
 using Microsoft.AspNetCore.Http;
@@ -18,9 +19,9 @@ namespace APIconvenios.Controllers
 
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> UploadDocument([FromForm] UploadConvenioDocumentDto Dto )
+        public async Task<IActionResult> UploadDocument([FromForm] InsertArchivoDto Dto )
         {
-            var result = await _ConvenioDocumentsManager.UploadDocuemnt(Dto.File, Dto.IdConvenio, Dto.ConvenioType);
+            var result = await _ConvenioDocumentsManager.UploadDocuemnt(Dto);
 
             if(!result.Exit)
                 return StatusCode(result.Errorcode, result.Errormessage);   
@@ -29,9 +30,9 @@ namespace APIconvenios.Controllers
         }
 
         [HttpGet("{idConvenio}/{convenioType}")]
-        public async Task<IActionResult> DownloadDocument(int idConvenio, string convenioType)
+        public async Task<IActionResult> DownloadDocument(int IdDocumento)
         {
-            var result = await _ConvenioDocumentsManager.DownloadDocument(idConvenio, convenioType);
+            var result = await _ConvenioDocumentsManager.DownloadDocument(IdDocumento);
 
             if (!result.Exit)
                 return StatusCode(result.Errorcode, result.Errormessage);

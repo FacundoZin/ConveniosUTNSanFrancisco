@@ -1,4 +1,5 @@
 ﻿using APIconvenios.Common.Enums;
+using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Models;
@@ -21,6 +22,6 @@ namespace APIconvenios.DTOs.ConvenioMarco
 
         public EmpresaDto? empresa { get; set; }
         public List<ConvenioEspecificoDto>? ConveniosEspecificos { get; set; }
-        public List<ArchivosAdjuntos>? ArchivosAdjuntos { get; set; }
+        public List<viewArchivoDto>? ArchivosAdjuntos { get; set; }
     }
 }
