@@ -23,7 +23,7 @@ import SearchBar from '@/Components/SearchBar.vue';
 import { createConvenioQuery } from '@/Composables/CreateConvenioQueryObject';
 import ApiService from '@/Services/ApiService';
 import '@/Styles/Dashboard.css';
-import type { Convenioview } from '@/Types/Models';
+import type { Convenioview } from '@/Types/ViewModels';
 import { isAxiosError } from 'axios';
 import { ref } from 'vue';
 

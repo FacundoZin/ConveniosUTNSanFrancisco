@@ -27,7 +27,7 @@
 import ApiService from '@/Services/ApiService';
 import '@/Styles/EditConvenioEspecificoForm.css';
 import type { UpdateConvenioEspecificoDto } from '@/Types/Api.Interface';
-import type { ConvenioEspecificoCompleto } from '@/Types/Models';
+import type { ConvenioEspecificoCompleto } from '@/Types/ViewModels';
 import { isAxiosError } from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';

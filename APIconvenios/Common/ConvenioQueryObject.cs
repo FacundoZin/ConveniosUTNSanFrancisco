@@ -6,32 +6,32 @@ namespace APIconvenios.Common
     public class ConvenioQueryObject
     {
         //Barra de busqueda
-        public ByTitleDto? Titulo { get; set; }
-        public ByNumeroResolucionDto? NumeroResolucion { get; set; }
-        public ByNumeroConvenioDto? NumeroConvenio { get; set; }
-        public ByEmpresaDto? Empresa { get; set; }
+        public ByTitleDto? ByTitulo { get; set; }
+        public ByNumeroResolucionDto? ByNumeroResolucion { get; set; }
+        public ByNumeroConvenioDto? ByNumeroConvenio { get; set; }
+        public ByEmpresaDto? ByEmpresa { get; set; }
 
         //buscar actas
-        public ByIsActaDto? IsActa { get; set; }
+        public ByIsActaDto? ByIsActa { get; set; }
 
         //buscar convenios refrendados
-        public ByRefrendadoDto? Refrendado { get; set; }
+        public ByRefrendadoDto? ByIsRefrendado { get; set; }
 
         //filtrar por estado
-        public ByEstadoConvenioDto? Estado { get; set; }
+        public ByEstadoConvenioDto? ByEstado { get; set; }
 
         //filtrar por carreras involucradas
-        public ByCarreraInvolucradaDto? Carrera { get; set; }
+        public ByCarreraInvolucradaDto? ByCarrera { get; set; }
 
         //buscar por fechas
-        public ByFechaFirmaDto? FechaFirma { get; set; }
-        public ByFechaFinDto? FechaFin { get; set; }
+        public ByFechaFirmaDto? ByFechaFirma { get; set; }
+        public ByFechaFinDto? ByFechaFin { get; set; }
 
         //ordenar por antiguedad
-        public ByAntiguedadDto? AntiguedadDto { get; set; }
+        public ByAntiguedadDto? ByAntiguedadDto { get; set; }
 
         //buscar convenios proximos a vencimiento
-        public ByProximosAvencerDto? ProximosAvencer { get; set; }
+        public ByProximosAvencerDto? ByProximosAvencer { get; set; }
 
 
         public int PaginaActual { get; set; } = 1;

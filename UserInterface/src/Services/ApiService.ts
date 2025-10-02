@@ -1,5 +1,5 @@
 import type { CargarConvenioEspecificoRequestDto, CargarConvenioMarcoRequestDto, ConvenioQueryObject, UpdateConvenioEspecificoDto, UpdateConvenioMarcoDto, UploadConvenioDocument } from '@/Types/Api.Interface';
-import type { ConveniosResponse } from '@/Types/Models';
+import type { ConveniosResponse } from '@/Types/ViewModels';
 import axios from 'axios';
 
 

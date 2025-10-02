@@ -66,7 +66,7 @@
 import router from '@/router'
 import ApiService from '@/Services/ApiService'
 import '@/Styles/VistaConvenioMarco.css'
-import type { ConvenioMarcoCompleto } from '@/Types/Models'
+import type { ConvenioMarcoCompleto } from '@/Types/ViewModels'
 import { isAxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'

@@ -9,80 +9,82 @@ namespace APIconvenios.Services
 
         private readonly _UnitOfWork _UnitOfWork;
 
-        public ConveniosFilterService (_UnitOfWork unitOfWork)
+        public ConveniosFilterService(_UnitOfWork unitOfWork)
         {
             _UnitOfWork = unitOfWork;
         }
 
-        public async Task<Result<object>> ListarConvenios (ConvenioQueryObject queryObject)
+        public async Task<Result<object>> ListarConvenios(ConvenioQueryObject queryObject)
         {
-            if(queryObject.Titulo != null)
+            if (queryObject.ByTitulo != null)
             {
-                var cmd = new SearchByTitleCmd(queryObject.Titulo);
-                var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
-            }else if(queryObject.NumeroResolucion != null)
-            {
-                var cmd = new SearchByNumeroResolucionCmd(queryObject.NumeroResolucion);
-                var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
-            }else if (queryObject.NumeroConvenio != null)
-            {
-                var cmd = new SearchByNumeroConvenioCmd(queryObject.NumeroConvenio);
+                var cmd = new SearchByTitleCmd(queryObject.ByTitulo);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
-            else if(queryObject.Empresa != null)
+            else if (queryObject.ByNumeroResolucion != null)
             {
-                var cmd = new SearchByEmpresaCmd(queryObject.Empresa);
+                var cmd = new SearchByNumeroResolucionCmd(queryObject.ByNumeroResolucion);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
-            else if(queryObject.IsActa != null)
+            else if (queryObject.ByNumeroConvenio != null)
             {
-                var cmd = new SearchActaCmd(queryObject.IsActa);
+                var cmd = new SearchByNumeroConvenioCmd(queryObject.ByNumeroConvenio);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
-            else if(queryObject.Refrendado != null)
+            else if (queryObject.ByEmpresa != null)
             {
-                var cmd = new SearchByRefrendadoCmd(queryObject.Refrendado);
+                var cmd = new SearchByEmpresaCmd(queryObject.ByEmpresa);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
-            else if(queryObject.Estado != null)
+            else if (queryObject.ByIsActa != null)
             {
-                var cmd = new SearchByEstadoCmd(queryObject.Estado);
+                var cmd = new SearchActaCmd(queryObject.ByIsActa);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
-            else if(queryObject.Carrera != null)
+            else if (queryObject.ByIsRefrendado != null)
             {
-                var cmd = new SearchByCarrerasCmd(queryObject.Carrera);
+                var cmd = new SearchByRefrendadoCmd(queryObject.ByIsRefrendado);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
-            else if(queryObject.FechaFirma != null)
+            else if (queryObject.ByEstado != null)
             {
-                var cmd = new SearchByFechaFirmaCmd(queryObject.FechaFirma);
+                var cmd = new SearchByEstadoCmd(queryObject.ByEstado);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
-            else if(queryObject.FechaFin != null)
+            else if (queryObject.ByCarrera != null)
             {
-                var cmd = new SearchByFechaFinCmd(queryObject.FechaFin);
+                var cmd = new SearchByCarrerasCmd(queryObject.ByCarrera);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
-            else if (queryObject.AntiguedadDto != null)
+            else if (queryObject.ByFechaFirma != null)
             {
-                var cmd = new SearchByAntiguedadCmd(queryObject.AntiguedadDto);
+                var cmd = new SearchByFechaFirmaCmd(queryObject.ByFechaFirma);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
-            else if(queryObject.ProximosAvencer != null)
+            else if (queryObject.ByFechaFin != null)
             {
-                var cmd = new SearchProximosAvencerCmd(queryObject.ProximosAvencer);
+                var cmd = new SearchByFechaFinCmd(queryObject.ByFechaFin);
+                var result = await cmd.ExecuteAsync(_UnitOfWork);
+                return result;
+            }
+            else if (queryObject.ByAntiguedadDto != null)
+            {
+                var cmd = new SearchByAntiguedadCmd(queryObject.ByAntiguedadDto);
+                var result = await cmd.ExecuteAsync(_UnitOfWork);
+                return result;
+            }
+            else if (queryObject.ByProximosAvencer != null)
+            {
+                var cmd = new SearchProximosAvencerCmd(queryObject.ByProximosAvencer);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }

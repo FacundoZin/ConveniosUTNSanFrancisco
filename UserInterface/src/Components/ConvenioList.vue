@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import router from '@/router';
 import '@/Styles/ConvenioList.css';
-import type { Convenioview } from '@/Types/Models';
+import type { Convenioview } from '@/Types/ViewModels';
 
 function VerConvenioCompleto(id: number, TypeConvenio: string) {
 

@@ -27,7 +27,7 @@
 import ApiService from '@/Services/ApiService';
 import '@/Styles/EditConvenioMarcoForm.css';
 import type { UpdateConvenioMarcoDto } from '@/Types/Api.Interface';
-import type { ConvenioMarcoCompleto } from '@/Types/Models';
+import type { ConvenioMarcoCompleto } from '@/Types/ViewModels';
 import { isAxiosError } from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
