@@ -4,7 +4,6 @@ using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Models;
-using System.Runtime.CompilerServices;
 
 namespace APIconvenios.Helpers.Mappers
 {
@@ -21,7 +20,7 @@ namespace APIconvenios.Helpers.Mappers
                     Id = Convenio.Id,
                     Titulo = Convenio.Titulo,
                     numeroconvenio = Convenio.numeroconvenio,
-                    NombreEmpresa = Convenio.Empresa?.Nombre,
+                    NombreEmpresa = Convenio.Empresa.Nombre,
                     FechaFirmaConvenio = Convenio.FechaFirmaConvenio,
                     FechaFin = Convenio.FechaFin,
                     Estado = Convenio.Estado,
@@ -46,28 +45,7 @@ namespace APIconvenios.Helpers.Mappers
             return convenio;
         }
 
-        public static ConvenioMarco ConverToConvenioMarco(this InsertConvenioMarcoDto ConvenioDto, InsertEmpresaDto empresaDto)
-        {
-            return new ConvenioMarco
-            {
-                numeroconvenio = ConvenioDto.numeroconvenio,
-                Titulo = ConvenioDto.Titulo,
-                FechaFirmaConvenio = ConvenioDto.FechaFirmaConvenio,
-                FechaFin = ConvenioDto.FechaFin,
-                ComentarioOpcional = ConvenioDto.ComentarioOpcional,
 
-
-                Empresa = new Empresa
-                {
-                    Nombre = empresaDto.Nombre,
-                    RazonSocial = empresaDto.RazonSocial,
-                    Cuit = empresaDto.Cuit,
-                    Direccion = empresaDto.Direccion,
-                    Telefono = empresaDto.Telefono,
-                    Email = empresaDto.Email
-                }
-            };
-        }
 
         public static void UploadData(this ConvenioMarco convenio, InsertConvenioMarcoDto convenioDto)
         {
@@ -76,7 +54,7 @@ namespace APIconvenios.Helpers.Mappers
             convenio.FechaFirmaConvenio = convenioDto.FechaFirmaConvenio;
             convenio.FechaFin = convenioDto.FechaFin;
             convenio.ComentarioOpcional = convenioDto.ComentarioOpcional;
-            convenio.Estado = (convenioDto.Estado;
+            convenio.Estado = convenioDto.Estado;
             convenio.NumeroResolucion = convenioDto.NumeroResolucion;
             convenio.Refrendado = convenioDto.Refrendado;
         }
@@ -94,23 +72,25 @@ namespace APIconvenios.Helpers.Mappers
                 Estado = convenio.Estado,
                 NumeroResolucion = convenio.NumeroResolucion,
                 Refrendado = convenio.Refrendado,
-                empresa = new EmpresaDto
+                empresa = convenio.Empresa != null
+                ? new EmpresaDto
                 {
-                    Id = convenio.Empresa!.Id,
+                    Id = convenio.Empresa.Id,
                     Nombre_Empresa = convenio.Empresa.Nombre,
                     RazonSocial = convenio.Empresa.RazonSocial,
                     Cuit = convenio.Empresa.Cuit,
                     Direccion_Empresa = convenio.Empresa.Direccion,
                     Telefono_Empresa = convenio.Empresa.Telefono,
                     Email_Empresa = convenio.Empresa.Email
-                },
+                }: null,
+
                 ConveniosEspecificos = convenio.ConveniosEspecificos?.Select(ce => new ConvenioEspecificoDto
                 {
                     Id = ce.Id,
                     Titulo = ce.TituloConvenio,
                     numeroconvenio = ce.numeroconvenio,
                     FechaFirmaConvenio = ce.FechaFirmaConvenio,
-                    FechaInicioActividades = ce.FechaInicioActividades
+                    FechaInicioActividades = ce.FechaInicioActividades,
                     FechaFin = ce.FechaFinConvenio,
                     Estado = ce.Estado,
                     Refrendado = ce.Refrendado,
@@ -118,7 +98,7 @@ namespace APIconvenios.Helpers.Mappers
                     ConvenioType = "especifico"
                 }).ToList(),
 
-                ArchivosAdjuntos = convenio.ArchivosAdjuntos.Select(aa => new viewArchivoDto
+                ArchivosAdjuntos = convenio.ArchivosAdjuntos?.Select(aa => new viewArchivoDto
                 {
                     IdArchivo = aa.Id,
                     NombreArchivo = aa.NombreArchivo,

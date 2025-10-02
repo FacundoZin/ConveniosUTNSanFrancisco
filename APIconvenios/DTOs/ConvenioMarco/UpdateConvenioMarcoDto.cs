@@ -1,5 +1,6 @@
 ﻿using APIconvenios.Common.Enums;
 using APIconvenios.Helpers.Validators;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioMarco
@@ -12,8 +13,12 @@ namespace APIconvenios.DTOs.ConvenioMarco
         public DateOnly? FechaFirmaConvenio { get; set; }
         public DateOnly? FechaFin { get; set; }
         public string? ComentarioOpcional { get; set; }
+
+        [DefaultValue(EstadoConvenio.Borrador)]
         public EstadoConvenio Estado { get; set; }
         public string? NumeroResolucion { get; set; }
+
+        [DefaultValue(false)]
         public bool Refrendado { get; set; } = false;
     }
 }

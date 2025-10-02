@@ -19,7 +19,8 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             if (_Dto.convenioType.Type == "marco")
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
-                var convenios = await query.Where(c => c.FechaFin == _Dto.FechaFin).ToListAsync();
+                var convenios = await query.Where(c => c.FechaFin == _Dto.FechaFin)
+                    .Include(c => c.Empresa).ToListAsync();
 
                 if (convenios.Count == 0) return Result<object>.
                         Error("No se encontraron convenios marco con la fecha de finalizacion especificada.", 404);
@@ -29,7 +30,8 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             else
             {
                 var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
-                var convenios = await query.Where(c => c.FechaFinConvenio == _Dto.FechaFin).ToListAsync();
+                var convenios = await query.Where(c => c.FechaFinConvenio == _Dto.FechaFin)
+                    .Include(c => c.empresa).ToListAsync();
 
                 if (convenios.Count == 0) return Result<object>.
                         Error("No se encontraron convenios especificos con la fecha de finalizacion especificada.", 404);

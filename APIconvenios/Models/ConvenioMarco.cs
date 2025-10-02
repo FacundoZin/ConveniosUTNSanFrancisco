@@ -14,9 +14,9 @@ namespace APIconvenios.Models
         public string? NumeroResolucion { get; set; }
         public bool Refrendado { get; set; } = false;
 
-        public List<ConvenioEspecifico>? ConveniosEspecificos { get; set; }
+        public List<ConvenioEspecifico>? ConveniosEspecificos { get; set; } = new List<ConvenioEspecifico>();
         public int? EmpresaId { get; set; }
         public Empresa? Empresa { get; set; }
-        public List<ArchivosAdjuntos>? ArchivosAdjuntos { get; set; }
+        public List<ArchivosAdjuntos>? ArchivosAdjuntos { get; set; } = new List<ArchivosAdjuntos>();
     }
 }

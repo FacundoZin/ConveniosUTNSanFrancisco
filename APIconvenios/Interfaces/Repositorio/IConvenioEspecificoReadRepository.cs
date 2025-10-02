@@ -6,7 +6,7 @@ namespace APIconvenios.Interfaces.Repositorio
 {
     public interface IConvenioEspecificoReadRepository
     {
-        Task<InfoConvenioEspeficoDto> GetConvenioEspecificoCompleto(int id);
+        Task<InfoConvenioEspeficoDto?> GetConvenioEspecificoCompleto(int id);
         Task<bool> TitleExist(string title);
         Task<bool> TitleExistForUpdate(string title, int idConvenio);
 

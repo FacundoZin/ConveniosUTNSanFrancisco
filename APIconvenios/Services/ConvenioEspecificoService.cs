@@ -30,8 +30,8 @@ namespace APIconvenios.Services
             if (Dto.idCarreras != null)
                 Commnands.Add(new LinkCarrerasCmd(Dto.idCarreras));
 
-            if (Dto.empresaDto != null)
-                Commnands.Add(new LinkEmpresaToEspecificoCmd(Dto.empresaDto));
+            if (Dto.InsertEmpresaDto != null)
+                Commnands.Add(new LinkEmpresaToEspecificoCmd(Dto.InsertEmpresaDto));
 
             if (Dto.IdConvenioMarcoVinculado != null)
                 Commnands.Add(new LinkerConvMarcoCmd((int)Dto.IdConvenioMarcoVinculado));
@@ -39,6 +39,7 @@ namespace APIconvenios.Services
             foreach(var command in Commnands)
                 await command.ExecuteAsync(Convenio, _UnitOfWork);
 
+            _UnitOfWork._ConvenioEspecificoRepository.CreateConvenio(Convenio);
             int rowsAffected = await _UnitOfWork.Save();
 
             if (rowsAffected > 0)
@@ -56,7 +57,10 @@ namespace APIconvenios.Services
                 if (convenio == null)
                     return Result<object?>.Error($"el convenio no existe", 404);
 
-                if (!await _UnitOfWork._ConvenioEspecificoRepository.Delete(convenio))
+                _UnitOfWork._ConvenioEspecificoRepository.Delete(convenio);
+                int rowsAffected = await _UnitOfWork.Save();
+
+                if (rowsAffected == 0)
                 {
                     return Result<object?>.Error($"Error al eliminar el convenio especifico", 500);
                 }
@@ -83,8 +87,8 @@ namespace APIconvenios.Services
                 commands.Add(new InsertInvolucradorToConvEspCmd(Dto.InsertInvolucradosDtos));
             if(Dto.idCarreras != null && Dto.idCarreras.Length > 0)
                 commands.Add(new LinkCarrerasCmd(Dto.idCarreras));
-            if(Dto.empresaDto != null)
-                commands.Add(new LinkEmpresaToEspecificoCmd(Dto.empresaDto));
+            if(Dto.InsertEmpresaDto != null)
+                commands.Add(new LinkEmpresaToEspecificoCmd(Dto.InsertEmpresaDto));
             if(Dto.IdsInvolucraodsEliminados != null && Dto.IdsInvolucraodsEliminados.Any())
                 commands.Add(new UnlinkInvolucradosCmd(Dto.IdsInvolucraodsEliminados));
             if (Dto.IdConvenioMarcoVinculado != null)
@@ -97,6 +101,7 @@ namespace APIconvenios.Services
             foreach (var command in commands)
                 await command.ExecuteAsync(Convenio, _UnitOfWork);
 
+            _UnitOfWork._ConvenioEspecificoRepository.ModificarConvenioEspecifico(Convenio);
             int rowsAffected = await _UnitOfWork.Save();
 
 

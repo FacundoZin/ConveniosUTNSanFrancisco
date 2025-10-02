@@ -39,21 +39,24 @@ namespace APIconvenios.Services
             if (requetsDto.UpdateConvenioMarcoDto != null)
                 commands.Add(new UpdateConvMarcoDataCmd(requetsDto.UpdateConvenioMarcoDto));
 
-            if (requetsDto.InsertEmpresaDto != null && requetsDto.InsertEmpresaDto.Id != null)
+            if (requetsDto.InsertEmpresaDto != null)
                 commands.Add(new LinkEmpresaToMarcoCmd(requetsDto.InsertEmpresaDto));
 
             if (requetsDto.EmpresaDesvinculada)
                 commands.Add(new UnlinkEmpresaFromMarcoCmd());
 
-            if (requetsDto.IdsConveniosEspecificosParaVincular?.Any() == true)
+            if (requetsDto.IdsConveniosEspecificosParaVincular != null 
+                && requetsDto.IdsConveniosEspecificosParaVincular?.Length > 0)
                 commands.Add(new LinkerConvEspCmd(requetsDto.IdsConveniosEspecificosParaVincular));
 
-            if (requetsDto.IdsConveniosEspecificosParaDesvincular?.Any() == true)
+            if (requetsDto.IdsConveniosEspecificosParaDesvincular != null
+                && requetsDto.IdsConveniosEspecificosParaDesvincular?.Length > 0)
                 commands.Add(new UnlinkConvEspCmd(requetsDto.IdsConveniosEspecificosParaDesvincular));
 
             foreach (var cmd in commands)
                 await cmd.ExecuteAsync(Convenio, _UnitOfWork);
 
+            _UnitOfWork._ConvenioMarcoRepository.ModificarConvenioMarco(Convenio);
             int rowsAffected = await _UnitOfWork.Save();
 
             if (rowsAffected > 0)
@@ -70,9 +73,10 @@ namespace APIconvenios.Services
 
                 if (convenio == null) return Result<bool>.Error("El convenio que quiere borrar no existe", 404);
 
-                bool exit = await _UnitOfWork._ConvenioMarcoRepository.Delete(convenio);
+                _UnitOfWork._ConvenioMarcoRepository.Delete(convenio);
+                int rowsAffected = await _UnitOfWork.Save();
 
-                if (!exit)
+                if (rowsAffected == 0)
                 {
                     return Result<bool>.Error("Ocurrio un error al eliminar el convenio marco", 500);
                 }
@@ -120,16 +124,18 @@ namespace APIconvenios.Services
 
             var commands = new List<IConvMarcoCommand>();
 
-            if (requestDto.InsertEmpresaDto != null && requestDto.InsertEmpresaDto.Id != null)
+            if (requestDto.InsertEmpresaDto != null)
                 commands.Add(new LinkEmpresaToMarcoCmd(requestDto.InsertEmpresaDto));
 
-            if (requestDto.IdsConveniosEspecificosParaVincular?.Any() == true)
+            if (requestDto.IdsConveniosEspecificosParaVincular != null
+                && requestDto.IdsConveniosEspecificosParaVincular?.Length > 0)
                 commands.Add(new LinkerConvEspCmd(requestDto.IdsConveniosEspecificosParaVincular));
 
 
             foreach (var cmd in commands)
                 await cmd.ExecuteAsync(convenio, _UnitOfWork);
 
+            _UnitOfWork._ConvenioMarcoRepository.CreateConvenio(convenio);
             int rowsAffected = await _UnitOfWork.Save();
 
             if (rowsAffected > 0)

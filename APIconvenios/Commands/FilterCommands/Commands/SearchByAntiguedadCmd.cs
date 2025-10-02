@@ -25,7 +25,10 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var convenios = new List<APIconvenios.Models.ConvenioMarco>();
 
                 if(_Dto.ascendente)
-                    convenios = await query.OrderBy(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
+                    convenios = await query
+                        .Where(c => c.FechaFirmaConvenio != null)
+                        .Include(c => c.Empresa)
+                        .OrderBy(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
 
                 convenios = await query.OrderByDescending(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
 
@@ -40,7 +43,10 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 var convenios = new List<APIconvenios.Models.ConvenioEspecifico>();
 
                 if (_Dto.ascendente)
-                    convenios = await query.OrderBy(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
+                    convenios = await query
+                        .Where(c => c.FechaFirmaConvenio != null)
+                        .Include(c => c.empresa)
+                        .OrderBy(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
 
                 convenios = await query.OrderByDescending(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
 

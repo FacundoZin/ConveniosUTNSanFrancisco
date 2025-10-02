@@ -19,7 +19,8 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             if(_Dto.convenioType.Type == "marco")
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
-                var Convenios = await query.Where(c => c.Refrendado == true).ToListAsync();
+                var Convenios = await query.Where(c => c.Refrendado == true)
+                    .Include(c => c.Empresa).ToListAsync();
 
                 if(Convenios.Count == 0) return Result<object>.Error("No se encontraron convenios refrendados", 404);
 
@@ -28,7 +29,8 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             else
             {
                 var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
-                var Convenios = await query.Where(c => c.Refrendado == true).ToListAsync();
+                var Convenios = await query.Where(c => c.Refrendado == true)
+                    .Include(c => c.empresa).ToListAsync();
 
                 if (Convenios.Count == 0) return Result<object>.Error("No se encontraron convenios refrendados", 404);
 

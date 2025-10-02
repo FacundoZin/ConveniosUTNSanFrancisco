@@ -21,6 +21,7 @@ namespace APIconvenios.Commands.ConvenioMarco.commands
                 convenio.EmpresaId = _Dto.Id;
             else
                 convenio.Empresa = _Dto.ToEmpresa();
+            await Task.CompletedTask;
         }
     }
 }

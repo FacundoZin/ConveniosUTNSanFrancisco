@@ -6,9 +6,9 @@ namespace APIconvenios.Interfaces.Repositorio
     public interface IConvenioMarcoRepository
     {
         Task<ConvenioMarco?> GetByid(int id);
-        Task<bool> Delete(ConvenioMarco convenio);
+        void Delete(ConvenioMarco convenio);
         void CreateConvenio(ConvenioMarco convenioMarco);
-        Task<bool> ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado);
+        void ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado);
         IQueryable<ConvenioMarco> GetQuery();
     }
 }

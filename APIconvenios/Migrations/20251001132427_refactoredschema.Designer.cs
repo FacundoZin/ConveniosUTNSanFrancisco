@@ -11,14 +11,85 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIconvenios.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250819133419_MigrationToSqlLite")]
-    partial class MigrationToSqlLite
+    [Migration("20251001132427_refactoredschema")]
+    partial class refactoredschema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.6");
+
+            modelBuilder.Entity("APIconvenios.Models.ArchivosAdjuntos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ConvenioEspecificoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ConvenioMarcoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("NombreArchivo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RutaArchivo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConvenioEspecificoId");
+
+                    b.HasIndex("ConvenioMarcoId");
+
+                    b.ToTable("ArchivosAdjuntos");
+                });
+
+            modelBuilder.Entity("APIconvenios.Models.Carreras", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carreras");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Ingeniería Química"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Ingeniería en Sistemas"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nombre = "Ingeniería Electrónica"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Nombre = "Ingeniería Electromecánica"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Nombre = "Tecnicatura en Programación"
+                        });
+                });
 
             modelBuilder.Entity("APIconvenios.Models.ConvenioEspecifico", b =>
                 {
@@ -29,31 +100,44 @@ namespace APIconvenios.Migrations
                     b.Property<string>("ComentarioOpcional")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ConvenioMarcoId")
+                    b.Property<int?>("ConvenioMarcoId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly>("FechaFinConvenio")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateOnly>("FechaFirmaConvenio")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateOnly>("FechaInicioActividades")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("RutaArchivo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("numeroconvenio")
+                    b.Property<int?>("EmpresaId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EsActa")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Estado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly?>("FechaFinConvenio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("FechaFirmaConvenio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("FechaInicioActividades")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NumeroResolucion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Refrendado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TituloConvenio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("numeroconvenio")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ConvenioMarcoId");
+
+                    b.HasIndex("EmpresaId");
 
                     b.ToTable("ConveniosEspecificos");
                 });
@@ -67,24 +151,29 @@ namespace APIconvenios.Migrations
                     b.Property<string>("ComentarioOpcional")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("EmpresaId")
+                    b.Property<int?>("EmpresaId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly>("FechaFin")
+                    b.Property<int>("Estado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly?>("FechaFin")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly>("FechaFirmaConvenio")
+                    b.Property<DateOnly?>("FechaFirmaConvenio")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("RutaArchivo")
+                    b.Property<string>("NumeroResolucion")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("Refrendado")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Titulo")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("numeroconvenio")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("numeroconvenio")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -100,30 +189,22 @@ namespace APIconvenios.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Cuit")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Direccion")
-                        .IsRequired()
-                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RazonSocial")
-                        .IsRequired()
-                        .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Telefono")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -142,10 +223,9 @@ namespace APIconvenios.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Legajo")
+                    b.Property<int?>("Legajo")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
@@ -156,12 +236,26 @@ namespace APIconvenios.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Telefono")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Involucrados");
+                });
+
+            modelBuilder.Entity("CarrerasConvenioEspecifico", b =>
+                {
+                    b.Property<int>("CarrerasInvolucradasId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ConveniosInvolucradosId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CarrerasInvolucradasId", "ConveniosInvolucradosId");
+
+                    b.HasIndex("ConveniosInvolucradosId");
+
+                    b.ToTable("CarrerasConvenioEspecifico");
                 });
 
             modelBuilder.Entity("ConvenioEspecificoInvolucrados", b =>
@@ -179,26 +273,54 @@ namespace APIconvenios.Migrations
                     b.ToTable("ConvenioEspecificoInvolucrados");
                 });
 
+            modelBuilder.Entity("APIconvenios.Models.ArchivosAdjuntos", b =>
+                {
+                    b.HasOne("APIconvenios.Models.ConvenioEspecifico", null)
+                        .WithMany("ArchivosAdjuntos")
+                        .HasForeignKey("ConvenioEspecificoId");
+
+                    b.HasOne("APIconvenios.Models.ConvenioMarco", null)
+                        .WithMany("ArchivosAdjuntos")
+                        .HasForeignKey("ConvenioMarcoId");
+                });
+
             modelBuilder.Entity("APIconvenios.Models.ConvenioEspecifico", b =>
                 {
                     b.HasOne("APIconvenios.Models.ConvenioMarco", "ConvenioMarco")
                         .WithMany("ConveniosEspecificos")
-                        .HasForeignKey("ConvenioMarcoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ConvenioMarcoId");
+
+                    b.HasOne("APIconvenios.Models.Empresa", "empresa")
+                        .WithMany()
+                        .HasForeignKey("EmpresaId");
 
                     b.Navigation("ConvenioMarco");
+
+                    b.Navigation("empresa");
                 });
 
             modelBuilder.Entity("APIconvenios.Models.ConvenioMarco", b =>
                 {
                     b.HasOne("APIconvenios.Models.Empresa", "Empresa")
                         .WithMany()
-                        .HasForeignKey("EmpresaId")
+                        .HasForeignKey("EmpresaId");
+
+                    b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("CarrerasConvenioEspecifico", b =>
+                {
+                    b.HasOne("APIconvenios.Models.Carreras", null)
+                        .WithMany()
+                        .HasForeignKey("CarrerasInvolucradasId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Empresa");
+                    b.HasOne("APIconvenios.Models.ConvenioEspecifico", null)
+                        .WithMany()
+                        .HasForeignKey("ConveniosInvolucradosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ConvenioEspecificoInvolucrados", b =>
@@ -216,8 +338,15 @@ namespace APIconvenios.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("APIconvenios.Models.ConvenioEspecifico", b =>
+                {
+                    b.Navigation("ArchivosAdjuntos");
+                });
+
             modelBuilder.Entity("APIconvenios.Models.ConvenioMarco", b =>
                 {
+                    b.Navigation("ArchivosAdjuntos");
+
                     b.Navigation("ConveniosEspecificos");
                 });
 #pragma warning restore 612, 618

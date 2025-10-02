@@ -17,6 +17,7 @@ namespace APIconvenios.Commands.ConvenioMarcoCommands.commands
         public async Task ExecuteAsync(APIconvenios.Models.ConvenioMarco convenio, _UnitOfWork _unitOfWork)
         {
             convenio.UpdateData(_dto);
+            await Task.CompletedTask;
         }
     }
 }

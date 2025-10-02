@@ -1,6 +1,7 @@
 ﻿using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Models;
+using System.ComponentModel;
 
 namespace APIconvenios.DTOs.ConvenioEspecifico
 {
@@ -9,10 +10,14 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         public UpdateConvenioEspecificoDto UpdateConvenioDto { get; set; }
         public List<InsertInvolucradosDto>? InsertInvolucradosDtos { get; set; } 
         public int[]? idCarreras { get; set; }
-        public InsertEmpresaDto? empresaDto { get; set; }
+        public InsertEmpresaDto? InsertEmpresaDto { get; set; }
         public int[]? IdsInvolucraodsEliminados { get; set; }
         public int? IdConvenioMarcoVinculado { get; set; }
+
+        [DefaultValue(false)]
         public bool DesvincularConvenioMarco { get; set; } = false;
+
+        [DefaultValue(false)]
         public bool DesvincularEmpresa { get; set; } = false;
     }
 }

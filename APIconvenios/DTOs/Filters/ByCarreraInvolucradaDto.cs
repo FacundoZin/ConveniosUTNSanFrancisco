@@ -7,3 +7,4 @@ namespace APIconvenios.DTOs.Filters
         public string nombreCarrera { get; set; } = string.Empty;
         public string conveniotype { get; set; } = "especifico";
     }
+}

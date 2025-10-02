@@ -20,7 +20,9 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
 
-                var convenios = await query.OrderByDescending(c => c.FechaFin).Take(30).ToListAsync();
+                var convenios = await query
+                    .Where(c => c.FechaFin != null)
+                    .OrderByDescending(c => c.FechaFin).Take(30).Include(c => c.Empresa).ToListAsync();
 
                 if (convenios.Count == 0) return Result<object>.
                         Error("no hay convenios marcos registrados", 404);
@@ -31,7 +33,9 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             {
                 var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
 
-                var convenios = await query.OrderByDescending(c => c.FechaFinConvenio).Take(30).ToListAsync();
+                var convenios = await query
+                    .Where(c => c.FechaFinConvenio != null)
+                    .OrderByDescending(c => c.FechaFinConvenio).Take(30).Include(c => c.empresa).ToListAsync();
 
                 if (convenios.Count == 0) return Result<object>.
                         Error("no hay convenios marcos registrados", 404);

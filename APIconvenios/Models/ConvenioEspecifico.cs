@@ -23,11 +23,11 @@ namespace APIconvenios.Models
         public int? EmpresaId { get; set; }
         public Empresa? empresa { get; set; }
 
-        public List<ArchivosAdjuntos>? ArchivosAdjuntos { get; set; }
+        public List<ArchivosAdjuntos>? ArchivosAdjuntos { get; set; } = new List<ArchivosAdjuntos>();
 
-        public List<Involucrados>? Involucrados { get; set; }
+        public List<Involucrados>? Involucrados { get; set; } = new List<Involucrados>();
 
-        public List<Carreras>? CarrerasInvolucradas { get; set; }
+        public List<Carreras>? CarrerasInvolucradas { get; set; } = new List<Carreras>();
 
     }
 }

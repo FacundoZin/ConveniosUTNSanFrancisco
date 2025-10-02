@@ -23,7 +23,8 @@ namespace APIconvenios.UnitOfWork
         public _UnitOfWork(ApplicationDbContext applicationDbContext, IConvenioEspecificoRepository convenioEspecificorepo,
             IConvenioEspecificoReadRepository convespreadrepo,
             IConvenioMarcoRepository convmarcRepository, IConvenioMarcoReadRepository convmarcReadRepo, 
-            IEmpresaRepository empresaRepository, IArchivosRepository archivosRepository)
+            IEmpresaRepository empresaRepository,ICarreraRepository carreraRepository,
+            IArchivosRepository archivosRepository)
         {
             _Context = applicationDbContext;
             _ConvenioEspecificoRepository = convenioEspecificorepo;
@@ -31,6 +32,7 @@ namespace APIconvenios.UnitOfWork
             _ConvenioMarcoRepository = convmarcRepository;
             _ConvenioMarcoReadRepository = convmarcReadRepo;
             _EmpresaRepository = empresaRepository;
+            _CarreraRepository = carreraRepository;
             _ArchivosRepository = archivosRepository;
         }   
 

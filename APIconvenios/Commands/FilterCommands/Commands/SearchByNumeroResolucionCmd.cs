@@ -19,8 +19,8 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             if (_dto.ConvenioType.Type == "marco")
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
-                var Convenios = await query.Where(c => c.NumeroResolucion.Contains(
-                    _dto.NumeroResolucion, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+                var Convenios = await query.Where(c => c.NumeroResolucion == _dto.NumeroResolucion)
+                    .Include(c => c.Empresa).ToListAsync();
 
                 if (Convenios.Count == 0) return Result<object>.Error("convenio no encontrado", 404);
 
@@ -29,8 +29,8 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             else
             {
                 var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
-                var Convenios = await query.Where(c => c.NumeroResolucion.Contains(
-                    _dto.NumeroResolucion, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+                var Convenios = await query.Where(c => c.NumeroResolucion == _dto.NumeroResolucion)
+                    .Include(c => c.empresa).ToListAsync();
 
                 if (Convenios.Count == 0) return Result<object>.Error("convenio  no encontrado", 404);
 

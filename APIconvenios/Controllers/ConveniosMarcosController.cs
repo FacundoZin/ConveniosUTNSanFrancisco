@@ -14,11 +14,9 @@ namespace APIconvenios.Controllers
     public class ConveniosMarcosController : ControllerBase
     {
         private readonly IConvenioMarcoService _ConvenioService;
-        private readonly ConvenioQueryObjectValidator _QueryValidator;
-        public ConveniosMarcosController(IConvenioMarcoService convenioservice, ConvenioQueryObjectValidator validator)
+        public ConveniosMarcosController(IConvenioMarcoService convenioservice)
         {
             _ConvenioService = convenioservice;
-            _QueryValidator = validator;
         }
 
 

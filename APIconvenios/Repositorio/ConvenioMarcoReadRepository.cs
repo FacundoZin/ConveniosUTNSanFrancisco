@@ -24,9 +24,14 @@ namespace APIconvenios.Repositorio
 
         public async Task<InfoConvenioMarcoDto?> GetConvenioMarcosCompleto(int id)
         {
-            var convenio = await _Context.ConveniosMarcos.FirstAsync(c => c.Id == id);
+            var convenio = await _Context.ConveniosMarcos
+                .Include(cm => cm.Empresa)
+                .Include(cm => cm.ConveniosEspecificos)
+                .Include(cm => cm.ArchivosAdjuntos)
+                .FirstOrDefaultAsync(cm => cm.Id == id);
 
-            return convenio.ToFullInfo();
+
+            return convenio != null ? convenio.ToFullInfo() : null;
         }
 
         public async Task<bool> TitleExist(string Title)

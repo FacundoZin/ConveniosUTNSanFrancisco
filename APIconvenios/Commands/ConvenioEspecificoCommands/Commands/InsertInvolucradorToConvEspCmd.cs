@@ -20,7 +20,7 @@ namespace APIconvenios.Commands.ConvenioEspecificoCommands.Commands
 
             foreach (var involucrado in involucrados)
             {
-                Convenio.Involucrados.Add(involucrado);
+                Convenio.Involucrados!.Add(involucrado);
             }
 
             return Task.CompletedTask;

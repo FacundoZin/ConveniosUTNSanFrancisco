@@ -20,7 +20,9 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
 
-                var convenios = await query.Where(c => c.Estado == _Dto.Estado).ToListAsync();
+                var convenios = await query.Where(c => c.Estado == _Dto.Estado)
+                    .Include(c => c.Empresa)
+                    .ToListAsync();
 
                 if(convenios.Count == 0) return Result<object>.Error("No se encontraron convenios con el estado especificado.", 404);
 
@@ -30,7 +32,9 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             {
                 var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
 
-                var convenios = await query.Where(c => c.Estado == _Dto.Estado).ToListAsync();
+                var convenios = await query.Where(c => c.Estado == _Dto.Estado)
+                    .Include(c => c.empresa)
+                    .ToListAsync();
 
                 if (convenios.Count == 0) return Result<object>.Error("No se encontraron convenios con el estado especificado.", 404);
 

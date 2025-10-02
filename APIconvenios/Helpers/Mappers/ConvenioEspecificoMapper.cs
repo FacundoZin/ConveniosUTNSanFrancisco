@@ -83,7 +83,7 @@ namespace APIconvenios.Helpers.Mappers
 
                 ConvenioMarcoId = convenio.ConvenioMarcoId,
 
-                empresa = new EmpresaDto
+                empresa = convenio.empresa != null ? new EmpresaDto
                 {
                     Id = convenio.empresa!.Id,
                     Nombre_Empresa = convenio.empresa.Nombre,
@@ -92,7 +92,7 @@ namespace APIconvenios.Helpers.Mappers
                     Direccion_Empresa = convenio.empresa.Direccion,
                     Telefono_Empresa = convenio.empresa.Telefono,
                     Email_Empresa = convenio.empresa.Email
-                },
+                }: null,
 
                 Involucrados = convenio.Involucrados?.Select(i => new InvolucradosDto
                 {

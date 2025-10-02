@@ -23,11 +23,9 @@ namespace APIconvenios.Repositorio
             return convenio;
         }
 
-        public async Task<bool> Delete(ConvenioMarco convenio)
+        public void Delete(ConvenioMarco convenio)
         {
             _Context.ConveniosMarcos.Remove(convenio);
-            var affected = await _Context.SaveChangesAsync();
-            return affected > 0;
         }
 
         public void CreateConvenio(ConvenioMarco convenioMarco)
@@ -35,11 +33,9 @@ namespace APIconvenios.Repositorio
             _Context.ConveniosMarcos.Add(convenioMarco);  
         }
 
-        public async Task<bool> ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado)
+        public void ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado)
         {
             _Context.ConveniosMarcos.Update(convenioMarcoActualizado);  
-            int rowsaffected = await _Context.SaveChangesAsync();
-            return rowsaffected > 0;
         }
 
         public IQueryable<ConvenioMarco> GetQuery()

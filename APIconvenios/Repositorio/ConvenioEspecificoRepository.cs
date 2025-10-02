@@ -18,11 +18,9 @@ namespace APIconvenios.Repositorio
             _Context.ConveniosEspecificos.Add(convenio);
         }
 
-        public async Task<bool> Delete(ConvenioEspecifico convenio)
+        public void Delete(ConvenioEspecifico convenio)
         {
             _Context.ConveniosEspecificos.Remove(convenio);
-            var affected = await _Context.SaveChangesAsync();
-            return affected > 0;
         }
 
         public async Task<ConvenioEspecifico?> GetByid(int id)
@@ -41,11 +39,9 @@ namespace APIconvenios.Repositorio
             return _Context.ConveniosEspecificos.AsQueryable();
         }
 
-        public async Task<bool> ModificarConvenioEspecifico(ConvenioEspecifico convenio)
+        public void ModificarConvenioEspecifico(ConvenioEspecifico convenio)
         {
-            _Context.ConveniosEspecificos.Update(convenio);
-            var affected = await _Context.SaveChangesAsync();
-            return affected > 0;    
+            _Context.ConveniosEspecificos.Update(convenio);  
         }
     }
 }
