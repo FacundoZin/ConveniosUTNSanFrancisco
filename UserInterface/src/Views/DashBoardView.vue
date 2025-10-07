@@ -20,48 +20,34 @@ import ConvenioList from '@/Components/ConvenioList.vue';
 import OrderOptions from '@/Components/OrderOptions.vue';
 import Pagination from '@/Components/Pagination.vue';
 import SearchBar from '@/Components/SearchBar.vue';
-import { createConvenioQuery } from '@/Composables/CreateConvenioQueryObject';
-import ApiService from '@/Services/ApiService';
+import { useConvenioQuery } from '@/Composables/CreateConvenioQueryObject';
+import { ApiService } from '@/Services/ApiService';
 import '@/Styles/Dashboard.css';
-import type { Convenioview } from '@/Types/ViewModels';
+import type { ConvenioEspecificoDto, ConvenioMarcoDto } from '@/Types/ViewModels/ViewModels';
 import { isAxiosError } from 'axios';
 import { ref } from 'vue';
 
 
-const ListadoConvenios = ref<Convenioview[]>([]);
-const errorMensaje = ref('');
+const ListadoConvenios = ref<ConvenioEspecificoDto|ConvenioMarcoDto|null>(null);
+const errorMensaje = ref<string|null>(null);
 const isloading = ref(false);
-
-const Query = ref(createConvenioQuery())
-
-// Cada vez que el usuario escribe o cambia tipo, actualizamos filtros
-function onSearchUpdate({ Busqueda, Parametro }: { Busqueda: string, Parametro: 'titulo' | 'empresa' }) {
-  if (Parametro === 'titulo') Query.value.TituloConvenio = Busqueda
-  if (Parametro === 'empresa') Query.value.Nombre_empresa = Busqueda
-}
+const QueryComposable = useConvenioQuery();
 
 
-const ObtenerConvenios = async () => {
-  errorMensaje.value = '';
+const obtenerConvenios = async () =>{
+  errorMensaje.value = null,
   isloading.value = true;
-  try {
-    console.log(` estos son los parametros que se envian a la api`, Query.value);
-    const response = await ApiService.GetConvenios(Query.value);
 
-    ListadoConvenios.value = [
-      ...response.data.conveniosMarco,
-      ...response.data.conveniosEspecificos
-    ];
-    Query.value = createConvenioQuery();
-  } catch (error) {
-    Query.value = createConvenioQuery();
-    if (isAxiosError(error) && error.response) {
-      errorMensaje.value = ` ${error.response.data}`;
-    } else {
-      errorMensaje.value = "Lo sentimos, algo a salido mal"
-    }
-  } finally {
-    isloading.value = false;
+  const result = await ApiService.GetConvenios(QueryComposable.queryObject);
+
+  if(!result.isSuccess){
+    errorMensaje.value = result.error.message;
+  }else{
+    ListadoConvenios.value = result.value;
   }
+
+  isloading.value = false
 }
+
+
 </script>

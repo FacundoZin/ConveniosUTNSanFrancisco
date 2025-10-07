@@ -1,15 +1,29 @@
-import type { CargarConvenioEspecificoRequestDto, CargarConvenioMarcoRequestDto, ConvenioQueryObject, UpdateConvenioEspecificoDto, UpdateConvenioMarcoDto, UploadConvenioDocument } from '@/Types/Api.Interface';
-import type { ConveniosResponse } from '@/Types/ViewModels';
+import type { Result } from '@/Common/Result';
+import type { IConvenioQueryObject } from '@/Types/Filters';
+import type { ConvenioEspecificoDto, ConvenioMarcoDto } from '@/Types/ViewModels/ViewModels';
 import axios from 'axios';
 
 
-const api = axios.create({
-  baseURL: 'http://localhost:8888/api',
-});
+const API_URL = 'http://localhost:8888/api',
 
-export default{
 
-    GetConvenios: async (params: ConvenioQueryObject) => {
+const getErrorMessage = (error: any) => {
+  return error.response?.data?.message || 'Error de conexión o error desconocido.'
+}
+
+export class ApiService{
+
+    static async GetConvenios(params: IConvenioQueryObject): Promise<Result<ConvenioEspecificoDto|ConvenioMarcoDto>>{
+        try{
+            const response = await axios.get(`${API_URL}/Convenios`, {params})
+            return{isSuccess: true, value: response.data, status: response.status}
+        }catch(Ex: any){
+            return { isSuccess:false, error: { message: getErrorMessage(Ex), status: Ex.response?.status}}
+        }
+
+    }
+
+    GetConvenios: async (params: IConvenioQueryObject) => {
         return api.get<ConveniosResponse>('/Convenios', { params });
     },
 

@@ -58,3 +58,20 @@ export interface IByAntiguedadDtoParams {
 export interface IByProximosAvencerParams {
   'convenioType.Type': string;
 }
+
+export interface IConvenioQueryObject {
+  ByTitulo: IByTituloParams | null;
+  ByNumeroResolucion: IByNumeroResolucionParams | null;
+  ByNumeroConvenio: IByNumeroConvenioParams | null;
+  ByEmpresa: IByEmpresaParams | null;
+  ByIsActa: IByIsActaParams | null;
+  ByIsRefrendado: IByIsRefrendadoParams | null;
+  ByEstado: IByEstadoParams | null;
+  ByCarrera: IByCarreraParams | null;
+  ByFechaFirma: IByFechaFirmaParams | null;
+  ByFechaFin: IByFechaFinParams | null;
+  
+  ByAntiguedadDto: IByAntiguedadDtoParams | null;
+  ByProximosAvencer: IByProximosAvencerParams | null;
+}
+
