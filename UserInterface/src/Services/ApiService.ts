@@ -1,10 +1,14 @@
 import type { Result } from '@/Common/Result';
+import type { CargarConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/CreateConvenioEspecifico';
+import type { UpdateConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/UpdateConvenioEspecifico';
+import type { CargarConvenioMarcoRequestDto, InsertConvenioMarcoDto } from '@/Types/ConvenioMarco/CreateConvenioMarcoRequest';
+import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/UpdateConvenioMarco';
 import type { IConvenioQueryObject } from '@/Types/Filters';
-import type { ConvenioEspecificoDto, ConvenioMarcoDto } from '@/Types/ViewModels/ViewModels';
+import type { ConvenioCreated, ConvenioEspecificoDto, ConvenioMarcoDto, InfoConvenioEspecificoDto, InfoConvenioMarcoDto } from '@/Types/ViewModels/ViewModels';
 import axios from 'axios';
 
 
-const API_URL = 'http://localhost:8888/api',
+const API_URL = 'http://localhost:8888/api';
 
 
 const getErrorMessage = (error: any) => {
@@ -23,64 +27,75 @@ export class ApiService{
 
     }
 
-    GetConvenios: async (params: IConvenioQueryObject) => {
-        return api.get<ConveniosResponse>('/Convenios', { params });
-    },
-
-    GetConvenioMarcoCompleto: async (id: number) => {
-        return api.get(`/ConveniosMarcos/${id}`);
-    },
-
-    GetConvenioEspecificoCompleto: async (id: number) => {
-        return api.get(`/ConveniosEspecificos/${id}`);
-
-    },
-
-    DeleteConvenioMarco: async (id: number) => {
-        return api.delete(`/ConveniosMarcos/${id}`);
-    },
-
-    DeleteConvenioEspecifico: async (id: number) => {
-        return api.delete(`/ConveniosEspecificos/${id}`);
-    },
-
-    CreateConvenioMarco: async (Dto: CargarConvenioMarcoRequestDto) => {
-        return api.post(`/ConveniosMarcos`, Dto);
-    },
-
-    CreateConvenioEspecifico: async (Dto: CargarConvenioEspecificoRequestDto) => {
-        return api.post(`/ConveniosEspecificos`, Dto);
-    },
-
-    EditarConvenioMarco: async (Dto: UpdateConvenioMarcoDto) => {
-        return api.put(`/ConveniosMarcos`, Dto);
-    },
-
-    EditarConvenioEspecifico: async (Dto: UpdateConvenioEspecificoDto) => {
-        return api.put(`/ConveniosEspecificos`, Dto);
-    },
-
-    UploadDocument: async (data: UploadConvenioDocument) => {
-
-        const formData = new FormData();
-        formData.append('file', data.File);
-        formData.append('convenioId', data.ConvenioId.toString());
-        formData.append('convenioType', data.ConvenioType);
-
-        return api.post(`/Documents`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-      }})
-    },
-
-    DownloadDocument: async (id: number, ConvenioType: string) => {
-        const Document = await api.get(`/Documents/${id}/${ConvenioType}`,
-      {
-        responseType: 'blob', 
-      });
-
-      return Document.data; 
+    static async GetConvenioMarcoCompleto(id: number): Promise<Result<InfoConvenioMarcoDto>>{
+        try{
+            const response = await axios.get(`${API_URL}/ConveniosMarcos/${id}`)
+            return{isSuccess: true, value: response.data, status: response.status}
+        }catch(Ex: any){
+            return {isSuccess: false, error: {message: getErrorMessage(Ex), status: Ex.response?.status}}
+        }
     }
 
+    static async GetConvenioEspecificoCompleto(id: number): Promise<Result<InfoConvenioEspecificoDto>>{
+        try{
+            const response = await axios.get(`${API_URL}/ConveniosEspecificos/${id}`)
+            return{isSuccess: true, value: response.data, status: response.status}
+        }catch(Ex: any){
+            return {isSuccess: false, error: {message: getErrorMessage(Ex), status: Ex.response?.status}}
+        }
+    }
 
+    static async DeleteConvenioMarco(id: number):Promise<Result<null>>{
+        try{
+            const response =  await axios.delete(`${API_URL}/ConveniosMarcos/${id}`)
+            return{isSuccess: true, value: null, status: response.status}
+        }catch(Ex:any){
+            return {isSuccess: false, error: {message: getErrorMessage(Ex), status: Ex.response?.status}}
+        }     
+    }
+
+    static async DeleteConvenioEspecifico(id: number):Promise<Result<null>>{
+        try{
+            const response = await axios.delete(`${API_URL}/ConveniosEspecificos/${id}`)
+            return{isSuccess: true, value: null, status: response.status}
+        }catch(Ex:any){
+            return {isSuccess: false, error: {message: getErrorMessage(Ex), status: Ex.response?.status}}
+        }     
+    }
+
+    static async CreateConvenioMarco(Dto: CargarConvenioMarcoRequestDto):Promise<Result<ConvenioCreated>>{
+        try{
+            const response = await axios.post(`${API_URL}/ConveniosMarcos`, Dto)
+            return{isSuccess: true, value: response.data, status: response.status}
+        }catch(Ex: any){
+            return { isSuccess:false, error: { message: getErrorMessage(Ex), status: Ex.response?.status}}
+        }
+    }
+
+    static async CreateConvenioEspecifico(Dto: CargarConvenioEspecificoRequestDto):Promise<Result<ConvenioCreated>>{
+        try{
+            const response = await axios.post(`${API_URL}/ConveniosEspecificos`, Dto)
+            return{isSuccess: true, value: response.data, status: response.status}
+        }catch(Ex: any){
+            return { isSuccess:false, error: { message: getErrorMessage(Ex), status: Ex.response?.status}}
+        }
+    }
+
+    static async EditarConvenioMarco(Dto: UpdateConvenioMarcoRequetsDto): Promise<Result<null>>{
+        try{
+            const response = await axios.put(`${API_URL}/ConveniosMarcos`, Dto)
+            return{isSuccess: true, value: null, status: response.status}
+        }catch(Ex: any){
+            return { isSuccess:false, error: { message: getErrorMessage(Ex), status: Ex.response?.status}}
+        }
+    }
+    
+    static async EditarConvenioEspecifico(Dto: UpdateConvenioMarcoRequetsDto): Promise<Result<null>>{
+        try{
+            const response = await axios.put(`${API_URL}/ConveniosEspecificos`, Dto)
+            return{isSuccess: true, value: null, status: response.status}
+        }catch(Ex: any){
+            return { isSuccess:false, error: { message: getErrorMessage(Ex), status: Ex.response?.status}}
+        }
+    }
 }

@@ -24,7 +24,6 @@ import { useConvenioQuery } from '@/Composables/CreateConvenioQueryObject';
 import { ApiService } from '@/Services/ApiService';
 import '@/Styles/Dashboard.css';
 import type { ConvenioEspecificoDto, ConvenioMarcoDto } from '@/Types/ViewModels/ViewModels';
-import { isAxiosError } from 'axios';
 import { ref } from 'vue';
 
 
@@ -32,7 +31,6 @@ const ListadoConvenios = ref<ConvenioEspecificoDto|ConvenioMarcoDto|null>(null);
 const errorMensaje = ref<string|null>(null);
 const isloading = ref(false);
 const QueryComposable = useConvenioQuery();
-
 
 const obtenerConvenios = async () =>{
   errorMensaje.value = null,
@@ -49,5 +47,9 @@ const obtenerConvenios = async () =>{
   isloading.value = false
 }
 
-
 </script>
+
+
+<template>  
+  
+</template>
