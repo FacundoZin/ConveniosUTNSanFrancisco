@@ -17,7 +17,7 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         public string? ComentarioOpcional { get; set; }
 
         [DefaultValue(EstadoConvenio.Borrador)]
-        public EstadoConvenio? Estado { get; set; }
+        public EstadoConvenio Estado { get; set; }
 
         [DefaultValue(false)]
         public bool EsActa { get; set; } = false;

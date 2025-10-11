@@ -1,25 +1,5 @@
-<template>
-  <div class="dashboard-container">
-    <div class="filters-container">
-      <SearchBar @update="onSearchUpdate" />
-      <OrderOptions :query="Query" />
-    </div>
-
-    <ConvenioList :convenios="ListadoConvenios" :isloading="isloading" />
-    <Pagination :query="Query" @pagina-cambiada="ObtenerConvenios" />
-
-    <button @click="ObtenerConvenios" class="buscar-btn">
-      Buscar
-    </button>
-  </div>
-</template>
-
-
 <script lang="ts" setup>
-import ConvenioList from '@/Components/ConvenioList.vue';
-import OrderOptions from '@/Components/OrderOptions.vue';
-import Pagination from '@/Components/Pagination.vue';
-import SearchBar from '@/Components/SearchBar.vue';
+import FilterPanel from '@/Components/FilterPanel.vue'; 
 import { useConvenioQuery } from '@/Composables/CreateConvenioQueryObject';
 import { ApiService } from '@/Services/ApiService';
 import '@/Styles/Dashboard.css';
@@ -31,9 +11,14 @@ const ListadoConvenios = ref<ConvenioEspecificoDto|ConvenioMarcoDto|null>(null);
 const errorMensaje = ref<string|null>(null);
 const isloading = ref(false);
 const QueryComposable = useConvenioQuery();
+const TypeofConvenioToSearch = ref<'marco' | 'especifico' | ''>('marco'); 
+const FilterPanelOpen = ref(false);
+
+const activeFilterComponent = ref<string | null>(null); 
+
 
 const obtenerConvenios = async () =>{
-  errorMensaje.value = null,
+  errorMensaje.value = null;
   isloading.value = true;
 
   const result = await ApiService.GetConvenios(QueryComposable.queryObject);
@@ -45,11 +30,64 @@ const obtenerConvenios = async () =>{
   }
 
   isloading.value = false
-}
+};
 
+const handleOpenofFilterPanel = (type: 'marco' | 'especifico') => {
+  TypeofConvenioToSearch.value = type; 
+  FilterPanelOpen.value = true; 
+};
+
+const handleFilterSelected = (filterKey: string) => {
+  activeFilterComponent.value = filterKey; 
+};
 </script>
 
+<template>
+  <div class="dashboard-container">
+    <div class="filters-container">
+      </div>
 
-<template>  
+    <button @click="obtenerConvenios" class="buscar-btn">
+      Buscar
+    </button>
+  </div>
+
+  <div class="d-flex gap-2 p-4">
+    <button 
+      type="button" 
+      class="btn btn-info text-white" 
+      @click="handleOpenofFilterPanel('marco')"
+    >
+      Buscar Convenios Marcos
+      <i class="bi bi-arrow-right"></i>
+    </button>
+
+    <button 
+      type="button" 
+      class="btn btn-info text-white" 
+      @click="handleOpenofFilterPanel('especifico')"
+    >
+      Buscar Convenios Especificos
+      <i class="bi bi-arrow-right"></i>
+    </button>
+  </div>
   
+  <FilterPanel :is-panel-open="FilterPanelOpen" 
+    :type-of-convenio="TypeofConvenioToSearch"                       
+    @close-panel="FilterPanelOpen = false" 
+     @filter-selected="handleFilterSelected"  />
+                                
+  />
+
+  <!-- aca iria un v-if que compare la  clave del filtro seleccionado y muestre el componente que corresponda -->
 </template>
+
+<style scoped>
+.btn i.bi {
+  margin-left: 0.5rem;
+}
+/* Asegura que el texto blanco se vea bien sobre el celeste claro (info) */
+.btn-info {
+  --bs-btn-color: #fff;
+}
+</style>

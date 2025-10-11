@@ -24,7 +24,7 @@ namespace APIconvenios.Helpers.Mappers
                     FechaFirmaConvenio = Convenio.FechaFirmaConvenio,
                     FechaFin = Convenio.FechaFin,
                     Estado = Convenio.Estado,
-                    Refrendado = Convenio.Refrendado    
+                    Refrendado = Convenio.Refrendado
                 });
             }
 
@@ -40,7 +40,7 @@ namespace APIconvenios.Helpers.Mappers
             convenio.ComentarioOpcional = convenioActualizado.ComentarioOpcional;
             convenio.Estado = convenioActualizado.Estado;
             convenio.NumeroResolucion = convenioActualizado.NumeroResolucion;
-            convenio.Refrendado = convenioActualizado.Refrendado;   
+            convenio.Refrendado = convenioActualizado.Refrendado;
 
             return convenio;
         }
@@ -82,7 +82,7 @@ namespace APIconvenios.Helpers.Mappers
                     Direccion_Empresa = convenio.Empresa.Direccion,
                     Telefono_Empresa = convenio.Empresa.Telefono,
                     Email_Empresa = convenio.Empresa.Email
-                }: null,
+                } : null,
 
                 ConveniosEspecificos = convenio.ConveniosEspecificos?.Select(ce => new ConvenioEspecificoDto
                 {
@@ -102,7 +102,7 @@ namespace APIconvenios.Helpers.Mappers
                 {
                     IdArchivo = aa.Id,
                     NombreArchivo = aa.NombreArchivo,
-                }).ToList() 
+                }).ToList()
 
             };
         }
