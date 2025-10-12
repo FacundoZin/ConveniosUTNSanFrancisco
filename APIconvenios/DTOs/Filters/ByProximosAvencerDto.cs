@@ -1,9 +1,7 @@
-﻿using APIconvenios.Common;
-
-namespace APIconvenios.DTOs.Filters
+﻿namespace APIconvenios.DTOs.Filters
 {
     public class ByProximosAvencerDto
     {
-        public ConvenioType convenioType { get; set; }  
+        public string convenioType { get; set; } = string.Empty;
     }
 }

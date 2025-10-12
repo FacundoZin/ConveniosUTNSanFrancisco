@@ -16,13 +16,13 @@ namespace APIconvenios.Commands.FilterCommands.Commands
 
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
-            if(_Dto.convenioType.Type == "marco")
+            if (_Dto.convenioType == "marco")
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
                 var convenios = await query.Where(c => c.FechaFirmaConvenio == _Dto.FechaInicio)
                     .Include(c => c.Empresa).ToListAsync();
 
-                if(convenios.Count == 0) return Result<object>.
+                if (convenios.Count == 0) return Result<object>.
                         Error("No se encontraron convenios marco con la fecha de firma especificada.", 404);
 
                 return Result<object>.Exito(convenios.ToDto());

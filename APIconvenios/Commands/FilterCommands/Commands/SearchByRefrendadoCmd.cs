@@ -16,13 +16,13 @@ namespace APIconvenios.Commands.FilterCommands.Commands
 
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
-            if(_Dto.convenioType.Type == "marco")
+            if (_Dto.convenioType == "marco")
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
                 var Convenios = await query.Where(c => c.Refrendado == true)
                     .Include(c => c.Empresa).ToListAsync();
 
-                if(Convenios.Count == 0) return Result<object>.Error("No se encontraron convenios refrendados", 404);
+                if (Convenios.Count == 0) return Result<object>.Error("No se encontraron convenios refrendados", 404);
 
                 return Result<object>.Exito(Convenios.ToDto());
             }

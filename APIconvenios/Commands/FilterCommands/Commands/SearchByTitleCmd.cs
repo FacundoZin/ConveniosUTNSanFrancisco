@@ -15,7 +15,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
         }
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
-            if(_dto.ConvenioType.Type == "especifico")
+            if (_dto.convenioType == "especifico")
             {
                 var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
 

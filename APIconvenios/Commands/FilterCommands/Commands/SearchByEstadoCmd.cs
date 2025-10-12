@@ -16,7 +16,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
         }
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
-            if(_Dto.convenioType.Type == "marco")
+            if (_Dto.convenioType == "marco")
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
 
@@ -24,7 +24,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                     .Include(c => c.Empresa)
                     .ToListAsync();
 
-                if(convenios.Count == 0) return Result<object>.Error("No se encontraron convenios con el estado especificado.", 404);
+                if (convenios.Count == 0) return Result<object>.Error("No se encontraron convenios con el estado especificado.", 404);
 
                 return Result<object>.Exito(convenios.ToDto());
             }

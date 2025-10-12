@@ -1,10 +1,8 @@
-﻿using APIconvenios.Common;
-
-namespace APIconvenios.DTOs.Filters
+﻿namespace APIconvenios.DTOs.Filters
 {
     public class ByFechaFirmaDto
     {
-        public DateOnly? FechaInicio { get; set; }  
-        public ConvenioType convenioType { get; set; }
+        public DateOnly? FechaInicio { get; set; }
+        public string convenioType { get; set; } = string.Empty;
     }
 }

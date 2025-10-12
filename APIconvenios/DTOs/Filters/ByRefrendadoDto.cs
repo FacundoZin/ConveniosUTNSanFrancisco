@@ -1,10 +1,8 @@
-﻿using APIconvenios.Common;
-
-namespace APIconvenios.DTOs.Filters
+﻿namespace APIconvenios.DTOs.Filters
 {
     public class ByRefrendadoDto
     {
         public bool refrendado { get; set; } = false;
-        public ConvenioType convenioType { get; set; }
+        public string convenioType { get; set; } = string.Empty;
     }
 }

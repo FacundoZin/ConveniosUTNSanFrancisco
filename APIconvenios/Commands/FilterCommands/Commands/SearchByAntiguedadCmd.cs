@@ -10,21 +10,21 @@ namespace APIconvenios.Commands.FilterCommands.Commands
     public class SearchByAntiguedadCmd : IFilterCommands
     {
         private readonly ByAntiguedadDto _Dto;
-        
+
         public SearchByAntiguedadCmd(ByAntiguedadDto dto)
         {
-            _Dto = dto; 
+            _Dto = dto;
         }
 
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
-            if(_Dto.ConvenioType.Type == "marco")
+            if (_Dto.convenioType == "marco")
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
 
                 var convenios = new List<APIconvenios.Models.ConvenioMarco>();
 
-                if(_Dto.ascendente)
+                if (_Dto.ascendente)
                     convenios = await query
                         .Where(c => c.FechaFirmaConvenio != null)
                         .Include(c => c.Empresa)

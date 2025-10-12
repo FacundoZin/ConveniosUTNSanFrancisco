@@ -16,7 +16,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
         }
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
-            if (_dto.ConvenioType.Type == "marco")
+            if (_dto.convenioType == "marco")
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
                 var Convenios = await query.Where(c => c.NumeroResolucion == _dto.NumeroResolucion)
