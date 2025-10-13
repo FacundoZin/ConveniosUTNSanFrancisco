@@ -25,7 +25,7 @@ namespace APIconvenios.Controllers
         {
             var result = await _ConvenioService.ObtenerConvenioMarcoCompleto(id);
 
-            if(!result.Exit) return StatusCode(result.Errorcode,result.Errormessage);    
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
             return Ok(result.Data);
         }
@@ -35,15 +35,15 @@ namespace APIconvenios.Controllers
         {
             var result = await _ConvenioService.BorrarConvenioMarco(id);
 
-            if(!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
-            return Ok(); 
+            return Ok();
         }
 
         [HttpPut]
         public async Task<IActionResult> ActualizarConvenioMarco([FromBody] UpdateConvenioMarcoRequetsDto Dto)
         {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var result = await _ConvenioService.ActualizarConvenioMarco(Dto);
 
@@ -61,7 +61,7 @@ namespace APIconvenios.Controllers
 
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
-            return Created(string.Empty,result.Data);
+            return Created(string.Empty, result.Data);
         }
     }
 }
