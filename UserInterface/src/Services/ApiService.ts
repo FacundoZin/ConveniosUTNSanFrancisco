@@ -3,6 +3,7 @@ import type { CargarConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecif
 import type { UpdateConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/UpdateConvenioEspecifico';
 import type { CargarConvenioMarcoRequestDto, InsertConvenioMarcoDto } from '@/Types/ConvenioMarco/CreateConvenioMarcoRequest';
 import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/UpdateConvenioMarco';
+import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto';
 import type { IConvenioQueryObject } from '@/Types/Filters';
 import type { ConvenioCreated, ConvenioEspecificoDto, ConvenioMarcoDto, InfoConvenioEspecificoDto, InfoConvenioMarcoDto } from '@/Types/ViewModels/ViewModels';
 import axios from 'axios';
@@ -97,5 +98,9 @@ export class ApiService{
         }catch(Ex: any){
             return { isSuccess:false, error: { message: getErrorMessage(Ex), status: Ex.response?.status}}
         }
+    }
+
+    static async GetEmpresas(): Promise<ComboBoxEmpresasDto>{
+       return await axios.get(`${API_URL}/Empresa`) 
     }
 }
