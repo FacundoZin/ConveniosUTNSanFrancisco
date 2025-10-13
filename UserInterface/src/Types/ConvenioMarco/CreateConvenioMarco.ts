@@ -1,5 +1,5 @@
 import type { InsertEmpresaDto } from "../Empresa/InsertEmpresa";
-import type { EstadoConvenio } from "../Enums/Enums";
+import { EstadoConvenio } from "../Enums/Enums";
 
 export interface InsertConvenioMarcoDto {
   numeroConvenio: string | null;
@@ -23,4 +23,29 @@ export interface CargarConvenioMarcoRequestDto {
   
   // Array de números que es anulable
   idsConveniosEspecificosParaVincular: number[] | null; 
+}
+
+export function createRuquestConvMarc(): CargarConvenioMarcoRequestDto{
+  return {
+    insertConvenioDto:{
+      numeroConvenio: null,
+      titulo: null,
+      fechaFirmaConvenio: null,
+      fechaFin: null,
+      comentarioOpcional: null,
+      estado: EstadoConvenio.Borrador,
+      numeroResolucion: null,
+      refrendado: false
+    },
+    insertEmpresaDto:{
+      id: null,
+      nombre: null,
+      razonSocial: null,
+      cuit: null,
+      direccion: null,
+      telefono: null,
+      email: null
+    },
+    idsConveniosEspecificosParaVincular: null
+  }
 }

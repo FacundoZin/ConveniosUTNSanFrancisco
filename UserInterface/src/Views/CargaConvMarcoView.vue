@@ -57,9 +57,9 @@
 </template>
 
 <script setup lang="ts">
-import ApiService from '@/Services/ApiService'
 import '@/Styles/FormCargaConvMarco.css'
-import type { CargarConvenioMarcoRequestDto } from '@/Types/Api.Interface'
+import type { CargarConvenioMarcoRequestDto } from '@/Types/ConvenioMarco/CreateConvenioMarco'
+import { EstadoConvenio } from '@/Types/Enums/Enums'
 import { isAxiosError } from 'axios'
 import { ref } from 'vue'
 import { POSITION, useToast } from 'vue-toastification'
@@ -67,21 +67,26 @@ import { POSITION, useToast } from 'vue-toastification'
 const toast = useToast()
 
 const UploadConvenioMarco = ref<CargarConvenioMarcoRequestDto>({
-  convenioDto: {
-    numeroconvenio: 0,
-    titulo: '',
-    fechaFirmaConvenio: '',
+  insertConvenioDto: {
+    numeroConvenio: null,
+    titulo: null,
+    fechaFirmaConvenio: null,
     fechaFin: '',
     comentarioOpcional: '',
+    estado: EstadoConvenio.Borrador,
+    numeroResolucion: null,
+    refrendado: false
   },
-  empresaDto: {
+  insertEmpresaDto: {
     nombre: '',
     razonSocial: '',
     cuit: '',
     direccion: '',
     telefono: '',
     email: '',
+    id: null
   },
+  idsConveniosEspecificosParaVincular: null
 })
 
 const submitForm = async () => {

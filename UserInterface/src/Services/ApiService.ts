@@ -1,7 +1,7 @@
 import type { Result } from '@/Common/Result';
 import type { CargarConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/CreateConvenioEspecifico';
 import type { UpdateConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/UpdateConvenioEspecifico';
-import type { CargarConvenioMarcoRequestDto, InsertConvenioMarcoDto } from '@/Types/ConvenioMarco/CreateConvenioMarcoRequest';
+import type { CargarConvenioMarcoRequestDto, InsertConvenioMarcoDto } from '@/Types/ConvenioMarco/CreateConvenioMarco';
 import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/UpdateConvenioMarco';
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto';
 import type { IConvenioQueryObject } from '@/Types/Filters';
