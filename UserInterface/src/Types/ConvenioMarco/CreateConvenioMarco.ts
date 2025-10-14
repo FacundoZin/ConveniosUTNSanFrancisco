@@ -19,13 +19,13 @@ export interface InsertConvenioMarcoDto {
 
 export interface CargarConvenioMarcoRequestDto {
   insertConvenioDto: InsertConvenioMarcoDto;
-  insertEmpresaDto: InsertEmpresaDto;
+  insertEmpresaDto: InsertEmpresaDto | null;
   
   // Array de números que es anulable
   idsConveniosEspecificosParaVincular: number[] | null; 
 }
 
-export function createRuquestConvMarc(): CargarConvenioMarcoRequestDto{
+export function createRequestConvMarc(): CargarConvenioMarcoRequestDto{
   return {
     insertConvenioDto:{
       numeroConvenio: null,
@@ -37,15 +37,7 @@ export function createRuquestConvMarc(): CargarConvenioMarcoRequestDto{
       numeroResolucion: null,
       refrendado: false
     },
-    insertEmpresaDto:{
-      id: null,
-      nombre: null,
-      razonSocial: null,
-      cuit: null,
-      direccion: null,
-      telefono: null,
-      email: null
-    },
+    insertEmpresaDto: null,
     idsConveniosEspecificosParaVincular: null
   }
 }
