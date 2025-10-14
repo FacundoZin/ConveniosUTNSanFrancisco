@@ -26,7 +26,7 @@ namespace APIconvenios.Services
 
                 if (!File.Exists(archivo.RutaArchivo))
                     return Result<ConvenioFileContentDto>.Error("El archivo no se encuentra en el servidor", 404);
-                
+
 
                 byte[] fileBytes = await File.ReadAllBytesAsync(archivo.RutaArchivo);
                 string nombreArchivo = Path.GetFileName(archivo.RutaArchivo);
@@ -53,7 +53,7 @@ namespace APIconvenios.Services
                 if (archivoDto.file == null || archivoDto.file.Length == 0)
                     return Result<bool>.Error("No se seleccionó ningún archivo para subir", 400);
 
-                if(await _UnitOfWork._ArchivosRepository.NameArchivoExist(archivoDto.NombreArchivo))
+                if (await _UnitOfWork._ArchivosRepository.NameArchivoExist(archivoDto.NombreArchivo))
                     return Result<bool>.Error($"Ya existe un archivo con el nombre {archivoDto.NombreArchivo}, " +
                         $"porfavor cambie el nombre para que el documento sea unico ", 400);
 
@@ -70,11 +70,11 @@ namespace APIconvenios.Services
                     }
                 }
 
-                string rutaCompleta = Path.Combine(directorioArchivos,archivoDto.NombreArchivo);
+                string rutaCompleta = Path.Combine(directorioArchivos, archivoDto.NombreArchivo);
 
                 bool exit = await FileUploadTransaction(archivoDto.ToModel(), archivoDto.file, rutaCompleta);
 
-                if(!exit)
+                if (!exit)
                     return Result<bool>.Error("se produjo un error inesperado al cargar el documento en el servidor...",
                         500);
 
@@ -104,7 +104,7 @@ namespace APIconvenios.Services
                 }
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }

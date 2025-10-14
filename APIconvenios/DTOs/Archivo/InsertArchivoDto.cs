@@ -7,10 +7,7 @@ namespace APIconvenios.DTOs.Archivo
         [Required]
         public string NombreArchivo { get; set; }
 
-        [Required]
-        public string RutaArchivo { get; set; }
-
-        public IFormFile file { get; set; } 
+        public IFormFile file { get; set; }
 
         public int? ConvenioEspecificoId { get; set; }
         public int? ConvenioMarcoId { get; set; }

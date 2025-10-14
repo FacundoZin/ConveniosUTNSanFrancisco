@@ -13,7 +13,7 @@ namespace APIconvenios.Controllers
     public class ConveniosEspecificosController : ControllerBase
     {
         private readonly IConvenioEspecifcoService _ConvenioEspecifcoService;
-        public ConveniosEspecificosController(IConvenioEspecifcoService convenioEspecifcoService) 
+        public ConveniosEspecificosController(IConvenioEspecifcoService convenioEspecifcoService)
         {
             _ConvenioEspecifcoService = convenioEspecifcoService;
         }
@@ -25,11 +25,11 @@ namespace APIconvenios.Controllers
 
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
-            return Ok(result.Data);  
+            return Ok(result.Data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CargarConvenio ([FromBody] CargarConvenioEspecificoRequestDto dto)
+        public async Task<IActionResult> CargarConvenio([FromBody] CargarConvenioEspecificoRequestDto dto)
         {
             if (!ModelState.IsValid) return BadRequest("los datos ingresados no son validos");
 
@@ -43,11 +43,11 @@ namespace APIconvenios.Controllers
         [HttpPut]
         public async Task<IActionResult> EditarConvenio([FromBody] UpdateConvenioEspecificoRequestDto dto)
         {
-            if(!ModelState.IsValid) return BadRequest("los datos ingresados no son correctos");
+            if (!ModelState.IsValid) return BadRequest("los datos ingresados no son correctos");
 
-            var result = await _ConvenioEspecifcoService.EditarConvenioEspecifico(dto); 
+            var result = await _ConvenioEspecifcoService.EditarConvenioEspecifico(dto);
 
-            if(!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);  
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
             return Ok();
         }
@@ -57,9 +57,9 @@ namespace APIconvenios.Controllers
         {
             var result = await _ConvenioEspecifcoService.DeleteConvenioEspecifico(id);
 
-            if(!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);  
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
-            return Ok();    
+            return Ok();
         }
     }
 }

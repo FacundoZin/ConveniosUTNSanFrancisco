@@ -1,7 +1,7 @@
 import type { EstadoConvenio } from '../Enums/Enums'
 
 export interface ConvenioCreated {
-  ID: Number
+  ID: number
   ConvenioType: string
 }
 
