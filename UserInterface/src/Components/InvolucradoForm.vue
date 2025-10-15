@@ -2,8 +2,8 @@
     <form @submit.prevent="agregar" class="involucrado-form">
         <input v-model="form.nombre" placeholder="Nombre" required />
         <input v-model="form.apellido" placeholder="Apellido" required />
-        <input v-model="form.email" placeholder="Email" type="email" required />
-        <input v-model="form.telefono" placeholder="Teléfono" required />
+        <input v-model="form.email" placeholder="Email" type="email" />
+        <input v-model="form.telefono" placeholder="Teléfono" />
         <input v-model.number="form.legajo" placeholder="Legajo (opcional)" />
         <select v-model.number="form.rolInvolucrado" required>
             <option value="" disabled selected>Seleccione un rol...</option>
@@ -18,39 +18,36 @@
 
 <script setup lang="ts">
 import '@/Styles/InvolucradosForm.css';
-import type { InsertInvolucradosDto, InsertInvolucradosFormDto } from '@/Types/Api.Interface';
+import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados';
 import { ref } from 'vue';
 
 const emit = defineEmits<{ (evento: 'agregar', inv: InsertInvolucradosDto): void }>()
 
-const form = ref<InsertInvolucradosFormDto>({
-    id: 0,
+const form = ref<InsertInvolucradosDto>({
     nombre: '',
     apellido: '',
-    email: '',
-    telefono: '',
-    legajo: '',
+    email: null,
+    telefono: null,
+    legajo: null,
     rolInvolucrado: 0
 })
 
 const agregar = () => {
-    const InsertInvolucradosDto = {
-        id: form.value.id,
+    const InsertInvolucradosDto: InsertInvolucradosDto = {
         nombre: form.value.nombre,
         apellido: form.value.apellido,
-        email: form.value.email,
-        telefono: form.value.telefono,
-        legajo: form.value.legajo === '' ? 0 : Number(form.value.legajo),
+        email: form.value.email ? form.value.email : null,
+        telefono: form.value.telefono ? form.value.telefono : null,
+        legajo: form.value.legajo ? form.value.legajo : null,
         rolInvolucrado: form.value.rolInvolucrado
     }
     emit('agregar', InsertInvolucradosDto)
     form.value = {
-        id: 0,
         nombre: '',
         apellido: '',
-        email: '',
-        telefono: '',
-        legajo: '',
+        email: null,
+        telefono: null,
+        legajo: null,
         rolInvolucrado: 0
     }
 }

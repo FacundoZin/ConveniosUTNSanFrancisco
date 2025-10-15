@@ -70,11 +70,6 @@ export interface ViewArchivoDto {
   nombreArchivo: string
 }
 
-export interface Carrera {
-  id: number
-  nombre: string
-}
-
 export interface InfoConvenioEspecificoDto {
   id: number
   numeroConvenio?: string

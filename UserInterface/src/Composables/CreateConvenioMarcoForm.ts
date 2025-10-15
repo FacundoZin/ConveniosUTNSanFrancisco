@@ -1,13 +1,16 @@
 import { ApiService } from '@/Services/ApiService'
-import { createRequestConvMarc, type CargarConvenioMarcoRequestDto } from '@/Types/ConvenioMarco/CreateConvenioMarco'
+import {
+  createRequestConvMarc,
+  type CargarConvenioMarcoRequestDto,
+} from '@/Types/ConvenioMarco/CreateConvenioMarco'
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import type { InsertEmpresaDto } from '@/Types/Empresa/InsertEmpresa'
 import type { ConvenioCreated } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
-import { ref, computed, onMounted, type Ref } from 'vue'
+import { computed, onMounted, ref, type Ref } from 'vue'
 
 // Define el tipo de retorno para que TypeScript sepa qué devuelve el composable
-interface ConvenioFormComposable {
+interface CreateConvenioMarcoComposable {
   ConvenioMarcoRequest: Ref<CargarConvenioMarcoRequestDto>
   errorMensaje: Ref<string | null>
   empresas: Ref<ComboBoxEmpresasDto[]>
@@ -19,7 +22,7 @@ interface ConvenioFormComposable {
   resetForm: () => void
 }
 
-export function useConvenioForm(): ConvenioFormComposable {
+export function useCreateConvenioMarcoForm(): CreateConvenioMarcoComposable {
   // --- ESTADO REACTIVO ---
   const ConvenioMarcoRequest = ref<CargarConvenioMarcoRequestDto>(createRequestConvMarc())
   const errorMensaje = ref<string | null>(null)
@@ -30,23 +33,25 @@ export function useConvenioForm(): ConvenioFormComposable {
   // --- COMPUTED PROPERTY ---
   const empresaForm = computed<InsertEmpresaDto>({
     get() {
-      return ConvenioMarcoRequest.value.insertEmpresaDto ?? {
-        id: null,
-        nombre: null,
-        razonSocial: null,
-        cuit: null,
-        direccion: null,
-        telefono: null,
-        email: null
-      }
+      return (
+        ConvenioMarcoRequest.value.insertEmpresaDto ?? {
+          id: null,
+          nombre: null,
+          razonSocial: null,
+          cuit: null,
+          direccion: null,
+          telefono: null,
+          email: null,
+        }
+      )
     },
     set(value) {
-      if (Object.values(value).some(v => v !== '' && v != null)) {
+      if (Object.values(value).some((v) => v !== '' && v != null)) {
         ConvenioMarcoRequest.value.insertEmpresaDto = { ...value }
       } else {
         ConvenioMarcoRequest.value.insertEmpresaDto = null
       }
-    }
+    },
   })
 
   const getEmpresas = async () => {
@@ -71,7 +76,10 @@ export function useConvenioForm(): ConvenioFormComposable {
       errorMensaje.value = 'Ocurrió un error al cargar el convenio'
       if (isAxiosError(error)) {
         if (error.response) {
-          console.log(`Error al cargar el convenio (${error.response.status}):`, error.response.data)
+          console.log(
+            `Error al cargar el convenio (${error.response.status}):`,
+            error.response.data,
+          )
         } else {
           console.log('Error al cargar el convenio: no se recibió respuesta del servidor')
         }
@@ -96,10 +104,10 @@ export function useConvenioForm(): ConvenioFormComposable {
     errorMensaje,
     empresas,
     cargarNuevaEmpresa,
-    ConvenioCreado, 
+    ConvenioCreado,
     empresaForm,
     getEmpresas,
     submitForm,
-    resetForm
+    resetForm,
   }
 }

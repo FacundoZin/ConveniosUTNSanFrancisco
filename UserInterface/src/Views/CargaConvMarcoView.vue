@@ -20,13 +20,12 @@
       <!-- DATOS DEL CONVENIO -->
       <div class="col-md-6">
         <label class="form-label">Número de Convenio</label>
-        <input v-model="ConvenioMarcoRequest.insertConvenioDto.numeroConvenio" type="text" class="form-control"
-          required />
+        <input v-model="ConvenioMarcoRequest.insertConvenioDto.numeroConvenio" type="text" class="form-control" />
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Título</label>
-        <input v-model="ConvenioMarcoRequest.insertConvenioDto.titulo" type="text" class="form-control" required />
+        <input v-model="ConvenioMarcoRequest.insertConvenioDto.titulo" type="text" class="form-control" />
       </div>
 
       <div class="col-md-6">
@@ -103,13 +102,12 @@
 
           <div class="col-md-6">
             <label class="form-label">Razón Social</label>
-            <input v-model="empresaForm.razonSocial" type="text" class="form-control"
-              required />
+            <input v-model="empresaForm.razonSocial" type="text" class="form-control" />
           </div>
 
           <div class="col-md-6">
             <label class="form-label">CUIT</label>
-            <input v-model="empresaForm.cuit" type="text" class="form-control" required />
+            <input v-model="empresaForm.cuit" type="text" class="form-control" />
           </div>
 
           <div class="col-md-6">
@@ -137,15 +135,13 @@
 </template>
 
 <script setup lang="ts">
-import { useConvenioForm } from '@/Composables/useConvenioForm'
+import { useCreateConvenioMarcoForm } from '@/Composables/CreateConvenioMarcoForm'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-// 1. Importar el nuevo composable
 
 const router = useRouter()
 const toast = useToast()
 
-// 2. Ejecutar el composable para obtener todo el estado y funciones
 const {
   ConvenioMarcoRequest,
   errorMensaje,
@@ -155,19 +151,16 @@ const {
   empresaForm,
   submitForm: submitFormLogic, // Renombramos la función para evitar conflictos
   resetForm
-} = useConvenioForm()
+} = useCreateConvenioMarcoForm()
 
-// 3. Adaptamos la función de submit para manejar el éxito y la navegación/toast
 const submitForm = async () => {
   const result = await submitFormLogic()
 
   if (result) {
-    // Si la lógica del composable devuelve éxito (el objeto creado)
-    ConvenioCreado.value = result // Actualizamos el estado local (si es necesario para el botón)
+    ConvenioCreado.value = result
     resetForm()
     toast.success('Convenio cargado con éxito')
   }
-  // Si no hay resultado, el composable ya ha gestionado el errorMensaje.
 }
 
 const irAlConvenio = () => {
@@ -175,7 +168,4 @@ const irAlConvenio = () => {
     router.push({ name: 'VistaConvenioMarco', params: { id: ConvenioCreado.value.ID } })
   }
 }
-
-// Nota: El template (HTML) no necesita cambios porque las variables tienen el mismo nombre.
-// Se ha refactorizado con éxito.
 </script>

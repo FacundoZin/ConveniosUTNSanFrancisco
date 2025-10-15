@@ -1,10 +1,10 @@
-import type { RolInvolucrado } from "../Enums/Enums";
+import type { RolInvolucrado } from '../Enums/Enums'
 
 export interface InsertInvolucradosDto {
-  nombre: string | null;
-  apellido: string | null;
-  email: string | null;
-  telefono: string | null;
-  legajo: number | null; // integer($int32) | null
-  rolInvolucrado: RolInvolucrado | null; // RolInvolucradoRoles | null
+  nombre: string | null
+  apellido: string | null
+  email: string | null
+  telefono: string | null
+  legajo: number | null // integer($int32) | null
+  rolInvolucrado: RolInvolucrado // RolInvolucradoRoles | null
 }

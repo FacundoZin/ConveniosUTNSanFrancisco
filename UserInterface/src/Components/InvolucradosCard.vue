@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import '@/Styles/InvolucradosCard.css';
-import type { InsertInvolucradosDto } from '@/Types/Api.Interface';
+import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados';
 
 defineProps<{ involucrado: InsertInvolucradosDto }>()
 
