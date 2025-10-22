@@ -1,40 +1,46 @@
 import { ApiService } from '@/Services/ApiService'
+import { carrerasList, type Carrera } from '@/Types/CarrerasInvolucradas/CarrerasInvolucradas'
 import {
-  createRequestConvMarc,
-  type CargarConvenioMarcoRequestDto,
-} from '@/Types/ConvenioMarco/CreateConvenioMarco'
+  createRequestConvEspecifico,
+  type CargarConvenioEspecificoRequestDto,
+} from '@/Types/ConvenioEspecifico/CreateConvenioEspecifico'
+
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import type { InsertEmpresaDto } from '@/Types/Empresa/InsertEmpresa'
+import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
 import type { ConvenioCreated } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
 import { computed, onMounted, ref, type Ref } from 'vue'
 
-// Define el tipo de retorno para que TypeScript sepa qué devuelve el composable
-interface CreateConvenioMarcoComposable {
-  ConvenioMarcoRequest: Ref<CargarConvenioMarcoRequestDto>
+interface CreateConvenioEspecificoComposable {
+  ConvenioEspecificoRequest: Ref<CargarConvenioEspecificoRequestDto>
   errorMensaje: Ref<string | null>
   empresas: Ref<ComboBoxEmpresasDto[]>
+  Carreras: Carrera[]
   cargarNuevaEmpresa: Ref<boolean>
   ConvenioCreado: Ref<ConvenioCreated | null>
-  empresaForm: Ref<InsertEmpresaDto> // Es un computed, pero se trata como Ref en el retorno
+  empresaForm: Ref<InsertEmpresaDto>
+  involucradosForm: Ref<InsertInvolucradosDto[]>
+  VincularConvenioMarco(NombreUnico: string): void
   getEmpresas: () => Promise<void>
   submitForm: () => Promise<ConvenioCreated | null>
   resetForm: () => void
 }
 
-export function useCreateConvenioMarcoForm(): CreateConvenioMarcoComposable {
-  // --- ESTADO REACTIVO ---
-  const ConvenioMarcoRequest = ref<CargarConvenioMarcoRequestDto>(createRequestConvMarc())
+export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable {
+  const ConvenioEspecificoRequest = ref<CargarConvenioEspecificoRequestDto>(
+    createRequestConvEspecifico(),
+  )
   const errorMensaje = ref<string | null>(null)
   const empresas = ref<ComboBoxEmpresasDto[]>([])
   const cargarNuevaEmpresa = ref(false)
   const ConvenioCreado = ref<ConvenioCreated | null>(null)
+  const Carreras: Carrera[] = carrerasList
 
-  // --- COMPUTED PROPERTY ---
   const empresaForm = computed<InsertEmpresaDto>({
     get() {
       return (
-        ConvenioMarcoRequest.value.insertEmpresaDto ?? {
+        ConvenioEspecificoRequest.value.insertEmpresaDto ?? {
           id: null,
           nombre: null,
           razonSocial: null,
@@ -47,9 +53,22 @@ export function useCreateConvenioMarcoForm(): CreateConvenioMarcoComposable {
     },
     set(value) {
       if (Object.values(value).some((v) => v !== '' && v != null)) {
-        ConvenioMarcoRequest.value.insertEmpresaDto = { ...value }
+        ConvenioEspecificoRequest.value.insertEmpresaDto = { ...value }
       } else {
-        ConvenioMarcoRequest.value.insertEmpresaDto = null
+        ConvenioEspecificoRequest.value.insertEmpresaDto = null
+      }
+    },
+  })
+
+  const involucradosForm = computed<InsertInvolucradosDto[]>({
+    get() {
+      return ConvenioEspecificoRequest.value.insertInvolucradosDto ?? []
+    },
+    set(value: InsertInvolucradosDto[] | null) {
+      if (value && value.length > 0) {
+        ConvenioEspecificoRequest.value.insertInvolucradosDto = value
+      } else {
+        ConvenioEspecificoRequest.value.insertInvolucradosDto = null
       }
     },
   })
@@ -66,7 +85,7 @@ export function useCreateConvenioMarcoForm(): CreateConvenioMarcoComposable {
   const submitForm = async (): Promise<ConvenioCreated | null> => {
     errorMensaje.value = null
     try {
-      const result = await ApiService.CreateConvenioMarco(ConvenioMarcoRequest.value)
+      const result = await ApiService.CreateConvenioEspecifico(ConvenioEspecificoRequest.value)
       if (!result.isSuccess) {
         errorMensaje.value = result.error.message
         return null
@@ -90,8 +109,12 @@ export function useCreateConvenioMarcoForm(): CreateConvenioMarcoComposable {
     }
   }
 
+  VincularConvenioMarco = (NombreUnico: string) => {
+    //
+  }
+
   const resetForm = () => {
-    ConvenioMarcoRequest.value = createRequestConvMarc()
+    ConvenioEspecificoRequest.value = createRequestConvEspecifico()
     cargarNuevaEmpresa.value = false
   }
 
@@ -100,12 +123,14 @@ export function useCreateConvenioMarcoForm(): CreateConvenioMarcoComposable {
   })
 
   return {
-    ConvenioMarcoRequest,
+    ConvenioEspecificoRequest,
     errorMensaje,
     empresas,
+    Carreras,
     cargarNuevaEmpresa,
     ConvenioCreado,
     empresaForm,
+    involucradosForm,
     getEmpresas,
     submitForm,
     resetForm,

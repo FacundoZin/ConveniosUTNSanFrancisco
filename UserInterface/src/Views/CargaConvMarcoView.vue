@@ -135,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCreateConvenioMarcoForm } from '@/Composables/CreateConvenioMarcoForm'
+import { useCreateConvMarcoComposable } from '@/Composables/CreateConvMarcoComposable'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
@@ -151,7 +151,7 @@ const {
   empresaForm,
   submitForm: submitFormLogic, // Renombramos la función para evitar conflictos
   resetForm
-} = useCreateConvenioMarcoForm()
+} = useCreateConvMarcoComposable()
 
 const submitForm = async () => {
   const result = await submitFormLogic()

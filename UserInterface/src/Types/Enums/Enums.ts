@@ -4,7 +4,6 @@ export enum EstadoConvenio {
   Finalizado = 2,
 }
 
-
 export enum RolInvolucrado {
   Docente = 0,
   Alumno = 1,

@@ -1,5 +1,6 @@
 import type { Result } from '@/Common/Result'
 import type { CargarConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/CreateConvenioEspecifico'
+import type { UpdateConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/UpdateConvenioEspecifico'
 import type { CargarConvenioMarcoRequestDto } from '@/Types/ConvenioMarco/CreateConvenioMarco'
 import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/UpdateConvenioMarco'
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
@@ -124,7 +125,9 @@ export class ApiService {
     }
   }
 
-  static async EditarConvenioEspecifico(Dto: UpdateConvenioMarcoRequetsDto): Promise<Result<null>> {
+  static async EditarConvenioEspecifico(
+    Dto: UpdateConvenioEspecificoRequestDto,
+  ): Promise<Result<null>> {
     try {
       const response = await axios.put(`${API_URL}/ConveniosEspecificos`, Dto)
       return { isSuccess: true, value: null, status: response.status }

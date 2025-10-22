@@ -174,7 +174,7 @@
 <script setup lang="ts">
 import InvolucradoForm from '@/Components/InvolucradoForm.vue'
 import InvolucradosCard from '@/Components/InvolucradosCard.vue'
-import { useCreateConvenioEspecificoForm } from '@/Composables/CreateConvenioEspecificoForm'
+import { useCreateConvEspComposable } from '@/Composables/CreateConvEspComposable'
 import '@/Styles/FormCargaConvEspecifico.css'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
 import { useRouter } from 'vue-router'
@@ -193,7 +193,7 @@ const {
     involucradosForm,
     submitForm: submitFormLogic,
     resetForm
-} = useCreateConvenioEspecificoForm()
+} = useCreateConvEspComposable()
 
 const toast = useToast();
 
