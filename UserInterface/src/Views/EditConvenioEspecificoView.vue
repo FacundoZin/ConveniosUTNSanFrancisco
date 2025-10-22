@@ -1,86 +1,226 @@
 <template>
-  <div class="edit-form-container">
-    <div v-if="loading">Cargando formulario...</div>
-    <div v-else-if="error">Error al cargar el convenio.</div>
-    <div v-else-if="convenioData">
-      <h2>Editando Convenio: {{ convenioData.titulo }}</h2>
-      <form @submit.prevent="submitForm">
-        <div class="form-group">
-          <label for="titulo">Título:</label>
-          <input type="text" id="titulo" v-model="convenioData.titulo" />
-          <label for="numeroConvenio">Numero de convenio:</label>
-          <input type="text" id="numeroConvenio" v-model="convenioData.numeroconvenio" />
-          <label for="fechaFirma">Fecha de firma:</label>
-          <input type="date" id="fechaFirma" v-model="convenioData.fechaFirmaConvenio" />
-          <label for="fechaFin">Fecha de finalizacion:</label>
-          <input type="date" id="fechaFin" v-model="convenioData.fechaFinConvenio" />
-          <label for="comentario">Comentario:</label>
-          <input type="text" id="comentario" v-model="convenioData.comentarioOpcional" />
+    <div class="container mt-4 position-relative">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-primary">Cargar Convenio Especifico</h3>
+
+            <button v-if="ConvenioCreado" @click="irAlConvenio"
+                class="btn btn-outline-success d-flex align-items-center gap-2" title="Ver convenio creado">
+                <i class="bi bi-arrow-right-circle"></i>
+                Ver Convenio
+            </button>
         </div>
-        <button type="submit" class="save-btn">Guardar Cambios</button>
-      </form>
+
+        <div v-if="errorMensaje" class="alert alert-danger" role="alert">
+            {{ errorMensaje }}
+        </div>
+
+        <form @submit.prevent="guardarConvenio" class="row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label">Número de Convenio</label>
+                <input v-model="UpdateConvEspRequest.updateConvenioDto.numeroConvenio" type="text"
+                    class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Título</label>
+                <input v-model="UpdateConvEspRequest.updateConvenioDto.titulo" type="text" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Fecha de Firma</label>
+                <input v-model="UpdateConvEspRequest.updateConvenioDto.fechaFirmaConvenio" type="date"
+                    class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Fecha de Inicio de Actividades</label>
+                <input v-model="UpdateConvEspRequest.updateConvenioDto.fechaInicioActividades" type="date"
+                    class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Fecha de Fin</label>
+                <input v-model="UpdateConvEspRequest.updateConvenioDto.fechaFinConvenio" type="date"
+                    class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Carrera</label>
+                <select v-model="UpdateConvEspRequest.idCarreras" class="form-select" multiple>
+                    <option value="" disabled>Seleccionar</option>
+                    <option v-for="carrera in Carreras" :key="carrera.Id" :value="carrera.Id">
+                        {{ carrera.Nombre }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">Comentario Opcional</label>
+                <textarea v-model="UpdateConvEspRequest.updateConvenioDto.comentarioOpcional" class="form-control"
+                    rows="2"></textarea>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Estado</label>
+                <select v-model.number="UpdateConvEspRequest.updateConvenioDto.estado" class="form-select" required>
+                    <option value="" disabled>Seleccionar...</option>
+                    <option :value="0">Borrador</option>
+                    <option :value="1">Vigente</option>
+                    <option :value="3">Finalizado</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Número de Resolución</label>
+                <input v-model="UpdateConvEspRequest.updateConvenioDto.numeroResolucion" type="text"
+                    class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Refrendado</label>
+                <select v-model="UpdateConvEspRequest.updateConvenioDto.refrendado" class="form-select" required>
+                    <option :value="true">Sí</option>
+                    <option :value="false">No</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Es acta</label>
+                <select v-model="UpdateConvEspRequest.updateConvenioDto.esActa" class="form-select" required>
+                    <option :value="true">Sí</option>
+                    <option :value="false">No</option>
+                </select>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="col-12 mb-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="switchNuevaEmpresa"
+                        v-model="cargarNuevaEmpresa" />
+                    <label class="form-check-label" for="switchNuevaEmpresa">
+                        Cargar nueva empresa
+                    </label>
+                </div>
+            </div>
+
+            <!-- Empresa existente -->
+            <div v-if="!cargarNuevaEmpresa" class="col-md-6">
+                <label class="form-label">Seleccionar Empresa</label>
+                <select v-model="empresaForm.id" class="form-select" required>
+                    <option value="" disabled>Seleccionar...</option>
+                    <option v-for="empresa in empresas" :key="empresa.idEmpresa" :value="empresa.idEmpresa">
+                        {{ empresa.nombreEmpresa }}
+                    </option>
+                </select>
+            </div>
+
+            <!-- Nueva empresa -->
+            <div v-else class="col-12 border rounded p-3 bg-light">
+                <h5 class="mb-3">Nueva Empresa</h5>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Nombre</label>
+                        <input v-model="empresaForm.nombre" type="text" class="form-control" required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Razón Social</label>
+                        <input v-model="empresaForm.razonSocial" type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">CUIT</label>
+                        <input v-model="empresaForm.cuit" type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Dirección</label>
+                        <input v-model="empresaForm.direccion" type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Teléfono</label>
+                        <input v-model="empresaForm.telefono" type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input v-model="empresaForm.email" type="email" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="col-12 involucrados-section">
+                <h3 class="involucrados-title text-primary mb-3">👥 Involucrados</h3>
+
+                <InvolucradoForm @agregar="agregarInvolucrado" />
+
+                <div class="involucrados-list mt-3">
+                    <InvolucradosCard v-for="(inv, idx) in UpdateConvEspRequest.insertInvolucradosDtos" :key="idx"
+                        :involucrado="inv" @eliminar="eliminarInvolucrado(idx)" />
+                </div>
+            </div>
+
+            <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-primary">Cargar Convenio</button>
+            </div>
+        </form>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
-import ApiService from '@/Services/ApiService';
-import '@/Styles/EditConvenioEspecificoForm.css';
-import type { UpdateConvenioEspecificoDto } from '@/Types/Api.Interface';
-import type { ConvenioEspecificoCompleto } from '@/Types/ViewModels';
-import { isAxiosError } from 'axios';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { POSITION, useToast } from 'vue-toastification';
+import InvolucradoForm from '@/Components/InvolucradoForm.vue'
+import InvolucradosCard from '@/Components/InvolucradosCard.vue'
+import { UseUpdateConvEspComposable } from '@/Composables/UpdateConvEspComposable'
+import '@/Styles/FormCargaConvEspecifico.css'
+import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
+import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
+
+const router = useRouter()
+
+const {
+  IsLoading,
+  InfoConvenioEspecificoCompleta,
+  UpdateConvEspRequest,
+  errorMensaje,
+  empresas,
+  Carreras,
+  cargarNuevaEmpresa,
+  ConvenioCreado,
+  empresaForm,
+  involucradosForm,
+  submitForm
+} = UseUpdateConvEspComposable()
 
 const toast = useToast();
-const route = useRoute();
-const convenioData = ref<ConvenioEspecificoCompleto | null>(null);
-const loading = ref(true);
-const error = ref(false);
-const id = ref(0);
 
-onMounted(async () => {
-  id.value = parseInt(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id);
+const agregarInvolucrado = (nuevo: InsertInvolucradosDto) => {
+    involucradosForm.value.push(nuevo)
+}
 
-  if (id.value) {
-    try {
-      const response = await ApiService.GetConvenioMarcoCompleto(id.value);
-      convenioData.value = response.data;
-    } catch (e) {
-      error.value = true;
-      console.error(e);
-    } finally {
-      loading.value = false;
+const eliminarInvolucrado = (index: number) => {
+    involucradosForm.value.splice(index, 1)
+}
+
+const guardarConvenio = async () => {
+    const result = await submitForm()
+
+    if (result) {
+        ConvenioCreado.value = result
+        toast.success('Convenio cargado con éxito')
     }
-  }
-});
+}
 
-const submitForm = async () => {
-  const dto: UpdateConvenioEspecificoDto = {
-    id: id.value,
-    numeroconvenio: convenioData.value?.numeroconvenio || 0,
-    titulo: convenioData.value?.titulo || '',
-    fechaFirmaConvenio: convenioData.value?.fechaFirmaConvenio || '',
-    fechaInicioActividades: convenioData.value?.fechaInicioActividades || '',
-    fechaFinConvenio: convenioData.value?.fechaFinConvenio || '',
-    comentarioOpcional: convenioData.value?.comentarioOpcional || '',
-  }
-
-  try {
-    const response = await ApiService.EditarConvenioEspecifico(dto);
-    toast.success("Convenio editado con éxito");
-  } catch (error) {
-    if (isAxiosError(error)) {
-      toast.error("Error al editar el convenio", { position: POSITION.BOTTOM_CENTER });
-      if (error.response) {
-        console.log(`Error al editar el convenio (${error.response.status}):`, error.response.data);
-      } else {
-        console.log(`Error al editar el convenio: no se recibió respuesta del servidor, ${error}`);
-      }
-    } else {
-      console.log(`Lo sentimos, algo salió mal fuera del entorno HTTP, ${error}`);
+const irAlConvenio = () => {
+    if (ConvenioCreado.value) {
+        router.push({ name: 'VistaConvenioEspecifico', params: { id: ConvenioCreado.value.ID } })
     }
-  }
-};
+}
+
 </script>

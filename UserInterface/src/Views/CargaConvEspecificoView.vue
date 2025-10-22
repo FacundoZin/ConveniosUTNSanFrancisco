@@ -63,11 +63,11 @@
 
             <div class="col-md-4">
                 <label class="form-label">Estado</label>
-                <select v-model="ConvenioEspecificoRequest.insertConvenioDto.estado" class="form-select" required>
+                <select v-model.number="ConvenioEspecificoRequest.insertConvenioDto.estado" class="form-select" required>
                     <option value="" disabled>Seleccionar...</option>
-                    <option value="Vigente">Vigente</option>
-                    <option value="Finalizado">Finalizado</option>
-                    <option value="Suspendido">Suspendido</option>
+                    <option :value="0">Borrador</option>
+                    <option :value="1">Vigente</option>
+                    <option :value="3">Finalizado</option>
                 </select>
             </div>
 
@@ -217,7 +217,7 @@ const guardarConvenio = async () => {
 
 const irAlConvenio = () => {
     if (ConvenioCreado.value) {
-        router.push({ name: 'VistaConvenioMarco', params: { id: ConvenioCreado.value.ID } })
+        router.push({ name: 'VistaConvenioEspecifico', params: { id: ConvenioCreado.value.ID } })
     }
 }
 

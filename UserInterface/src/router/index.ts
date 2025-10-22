@@ -12,25 +12,11 @@ const router = createRouter({
   routes: [
     { path: '/', component: DashBoardView, name: 'ListaConvenios' },
     { path: '/ConvenioMarco/:id', name: 'VistaConvenioMarco', component: ConvenioMarcoView },
-    {
-      path: '/ConvenioEspecifico/:id',
-      name: 'VistaConvenioEspecifico',
-      component: ConvenioEspecificoView,
-    },
+    { path: '/ConvenioEspecifico/:id', name: 'VistaConvenioEspecifico', component: ConvenioEspecificoView,},
     { path: '/editConvenioMarco/:id', name: 'EditConvenioMarco', component: EditConvenioMarcoView },
-    {
-      path: '/editConvenioEspecifico/:id',
-      name: 'EditConvenioEspecifico',
-      component: EditConvenioEspecificoView,
-      props: true,
-    },
+    { path: '/editConvenioEspecifico/:id', name: 'EditConvenioEspecifico', component: EditConvenioEspecificoView,props: true,},
     { path: '/CargarConvenioMarco', name: 'CargarConvenioMarco', component: CargaConvMarcoView },
-    {
-      path: '/CargarConvenioEspecifico/:id',
-      name: 'CreateConvenioEspecifico',
-      component: CargaConvEspecificoView,
-      props: true,
-    },
+    { path: '/CargarConvenioEspecifico/:id', name: 'CreateConvenioEspecifico', component: CargaConvEspecificoView, props: true,},
   ],
 })
 

@@ -16,7 +16,7 @@ import { useRoute } from 'vue-router'
 interface CreateConvenioEspecificoComposable {
   IsLoading: Ref<boolean>
   InfoConvenioEspecificoCompleta: Ref<InfoConvenioEspecificoDto | null>
-  ConvenioEspecificoRequest: Ref<UpdateConvenioEspecificoRequestDto>
+  UpdateConvEspRequest: Ref<UpdateConvenioEspecificoRequestDto>
   errorMensaje: Ref<string | null>
   empresas: Ref<ComboBoxEmpresasDto[]>
   Carreras: Carrera[]
@@ -24,13 +24,12 @@ interface CreateConvenioEspecificoComposable {
   ConvenioCreado: Ref<ConvenioCreated | null>
   empresaForm: Ref<InsertEmpresaDto>
   involucradosForm: Ref<InsertInvolucradosDto[]>
-  getEmpresas: () => Promise<void>
   submitForm: () => Promise<ConvenioCreated | null>
 }
 
-export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable {
+export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable {
   const IsLoading = ref(false)
-  const ConvenioEspecificoRequest = ref<UpdateConvenioEspecificoRequestDto>(
+  const UpdateConvEspRequest = ref<UpdateConvenioEspecificoRequestDto>(
     CreateUpdateRequestConvEspecifico(),
   )
   const InfoConvenioEspecificoCompleta = ref<InfoConvenioEspecificoDto | null>(null)
@@ -45,7 +44,7 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
   const empresaForm = computed<InsertEmpresaDto>({
     get() {
       return (
-        ConvenioEspecificoRequest.value.insertEmpresaDto ?? {
+        UpdateConvEspRequest.value.insertEmpresaDto ?? {
           id: null,
           nombre: null,
           razonSocial: null,
@@ -58,22 +57,22 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
     },
     set(value) {
       if (Object.values(value).some((v) => v !== '' && v != null)) {
-        ConvenioEspecificoRequest.value.insertEmpresaDto = { ...value }
+        UpdateConvEspRequest.value.insertEmpresaDto = { ...value }
       } else {
-        ConvenioEspecificoRequest.value.insertEmpresaDto = null
+        UpdateConvEspRequest.value.insertEmpresaDto = null
       }
     },
   })
 
   const involucradosForm = computed<InsertInvolucradosDto[]>({
     get() {
-      return ConvenioEspecificoRequest.value.insertInvolucradosDtos ?? []
+      return UpdateConvEspRequest.value.insertInvolucradosDtos ?? []
     },
     set(value: InsertInvolucradosDto[] | null) {
       if (value && value.length > 0) {
-        ConvenioEspecificoRequest.value.insertInvolucradosDtos = value
+        UpdateConvEspRequest.value.insertInvolucradosDtos = value
       } else {
-        ConvenioEspecificoRequest.value.insertInvolucradosDtos = null
+        UpdateConvEspRequest.value.insertInvolucradosDtos = null
       }
     },
   })
@@ -90,7 +89,7 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
   const submitForm = async (): Promise<ConvenioCreated | null> => {
     errorMensaje.value = null
     try {
-      const result = await ApiService.EditarConvenioEspecifico(ConvenioEspecificoRequest.value)
+      const result = await ApiService.EditarConvenioEspecifico(UpdateConvEspRequest.value)
       if (!result.isSuccess) {
         errorMensaje.value = result.error.message
         return null
@@ -138,39 +137,26 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
     const infoConvenioMarcoCompleta = await GetInfoConvenioEspecifico(id)
     await getEmpresas()
 
-    ConvenioEspecificoRequest.value.updateConvenioDto.id = id
-    ConvenioEspecificoRequest.value.updateConvenioDto.numeroConvenio =
-      infoConvenioMarcoCompleta?.numeroConvenio ?? null
-    ConvenioEspecificoRequest.value.updateConvenioDto.titulo =
-      infoConvenioMarcoCompleta?.titulo ?? null
-    ConvenioEspecificoRequest.value.updateConvenioDto.fechaFirmaConvenio =
-      infoConvenioMarcoCompleta?.fechaFirmaConvenio ?? null
-    ConvenioEspecificoRequest.value.updateConvenioDto.fechaInicioActividades =
-      infoConvenioMarcoCompleta?.fechaInicioActividades ?? null
-    ConvenioEspecificoRequest.value.updateConvenioDto.fechaFinConvenio =
-      infoConvenioMarcoCompleta?.fechaFinConvenio ?? null
-    ConvenioEspecificoRequest.value.updateConvenioDto.comentarioOpcional =
-      infoConvenioMarcoCompleta?.comentarioOpcional ?? null
-    ConvenioEspecificoRequest.value.updateConvenioDto.estado =
-      infoConvenioMarcoCompleta?.estado ?? ConvenioEspecificoRequest.value.updateConvenioDto.estado
-    ConvenioEspecificoRequest.value.updateConvenioDto.esActa =
-      infoConvenioMarcoCompleta?.esActa ?? ConvenioEspecificoRequest.value.updateConvenioDto.esActa
-    ConvenioEspecificoRequest.value.updateConvenioDto.numeroResolucion =
-      infoConvenioMarcoCompleta?.numeroResolucion ?? null
-    ConvenioEspecificoRequest.value.updateConvenioDto.refrendado =
-      infoConvenioMarcoCompleta?.refrendado ??
-      ConvenioEspecificoRequest.value.updateConvenioDto.refrendado
-    ConvenioEspecificoRequest.value.idConvenioMarcoVinculado =
-      infoConvenioMarcoCompleta?.convenioMarcoId ?? null
-    ConvenioEspecificoRequest.value.idCarreras =
-      infoConvenioMarcoCompleta?.carrerasInvolucradas?.map((c) => c.Id) ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.id = id
+    UpdateConvEspRequest.value.updateConvenioDto.numeroConvenio = infoConvenioMarcoCompleta?.numeroConvenio ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.titulo = infoConvenioMarcoCompleta?.titulo ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.fechaFirmaConvenio = infoConvenioMarcoCompleta?.fechaFirmaConvenio ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.fechaInicioActividades = infoConvenioMarcoCompleta?.fechaInicioActividades ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.fechaFinConvenio = infoConvenioMarcoCompleta?.fechaFinConvenio ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.comentarioOpcional = infoConvenioMarcoCompleta?.comentarioOpcional ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.estado = infoConvenioMarcoCompleta!.estado 
+    UpdateConvEspRequest.value.updateConvenioDto.esActa = infoConvenioMarcoCompleta!.esActa 
+    UpdateConvEspRequest.value.updateConvenioDto.numeroResolucion = infoConvenioMarcoCompleta?.numeroResolucion ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.refrendado = infoConvenioMarcoCompleta!.refrendado
+    UpdateConvEspRequest.value.idConvenioMarcoVinculado =infoConvenioMarcoCompleta?.convenioMarcoId ?? null
+    UpdateConvEspRequest.value.idCarreras = infoConvenioMarcoCompleta?.carrerasInvolucradas?.map((c) => c.Id) ?? null
 
     IsLoading.value = false
   })
 
   return {
     IsLoading,
-    ConvenioEspecificoRequest,
+    UpdateConvEspRequest,
     InfoConvenioEspecificoCompleta,
     errorMensaje,
     empresas,
@@ -179,7 +165,6 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
     ConvenioCreado,
     empresaForm,
     involucradosForm,
-    getEmpresas,
     submitForm,
   }
 }

@@ -46,12 +46,12 @@
 
       <div class="col-md-4">
         <label class="form-label">Estado</label>
-        <select v-model="ConvenioMarcoRequest.insertConvenioDto.estado" class="form-select" required>
-          <option value="" disabled>Seleccionar...</option>
-          <option value="Vigente">Vigente</option>
-          <option value="Finalizado">Finalizado</option>
-          <option value="Suspendido">Suspendido</option>
-        </select>
+            <select v-model.number="ConvenioMarcoRequest.insertConvenioDto.estado" class="form-select" required>
+              <option value="" disabled>Seleccionar...</option>
+              <option :value="0">Borrador</option>
+              <option :value="1">Vigente</option>
+              <option :value="3">Finalizado</option>
+            </select>
       </div>
 
       <div class="col-md-4">
