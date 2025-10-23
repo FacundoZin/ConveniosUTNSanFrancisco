@@ -66,7 +66,7 @@
 import router from '@/router'
 import ApiService from '@/Services/ApiService'
 import '@/Styles/VistaConvenioMarco.css'
-import type { ConvenioMarcoCompleto } from '@/Types/ViewModels'
+import type { ConvenioMarcoDto } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -83,14 +83,16 @@ if (Array.isArray(idparam)) {
   id = parseInt(idparam)
 }
 
-const ConvenioMarco = ref<ConvenioMarcoCompleto | null>(null)
+const ConvenioMarco = ref<ConvenioMarcoDto | null>(null)
 
 onMounted(async () => {
   try {
     const response = await ApiService.GetConvenioMarcoCompleto(id)
     ConvenioMarco.value = response.data
   } catch (error) {
-    toast.error('error al acceder a los datos del convenio marco', { position: POSITION.BOTTOM_CENTER })
+    toast.error('error al acceder a los datos del convenio marco', {
+      position: POSITION.BOTTOM_CENTER,
+    })
     if (isAxiosError(error) && error.response) {
       console.log(error.response.data, error.response.status)
     } else {
