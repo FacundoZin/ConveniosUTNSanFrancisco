@@ -2,16 +2,9 @@
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Interfaces.Servicios;
 using APIconvenios.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using System.Linq;
 using APIconvenios.Common;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.Collections.Generic;
 using APIconvenios.Helpers.Mappers;
-using APIconvenios.Helpers.Validators;
 using APIconvenios.UnitOfWork;
-using APIconvenios.DTOs.Empresa;
 using Microsoft.Data.Sqlite;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.Commands.ConvenioMarco.commands;

@@ -5,7 +5,6 @@ using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.Helpers.Mappers;
 using APIconvenios.Interfaces.Servicios;
-using APIconvenios.Models;
 using APIconvenios.UnitOfWork;
 
 
@@ -14,11 +13,9 @@ namespace APIconvenios.Services
     public class ConvenioEspecificoService : IConvenioEspecifcoService
     {
         private readonly _UnitOfWork _UnitOfWork;
-        private readonly ConveniosMarcosServices _ConvenioMarcoService;
-        public ConvenioEspecificoService(_UnitOfWork unitOfWork, ConveniosMarcosServices convenioMarcoService)
+        public ConvenioEspecificoService(_UnitOfWork unitOfWork)
         {
             _UnitOfWork = unitOfWork;
-            _ConvenioMarcoService = convenioMarcoService;
         }
 
         public async Task<Result<ConvenioCreated>> CreateConvenioEspecifico(CargarConvenioEspecificoRequestDto Dto)
