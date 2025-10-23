@@ -20,7 +20,7 @@ const getErrorMessage = (error: any) => {
   return error.response?.data?.message || 'Error de conexión o error desconocido.'
 }
 
-export class ApiService {
+export default class ApiService {
   static async GetConvenios(
     params: IConvenioQueryObject,
   ): Promise<Result<ConvenioEspecificoDto | ConvenioMarcoDto>> {
@@ -141,5 +141,29 @@ export class ApiService {
 
   static async GetEmpresas(): Promise<ComboBoxEmpresasDto[]> {
     return await axios.get(`${API_URL}/Empresa`)
+  }
+
+  static async GetIdConvMarcoByNumeroConv(numeroConvenio: string): Promise<Result<number>> {
+    try {
+      const response = await axios.get(`${API_URL}/ConveniosMarcos/${numeroConvenio}`)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return {
+        isSuccess: false,
+        error: { message: getErrorMessage(Ex), status: Ex.response?.status },
+      }
+    }
+  }
+
+  static async GetIdConvEspByNumeroConv(numeroConvenio: string): Promise<Result<number>> {
+    try {
+      const response = await axios.get(`${API_URL}/ConveniosEspecificos/${numeroConvenio}`)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return {
+        isSuccess: false,
+        error: { message: getErrorMessage(Ex), status: Ex.response?.status },
+      }
+    }
   }
 }

@@ -30,17 +30,24 @@ namespace APIconvenios.Repositorio
 
         public void CreateConvenio(ConvenioMarco convenioMarco)
         {
-            _Context.ConveniosMarcos.Add(convenioMarco);  
+            _Context.ConveniosMarcos.Add(convenioMarco);
         }
 
         public void ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado)
         {
-            _Context.ConveniosMarcos.Update(convenioMarcoActualizado);  
+            _Context.ConveniosMarcos.Update(convenioMarcoActualizado);
         }
 
         public IQueryable<ConvenioMarco> GetQuery()
         {
             return _Context.ConveniosMarcos.AsQueryable();
+        }
+
+        public async Task<ConvenioMarco?> GetByNumeroConvenio(string Numero)
+        {
+            var convenio = await _Context.ConveniosMarcos.FirstOrDefaultAsync(c => c.numeroconvenio == Numero);
+            if (convenio == null) return null;
+            return convenio;
         }
     }
 }

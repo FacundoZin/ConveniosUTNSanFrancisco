@@ -63,5 +63,15 @@ namespace APIconvenios.Controllers
 
             return Created(string.Empty, result.Data);
         }
+
+        [HttpGet("{numeroConvenio}")]
+        public async Task<IActionResult> GetIdConvenioMarco([FromRoute] string numeroConvenio)
+        {
+            var result = await _ConvenioService.GetIdByNumeroConvenio(numeroConvenio);
+
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok(result.Data);
+        }
     }
 }

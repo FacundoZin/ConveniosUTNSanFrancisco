@@ -18,7 +18,7 @@ namespace APIconvenios.Controllers
             _ConvenioEspecifcoService = convenioEspecifcoService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> ObtenerConvenioEspecificoCompleto(int id)
         {
             var result = await _ConvenioEspecifcoService.ObtenerConvenioEspecificoCompleto(id);
@@ -52,7 +52,7 @@ namespace APIconvenios.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _ConvenioEspecifcoService.DeleteConvenioEspecifico(id);
@@ -60,6 +60,16 @@ namespace APIconvenios.Controllers
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
             return Ok();
+        }
+
+        [HttpGet("{numeroConvenio}")]
+        public async Task<IActionResult> GetIdConvenioEspecifico([FromRoute] string numeroConvenio)
+        {
+            var result = await _ConvenioEspecifcoService.GetIdByNumeroConvenio(numeroConvenio);
+
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok(result.Data);
         }
     }
 }

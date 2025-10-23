@@ -23,7 +23,7 @@ const errorMensaje = ref('')
 onMounted(async () => {
   try {
     const response = await ApiService.GetConvenioEspecificoCompleto(id)
-    ConvenioEspecifico.value = response.data
+    ConvenioEspecifico.value = response.value
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       errorMensaje.value = ` ${error.response.data}`

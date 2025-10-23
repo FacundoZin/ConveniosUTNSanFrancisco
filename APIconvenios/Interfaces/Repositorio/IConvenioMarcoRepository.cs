@@ -10,5 +10,7 @@ namespace APIconvenios.Interfaces.Repositorio
         void CreateConvenio(ConvenioMarco convenioMarco);
         void ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado);
         IQueryable<ConvenioMarco> GetQuery();
+
+        Task<ConvenioMarco?> GetByNumeroConvenio(string Numero);
     }
 }

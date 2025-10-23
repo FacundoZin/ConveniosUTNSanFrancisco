@@ -1,5 +1,5 @@
 import router from '@/router'
-import { ApiService } from '@/Services/ApiService'
+import ApiService from '@/Services/ApiService'
 import {
   UpdateRequestConvMarc,
   type UpdateConvenioMarcoRequetsDto,
@@ -32,7 +32,7 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
   const errorMensaje = ref<string | null>(null)
   const empresas = ref<ComboBoxEmpresasDto[]>([])
   const cargarNuevaEmpresa = ref(false)
-  const IsLoading = ref(true)
+  const IsLoading = ref(false)
 
   const route = useRoute()
 
@@ -108,15 +108,19 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
   }
 
   const submitForm = async (): Promise<ConvenioCreated | null> => {
+    IsLoading.value = true
     errorMensaje.value = null
     try {
       const result = await ApiService.EditarConvenioMarco(ConvenioMarcoRequest.value)
       if (!result.isSuccess) {
+        IsLoading.value = false
         errorMensaje.value = result.error.message
         return null
       }
+      IsLoading.value = false
       return result.value
     } catch (error) {
+      IsLoading.value = false
       errorMensaje.value = 'Ocurrió un error al cargar el convenio'
       if (isAxiosError(error)) {
         if (error.response) {

@@ -45,7 +45,7 @@ namespace APIconvenios.Services
             if (requetsDto.EmpresaDesvinculada)
                 commands.Add(new UnlinkEmpresaFromMarcoCmd());
 
-            if (requetsDto.IdsConveniosEspecificosParaVincular != null 
+            if (requetsDto.IdsConveniosEspecificosParaVincular != null
                 && requetsDto.IdsConveniosEspecificosParaVincular?.Length > 0)
                 commands.Add(new LinkerConvEspCmd(requetsDto.IdsConveniosEspecificosParaVincular));
 
@@ -143,6 +143,19 @@ namespace APIconvenios.Services
             else
                 return Result<ConvenioCreated>.Error("No se pudo crear el convenio marco.", 500);
 
+        }
+
+        public async Task<ConvenioMarco?> SearchByNumeroConvenio(string Numero)
+        {
+            var convenio = await _UnitOfWork._ConvenioMarcoRepository.GetByNumeroConvenio(Numero);
+            return convenio;
+        }
+
+        public async Task<Result<int>> GetIdByNumeroConvenio(string Numero)
+        {
+            var convenio = await _UnitOfWork._ConvenioMarcoRepository.GetByNumeroConvenio(Numero);
+            if (convenio == null) return Result<int>.Error("el convenio que esta buscando no fue encontrado", 404);
+            return Result<int>.Exito(convenio.Id);
         }
     }
 }

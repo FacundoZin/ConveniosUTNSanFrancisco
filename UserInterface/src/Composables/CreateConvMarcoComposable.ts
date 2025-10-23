@@ -1,4 +1,4 @@
-import { ApiService } from '@/Services/ApiService'
+import ApiService from '@/Services/ApiService'
 import {
   createRequestConvMarc,
   type CargarConvenioMarcoRequestDto,
@@ -11,19 +11,20 @@ import { computed, onMounted, ref, type Ref } from 'vue'
 
 // Define el tipo de retorno para que TypeScript sepa qué devuelve el composable
 interface CreateConvenioMarcoComposable {
+  IsLoading: Ref<boolean>
   ConvenioMarcoRequest: Ref<CargarConvenioMarcoRequestDto>
   errorMensaje: Ref<string | null>
   empresas: Ref<ComboBoxEmpresasDto[]>
   cargarNuevaEmpresa: Ref<boolean>
   ConvenioCreado: Ref<ConvenioCreated | null>
   empresaForm: Ref<InsertEmpresaDto> // Es un computed, pero se trata como Ref en el retorno
-  VincularConvenioEspecifico(NombreUnico: string): void
   submitForm: () => Promise<ConvenioCreated | null>
   resetForm: () => void
 }
 
 export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
   // --- ESTADO REACTIVO ---
+  const IsLoading = ref(false)
   const ConvenioMarcoRequest = ref<CargarConvenioMarcoRequestDto>(createRequestConvMarc())
   const errorMensaje = ref<string | null>(null)
   const empresas = ref<ComboBoxEmpresasDto[]>([])
@@ -64,15 +65,19 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
   }
 
   const submitForm = async (): Promise<ConvenioCreated | null> => {
+    IsLoading.value = true
     errorMensaje.value = null
     try {
       const result = await ApiService.CreateConvenioMarco(ConvenioMarcoRequest.value)
       if (!result.isSuccess) {
+        IsLoading.value = false
         errorMensaje.value = result.error.message
         return null
       }
+      IsLoading.value = false
       return result.value
     } catch (error) {
+      IsLoading.value = false
       errorMensaje.value = 'Ocurrió un error al cargar el convenio'
       if (isAxiosError(error)) {
         if (error.response) {
@@ -90,20 +95,19 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
     }
   }
 
-  const VincularConvenioEspecifico = (NombreUnico: string) => {
-    //
-  }
-
   const resetForm = () => {
     ConvenioMarcoRequest.value = createRequestConvMarc()
     cargarNuevaEmpresa.value = false
   }
 
-  onMounted(() => {
-    getEmpresas()
+  onMounted(async () => {
+    IsLoading.value = true
+    await getEmpresas()
+    IsLoading.value = false
   })
 
   return {
+    IsLoading,
     ConvenioMarcoRequest,
     errorMensaje,
     empresas,

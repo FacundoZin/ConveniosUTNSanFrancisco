@@ -29,6 +29,12 @@ namespace APIconvenios.Repositorio
             return convenio;
         }
 
+        public async Task<ConvenioEspecifico?> GetByNumeroConvenio(string numero)
+        {
+            var convenio = await _Context.ConveniosEspecificos.FirstOrDefaultAsync(c => c.numeroconvenio == numero);
+            return convenio;
+        }
+
         public async Task<List<ConvenioEspecifico>> GetConveniosByIds(int[] Ids)
         {
             return await _Context.ConveniosEspecificos.Where(c => Ids.Contains(c.Id)).ToListAsync();
@@ -41,7 +47,7 @@ namespace APIconvenios.Repositorio
 
         public void ModificarConvenioEspecifico(ConvenioEspecifico convenio)
         {
-            _Context.ConveniosEspecificos.Update(convenio);  
+            _Context.ConveniosEspecificos.Update(convenio);
         }
     }
 }

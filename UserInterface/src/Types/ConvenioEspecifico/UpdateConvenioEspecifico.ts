@@ -46,12 +46,12 @@ export function CreateUpdateRequestConvEspecifico(): UpdateConvenioEspecificoReq
       refrendado: false,
       convenioMarcoId: null,
     },
-    insertEmpresaDto: null,//
-    insertInvolucradosDtos: null,//
-    idCarreras: null,//
-    idsInvolucraodsEliminados: null,
-    idConvenioMarcoVinculado: null, //id nuevo convenio vinculado
+    insertEmpresaDto: null, //
+    insertInvolucradosDtos: null, //
+    idCarreras: null, //
+    idsInvolucraodsEliminados: null, //
+    idConvenioMarcoVinculado: null, //
     desvincularConvenioMarco: false,
-    desvincularEmpresa: false,
+    desvincularEmpresa: false, //
   }
 }

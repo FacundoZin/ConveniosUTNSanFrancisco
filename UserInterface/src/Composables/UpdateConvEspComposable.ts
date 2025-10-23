@@ -1,4 +1,4 @@
-import { ApiService } from '@/Services/ApiService'
+import ApiService from '@/Services/ApiService'
 import { carrerasList, type Carrera } from '@/Types/CarrerasInvolucradas/CarrerasInvolucradas'
 import {
   CreateUpdateRequestConvEspecifico,
@@ -87,15 +87,19 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
   }
 
   const submitForm = async (): Promise<ConvenioCreated | null> => {
+    IsLoading.value = true
     errorMensaje.value = null
     try {
       const result = await ApiService.EditarConvenioEspecifico(UpdateConvEspRequest.value)
       if (!result.isSuccess) {
+        IsLoading.value = false
         errorMensaje.value = result.error.message
         return null
       }
       return result.value
+      IsLoading.value = false
     } catch (error) {
+      IsLoading.value = false
       errorMensaje.value = 'Ocurrió un error al cargar el convenio'
       if (isAxiosError(error)) {
         if (error.response) {
@@ -138,18 +142,26 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
     await getEmpresas()
 
     UpdateConvEspRequest.value.updateConvenioDto.id = id
-    UpdateConvEspRequest.value.updateConvenioDto.numeroConvenio = infoConvenioMarcoCompleta?.numeroConvenio ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.numeroConvenio =
+      infoConvenioMarcoCompleta?.numeroConvenio ?? null
     UpdateConvEspRequest.value.updateConvenioDto.titulo = infoConvenioMarcoCompleta?.titulo ?? null
-    UpdateConvEspRequest.value.updateConvenioDto.fechaFirmaConvenio = infoConvenioMarcoCompleta?.fechaFirmaConvenio ?? null
-    UpdateConvEspRequest.value.updateConvenioDto.fechaInicioActividades = infoConvenioMarcoCompleta?.fechaInicioActividades ?? null
-    UpdateConvEspRequest.value.updateConvenioDto.fechaFinConvenio = infoConvenioMarcoCompleta?.fechaFinConvenio ?? null
-    UpdateConvEspRequest.value.updateConvenioDto.comentarioOpcional = infoConvenioMarcoCompleta?.comentarioOpcional ?? null
-    UpdateConvEspRequest.value.updateConvenioDto.estado = infoConvenioMarcoCompleta!.estado 
-    UpdateConvEspRequest.value.updateConvenioDto.esActa = infoConvenioMarcoCompleta!.esActa 
-    UpdateConvEspRequest.value.updateConvenioDto.numeroResolucion = infoConvenioMarcoCompleta?.numeroResolucion ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.fechaFirmaConvenio =
+      infoConvenioMarcoCompleta?.fechaFirmaConvenio ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.fechaInicioActividades =
+      infoConvenioMarcoCompleta?.fechaInicioActividades ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.fechaFinConvenio =
+      infoConvenioMarcoCompleta?.fechaFinConvenio ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.comentarioOpcional =
+      infoConvenioMarcoCompleta?.comentarioOpcional ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.estado = infoConvenioMarcoCompleta!.estado
+    UpdateConvEspRequest.value.updateConvenioDto.esActa = infoConvenioMarcoCompleta!.esActa
+    UpdateConvEspRequest.value.updateConvenioDto.numeroResolucion =
+      infoConvenioMarcoCompleta?.numeroResolucion ?? null
     UpdateConvEspRequest.value.updateConvenioDto.refrendado = infoConvenioMarcoCompleta!.refrendado
-    UpdateConvEspRequest.value.idConvenioMarcoVinculado =infoConvenioMarcoCompleta?.convenioMarcoId ?? null
-    UpdateConvEspRequest.value.idCarreras = infoConvenioMarcoCompleta?.carrerasInvolucradas?.map((c) => c.Id) ?? null
+    UpdateConvEspRequest.value.idConvenioMarcoVinculado =
+      infoConvenioMarcoCompleta?.convenioMarcoId ?? null
+    UpdateConvEspRequest.value.idCarreras =
+      infoConvenioMarcoCompleta?.carrerasInvolucradas?.map((c) => c.Id) ?? null
 
     IsLoading.value = false
   })

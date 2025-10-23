@@ -4,8 +4,11 @@
       <h3 class="text-primary">Cargar Convenio Marco</h3>
 
       <!-- Botón visible solo cuando se crea un convenio -->
-      <button @click="IrAConvenio()" class="btn btn-outline-success d-flex align-items-center gap-2"
-        title="Ver convenio creado">
+      <button
+        @click="IrAConvenio()"
+        class="btn btn-outline-success d-flex align-items-center gap-2"
+        title="Ver convenio creado"
+      >
         <i class="bi bi-arrow-right-circle"></i>
         Ir al convenio
       </button>
@@ -20,50 +23,78 @@
       <!-- DATOS DEL CONVENIO -->
       <div class="col-md-6">
         <label class="form-label">Número de Convenio</label>
-        <input v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.numeroConvenio" type="text" class="form-control" />
+        <input
+          v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.numeroConvenio"
+          type="text"
+          class="form-control"
+        />
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Título</label>
-        <input v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.titulo" type="text" class="form-control" />
+        <input
+          v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.titulo"
+          type="text"
+          class="form-control"
+        />
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Fecha de Firma</label>
-        <input v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.fechaFirmaConvenio" type="date"
-          class="form-control" />
+        <input
+          v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.fechaFirmaConvenio"
+          type="date"
+          class="form-control"
+        />
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Fecha de Fin</label>
-        <input v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.fechaFin" type="date" class="form-control" />
+        <input
+          v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.fechaFin"
+          type="date"
+          class="form-control"
+        />
       </div>
 
       <div class="col-12">
         <label class="form-label">Comentario Opcional</label>
-        <textarea v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.comentarioOpcional" class="form-control"
-          rows="2"></textarea>
+        <textarea
+          v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.comentarioOpcional"
+          class="form-control"
+          rows="2"
+        ></textarea>
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Estado</label>
-            <select v-model.number="ConvenioMarcoRequest.updateConvenioMarcoDto.estado" class="form-select" required>
-              <option value="" disabled>Seleccionar...</option>
-              <option :value="0">Borrador</option>
-              <option :value="1">Vigente</option>
-              <option :value="3">Finalizado</option>
-            </select>
+        <select
+          v-model.number="ConvenioMarcoRequest.updateConvenioMarcoDto.estado"
+          class="form-select"
+          required
+        >
+          <option value="" disabled>Seleccionar...</option>
+          <option :value="0">Borrador</option>
+          <option :value="1">Vigente</option>
+          <option :value="3">Finalizado</option>
+        </select>
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Número de Resolución</label>
-        <input v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.numeroResolucion" type="text"
-          class="form-control" />
+        <input
+          v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.numeroResolucion"
+          type="text"
+          class="form-control"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Refrendado</label>
-        <select v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.refrendado" class="form-select">
+        <select
+          v-model="ConvenioMarcoRequest.updateConvenioMarcoDto.refrendado"
+          class="form-select"
+        >
           class="form-select" required>
           <option :value="true">Sí</option>
           <option :value="false">No</option>
@@ -77,14 +108,19 @@
 
       <div v-if="infoConvenioMarcoCompleta && infoConvenioMarcoCompleta.empresa" class="col-12">
         <div class="card border-primary shadow-sm">
-          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <div
+            class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+          >
             <h5 class="mb-0">
               <i class="bi bi-briefcase me-2"></i>
               Empresa Asociada: {{ infoConvenioMarcoCompleta.empresa.nombre_Empresa }}
             </h5>
 
-            <button @click="infoConvenioMarcoCompleta.empresa = undefined"
-              class="btn btn-sm btn-outline-light d-flex align-items-center gap-1" title="Desvincular Empresa">
+            <button
+              @click="infoConvenioMarcoCompleta.empresa = undefined"
+              class="btn btn-sm btn-outline-light d-flex align-items-center gap-1"
+              title="Desvincular Empresa"
+            >
               <i class="bi bi-x-circle"></i>
               Desvincular
             </button>
@@ -92,33 +128,39 @@
           <div class="card-body">
             <div class="row g-2">
               <div class="col-md-6">
-                <strong>Razón Social:</strong> {{ infoConvenioMarcoCompleta.empresa.razonSocial || 'N/A' }}
+                <strong>Razón Social:</strong>
+                {{ infoConvenioMarcoCompleta.empresa.razonSocial || 'N/A' }}
               </div>
               <div class="col-md-6">
                 <strong>CUIT:</strong> {{ infoConvenioMarcoCompleta.empresa.cuit || 'N/A' }}
               </div>
               <div class="col-md-6">
-                <strong>Dirección:</strong> {{ infoConvenioMarcoCompleta.empresa.direccion_Empresa || 'N/A' }}
+                <strong>Dirección:</strong>
+                {{ infoConvenioMarcoCompleta.empresa.direccion_Empresa || 'N/A' }}
               </div>
               <div class="col-md-6">
-                <strong>Teléfono:</strong> {{ infoConvenioMarcoCompleta.empresa.telefono_Empresa || 'N/A' }}
+                <strong>Teléfono:</strong>
+                {{ infoConvenioMarcoCompleta.empresa.telefono_Empresa || 'N/A' }}
               </div>
               <div class="col-12">
-                <strong>Email:</strong> {{ infoConvenioMarcoCompleta.empresa.email_Empresa || 'N/A' }}
+                <strong>Email:</strong>
+                {{ infoConvenioMarcoCompleta.empresa.email_Empresa || 'N/A' }}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-
       <div v-else class="col-12">
         <div class="col-12 mb-3">
           <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="switchNuevaEmpresa" v-model="cargarNuevaEmpresa" />
-            <label class="form-check-label" for="switchNuevaEmpresa">
-              Cargar nueva empresa
-            </label>
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="switchNuevaEmpresa"
+              v-model="cargarNuevaEmpresa"
+            />
+            <label class="form-check-label" for="switchNuevaEmpresa"> Cargar nueva empresa </label>
           </div>
         </div>
 
@@ -170,7 +212,12 @@
         <h4 class="text-secondary mb-3">Convenios Específicos Asociados 📄</h4>
 
         <div
-          v-if="infoConvenioMarcoCompleta && infoConvenioMarcoCompleta.conveniosEspecificos && infoConvenioMarcoCompleta.conveniosEspecificos.length">
+          v-if="
+            infoConvenioMarcoCompleta &&
+            infoConvenioMarcoCompleta.conveniosEspecificos &&
+            infoConvenioMarcoCompleta.conveniosEspecificos.length
+          "
+        >
           <div class="table-responsive">
             <table class="table table-striped table-hover align-middle">
               <thead class="table-primary">
@@ -184,39 +231,59 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="convenio in infoConvenioMarcoCompleta.conveniosEspecificos" :key="convenio.id">
+                <tr
+                  v-for="convenio in infoConvenioMarcoCompleta.conveniosEspecificos"
+                  :key="convenio.id"
+                >
                   <td class="text-nowrap">{{ convenio.numeroConvenio || 'N/A' }}</td>
                   <td>{{ convenio.titulo || 'Sin título' }}</td>
                   <td>{{ convenio.nombreEmpresa || 'Desconocida' }}</td>
                   <td class="text-nowrap">{{ convenio.fechaFin || 'Indefinida' }}</td>
                   <td>
-                    <span :class="{
-                      'badge rounded-pill': true,
-                      'bg-secondary': convenio.estado === 0, 'bg-success': convenio.estado === 1, 'bg-danger': convenio.estado === 2
-                    }">
+                    <span
+                      :class="{
+                        'badge rounded-pill': true,
+                        'bg-secondary': convenio.estado === 0,
+                        'bg-success': convenio.estado === 1,
+                        'bg-danger': convenio.estado === 2,
+                      }"
+                    >
                       {{
-                        convenio.estado === 1 ? 'Vigente' :
-                          convenio.estado === 2 ? 'Finalizado' :
-                            'Borrador'
+                        convenio.estado === 1
+                          ? 'Vigente'
+                          : convenio.estado === 2
+                            ? 'Finalizado'
+                            : 'Borrador'
                       }}
                     </span>
                   </td>
                   <td>
                     <span
-                      :class="{ 'badge bg-info text-dark': !convenio.esActa, 'badge bg-secondary': convenio.esActa }">
+                      :class="{
+                        'badge bg-info text-dark': !convenio.esActa,
+                        'badge bg-secondary': convenio.esActa,
+                      }"
+                    >
                       {{ convenio.esActa ? 'Acta' : 'Convenio' }}
                     </span>
                   </td>
 
                   <td class="text-nowrap">
-
-                    <a href="#" @click.prevent="IrAConvenioEspecifico(convenio.id)" class="text-primary me-2"
-                      title="Ir al Convenio Específico">
+                    <a
+                      href="#"
+                      @click.prevent="IrAConvenioEspecifico(convenio.id)"
+                      class="text-primary me-2"
+                      title="Ir al Convenio Específico"
+                    >
                       <i class="bi bi-box-arrow-up-right fs-5"></i>
                     </a>
 
-                    <a href="#" @click.prevent="DesvincularConvenioEspecificos(convenio.id)" class="text-danger"
-                      title="Desvincular convenio específico">
+                    <a
+                      href="#"
+                      @click.prevent="DesvincularConvenioEspecificos(convenio.id)"
+                      class="text-danger"
+                      title="Desvincular convenio específico"
+                    >
                       <i class="bi bi-x-circle fs-5"></i>
                     </a>
                   </td>
@@ -232,13 +299,19 @@
         </div>
       </div>
 
+      <hr class="my-4" />
+
+      <VincularConvEspecifico @vincular-convenio-marco="VincularConvenioEspecifico" />
+
+      <hr class="my-4" />
+
       <div class="col-12 mt-4">
         <button type="submit" class="btn btn-primary">Cargar Convenio</button>
       </div>
     </form>
 
     <div v-if="IsLoading" class="loader-overlay d-flex justify-content-center align-items-center">
-      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem">
         <span class="visually-hidden">Cargando...</span>
       </div>
     </div>
@@ -246,11 +319,12 @@
 </template>
 
 <script setup lang="ts">
-import { useUpdateConvMarcoComposable } from '@/Composables/UpdateConvMarcoComposable';
-import '@/Styles/EditConvenioMarcoForm.css';
-import { POSITION, useToast } from 'vue-toastification';
+import { useUpdateConvMarcoComposable } from '@/Composables/UpdateConvMarcoComposable'
+import ApiService from '@/Services/ApiService'
+import '@/Styles/EditConvenioMarcoForm.css'
+import { POSITION, useToast } from 'vue-toastification'
 
-const toast = useToast();
+const toast = useToast()
 const {
   infoConvenioMarcoCompleta,
   ConvenioMarcoRequest,
@@ -262,16 +336,38 @@ const {
   DesvincularConvenioEspecificos,
   submitForm: submitFormLogic,
   IrAConvenio,
-  IrAConvenioEspecifico
-} = useUpdateConvMarcoComposable();
-
+  IrAConvenioEspecifico,
+} = useUpdateConvMarcoComposable()
 
 const submitForm = async () => {
   try {
-    await submitFormLogic();
-    toast.success("Convenio editado con éxito");
+    await submitFormLogic()
+    toast.success('Convenio editado con éxito')
   } catch (error) {
-    toast.error("Error al editar el convenio", { position: POSITION.BOTTOM_CENTER });
+    toast.error('Error al editar el convenio', { position: POSITION.BOTTOM_CENTER })
   }
-};
+}
+
+const VincularConvenioEspecifico = async (NumeroConvenio: string) => {
+  errorMensaje.value = null
+
+  try {
+    const result = await ApiService.GetIdConvMarcoByNumeroConv(NumeroConvenio)
+
+    if (result.isSuccess) {
+      ConvenioMarcoRequest.value.idsConveniosEspecificosParaVincular ??= []
+      ConvenioMarcoRequest.value.idsConveniosEspecificosParaVincular.push(result.value)
+      toast.success('convenio especifico vinculado con éxito')
+    } else {
+      if (result.error.status === 404) {
+        errorMensaje.value = 'no se encontro el convenio especifico que esta intentando vincular'
+      }
+      errorMensaje.value = 'ocurrio un error al vincular el convenio especifico'
+    }
+  } catch (ex) {
+    errorMensaje.value = 'ocurrio un error al vincular el convenio especifico'
+
+    console.log(ex)
+  }
+}
 </script>

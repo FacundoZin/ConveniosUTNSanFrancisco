@@ -4,6 +4,7 @@ using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrados;
+using APIconvenios.Models;
 
 namespace APIconvenios.Interfaces.Servicios
 {
@@ -13,5 +14,7 @@ namespace APIconvenios.Interfaces.Servicios
         Task<Result<object?>> DeleteConvenioEspecifico(int id);
         Task<Result<InfoConvenioEspeficoDto>> ObtenerConvenioEspecificoCompleto(int id);
         Task<Result<object?>> EditarConvenioEspecifico(UpdateConvenioEspecificoRequestDto Dto);
+
+        Task<Result<int>> GetIdByNumeroConvenio(string NumeroConvenio);
     }
 }
