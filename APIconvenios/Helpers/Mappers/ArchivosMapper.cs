@@ -10,7 +10,6 @@ namespace APIconvenios.Helpers.Mappers
             return new ArchivosAdjuntos
             {
                 NombreArchivo = archivoDto.NombreArchivo,
-                RutaArchivo = archivoDto.RutaArchivo,
                 ConvenioEspecificoId = archivoDto.ConvenioEspecificoId,
                 ConvenioMarcoId = archivoDto.ConvenioMarcoId
             };

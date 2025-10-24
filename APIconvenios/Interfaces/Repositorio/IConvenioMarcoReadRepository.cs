@@ -9,5 +9,6 @@ namespace APIconvenios.Interfaces.Repositorio
         Task<InfoConvenioMarcoDto?> GetConvenioMarcosCompleto(int id);
         Task<bool> TitleExist(string Title);
         Task<bool> TitleExistForUpdate(string Title, int idConvenio);
+        Task<ConvenioMarco?> GetByidWithConvEspecifico(int id);
     }
 }

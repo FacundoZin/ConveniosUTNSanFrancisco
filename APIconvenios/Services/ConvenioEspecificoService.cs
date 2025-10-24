@@ -73,9 +73,10 @@ namespace APIconvenios.Services
             }
         }
 
+
         public async Task<Result<object?>> EditarConvenioEspecifico(UpdateConvenioEspecificoRequestDto Dto)
         {
-            var Convenio = await _UnitOfWork._ConvenioEspecificoRepository.GetByid(Dto.UpdateConvenioDto.Id);
+            var Convenio = await _UnitOfWork._ConvEspReadRepository.GetConvenioWithRelations(Dto.UpdateConvenioDto.Id);
 
             if (Convenio == null) return Result<object?>.Error("El convenio que quiere actualizar no existe", 404);
 
@@ -129,7 +130,36 @@ namespace APIconvenios.Services
             return Result<InfoConvenioEspeficoDto>.Exito(convenio);
         }
 
+        public async Task<Result<bool>> DesvincularEmpresa(int IdConvEspecifico)
+        {
+            var convenio = await _UnitOfWork._ConvenioEspecificoRepository.GetByid(IdConvEspecifico);
 
+            if (convenio == null)
+            {
+                return Result<bool>.Error("no se pudo encontrar el convenio especifico que intenta modificar", 404);
+            }
+            var cmd = new UnlinkEmpresaFromEspecificoCmd();
+
+            await cmd.ExecuteAsync(convenio, _UnitOfWork);
+
+            return Result<bool>.Exito(true);
+        }
+
+        public async Task<Result<bool>> DesvincularMarco(int IdConvEspecifico)
+        {
+            var convenio = await _UnitOfWork._ConvenioEspecificoRepository.GetByid(IdConvEspecifico);
+
+            if (convenio == null)
+            {
+                return Result<bool>.Error("no se pudo encontrar el convenio especifico que intenta modificar", 404);
+            }
+
+            var cmd = new UnlinkConvMarcoCmd();
+
+            await cmd.ExecuteAsync(convenio, _UnitOfWork);
+
+            return Result<bool>.Exito(true);
+        }
 
 
     }

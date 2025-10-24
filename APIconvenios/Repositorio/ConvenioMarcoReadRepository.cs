@@ -12,14 +12,22 @@ namespace APIconvenios.Repositorio
 {
     public class ConvenioMarcoReadRepository : IConvenioMarcoReadRepository
     {
-        private readonly IDbContextFactory<ApplicationDbContext> _ContextFactory;   
+        private readonly IDbContextFactory<ApplicationDbContext> _ContextFactory;
         private readonly ApplicationDbContext _Context;
 
-        public ConvenioMarcoReadRepository(ApplicationDbContext context, 
+        public ConvenioMarcoReadRepository(ApplicationDbContext context,
             IDbContextFactory<ApplicationDbContext> contextfactory)
         {
             _Context = context;
             _ContextFactory = contextfactory;
+        }
+
+        public async Task<ConvenioMarco?> GetByidWithConvEspecifico(int id)
+        {
+            var convenio = await _Context.ConveniosMarcos.Include(c => c.ConveniosEspecificos)
+            .FirstOrDefaultAsync(c => c.Id == id);
+            if (convenio == null) return null;
+            return convenio;
         }
 
         public async Task<InfoConvenioMarcoDto?> GetConvenioMarcosCompleto(int id)

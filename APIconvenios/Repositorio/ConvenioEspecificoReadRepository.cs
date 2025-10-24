@@ -34,8 +34,21 @@ namespace APIconvenios.Repositorio
             return convenio != null ? convenio.ToFullInfo() : null;
         }
 
+        public async Task<ConvenioEspecifico?> GetConvenioWithRelations(int id)
+        {
+            var convenio = await _context.ConveniosEspecificos
+            .Include(c => c.empresa)
+            .Include(c => c.ConvenioMarco)
+            .Include(c => c.ArchivosAdjuntos)
+            .Include(c => c.Involucrados)
+            .Include(c => c.CarrerasInvolucradas)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+            return convenio != null ? convenio : null;
+        }
+
         public async Task<bool> TitleExist(string title)
-        {           
+        {
             return await _context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio == title);
         }
 

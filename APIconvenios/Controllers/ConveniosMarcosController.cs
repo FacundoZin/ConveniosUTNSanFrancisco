@@ -1,11 +1,11 @@
-﻿using APIconvenios.Common;
+﻿using System.Threading.Tasks;
+using APIconvenios.Common;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Helpers.Validators;
 using APIconvenios.Interfaces.Servicios;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace APIconvenios.Controllers
 {
@@ -73,5 +73,26 @@ namespace APIconvenios.Controllers
 
             return Ok(result.Data);
         }
+
+        [HttpDelete("{idConvenioMarco:int}/empresa")]
+        public async Task<IActionResult> DesvincularEmpresa(int idConvenioMarco)
+        {
+            var result = await _ConvenioService.DesvincularEmpresa(idConvenioMarco);
+
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok(result.Data);
+        }
+
+        [HttpDelete("{idConvenioMarco:int}/especificos/{idConvenioEspecifico:int}")]
+        public async Task<IActionResult> DesvincularConvenioEspecifico(int idConvenioMarco, int idConvenioEspecifico)
+        {
+            var result = await _ConvenioService.DesvincularEspecifico(idConvenioMarco, idConvenioEspecifico);
+
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok();
+        }
     }
 }
+

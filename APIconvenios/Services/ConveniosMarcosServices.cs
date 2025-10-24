@@ -24,7 +24,7 @@ namespace APIconvenios.Services
 
         public async Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoRequetsDto requetsDto)
         {
-            var Convenio = await _UnitOfWork._ConvenioMarcoRepository.GetByid(requetsDto.UpdateConvenioMarcoDto.Id);
+            var Convenio = await _UnitOfWork._ConvenioMarcoReadRepository.GetByidWithConvEspecifico(requetsDto.UpdateConvenioMarcoDto.Id);
             if (Convenio == null) return Result<bool>.Error("El convenio que quiere actualizar no existe", 404);
 
             var commands = new List<IConvMarcoCommand>();
@@ -149,6 +149,39 @@ namespace APIconvenios.Services
             var convenio = await _UnitOfWork._ConvenioMarcoRepository.GetByNumeroConvenio(Numero);
             if (convenio == null) return Result<int>.Error("el convenio que esta buscando no fue encontrado", 404);
             return Result<int>.Exito(convenio.Id);
+        }
+
+        public async Task<Result<bool>> DesvincularEspecifico(int IdMarco, int IdEspecifico)
+        {
+            int[] IdsEspecificos = new int[IdEspecifico];
+            var convenioMarco = await _UnitOfWork._ConvenioMarcoReadRepository.GetByidWithConvEspecifico(IdMarco);
+
+            if (convenioMarco == null)
+            {
+                return Result<bool>.Error("no se pudo encontrar el convenio marco que intenta modificar", 404);
+            }
+
+            var cmd = new UnlinkConvEspCmd(IdsEspecificos);
+
+            await cmd.ExecuteAsync(convenioMarco, _UnitOfWork);
+
+            return Result<bool>.Exito(true);
+        }
+
+        public async Task<Result<bool>> DesvincularEmpresa(int IdMarco)
+        {
+            var convenioMarco = await _UnitOfWork._ConvenioMarcoRepository.GetByid(IdMarco);
+
+            if (convenioMarco == null)
+            {
+                return Result<bool>.Error("no se pudo encontrar el convenio marco que intenta modificar", 404);
+            }
+
+            var cmd = new UnlinkEmpresaFromMarcoCmd();
+
+            await cmd.ExecuteAsync(convenioMarco, _UnitOfWork);
+
+            return Result<bool>.Exito(true);
         }
     }
 }

@@ -15,7 +15,6 @@ namespace APIconvenios.DTOs.ConvenioMarco
         public DateOnly? FechaFirmaConvenio { get; set; }
         public DateOnly? FechaFin { get; set; }
         public string? ComentarioOpcional { get; set; }
-        public string? RutaArchivo { get; set; }
         public EstadoConvenio Estado { get; set; }
         public string? NumeroResolucion { get; set; }
         public bool Refrendado { get; set; } = false;

@@ -71,5 +71,26 @@ namespace APIconvenios.Controllers
 
             return Ok(result.Data);
         }
+
+
+        [HttpDelete("{idConvenioEspecifico:int}/empresa")]
+        public async Task<IActionResult> DesvincularEmpresa(int idConvenioEspecifico)
+        {
+            var result = await _ConvenioEspecifcoService.DesvincularEmpresa(idConvenioEspecifico);
+
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok(result.Data);
+        }
+
+        [HttpDelete("{idConvenioEspecifico:int}/marco")]
+        public async Task<IActionResult> DesvincularConvenioMarco(int idConvenioEspecifico)
+        {
+            var result = await _ConvenioEspecifcoService.DesvincularMarco(idConvenioEspecifico);
+
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok();
+        }
     }
 }
