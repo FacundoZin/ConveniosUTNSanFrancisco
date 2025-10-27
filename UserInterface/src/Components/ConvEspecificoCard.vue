@@ -1,0 +1,38 @@
+<template>
+  <div class="card h-100">
+    <div class="card-body">
+      <h6 class="card-title">{{ convenio.titulo || 'Sin título' }}</h6>
+      <p class="card-text"><strong>Número:</strong> {{ convenio.numeroConvenio || '-' }}</p>
+      <p class="card-text"><strong>Empresa:</strong> {{ convenio.nombreEmpresa || '-' }}</p>
+      <p class="card-text">
+        <strong>Fecha firma:</strong> {{ convenio.fechaFirmaConvenio || '-' }}
+      </p>
+      <p class="card-text">
+        <strong>Fecha inicio:</strong> {{ convenio.fechaInicioActividades || '-' }}
+      </p>
+      <p class="card-text"><strong>Fecha fin:</strong> {{ convenio.fechaFin || '-' }}</p>
+      <p class="card-text"><strong>Estado:</strong> {{ convenio.estado || '-' }}</p>
+      <p class="card-text"><strong>Acta:</strong> {{ convenio.esActa ? 'Sí' : 'No' }}</p>
+      <p class="card-text"><strong>Refrendado:</strong> {{ convenio.refrendado ? 'Sí' : 'No' }}</p>
+    </div>
+    <div class="card-footer text-center">
+      <button class="btn btn-sm btn-danger" @click="emitirEliminacion">Eliminar</button>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { ConvenioEspecificoDto } from '@/Types/ViewModels/ViewModels'
+
+const props = defineProps<{
+  convenio: ConvenioEspecificoDto
+}>()
+
+const emit = defineEmits<{
+  (e: 'desvincularEspecifico', id: number): void
+}>()
+
+const emitirEliminacion = () => {
+  emit('desvincularEspecifico', props.convenio.id)
+}
+</script>

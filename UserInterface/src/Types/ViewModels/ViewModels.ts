@@ -97,7 +97,6 @@ export interface InfoConvenioMarcoDto {
   fechaFirmaConvenio?: string
   fechaFin?: string
   comentarioOpcional?: string
-  rutaArchivo?: string
   estado: EstadoConvenio
   numeroResolucion?: string
   refrendado: boolean
