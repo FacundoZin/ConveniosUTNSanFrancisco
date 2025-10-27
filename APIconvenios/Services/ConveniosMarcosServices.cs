@@ -10,6 +10,7 @@ using APIconvenios.DTOs.Convenios;
 using APIconvenios.Commands.ConvenioMarco.commands;
 using APIconvenios.Commands.ConvenioMarcoCommands.commands;
 using APIconvenios.Commands.ConvenioMarcoCommands;
+using APIconvenios.DTOs.Archivo;
 
 namespace APIconvenios.Services
 {
@@ -182,6 +183,26 @@ namespace APIconvenios.Services
             await cmd.ExecuteAsync(convenioMarco, _UnitOfWork);
 
             return Result<bool>.Exito(true);
+        }
+
+        public async Task<Result<List<viewArchivoDto>>> ObtenerArchivosDeConvenioMarco(int idConvenio)
+        {
+            try
+            {
+                var archivos = await _UnitOfWork._ArchivosRepository.GetArchivosDeConvenioMarco(idConvenio);
+
+                var dto = archivos.Select(a => new viewArchivoDto
+                {
+                    IdArchivo = a.Id,
+                    NombreArchivo = a.NombreArchivo
+                }).ToList();
+
+                return Result<List<viewArchivoDto>>.Exito(dto);
+            }
+            catch
+            {
+                return Result<List<viewArchivoDto>>.Error("ocurrio un errou al obtener los archivos", 500);
+            }
         }
     }
 }

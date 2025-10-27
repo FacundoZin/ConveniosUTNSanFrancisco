@@ -80,7 +80,7 @@ namespace APIconvenios.Controllers
 
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
-            return Ok(result.Data);
+            return NoContent();
         }
 
         [HttpDelete("{idConvenioEspecifico:int}/marco")]
@@ -90,7 +90,18 @@ namespace APIconvenios.Controllers
 
             if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
 
-            return Ok();
+            return NoContent();
+        }
+
+        [HttpGet("archivos/{idConvenio:int}")]
+        public async Task<IActionResult> ObtenerArchivosPorConvenioMarco([FromRoute] int idConvenio)
+        {
+            var result = await _ConvenioEspecifcoService.ObtenerArchivosDeConvenioEspecifico(idConvenio);
+
+            if (!result.Exit)
+                return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok(result.Data);
         }
     }
 }

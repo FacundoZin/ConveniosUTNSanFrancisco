@@ -1,4 +1,5 @@
 using APIconvenios.Common;
+using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Convenios;
@@ -16,6 +17,7 @@ namespace APIconvenios.Interfaces.Servicios
         Task<Result<object?>> EditarConvenioEspecifico(UpdateConvenioEspecificoRequestDto Dto);
         Task<Result<bool>> DesvincularEmpresa(int IdConvEspecifico);
         Task<Result<bool>> DesvincularMarco(int IdConvEspecifico);
+        Task<Result<List<viewArchivoDto>>> ObtenerArchivosDeConvenioEspecifico(int idConvenio);
 
         Task<Result<int>> GetIdByNumeroConvenio(string NumeroConvenio);
     }

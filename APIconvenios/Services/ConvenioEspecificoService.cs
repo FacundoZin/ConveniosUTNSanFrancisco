@@ -1,6 +1,7 @@
 ﻿using APIconvenios.Commands.ConvenioEspecificoCommands;
 using APIconvenios.Commands.ConvenioEspecificoCommands.Commands;
 using APIconvenios.Common;
+using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.Helpers.Mappers;
@@ -161,6 +162,25 @@ namespace APIconvenios.Services
             return Result<bool>.Exito(true);
         }
 
+        public async Task<Result<List<viewArchivoDto>>> ObtenerArchivosDeConvenioEspecifico(int idConvenio)
+        {
+            try
+            {
+                var archivos = await _UnitOfWork._ArchivosRepository.GetArchivosDeConvenioEspecifico(idConvenio);
 
+                var dto = archivos.Select(a => new viewArchivoDto
+                {
+                    IdArchivo = a.Id,
+                    NombreArchivo = a.NombreArchivo
+                }).ToList();
+
+                return Result<List<viewArchivoDto>>.Exito(dto);
+            }
+            catch
+            {
+                return Result<List<viewArchivoDto>>.Error("ocurrio un error al obtener los archivos", 500);
+            }
+        }
     }
+
 }

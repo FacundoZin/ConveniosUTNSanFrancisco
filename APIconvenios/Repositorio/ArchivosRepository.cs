@@ -12,13 +12,9 @@ namespace APIconvenios.Repositorio
         {
             _context = context;
         }
-        public async Task<bool> DeleteArchivo(int idArchivo)
+        public async Task<bool> DeleteArchivo(ArchivosAdjuntos archivo)
         {
-            var convenio = await _context.ArchivosAdjuntos.FindAsync(idArchivo);
-
-            if (convenio == null) return false;
-
-            _context.ArchivosAdjuntos.Remove(convenio);
+            _context.ArchivosAdjuntos.Remove(archivo);
 
             return await _context.SaveChangesAsync() > 0;
         }
@@ -28,6 +24,17 @@ namespace APIconvenios.Repositorio
             return await _context.ArchivosAdjuntos.FindAsync(idArchivo);
         }
 
+        public Task<List<ArchivosAdjuntos>> GetArchivosDeConvenioEspecifico(int IdEspecifico)
+        {
+            var archivos = _context.ArchivosAdjuntos.Where(a => a.ConvenioEspecificoId == IdEspecifico).ToListAsync();
+            return archivos;
+        }
+
+        public Task<List<ArchivosAdjuntos>> GetArchivosDeConvenioMarco(int IdMarco)
+        {
+            var archivos = _context.ArchivosAdjuntos.Where(a => a.ConvenioMarcoId == IdMarco).ToListAsync();
+            return archivos;
+        }
 
         public async Task<bool> InsertArchivo(ArchivosAdjuntos archivoAdjunto)
         {

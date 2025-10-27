@@ -18,11 +18,42 @@ namespace APIconvenios.Services
             _UnitOfWork = unitOfWork;
         }
 
-        public async Task<Result<ConvenioFileContentDto>> DownloadDocument(int idconvenio)
+        public async Task<Result<bool>> DeleteDocument(int idDocumento)
+        {
+            var archivo = await _UnitOfWork._ArchivosRepository.GetArchivo(idDocumento);
+            if (archivo == null)
+                return Result<bool>.Error("No se encontró el archivo en la base de datos", 404);
+
+            try
+            {
+                if (File.Exists(archivo.RutaArchivo))
+                {
+                    File.Delete(archivo.RutaArchivo);
+                }
+                else
+                {
+                    Console.WriteLine($"El archivo físico no existe en la ruta: {archivo.RutaArchivo}");
+                    return Result<bool>.Error("No se encontró el archivo en el servidor", 404);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Error($"Error al eliminar el archivo físico: {ex.Message}", 500);
+            }
+
+            var exit = await _UnitOfWork._ArchivosRepository.DeleteArchivo(archivo);
+
+            if (!exit)
+                return Result<bool>.Error("El archivo no pudo ser eliminado de la base de datos", 500);
+
+            return Result<bool>.Exito(true);
+        }
+
+        public async Task<Result<ConvenioFileContentDto>> DownloadDocument(int IdDocumento)
         {
             try
             {
-                var archivo = await _UnitOfWork._ArchivosRepository.GetArchivo(idconvenio);
+                var archivo = await _UnitOfWork._ArchivosRepository.GetArchivo(IdDocumento);
 
                 if (!File.Exists(archivo.RutaArchivo))
                     return Result<ConvenioFileContentDto>.Error("El archivo no se encuentra en el servidor", 404);
