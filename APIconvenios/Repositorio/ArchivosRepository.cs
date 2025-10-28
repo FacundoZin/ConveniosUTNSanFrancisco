@@ -35,11 +35,11 @@ namespace APIconvenios.Repositorio
             var archivos = _context.ArchivosAdjuntos.Where(a => a.ConvenioMarcoId == IdMarco).ToListAsync();
             return archivos;
         }
-
-        public async Task<bool> InsertArchivo(ArchivosAdjuntos archivoAdjunto)
+        public async Task<ArchivosAdjuntos> InsertArchivo(ArchivosAdjuntos archivoAdjunto)
         {
             _context.ArchivosAdjuntos.Add(archivoAdjunto);
-            return await _context.SaveChangesAsync() > 0;
+            await _context.SaveChangesAsync();
+            return archivoAdjunto;
         }
 
         public async Task<bool> NameArchivoExist(string nombreArchivo)

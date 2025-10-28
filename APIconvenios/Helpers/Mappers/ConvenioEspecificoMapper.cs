@@ -1,5 +1,6 @@
 ﻿using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.ConvenioEspecifico;
+using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Models;
@@ -82,6 +83,16 @@ namespace APIconvenios.Helpers.Mappers
                 }).ToList(),
 
                 ConvenioMarcoId = convenio.ConvenioMarcoId,
+                convenioMarco = convenio.ConvenioMarco != ? new ConvenioMarcoDto
+                {
+                    Id = convenio.Id,
+                    Titulo = convenio.TituloConvenio,
+                    numeroconvenio = convenio.numeroconvenio,
+                    FechaFirmaConvenio = convenio.FechaFinConvenio,
+                    FechaFin = convenio.FechaFinConvenio,
+                    Estado = convenio.Estado,
+                    Refrendado = convenio.Refrendado
+                },
 
                 empresa = convenio.empresa != null ? new EmpresaDto
                 {
@@ -92,7 +103,7 @@ namespace APIconvenios.Helpers.Mappers
                     Direccion_Empresa = convenio.empresa.Direccion,
                     Telefono_Empresa = convenio.empresa.Telefono,
                     Email_Empresa = convenio.empresa.Email
-                }: null,
+                } : null,
 
                 Involucrados = convenio.Involucrados?.Select(i => new InvolucradosDto
                 {

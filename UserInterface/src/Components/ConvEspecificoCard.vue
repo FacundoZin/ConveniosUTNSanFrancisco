@@ -11,7 +11,7 @@
         <strong>Fecha inicio:</strong> {{ convenio.fechaInicioActividades || '-' }}
       </p>
       <p class="card-text"><strong>Fecha fin:</strong> {{ convenio.fechaFin || '-' }}</p>
-      <p class="card-text"><strong>Estado:</strong> {{ convenio.estado || '-' }}</p>
+      <p class="card-text"><strong>Estado:</strong> {{ EstadoConvenioTexto[convenio.estado] || '-' }}</p>
       <p class="card-text"><strong>Acta:</strong> {{ convenio.esActa ? 'Sí' : 'No' }}</p>
       <p class="card-text"><strong>Refrendado:</strong> {{ convenio.refrendado ? 'Sí' : 'No' }}</p>
     </div>
@@ -22,7 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ConvenioEspecificoDto } from '@/Types/ViewModels/ViewModels'
+import { EstadoConvenioTexto } from '@/Types/Enums/Enums';
+import type { ConvenioEspecificoDto } from '@/Types/ViewModels/ViewModels';
 
 const props = defineProps<{
   convenio: ConvenioEspecificoDto

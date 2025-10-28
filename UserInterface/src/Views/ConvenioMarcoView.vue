@@ -1,41 +1,32 @@
 <template>
   <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
     <strong>Error:</strong> {{ errorMessage }}
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="alert"
-      aria-label="Close"
-      @click="errorMessage = ''"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+      @click="errorMessage = ''"></button>
   </div>
 
-  <div class="container mt-4" v-if="convenio">
+  <div class="container mt-4" v-if="Convenio?.id">
     <!-- Info del Convenio Marco -->
     <div class="card mb-4">
       <div class="card-body">
         <h4 class="card-title">
-          {{ convenio.numeroConvenio || 'Sin número' }} - {{ convenio.titulo || 'Sin título' }}
+          {{ Convenio.numeroConvenio || 'Sin número' }} - {{ Convenio.titulo || 'Sin título' }}
         </h4>
-        <p><strong>Estado:</strong> {{ convenio.estado }}</p>
-        <p><strong>Fecha firma:</strong> {{ convenio.fechaFirmaConvenio || 'No disponible' }}</p>
-        <p><strong>Fecha fin:</strong> {{ convenio.fechaFin || 'No disponible' }}</p>
-        <p><strong>Comentario:</strong> {{ convenio.comentarioOpcional || 'Sin comentario' }}</p>
+        <p><strong>Estado:</strong> {{ EstadoConvenioTexto[Convenio.estado] }}</p>
+        <p><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || 'No disponible' }}</p>
+        <p><strong>Fecha fin:</strong> {{ Convenio.fechaFin || 'No disponible' }}</p>
+        <p><strong>Comentario:</strong> {{ Convenio.comentarioOpcional || 'Sin comentario' }}</p>
         <p>
-          <strong>Número de resolución:</strong> {{ convenio.numeroResolucion || 'No disponible' }}
+          <strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || 'No disponible' }}
         </p>
-        <p><strong>Refrendado:</strong> {{ convenio.refrendado ? 'Sí' : 'No' }}</p>
+        <p><strong>Refrendado:</strong> {{ Convenio.refrendado ? 'Sí' : 'No' }}</p>
       </div>
     </div>
 
     <hr class="my-4" />
 
     <!-- Empresa Asociada -->
-    <EmpresaCard
-      v-if="convenio.empresa"
-      :empresa="convenio.empresa"
-      @desvincular-empresa="DesvincularEmpresa"
-    />
+    <EmpresaCard v-if="Convenio.empresa" :empresa="Convenio.empresa" @desvincular-empresa="DesvincularEmpresa" />
     <div v-else class="mb-4 text-muted">No hay empresa vinculada.</div>
 
     <hr class="my-4" />
@@ -43,12 +34,9 @@
     <!-- Convenios Específicos -->
     <h5>Convenios Específicos</h5>
     <div class="row">
-      <div v-if="convenio.conveniosEspecificos && convenio.conveniosEspecificos.length">
-        <div class="col-md-4 mb-3" v-for="ce in convenio.conveniosEspecificos" :key="ce.id">
-          <ConvEspecificoCard
-            :convenio="ce"
-            @desvincular-especifico="desvincularConvenioEspecifico"
-          />
+      <div v-if="Convenio.conveniosEspecificos">
+        <div class="col-md-4 mb-3" v-for="ce in Convenio.conveniosEspecificos" :key="ce.id">
+          <ConvEspecificoCard :convenio="ce" @desvincular-especifico="desvincularConvenioEspecifico" />
         </div>
       </div>
       <div v-else class="col-12 text-muted">No hay convenios específicos vinculados.</div>
@@ -56,12 +44,8 @@
 
     <hr class="my-4" />
 
-    <FileUploader
-      :archivos="convenio.archivosAdjuntos"
-      @archivo-cargado="CargarDocumento"
-      @archivo-eliminado="BorrarDocumento"
-      @archivo-descargado="DescargarDocumento"
-    />
+    <FileUploader :archivos="Convenio?.archivosAdjuntos" @archivo-cargado="CargarDocumento"
+      @archivo-eliminado="BorrarDocumento" @archivo-descargado="DescargarDocumento" />
 
     <!-- Botones finales -->
     <div class="mt-4 d-flex gap-2">
@@ -85,9 +69,10 @@ import EmpresaCard from '@/Components/EmpresaCard.vue'
 import FileUploader from '@/Components/FileUploader.vue'
 import router from '@/router'
 import ApiService from '@/Services/ApiService'
-import type { InfoConvenioMarcoDto, ViewArchivoDto } from '@/Types/ViewModels/ViewModels'
+import { EstadoConvenioTexto } from '@/Types/Enums/Enums'
+import type { InfoConvenioMarcoDto } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
-import { onMounted, ref, type Ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { POSITION, useToast } from 'vue-toastification'
 
@@ -104,7 +89,7 @@ if (Array.isArray(idparam)) {
   id = parseInt(idparam)
 }
 
-const convenio = ref<InfoConvenioMarcoDto | null>(null)
+const Convenio = ref<InfoConvenioMarcoDto | null>(null)
 
 onMounted(async () => {
   isLoading.value = true
@@ -112,13 +97,11 @@ onMounted(async () => {
     const response = await ApiService.GetConvenioMarcoCompleto(id)
     isLoading.value = false
     if (response.isSuccess) {
-      convenio.value = response.value
+      Convenio.value = response.value
     }
   } catch (error) {
     isLoading.value = false
-    toast.error('error al acceder a los datos del convenio marco', {
-      position: POSITION.BOTTOM_CENTER,
-    })
+    errorMessage.value = 'error al acceder a los datos del convenio marco'
     if (isAxiosError(error) && error.response) {
       console.log(error.response.data, error.response.status)
     } else {
@@ -128,19 +111,19 @@ onMounted(async () => {
 })
 
 const editConvenio = () => {
-  if (convenio.value) {
+  if (Convenio.value) {
     router.push({
       name: 'EditConvenioMarco',
-      params: { id: convenio.value.id },
+      params: { id: Convenio.value.id },
     })
   }
 }
 
 const CargarEspecifico = () => {
-  if (convenio.value) {
+  if (Convenio.value) {
     router.push({
       name: 'CreateConvenioEspecifico',
-      params: { id: convenio.value.id },
+      params: { id: Convenio.value.id },
     })
   }
 }
@@ -148,11 +131,11 @@ const CargarEspecifico = () => {
 const DeleteConvenio = async () => {
   isLoading.value = true
   try {
-    if (convenio.value) {
-      const response = await ApiService.DeleteConvenioMarco(convenio.value.id)
+    if (Convenio.value) {
+      const response = await ApiService.DeleteConvenioMarco(Convenio.value.id)
       if (response.isSuccess) {
         isLoading.value = false
-        toast.success(`"${convenio.value.titulo}" eliminado con éxito`)
+        toast.success(`"${Convenio.value.titulo}" eliminado con éxito`)
         router.push({ name: 'ListaConvenios' })
       }
     }
@@ -195,11 +178,17 @@ const CargarDocumento = async (file: File, nombre: string) => {
   errorMessage.value = ''
   isLoading.value = true
   try {
-    const exito = await ApiService.CargarArchivo(nombre, file, convenio.value!.id)
+    const ArchivoCargado = await ApiService.CargarArchivo(nombre, file, Convenio.value!.id)
     isLoading.value = false
-    if (exito) {
+    if (ArchivoCargado) {
       toast.success('documento cargado con exito')
-      await cargarArchivos() // vuelve a traer la lista de archivos del convenio
+      const convenio = Convenio.value!
+
+      if (!convenio.archivosAdjuntos) {
+        convenio.archivosAdjuntos = []
+      }
+
+      convenio.archivosAdjuntos.push(ArchivoCargado)
     } else {
       errorMessage.value = 'Error al cargar el docuemnto'
     }
@@ -218,7 +207,13 @@ const BorrarDocumento = async (id: number) => {
     isLoading.value = false
     if (exito) {
       toast.success('documento eliminado correctamente')
-      await cargarArchivos()
+      const convenio = Convenio.value
+
+      if (convenio && convenio.archivosAdjuntos) {
+        convenio.archivosAdjuntos = convenio.archivosAdjuntos.filter(
+          (archivo) => archivo.idArchivo !== id
+        )
+      }
     } else {
       errorMessage.value = 'ocurrio un error al eliminar el documento'
     }
@@ -239,28 +234,6 @@ const DescargarDocumento = async (id: number, nombre: string) => {
     isLoading.value = false
     console.error('Error al descargar el archivo:', error)
     errorMessage.value = 'ocurrio un error al descargar el documento'
-  }
-}
-
-const cargarArchivos = async (id: number):{
-
-  isLoading.value = true;
-
-  try {
-    const response = await ApiService.GetArchivosConvMarco(id); // espera al API
-    isLoading.value = false;
-
-    if (response.isSuccess) {
-      return response.value;
-    } else {
-      errorMessage.value = 'Error al cargar los archivos';
-      return [];
-    }
-  } catch (error) {
-    isLoading.value = false;
-    console.error('Error al cargar archivos:', error);
-    errorMessage.value = 'Error al cargar los archivos';
-    return [];
   }
 }
 </script>

@@ -29,7 +29,7 @@ export interface ConvenioEspecificoDto {
   fechaInicioActividades?: string | null
   fechaFin?: string | null
   convenioType: 'especifico'
-  estado?: EstadoConvenio
+  estado: EstadoConvenio
   esActa: boolean
   refrendado: boolean
 }
@@ -84,6 +84,7 @@ export interface InfoConvenioEspecificoDto {
   numeroResolucion?: string
   refrendado: boolean
   convenioMarcoId?: number
+  convenioMarco: ConvenioMarcoDto
   empresa?: EmpresaDto
   involucrados?: InvolucradosDto[]
   documentosAdjuntos?: ViewArchivoDto[]

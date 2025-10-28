@@ -1,10 +1,9 @@
 ﻿using APIconvenios.Common.Enums;
 using APIconvenios.DTOs.Archivo;
+using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrados;
-using APIconvenios.Helpers.Validators;
 using APIconvenios.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.DTOs.ConvenioEspecifico
 {
@@ -24,6 +23,7 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
 
 
         public int? ConvenioMarcoId { get; set; }
+        public ConvenioMarcoDto? convenioMarco { get; set; }
         public EmpresaDto? empresa { get; set; }
         public List<InvolucradosDto>? Involucrados { get; set; }
         public List<viewArchivoDto>? DocumentosAdjuntos { get; set; }

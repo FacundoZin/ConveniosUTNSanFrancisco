@@ -1,5 +1,4 @@
 import type { Result } from '@/Common/Result'
-import type { InsertArchivoDto } from '@/Types/Archivos/InsertArchivosDto'
 import type { CargarConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/CreateConvenioEspecifico'
 import type { UpdateConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/UpdateConvenioEspecifico'
 import type { CargarConvenioMarcoRequestDto } from '@/Types/ConvenioMarco/CreateConvenioMarco'
@@ -230,24 +229,27 @@ export default class ApiService {
     nombreArchivo: string,
     file: File,
     convenioMarcoId: number,
-  ): Promise<boolean> {
+  ): Promise<ViewArchivoDto | null> {
     const formData = new FormData()
     formData.append('nombreArchivo', nombreArchivo)
     formData.append('file', file)
     formData.append('convenioMarcoId', convenioMarcoId.toString())
-    formData.append('convenioEspecificoId', '') // null equivale a vacío acá
+    formData.append('convenioEspecificoId', '')
 
     try {
-      const response = await axios.post(`${API_URL}/Documents`, formData, {
+      const response = await axios.post<ViewArchivoDto>(`${API_URL}/Documents`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
-        validateStatus: () => true, // así manejamos nosotros los códigos
+        validateStatus: () => true,
       })
 
-      // Si la API responde 200, todo joya
-      return response.status === 200
+      if (response.status === 201) {
+        return response.data
+      }
+      console.error(`Error de la API (${response.status}):`, response.data)
+      return null
     } catch (error) {
       console.error('Error subiendo archivo:', error)
-      return false
+      return null
     }
   }
 

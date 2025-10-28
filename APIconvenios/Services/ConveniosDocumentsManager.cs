@@ -77,15 +77,15 @@ namespace APIconvenios.Services
             }
         }
 
-        public async Task<Result<bool>> UploadDocuemnt(InsertArchivoDto archivoDto)
+        public async Task<Result<ArchivosAdjuntos>> UploadDocuemnt(InsertArchivoDto archivoDto)
         {
             try
             {
                 if (archivoDto.file == null || archivoDto.file.Length == 0)
-                    return Result<bool>.Error("No se seleccionó ningún archivo para subir", 400);
+                    return Result<ArchivosAdjuntos>.Error("No se seleccionó ningún archivo para subir", 400);
 
                 if (await _UnitOfWork._ArchivosRepository.NameArchivoExist(archivoDto.NombreArchivo))
-                    return Result<bool>.Error($"Ya existe un archivo con el nombre {archivoDto.NombreArchivo}, " +
+                    return Result<ArchivosAdjuntos>.Error($"Ya existe un archivo con el nombre {archivoDto.NombreArchivo}, " +
                         $"porfavor cambie el nombre para que el documento sea unico ", 400);
 
 
@@ -97,49 +97,50 @@ namespace APIconvenios.Services
                     }
                     catch (Exception ex)
                     {
-                        return Result<bool>.Error("Error al crear la carpeta de destino", 500);
+                        return Result<ArchivosAdjuntos>.Error("Error al crear la carpeta de destino", 500);
                     }
                 }
 
                 string rutaCompleta = Path.Combine(directorioArchivos, archivoDto.NombreArchivo);
 
-                bool exit = await FileUploadTransaction(archivoDto.ToModel(), archivoDto.file, rutaCompleta);
+                var ArchivoCreado = await FileUploadTransaction(archivoDto.ToModel(), archivoDto.file, rutaCompleta);
 
-                if (!exit)
-                    return Result<bool>.Error("se produjo un error inesperado al cargar el documento en el servidor...",
+                if (ArchivoCreado == null)
+                    return Result<ArchivosAdjuntos>.Error("se produjo un error inesperado al cargar el documento en el servidor...",
                         500);
 
-                return Result<bool>.Exito(true);
+                return Result<ArchivosAdjuntos>.Exito(ArchivoCreado);
             }
             catch
             {
-                return Result<bool>.Error("Error al cargar el documento del convenio", 500);
+                return Result<ArchivosAdjuntos>.Error("Error al cargar el documento del convenio", 500);
             }
         }
 
 
-        private async Task<bool> FileUploadTransaction(ArchivosAdjuntos Archivo, IFormFile file, string RutaCompleta)
+        private async Task<ArchivosAdjuntos?> FileUploadTransaction(ArchivosAdjuntos Archivo, IFormFile file, string RutaCompleta)
         {
-            try
+            using (var transaction = await _UnitOfWork.BeginTransaction())
             {
-                using (var transaction = await _UnitOfWork.BeginTransaction())
-                {
-                    await _UnitOfWork._ArchivosRepository.InsertArchivo(Archivo);
+                await _UnitOfWork._ArchivosRepository.InsertArchivo(Archivo);
 
+                try
+                {
                     using (var stream = new FileStream(RutaCompleta, FileMode.Create))
                     {
                         await file.CopyToAsync(stream);
                     }
 
                     await transaction.CommitAsync();
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
 
+                    return Archivo;
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    return null;
+                }
+            }
         }
     }
 }
