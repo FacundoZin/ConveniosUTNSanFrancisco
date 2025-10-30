@@ -83,7 +83,7 @@ namespace APIconvenios.Helpers.Mappers
                 }).ToList(),
 
                 ConvenioMarcoId = convenio.ConvenioMarcoId,
-                convenioMarco = convenio.ConvenioMarco != ? new ConvenioMarcoDto
+                convenioMarco = convenio.ConvenioMarco != null ? new ConvenioMarcoDto
                 {
                     Id = convenio.Id,
                     Titulo = convenio.TituloConvenio,
@@ -92,7 +92,7 @@ namespace APIconvenios.Helpers.Mappers
                     FechaFin = convenio.FechaFinConvenio,
                     Estado = convenio.Estado,
                     Refrendado = convenio.Refrendado
-                },
+                } : null,
 
                 empresa = convenio.empresa != null ? new EmpresaDto
                 {

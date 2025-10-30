@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIconvenios.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251001132427_refactoredschema")]
-    partial class refactoredschema
+    [Migration("20251028032039_NewMigration")]
+    partial class NewMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,7 +109,7 @@ namespace APIconvenios.Migrations
                     b.Property<bool>("EsActa")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Estado")
+                    b.Property<int>("Estado")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateOnly?>("FechaFinConvenio")

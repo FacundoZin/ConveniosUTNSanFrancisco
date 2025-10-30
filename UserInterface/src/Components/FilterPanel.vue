@@ -1,9 +1,20 @@
 <template>
-  <div :class="['offcanvas', 'offcanvas-end', { 'show': isPanelOpen }]" tabindex="-1" id="offcanvasRight"
-    aria-labelledby="offcanvasRightLabel">
+  <div
+    :class="['offcanvas', 'offcanvas-end', { show: isPanelOpen }]"
+    tabindex="-1"
+    id="offcanvasRight"
+    aria-labelledby="offcanvasRightLabel"
+  >
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasRightLabel">Buscar</h5>
-      <button type="button" class="btn-close text-reset" @click="closePanel" aria-label="Cerrar"></button>
+      <h5 class="offcanvas-title" id="offcanvasRightLabel">
+        Buscar convenios {{ typeOfConvenio }}s por:
+      </h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        @click="closePanel"
+        aria-label="Cerrar"
+      ></button>
     </div>
     <div class="offcanvas-body">
       <div v-if="typeOfConvenio === 'marco'">
@@ -12,17 +23,37 @@
           <li class="list-group-item" @click="selectFilter(KeyFilters.ByTitulo)">Titulo</li>
           <li class="list-group-item" @click="selectFilter(KeyFilters.ByEmpresa)">Empresa</li>
           <li class="list-group-item" @click="selectFilter(KeyFilters.ByEstado)">Estado</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroResolucion)">Numero de Resolucion</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroConvenio)">Numero de Convenio</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByCarrera)">Carrera Involucrada</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFirma)">Fecha de Firma</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFin)">Fecha de Finalizacion</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByAntiguedadDto)">Antiguedad</li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroResolucion)">
+            Numero de Resolucion
+          </li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroConvenio)">
+            Numero de Convenio
+          </li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByCarrera)">
+            Carrera Involucrada
+          </li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFirma)">
+            Fecha de Firma
+          </li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFin)">
+            Fecha de Finalizacion
+          </li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByAntiguedadDto)">
+            Antiguedad
+          </li>
 
-          <li class="list-group-item" @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByProximosAvencer)">
-            Proximos a vencer</li>
-          <li class="list-group-item" @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByIsRefrendado)">
-            Refrendados</li>
+          <li
+            class="list-group-item"
+            @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByProximosAvencer)"
+          >
+            Proximos a vencer
+          </li>
+          <li
+            class="list-group-item"
+            @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByIsRefrendado)"
+          >
+            Refrendados
+          </li>
         </ul>
       </div>
       <div v-else-if="typeOfConvenio === 'especifico'">
@@ -30,18 +61,43 @@
           <li class="list-group-item" @click="selectFilter(KeyFilters.ByTitulo)">Titulo</li>
           <li class="list-group-item" @click="selectFilter(KeyFilters.ByEmpresa)">Empresa</li>
           <li class="list-group-item" @click="selectFilter(KeyFilters.ByEstado)">Estado</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroResolucion)">Numero de Resolucion</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroConvenio)">Numero de Convenio</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByCarrera)">Carrera Involucrada</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFirma)">Fecha de Firma</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFin)">Fecha de Finalizacion</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByAntiguedadDto)">Antiguedad</li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroResolucion)">
+            Numero de Resolucion
+          </li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroConvenio)">
+            Numero de Convenio
+          </li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByCarrera)">
+            Carrera Involucrada
+          </li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFirma)">
+            Fecha de Firma
+          </li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFin)">
+            Fecha de Finalizacion
+          </li>
+          <li class="list-group-item" @click="selectFilter(KeyFilters.ByAntiguedadDto)">
+            Antiguedad
+          </li>
 
-          <li class="list-group-item" @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByIsRefrendado)">
-            Refrendados</li>
-          <li class="list-group-item" @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByIsActa)">Actas</li>
-          <li class="list-group-item" @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByProximosAvencer)">
-            Proximos a vencer</li>
+          <li
+            class="list-group-item"
+            @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByIsRefrendado)"
+          >
+            Refrendados
+          </li>
+          <li
+            class="list-group-item"
+            @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByIsActa)"
+          >
+            Actas
+          </li>
+          <li
+            class="list-group-item"
+            @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByProximosAvencer)"
+          >
+            Proximos a vencer
+          </li>
         </ul>
       </div>
       <div v-else>
@@ -53,53 +109,55 @@
 </template>
 
 <script setup lang="ts">
-import { KeyFilters } from '@/Common/KeyFilter';
-import type { IByIsActaParams, IByIsRefrendadoParams, IByProximosAvencerParams, IConvenioQueryObject } from '@/Types/Filters';
-import { defineEmits, defineProps } from 'vue';
+import { KeyFilters } from '@/Common/KeyFilter'
+import type {
+  IByIsActaParams,
+  IByIsRefrendadoParams,
+  IByProximosAvencerParams,
+  IConvenioQueryObject,
+} from '@/Types/Filters'
+import { defineEmits, defineProps } from 'vue'
 
 const props = defineProps<{
-  isPanelOpen: boolean;
-  typeOfConvenio: 'marco' | 'especifico' | '';
+  isPanelOpen: boolean
+  typeOfConvenio: 'marco' | 'especifico' | ''
   QueryObject: IConvenioQueryObject
-}>();
+}>()
 
-const emit = defineEmits(['close-panel', 'filter-selected', 'DirectSearch']);
+const emit = defineEmits(['close-panel', 'filter-selected', 'DirectSearch'])
 
 const closePanel = () => {
-  emit('close-panel');
-};
+  emit('close-panel')
+}
 
 const selectFilter = (filterKey: string) => {
-  emit('filter-selected', filterKey);
-};
+  emit('filter-selected', filterKey)
+}
 
 const HandleDirectSearch = (convenioType: string, filterKey: string) => {
-  selectFilter(filterKey);
+  selectFilter(filterKey)
   if (filterKey === KeyFilters.ByIsRefrendado) {
     const filtro: IByIsRefrendadoParams = {
       refrendado: true,
       convenioType: convenioType,
-    };
-    props.QueryObject.ByIsRefrendado = filtro;
+    }
+    props.QueryObject.ByIsRefrendado = filtro
   }
   if (filterKey === KeyFilters.ByIsActa) {
     const filtro: IByIsActaParams = {
       IsActa: true,
       convenioType: convenioType,
-    };
-    props.QueryObject.ByIsActa = filtro;
-  }
-  else if (filterKey === KeyFilters.ByProximosAvencer) {
+    }
+    props.QueryObject.ByIsActa = filtro
+  } else if (filterKey === KeyFilters.ByProximosAvencer) {
     const filtro: IByProximosAvencerParams = {
       convenioType: convenioType,
-    };
-    props.QueryObject.ByProximosAvencer = filtro;
+    }
+    props.QueryObject.ByProximosAvencer = filtro
   }
-  emit('DirectSearch');
-};
+  emit('DirectSearch')
+}
 </script>
-
-
 
 <style scoped>
 /* Estilos para el overlay/sombra cuando el panel está abierto */

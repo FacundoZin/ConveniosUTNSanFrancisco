@@ -106,7 +106,7 @@ namespace APIconvenios.Migrations
                     b.Property<bool>("EsActa")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Estado")
+                    b.Property<int>("Estado")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateOnly?>("FechaFinConvenio")

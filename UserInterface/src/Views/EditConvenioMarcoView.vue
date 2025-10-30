@@ -321,7 +321,6 @@
 <script setup lang="ts">
 import { useUpdateConvMarcoComposable } from '@/Composables/UpdateConvMarcoComposable'
 import ApiService from '@/Services/ApiService'
-import '@/Styles/EditConvenioMarcoForm.css'
 import { POSITION, useToast } from 'vue-toastification'
 
 const toast = useToast()

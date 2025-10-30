@@ -15,9 +15,9 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseWindowsService(Options => Options.ServiceName = "API Convenios UTN"); 
+builder.Host.UseWindowsService(Options => Options.ServiceName = "API Convenios UTN");
 
-//builder.WebHost.UseUrls("http://localhost:8888");
+builder.WebHost.UseUrls("http://localhost:8888");
 
 // Add services to the container.
 
@@ -71,8 +71,8 @@ builder.Services.AddScoped<IConvenioEspecificoReadRepository, ConvenioEspecifico
 builder.Services.AddScoped<IConvenioMarcoRepository, ConveniosMarcoRepository>();
 builder.Services.AddScoped<IConvenioMarcoReadRepository, ConvenioMarcoReadRepository>();
 builder.Services.AddScoped<ICarreraRepository, CarrerasRepository>();
-builder.Services.AddScoped<IEmpresaRepository,EmpresaRepository>();
-builder.Services.AddScoped<IArchivosRepository, ArchivosRepository>();  
+builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+builder.Services.AddScoped<IArchivosRepository, ArchivosRepository>();
 builder.Services.AddSingleton<ILogger>(new FileLogger(LogPath));
 
 
@@ -109,9 +109,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<GlobalExceptionHandler>();
-app.UseHttpsRedirection();
 app.UseCors("MiPolicyElectron");
+app.UseMiddleware<GlobalExceptionHandler>();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
