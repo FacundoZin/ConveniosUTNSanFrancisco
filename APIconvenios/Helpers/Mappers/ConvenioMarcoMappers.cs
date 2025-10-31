@@ -20,9 +20,9 @@ namespace APIconvenios.Helpers.Mappers
                     Id = Convenio.Id,
                     Titulo = Convenio.Titulo,
                     numeroconvenio = Convenio.numeroconvenio,
-                    NombreEmpresa = Convenio.Empresa.Nombre,
-                    FechaFirmaConvenio = Convenio.FechaFirmaConvenio,
-                    FechaFin = Convenio.FechaFin,
+                    NombreEmpresa = Convenio.Empresa?.Nombre,
+                    FechaFirmaConvenio = Convenio.FechaFirmaConvenio ?? null,
+                    FechaFin = Convenio.FechaFin ?? null,
                     Estado = Convenio.Estado,
                     Refrendado = Convenio.Refrendado
                 });
