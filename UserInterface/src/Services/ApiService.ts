@@ -23,10 +23,10 @@ const getErrorMessage = (error: any) => {
 
 export default class ApiService {
   static async GetConvenios(
-    params: IConvenioQueryObject,
+    body: IConvenioQueryObject,
   ): Promise<Result<ConvenioEspecificoDto | ConvenioMarcoDto>> {
     try {
-      const response = await axios.get(`${API_URL}/Convenios`, { params })
+      const response = await axios.post(`${API_URL}/Convenios`, body)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return {

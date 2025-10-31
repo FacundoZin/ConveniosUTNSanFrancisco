@@ -1,6 +1,5 @@
 ﻿using APIconvenios.Common;
 using APIconvenios.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIconvenios.Controllers
@@ -15,8 +14,8 @@ namespace APIconvenios.Controllers
             _conveniosFilterService = filterService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ListarConvenios([FromQuery] ConvenioQueryObject queryObject)
+        [HttpPost]
+        public async Task<IActionResult> ListarConvenios([FromBody] ConvenioQueryObject queryObject)
         {
             var result = await _conveniosFilterService.ListarConvenios(queryObject);
 
