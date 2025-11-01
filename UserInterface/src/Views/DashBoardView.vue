@@ -36,7 +36,11 @@ const obtenerConvenios = async () => {
     errorMensaje.value = result.error.message
     console.log('hay un error')
   } else {
+
+    console.log("esta es la respuesta de la api", result.value)
     ListadoConvenios.value = CreateListConveniosDto(result.value)
+    const listaCreada = CreateListConveniosDto(result.value)
+    console.log("esta la lista de convenios creada:", listaCreada.data, listaCreada.Type)
   }
 
   isloading.value = false

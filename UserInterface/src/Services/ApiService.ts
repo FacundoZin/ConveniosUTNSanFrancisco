@@ -24,7 +24,7 @@ const getErrorMessage = (error: any) => {
 export default class ApiService {
   static async GetConvenios(
     body: IConvenioQueryObject,
-  ): Promise<Result<ConvenioEspecificoDto | ConvenioMarcoDto>> {
+  ): Promise<Result<ConvenioEspecificoDto[] | ConvenioMarcoDto[]>> {
     try {
       const response = await axios.post(`${API_URL}/Convenios`, body)
       return { isSuccess: true, value: response.data, status: response.status }
