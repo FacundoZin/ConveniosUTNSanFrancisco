@@ -58,7 +58,7 @@ const handleInputChange = () => {
       <div class="col-auto">
         <label for="inputNumeroResolucion" class="form-label visually-hidden">Titulo de Convenio</label>
         <input type="text" class="form-control form-control-sm" id="inputNumeroResolucion" v-model="Titulo"
-          @input="handleInputChange" placeholder="Ej: 1234/2023" aria-label="Ingresar número de resolución"
+          @input="handleInputChange" placeholder="titulo de convenio" aria-label="Ingresar título de convenio"
           :class="{ 'is-invalid': mostrarAlerta }">
         <div class="invalid-feedback">
           Por favor, ingrese un titulo.

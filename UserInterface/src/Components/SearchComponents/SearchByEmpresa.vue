@@ -58,7 +58,7 @@ const handleInputChange = () => {
       <div class="col-auto">
         <label for="inputNumeroResolucion" class="form-label visually-hidden">Nombre empresa</label>
         <input type="text" class="form-control form-control-sm" id="inputNumeroResolucion" v-model="NombreEmpresa"
-          @input="handleInputChange" placeholder="Ej: 1234/2023" aria-label="Ingresar número de resolución"
+          @input="handleInputChange" placeholder="Ej: Macoser" aria-label="Ingresar número de resolución"
           :class="{ 'is-invalid': mostrarAlerta }">
         <div class="invalid-feedback">
           Por favor, ingrese el nombre de la empresa.
@@ -77,6 +77,18 @@ const handleInputChange = () => {
 </template>
 
 <style>
+.custom-card-width {
+  max-width: 400px;
+}
+
+
+/* pequeño toque visual */
+input.form-control:focus {
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+  border-color: #0d6efd;
+  transition: 0.2s ease;
+}
+
 .custom-card-width {
   max-width: fit-content;
 }

@@ -34,14 +34,14 @@
                     <tbody>
                         <tr v-for="conv in convenios.data" :key="conv.id" class="clickable-row"
                             @click="VerConvenioCompleto(conv.id, conv.convenioType)">
-                            <td>{{ conv.titulo }}</td>
-                            <td>{{ conv.numeroConvenio }}</td>
-                            <td>{{ conv.nombreEmpresa }}</td>
-                            <td>{{ conv.fechaFirmaConvenio }}</td>
-                            <td>{{ conv.fechaInicioActividades }}</td>
-                            <td>{{ conv.fechaFin }}</td>
-                            <td>{{ conv.convenioType }}</td>
-                            <td>{{ conv.estado }}</td>
+                            <td>{{ conv.titulo || 'Sin Título' }}</td>
+                            <td>{{ conv.numeroConvenio || '_' }}</td>
+                            <td>{{ conv.nombreEmpresa || 'No tiene empresa asociada' }}</td>
+                            <td>{{ conv.fechaFirmaConvenio || 'Aun no hay fecha de firma' }}</td>
+                            <td>{{ conv.fechaInicioActividades || 'Aun no hay fecha de inicio' }}</td>
+                            <td>{{ conv.fechaFin || 'Aun no hay fecha de finalización' }}</td>
+                            <td>{{ conv.convenioType || '_' }}</td>
+                            <td>{{ EstadoConvenioTexto[conv.estado] }}</td>
                             <td>
                                 <span :class="conv.esActa ? 'badge bg-success' : 'badge bg-secondary'">
                                     {{ conv.esActa ? 'Sí' : 'No' }}
@@ -76,13 +76,13 @@
                     <tbody>
                         <tr v-for="conv in convenios.data" :key="conv.id" class="clickable-row"
                             @click="VerConvenioCompleto(conv.id, conv.convenioType)">
-                            <td>{{ conv.titulo }}</td>
-                            <td>{{ conv.numeroConvenio }}</td>
-                            <td>{{ conv.nombreEmpresa }}</td>
-                            <td>{{ conv.fechaFirmaConvenio }}</td>
-                            <td>{{ conv.fechaFin }}</td>
-                            <td>{{ conv.convenioType }}</td>
-                            <td>{{ conv.estado }}</td>
+                            <td>{{ conv.titulo || 'Sin Título' }}</td>
+                            <td>{{ conv.numeroConvenio || '_' }}</td>
+                            <td>{{ conv.nombreEmpresa || 'No tiene empresa asociada' }}</td>
+                            <td>{{ conv.fechaFirmaConvenio || 'Aun no hay fecha de firma' }}</td>
+                            <td>{{ conv.fechaFin || 'Aun no hay fecha de finalización' }}</td>
+                            <td>{{ conv.convenioType || '_' }}</td>
+                            <td>{{ EstadoConvenioTexto[conv.estado] }}</td>
                             <td>
                                 <span :class="conv.refrendado ? 'badge bg-success' : 'badge bg-secondary'">
                                     {{ conv.refrendado ? 'Sí' : 'No' }}
@@ -98,6 +98,7 @@
 
 <script setup lang="ts">
 import router from '@/router';
+import { EstadoConvenioTexto } from '@/Types/Enums/Enums';
 import type { ListConveniosDto } from '@/Types/ViewModels/ViewModels';
 
 function VerConvenioCompleto(id: number, TypeConvenio: string) {
