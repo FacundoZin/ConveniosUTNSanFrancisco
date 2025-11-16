@@ -1,14 +1,4 @@
 <template>
-  <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Error:</strong> {{ errorMessage }}
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="alert"
-      aria-label="Close"
-      @click="errorMessage = ''"
-    ></button>
-  </div>
 
   <div class="container mt-4" v-if="Convenio?.id">
     <!-- Info del Convenio Marco -->
@@ -41,12 +31,16 @@
 
     <!-- Empresa Asociada -->
     <h5>Informacion de la empresa asociada</h5>
-    <EmpresaCard
-      v-if="Convenio.empresa"
-      :empresa="Convenio.empresa"
-      @desvincular-empresa="DesvincularEmpresa"
-    />
-    <div v-else class="mb-4 text-muted">No hay empresa vinculada.</div>
+    <EmpresaCard v-if="Convenio.empresa" :empresa="Convenio.empresa" @desvincular-empresa="DesvincularEmpresa" />
+    <div v-else class="col-12">
+      <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
+        <div class="card-body">
+          <p class="text-muted mb-0">
+            Aún no hay una empresa asociada a este convenio marco.
+          </p>
+        </div>
+      </div>
+    </div>
 
     <hr class="my-4" />
 
@@ -55,10 +49,7 @@
     <div class="row">
       <div v-if="Convenio.conveniosEspecificos && Convenio.conveniosEspecificos.length > 0">
         <div class="col-md-4 mb-3" v-for="ce in Convenio.conveniosEspecificos" :key="ce.id">
-          <ConvEspecificoCard
-            :convenio="ce"
-            @desvincular-especifico="desvincularConvenioEspecifico"
-          />
+          <ConvEspecificoCard :convenio="ce" @desvincular-especifico="desvincularConvenioEspecifico" />
         </div>
       </div>
       <div v-else class="col-12">
@@ -75,12 +66,14 @@
 
     <hr class="my-4" />
 
-    <FileUploader
-      :archivos="Convenio?.archivosAdjuntos"
-      @archivo-cargado="CargarDocumento"
-      @archivo-eliminado="BorrarDocumento"
-      @archivo-descargado="DescargarDocumento"
-    />
+    <FileUploader :archivos="Convenio?.archivosAdjuntos" @archivo-cargado="CargarDocumento" class="mb-3"
+      @archivo-eliminado="BorrarDocumento" @archivo-descargado="DescargarDocumento" />
+
+    <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error:</strong> {{ errorMessage }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+        @click="errorMessage = ''"></button>
+    </div>
 
     <!-- Botones finales -->
     <div class="mt-5 d-flex gap-3 justify-content-center">

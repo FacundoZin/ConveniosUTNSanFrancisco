@@ -248,7 +248,7 @@ export default class ApiService {
       console.error(`Error de la API (${response.status}):`, response.data)
       return null
     } catch (error) {
-      console.error('Error subiendo archivo:', error)
+      console.error('Error subiendo archivo:', getErrorMessage(error))
       return null
     }
   }

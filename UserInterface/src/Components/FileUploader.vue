@@ -10,11 +10,8 @@
     <!-- Lista de archivos -->
     <div v-if="archivos && archivos.length" class="row g-3">
       <div v-for="archivo in archivos" :key="archivo.idArchivo" class="col-md-4 col-sm-6">
-        <div
-          class="card h-100 shadow-sm position-relative archivo-card"
-          @mouseenter="hoveredArchivo = archivo.idArchivo"
-          @mouseleave="hoveredArchivo = null"
-        >
+        <div class="card h-100 shadow-sm position-relative archivo-card"
+          @mouseenter="hoveredArchivo = archivo.idArchivo" @mouseleave="hoveredArchivo = null">
           <div class="card-body d-flex flex-column justify-content-center align-items-center">
             <i class="bi bi-file-earmark-text fs-1 text-primary"></i>
             <h6 class="mt-2 text-center text-truncate" :title="archivo.nombreArchivo">
@@ -23,22 +20,16 @@
           </div>
 
           <!-- Botón descargar -->
-          <button
-            v-if="hoveredArchivo === archivo.idArchivo"
+          <button v-if="hoveredArchivo === archivo.idArchivo"
             class="btn btn-sm btn-success position-absolute bottom-0 start-0 m-2"
-            @click="emitirDescarga(archivo.idArchivo, archivo.nombreArchivo)"
-            title="Descargar archivo"
-          >
+            @click="emitirDescarga(archivo.idArchivo, archivo.nombreArchivo)" title="Descargar archivo">
             <i class="bi bi-download"></i>
           </button>
 
           <!-- Botón eliminar -->
-          <button
-            v-if="hoveredArchivo === archivo.idArchivo"
-            class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
-            @click="emitirEliminado(archivo.idArchivo)"
-            title="Eliminar archivo"
-          >
+          <button v-if="hoveredArchivo === archivo.idArchivo"
+            class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2" @click="emitirEliminado(archivo.idArchivo)"
+            title="Eliminar archivo">
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
@@ -47,17 +38,14 @@
 
     <div v-else class="col-12">
       <div class="card shadow-sm border rounded-3 p-4 text-center bg-light">
-        <h6 class="mb-0 text-muted fst-italic">No hay convenios documentos cargados aún</h6>
+        <p class="text-muted mb-0">
+          Aún no hay documentos cargados.
+        </p>
       </div>
     </div>
 
     <!-- Modal para subir archivo -->
-    <div
-      class="modal fade show d-block"
-      v-if="mostrarModal"
-      tabindex="-1"
-      style="background-color: rgba(0, 0, 0, 0.5)"
-    >
+    <div class="modal fade show d-block" v-if="mostrarModal" tabindex="-1" style="background-color: rgba(0, 0, 0, 0.5)">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -69,22 +57,13 @@
             <!-- Input nombre -->
             <div class="mb-3">
               <label class="form-label">Nombre del documento</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Ej: Contrato firmado"
-                v-model="nombreArchivo"
-              />
+              <input type="text" class="form-control" placeholder="Ej: Contrato firmado" v-model="nombreArchivo" />
             </div>
 
             <!-- Zona de arrastre -->
-            <div
-              class="dropzone border border-2 border-primary rounded p-4 text-center"
-              :class="{ 'bg-light': isDragging }"
-              @dragover.prevent="onDragOver"
-              @dragleave.prevent="onDragLeave"
-              @drop.prevent="onDrop"
-            >
+            <div class="dropzone border border-2 border-primary rounded p-4 text-center"
+              :class="{ 'bg-light': isDragging }" @dragover.prevent="onDragOver" @dragleave.prevent="onDragLeave"
+              @drop.prevent="onDrop">
               <i class="bi bi-cloud-arrow-up fs-1 text-primary"></i>
               <p class="mt-2 mb-0 fw-semibold">
                 Arrastrá un archivo aquí o hacé clic para seleccionar
@@ -105,11 +84,8 @@
 
           <div class="modal-footer">
             <button class="btn btn-secondary" @click="cerrarModal">Cancelar</button>
-            <button
-              class="btn btn-primary"
-              :disabled="!archivoSeleccionado || !nombreArchivo.trim()"
-              @click="confirmarCarga"
-            >
+            <button class="btn btn-primary" :disabled="!archivoSeleccionado || !nombreArchivo.trim()"
+              @click="confirmarCarga">
               Confirmar
             </button>
           </div>
@@ -120,8 +96,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ViewArchivoDto } from '@/Types/ViewModels/ViewModels'
-import { ref } from 'vue'
+import type { ViewArchivoDto } from '@/Types/ViewModels/ViewModels';
+import { ref } from 'vue';
 
 defineProps<{
   archivos?: ViewArchivoDto[]
