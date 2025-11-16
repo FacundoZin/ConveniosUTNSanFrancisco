@@ -1,14 +1,15 @@
-import { createPinia } from 'pinia';
-import { createApp } from 'vue';
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 
-import Toast from 'vue-toastification';
-import 'vue-toastification/dist/index.css';
-import App from './App.vue';
-import router from './router';
+import './Assets/Global.css'
+import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
+import App from './App.vue'
+import router from './router'
 
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-import 'bootstrap'; 
-import 'bootstrap-icons/font/bootstrap-icons.css'; 
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 const app = createApp(App)
 

@@ -1,23 +1,37 @@
 <template>
   <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
     <strong>Error:</strong> {{ errorMessage }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-      @click="errorMessage = ''"></button>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+      @click="errorMessage = ''"
+    ></button>
   </div>
 
   <div class="container mt-4" v-if="Convenio?.id">
     <!-- Info del Convenio Marco -->
-    <div class="card mb-4">
+    <h5>Informacion del convenio</h5>
+    <div class="card mb-4 bg-light">
       <div class="card-body">
         <h4 class="card-title">
-          {{ Convenio.numeroConvenio || 'Sin número' }} - {{ Convenio.titulo || 'Sin título' }}
+          {{ Convenio.titulo || 'Sin título' }}
         </h4>
         <p><strong>Estado:</strong> {{ EstadoConvenioTexto[Convenio.estado] }}</p>
-        <p><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || 'No disponible' }}</p>
-        <p><strong>Fecha fin:</strong> {{ Convenio.fechaFin || 'No disponible' }}</p>
-        <p><strong>Comentario:</strong> {{ Convenio.comentarioOpcional || 'Sin comentario' }}</p>
+        <p><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || '-' }}</p>
+        <p><strong>Fecha fin:</strong> {{ Convenio.fechaFin || ' -' }}</p>
         <p>
-          <strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || 'No disponible' }}
+          <strong>Comentario:</strong>
+          {{ Convenio.comentarioOpcional || ' -' }}
+        </p>
+        <p>
+          <strong>Número de resolución:</strong>
+          {{ Convenio.numeroResolucion || ' -' }}
+        </p>
+        <p>
+          <strong>Número de convenio:</strong>
+          {{ Convenio.numeroConvenio || ' -' }}
         </p>
         <p><strong>Refrendado:</strong> {{ Convenio.refrendado ? 'Sí' : 'No' }}</p>
       </div>
@@ -26,7 +40,12 @@
     <hr class="my-4" />
 
     <!-- Empresa Asociada -->
-    <EmpresaCard v-if="Convenio.empresa" :empresa="Convenio.empresa" @desvincular-empresa="DesvincularEmpresa" />
+    <h5>Informacion de la empresa asociada</h5>
+    <EmpresaCard
+      v-if="Convenio.empresa"
+      :empresa="Convenio.empresa"
+      @desvincular-empresa="DesvincularEmpresa"
+    />
     <div v-else class="mb-4 text-muted">No hay empresa vinculada.</div>
 
     <hr class="my-4" />
@@ -34,23 +53,39 @@
     <!-- Convenios Específicos -->
     <h5>Convenios Específicos</h5>
     <div class="row">
-      <div v-if="Convenio.conveniosEspecificos">
+      <div v-if="Convenio.conveniosEspecificos && Convenio.conveniosEspecificos.length > 0">
         <div class="col-md-4 mb-3" v-for="ce in Convenio.conveniosEspecificos" :key="ce.id">
-          <ConvEspecificoCard :convenio="ce" @desvincular-especifico="desvincularConvenioEspecifico" />
+          <ConvEspecificoCard
+            :convenio="ce"
+            @desvincular-especifico="desvincularConvenioEspecifico"
+          />
         </div>
       </div>
-      <div v-else class="col-12 text-muted">No hay convenios específicos vinculados.</div>
+      <div v-else class="col-12">
+        <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
+          <div class="card-body">
+            <h6 class="card-title mb-2">Sin convenios específicos</h6>
+            <p class="text-muted mb-0">
+              Aún no hay convenios específicos vinculados a este convenio marco.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <hr class="my-4" />
 
-    <FileUploader :archivos="Convenio?.archivosAdjuntos" @archivo-cargado="CargarDocumento"
-      @archivo-eliminado="BorrarDocumento" @archivo-descargado="DescargarDocumento" />
+    <FileUploader
+      :archivos="Convenio?.archivosAdjuntos"
+      @archivo-cargado="CargarDocumento"
+      @archivo-eliminado="BorrarDocumento"
+      @archivo-descargado="DescargarDocumento"
+    />
 
     <!-- Botones finales -->
-    <div class="mt-4 d-flex gap-2">
+    <div class="mt-5 d-flex gap-3 justify-content-center">
       <button class="btn btn-primary" @click="editConvenio">Editar Convenio</button>
-      <button class="btn btn-success" @click="CargarEspecifico">Cargar Convenio Específico</button>
+      <button class="btn btn-primary" @click="CargarEspecifico">Cargar Convenio Específico</button>
       <button class="btn btn-danger" @click="DeleteConvenio">Eliminar Convenio</button>
     </div>
   </div>
@@ -98,6 +133,7 @@ onMounted(async () => {
     isLoading.value = false
     if (response.isSuccess) {
       Convenio.value = response.value
+      console.log('Convenio.value =', JSON.parse(JSON.stringify(Convenio.value)))
     }
   } catch (error) {
     isLoading.value = false
@@ -211,7 +247,7 @@ const BorrarDocumento = async (id: number) => {
 
       if (convenio && convenio.archivosAdjuntos) {
         convenio.archivosAdjuntos = convenio.archivosAdjuntos.filter(
-          (archivo) => archivo.idArchivo !== id
+          (archivo) => archivo.idArchivo !== id,
         )
       }
     } else {

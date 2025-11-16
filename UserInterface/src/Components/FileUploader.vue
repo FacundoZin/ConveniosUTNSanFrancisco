@@ -45,8 +45,10 @@
       </div>
     </div>
 
-    <div v-else class="text-muted fst-italic text-center">
-      Este convenio todavía no tiene documentos cargados.
+    <div v-else class="col-12">
+      <div class="card shadow-sm border rounded-3 p-4 text-center bg-light">
+        <h6 class="mb-0 text-muted fst-italic">No hay convenios documentos cargados aún</h6>
+      </div>
     </div>
 
     <!-- Modal para subir archivo -->
