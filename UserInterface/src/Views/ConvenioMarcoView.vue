@@ -1,5 +1,4 @@
 <template>
-
   <div class="container mt-4" v-if="Convenio?.id">
     <!-- Info del Convenio Marco -->
     <h5>Informacion del convenio</h5>
@@ -31,13 +30,15 @@
 
     <!-- Empresa Asociada -->
     <h5>Informacion de la empresa asociada</h5>
-    <EmpresaCard v-if="Convenio.empresa" :empresa="Convenio.empresa" @desvincular-empresa="DesvincularEmpresa" />
+    <EmpresaCard
+      v-if="Convenio.empresa"
+      :empresa="Convenio.empresa"
+      @desvincular-empresa="DesvincularEmpresa"
+    />
     <div v-else class="col-12">
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
-          <p class="text-muted mb-0">
-            Aún no hay una empresa asociada a este convenio marco.
-          </p>
+          <p class="text-muted mb-0">Aún no hay una empresa asociada a este convenio marco.</p>
         </div>
       </div>
     </div>
@@ -49,7 +50,10 @@
     <div class="row">
       <div v-if="Convenio.conveniosEspecificos && Convenio.conveniosEspecificos.length > 0">
         <div class="col-md-4 mb-3" v-for="ce in Convenio.conveniosEspecificos" :key="ce.id">
-          <ConvEspecificoCard :convenio="ce" @desvincular-especifico="desvincularConvenioEspecifico" />
+          <ConvEspecificoCard
+            :convenio="ce"
+            @desvincular-especifico="desvincularConvenioEspecifico"
+          />
         </div>
       </div>
       <div v-else class="col-12">
@@ -66,13 +70,23 @@
 
     <hr class="my-4" />
 
-    <FileUploader :archivos="Convenio?.archivosAdjuntos" @archivo-cargado="CargarDocumento" class="mb-3"
-      @archivo-eliminado="BorrarDocumento" @archivo-descargado="DescargarDocumento" />
+    <FileUploader
+      :archivos="Convenio?.archivosAdjuntos"
+      @archivo-cargado="CargarDocumento"
+      class="mb-3"
+      @archivo-eliminado="BorrarDocumento"
+      @archivo-descargado="DescargarDocumento"
+    />
 
     <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
       <strong>Error:</strong> {{ errorMessage }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-        @click="errorMessage = ''"></button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+        @click="errorMessage = ''"
+      ></button>
     </div>
 
     <!-- Botones finales -->
@@ -203,27 +217,26 @@ const desvincularConvenioEspecifico = async (idConvenioEspecifico: number) => {
   isLoading.value = false
 }
 
-const CargarDocumento = async (file: File, nombre: string) => {
+const CargarDocumento = async ({ file, nombre }: { file: File; nombre: string }) => {
   errorMessage.value = ''
   isLoading.value = true
+
   try {
     const ArchivoCargado = await ApiService.CargarArchivo(nombre, file, Convenio.value!.id)
+
     isLoading.value = false
+
     if (ArchivoCargado) {
       toast.success('documento cargado con exito')
+
       const convenio = Convenio.value!
-
-      if (!convenio.archivosAdjuntos) {
-        convenio.archivosAdjuntos = []
-      }
-
+      convenio.archivosAdjuntos ??= []
       convenio.archivosAdjuntos.push(ArchivoCargado)
     } else {
       errorMessage.value = 'Error al cargar el docuemnto'
     }
   } catch (error) {
     isLoading.value = false
-    console.error('Error al cargar documento:', error)
     errorMessage.value = 'Error al cargar el docuemnto'
   }
 }

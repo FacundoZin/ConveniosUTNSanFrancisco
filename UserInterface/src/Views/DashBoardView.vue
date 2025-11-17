@@ -36,11 +36,10 @@ const obtenerConvenios = async () => {
     errorMensaje.value = result.error.message
     console.log('hay un error')
   } else {
-
-    console.log("esta es la respuesta de la api", result.value)
+    console.log('esta es la respuesta de la api', result.value)
     ListadoConvenios.value = CreateListConveniosDto(result.value)
     const listaCreada = CreateListConveniosDto(result.value)
-    console.log("esta la lista de convenios creada:", listaCreada.data, listaCreada.Type)
+    console.log('esta la lista de convenios creada:', listaCreada.data, listaCreada.Type)
   }
 
   isloading.value = false
@@ -57,32 +56,36 @@ const handleFilterSelected = (filterKey: string) => {
 </script>
 
 <template>
-  <div class="d-flex gap-2 p-4">
-    <div v-if="errorMensaje" class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Error:</strong> {{ errorMensaje }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-        @click="errorMensaje = null"></button>
-    </div>
-  </div>
-
   <div class="d-flex justify-content-center my-3">
     <div class="toggle-switch-convenios">
-      <input type="radio" name="tipoConvenio" id="btn-marco" value="marco" :checked="TypeofConvenioToSearch === 'marco'"
+      <input
+        type="radio"
+        name="tipoConvenio"
+        id="btn-marco"
+        value="marco"
+        :checked="TypeofConvenioToSearch === 'marco'"
         @change="
           () => {
             TypeofConvenioToSearch = 'marco'
             FilterPanelOpen = true
           }
-        " />
+        "
+      />
       <label for="btn-marco"> <i class="bi bi-folder-fill me-2"></i> Convenios Marcos </label>
 
-      <input type="radio" name="tipoConvenio" id="btn-especifico" value="especifico"
-        :checked="TypeofConvenioToSearch === 'especifico'" @change="
+      <input
+        type="radio"
+        name="tipoConvenio"
+        id="btn-especifico"
+        value="especifico"
+        :checked="TypeofConvenioToSearch === 'especifico'"
+        @change="
           () => {
             TypeofConvenioToSearch = 'especifico'
             FilterPanelOpen = true
           }
-        " />
+        "
+      />
       <label for="btn-especifico">
         <i class="bi bi-file-earmark-text-fill me-2"></i> Convenios Específicos
       </label>
@@ -91,37 +94,94 @@ const handleFilterSelected = (filterKey: string) => {
     </div>
   </div>
 
-  <FilterPanel :isPanelOpen="FilterPanelOpen" :typeOfConvenio="TypeofConvenioToSearch"
-    :QueryObject="QueryComposable.queryObject" @close-panel="FilterPanelOpen = false"
-    @filter-selected="handleFilterSelected" @DirectSearch="obtenerConvenios" />
+  <FilterPanel
+    :isPanelOpen="FilterPanelOpen"
+    :typeOfConvenio="TypeofConvenioToSearch"
+    :QueryObject="QueryComposable.queryObject"
+    @close-panel="FilterPanelOpen = false"
+    @filter-selected="handleFilterSelected"
+    @DirectSearch="obtenerConvenios"
+  />
 
-  <SearchByTitle v-if="activeFilterComponent === KeyFilters.ByTitulo" @SearchDone="obtenerConvenios"
-    :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByTitle>
+  <SearchByTitle
+    v-if="activeFilterComponent === KeyFilters.ByTitulo"
+    @SearchDone="obtenerConvenios"
+    :QueryObject="QueryComposable.queryObject"
+    :type-of-convenio="TypeofConvenioToSearch"
+  ></SearchByTitle>
 
-  <SearchByEmpresa v-if="activeFilterComponent === KeyFilters.ByEmpresa" @SearchDone="obtenerConvenios"
-    :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByEmpresa>
+  <SearchByEmpresa
+    v-if="activeFilterComponent === KeyFilters.ByEmpresa"
+    @SearchDone="obtenerConvenios"
+    :QueryObject="QueryComposable.queryObject"
+    :type-of-convenio="TypeofConvenioToSearch"
+  ></SearchByEmpresa>
 
-  <SearchByNumeroConvenio v-if="activeFilterComponent === KeyFilters.ByNumeroConvenio" @SearchDone="obtenerConvenios"
-    :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByNumeroConvenio>
+  <SearchByNumeroConvenio
+    v-if="activeFilterComponent === KeyFilters.ByNumeroConvenio"
+    @SearchDone="obtenerConvenios"
+    :QueryObject="QueryComposable.queryObject"
+    :type-of-convenio="TypeofConvenioToSearch"
+  ></SearchByNumeroConvenio>
 
-  <SearchByNumeroResolucion v-if="activeFilterComponent === KeyFilters.ByNumeroResolucion"
-    @SearchDone="obtenerConvenios" :QueryObject="QueryComposable.queryObject"
-    :type-of-convenio="TypeofConvenioToSearch"></SearchByNumeroResolucion>
+  <SearchByNumeroResolucion
+    v-if="activeFilterComponent === KeyFilters.ByNumeroResolucion"
+    @SearchDone="obtenerConvenios"
+    :QueryObject="QueryComposable.queryObject"
+    :type-of-convenio="TypeofConvenioToSearch"
+  ></SearchByNumeroResolucion>
 
-  <SearchByFechaFin v-if="activeFilterComponent === KeyFilters.ByFechaFin" @SearchDone="obtenerConvenios"
-    :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByFechaFin>
+  <SearchByFechaFin
+    v-if="activeFilterComponent === KeyFilters.ByFechaFin"
+    @SearchDone="obtenerConvenios"
+    :QueryObject="QueryComposable.queryObject"
+    :type-of-convenio="TypeofConvenioToSearch"
+  ></SearchByFechaFin>
 
-  <SearchByFechaFirma v-if="activeFilterComponent === KeyFilters.ByFechaFirma" @SearchDone="obtenerConvenios"
-    :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByFechaFirma>
+  <SearchByFechaFirma
+    v-if="activeFilterComponent === KeyFilters.ByFechaFirma"
+    @SearchDone="obtenerConvenios"
+    :QueryObject="QueryComposable.queryObject"
+    :type-of-convenio="TypeofConvenioToSearch"
+  ></SearchByFechaFirma>
 
-  <SearchByCarreras v-if="activeFilterComponent === KeyFilters.ByCarrera" @SearchDone="obtenerConvenios"
-    :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByCarreras>
+  <SearchByCarreras
+    v-if="activeFilterComponent === KeyFilters.ByCarrera"
+    @SearchDone="obtenerConvenios"
+    :QueryObject="QueryComposable.queryObject"
+    :type-of-convenio="TypeofConvenioToSearch"
+  ></SearchByCarreras>
 
-  <SearchByEstado v-if="activeFilterComponent === KeyFilters.ByEstado" @SearchDone="obtenerConvenios"
-    :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByEstado>
+  <SearchByEstado
+    v-if="activeFilterComponent === KeyFilters.ByEstado"
+    @SearchDone="obtenerConvenios"
+    :QueryObject="QueryComposable.queryObject"
+    :type-of-convenio="TypeofConvenioToSearch"
+  ></SearchByEstado>
 
-  <SearchByAntiguedad v-if="activeFilterComponent === KeyFilters.ByAntiguedadDto" @SearchDone="obtenerConvenios"
-    :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByAntiguedad>
+  <SearchByAntiguedad
+    v-if="activeFilterComponent === KeyFilters.ByAntiguedadDto"
+    @SearchDone="obtenerConvenios"
+    :QueryObject="QueryComposable.queryObject"
+    :type-of-convenio="TypeofConvenioToSearch"
+  ></SearchByAntiguedad>
+
+  <div class="d-flex justify-content-center mt-4">
+    <div
+      v-if="errorMensaje"
+      class="alert alert-danger alert-dismissible fade show w-30 text-center shadow"
+      role="alert"
+    >
+      <strong>Error:</strong> {{ errorMensaje }}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+        @click="errorMensaje = null"
+      ></button>
+    </div>
+  </div>
 
   <ConvenioList :convenios="ListadoConvenios" :isloading="isloading" />
 </template>

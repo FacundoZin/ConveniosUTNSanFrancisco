@@ -103,7 +103,7 @@ namespace APIconvenios.Services
 
                 string rutaCompleta = Path.Combine(directorioArchivos, archivoDto.NombreArchivo);
 
-                var ArchivoCreado = await FileUploadTransaction(archivoDto.ToModel(), archivoDto.file, rutaCompleta);
+                var ArchivoCreado = await FileUploadTransaction(archivoDto.ToModel(rutaCompleta), archivoDto.file, rutaCompleta);
 
                 if (ArchivoCreado == null)
                     return Result<ArchivosAdjuntos>.Error("se produjo un error inesperado al cargar el documento en el servidor...",

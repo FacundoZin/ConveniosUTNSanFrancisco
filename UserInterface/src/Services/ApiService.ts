@@ -231,24 +231,35 @@ export default class ApiService {
     convenioMarcoId: number,
   ): Promise<ViewArchivoDto | null> {
     const formData = new FormData()
-    formData.append('nombreArchivo', nombreArchivo)
+    formData.append('NombreArchivo', nombreArchivo)
     formData.append('file', file)
-    formData.append('convenioMarcoId', convenioMarcoId.toString())
-    formData.append('convenioEspecificoId', '')
+    formData.append('ConvenioMarcoId', convenioMarcoId.toString())
+
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1])
+    }
 
     try {
       const response = await axios.post<ViewArchivoDto>(`${API_URL}/Documents`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
-        validateStatus: () => true,
       })
 
-      if (response.status === 201) {
-        return response.data
+      console.log('Respuesta completa:', response)
+
+      return response.data
+    } catch (error: any) {
+      console.error('AXIOS ERROR COMPLETO:', error)
+
+      if (error.response) {
+        console.error('STATUS:', error.response.status)
+        console.error('DATA:', error.response.data)
+        console.error('HEADERS:', error.response.headers)
+      } else if (error.request) {
+        console.error('NO RESPONSE. REQUEST fue:', error.request)
+      } else {
+        console.error('Error general:', error.message)
       }
-      console.error(`Error de la API (${response.status}):`, response.data)
-      return null
-    } catch (error) {
-      console.error('Error subiendo archivo:', getErrorMessage(error))
+
       return null
     }
   }
