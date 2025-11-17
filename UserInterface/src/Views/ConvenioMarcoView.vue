@@ -89,6 +89,8 @@
       ></button>
     </div>
 
+    <hr class="my-4" />
+
     <!-- Botones finales -->
     <div class="mt-5 d-flex gap-3 justify-content-center">
       <button class="btn btn-primary" @click="editConvenio">Editar Convenio</button>
@@ -222,7 +224,7 @@ const CargarDocumento = async ({ file, nombre }: { file: File; nombre: string })
   isLoading.value = true
 
   try {
-    const ArchivoCargado = await ApiService.CargarArchivo(nombre, file, Convenio.value!.id)
+    const ArchivoCargado = await ApiService.CargarArchivoToMarco(nombre, file, Convenio.value!.id)
 
     isLoading.value = false
 

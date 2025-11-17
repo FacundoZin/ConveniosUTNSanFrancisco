@@ -1,25 +1,23 @@
 <template>
-  <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Error:</strong> {{ errorMessage }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-      @click="errorMessage = ''"></button>
-  </div>
-
   <div class="container mt-4" v-if="Convenio?.id">
-    <!-- Info del Convenio Marco -->
-    <div class="card mb-4">
+    <!-- Info del Convenio Especifico -->
+    <h5>Informacion del convenio</h5>
+    <div class="card mb-4 bg-light">
       <div class="card-body">
         <h4 class="card-title">
-          {{ Convenio.numeroConvenio || 'Sin número' }} - {{ Convenio.titulo || 'Sin título' }}
+          {{ Convenio.titulo || 'Sin título' }}
         </h4>
+
         <p><strong>Estado:</strong> {{ EstadoConvenioTexto[Convenio.estado] }}</p>
-        <p><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || 'No disponible' }}</p>
-        <p><strong>Fecha de inicio de actividades:</strong> {{ Convenio.fechaInicioActividades || 'No disponible' }}</p>
-        <p><strong>Fecha fin:</strong> {{ Convenio.fechaFinConvenio || 'No disponible' }}</p>
-        <p><strong>Comentario:</strong> {{ Convenio.comentarioOpcional || 'Sin comentario' }}</p>
+        <p><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || ' -' }}</p>
         <p>
-          <strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || 'No disponible' }}
+          <strong>Fecha de inicio de actividades:</strong>
+          {{ Convenio.fechaInicioActividades || ' -' }}
         </p>
+        <p><strong>Fecha fin:</strong> {{ Convenio.fechaFinConvenio || ' -' }}</p>
+        <p><strong>Comentario:</strong> {{ Convenio.comentarioOpcional || ' -' }}</p>
+        <p><strong>Número de convenio:</strong> {{ Convenio.numeroConvenio || ' -' }}</p>
+        <p><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</p>
         <p><strong>Refrendado:</strong> {{ Convenio.refrendado ? 'Sí' : 'No' }}</p>
       </div>
     </div>
@@ -27,8 +25,19 @@
     <hr class="my-4" />
 
     <!-- Empresa Asociada -->
-    <EmpresaCard v-if="Convenio.empresa" :empresa="Convenio.empresa" @desvincular-empresa="DesvincularEmpresa" />
-    <div v-else class="mb-4 text-muted">No hay empresa vinculada.</div>
+    <h5>Informacion de empresa</h5>
+    <EmpresaCard
+      v-if="Convenio.empresa"
+      :empresa="Convenio.empresa"
+      @desvincular-empresa="DesvincularEmpresa"
+    />
+    <div v-else class="col-12">
+      <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
+        <div class="card-body">
+          <p class="text-muted mb-0">Aún no hay una empresa asociada a este convenio especifico.</p>
+        </div>
+      </div>
+    </div>
 
     <hr class="my-4" />
 
@@ -36,7 +45,11 @@
     <h5>Convenio Marco Asociado</h5>
     <div class="mb-4">
       <div v-if="Convenio.convenioMarco">
-        <ConvMarcoCard :convenio="Convenio.convenioMarco" @desvincular-marco="desvincularConvenioMarco" class="mb-3" />
+        <ConvMarcoCard
+          :convenio="Convenio.convenioMarco"
+          @desvincular-marco="desvincularConvenioMarco"
+          class="mb-3"
+        />
       </div>
       <div v-else class="text-muted">No hay un convenio marco asociado.</div>
     </div>
@@ -46,14 +59,25 @@
     <!-- involucrados asociado -->
     <h5>Involucrados Asociados</h5>
     <div class="row">
-      <div v-if="Convenio?.involucrados && Convenio.involucrados.length > 0" class="d-flex flex-wrap gap-3">
-        <InvolucradosViewCard v-for="involucrado in Convenio.involucrados" :key="involucrado.id"
-          :involucrado="involucrado" />
+      <div
+        v-if="Convenio?.involucrados && Convenio.involucrados.length > 0"
+        class="d-flex flex-wrap gap-3"
+      >
+        <InvolucradosViewCard
+          v-for="involucrado in Convenio.involucrados"
+          :key="involucrado.id"
+          :involucrado="involucrado"
+        />
       </div>
-      <div v-else class="col-12 text-muted">No hay personas involucradas vinculadas.</div>
+      <div v-else class="col-12 text-muted">
+        <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
+          <div class="card-body">
+            <h6 class="card-title mb-2">Sin involucrados</h6>
+            <p class="text-muted mb-0">Aún no hay involucrados asociados a este convenio.</p>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <hr class="my-4" />
 
     <hr class="my-4" />
 
@@ -62,15 +86,43 @@
     <div v-if="Convenio.carrerasInvolucradas && Convenio.carrerasInvolucradas.length > 0">
       <CarrerasCardList :carreras="Convenio.carrerasInvolucradas" />
     </div>
-    <div v-else class="text-muted">No hay carreras involucradas.</div>
+    <div v-else class="text-muted">
+      <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
+        <div class="card-body">
+          <h6 class="card-title mb-2">Sin carreras involucradas</h6>
+          <p class="text-muted mb-0">Aún no hay carreras involucradas en este convenio</p>
+        </div>
+      </div>
+    </div>
 
     <hr class="my-4" />
 
-    <FileUploader :archivos="Convenio?.documentosAdjuntos" @archivo-cargado="CargarDocumento"
-      @archivo-eliminado="BorrarDocumento" @archivo-descargado="DescargarDocumento" />
+    <FileUploader
+      :archivos="Convenio?.documentosAdjuntos"
+      @archivo-cargado="CargarDocumento"
+      @archivo-eliminado="BorrarDocumento"
+      @archivo-descargado="DescargarDocumento"
+    />
+
+    <div
+      v-if="errorMessage"
+      class="alert alert-danger alert-dismissible fade show gap-3"
+      role="alert"
+    >
+      <strong>Error:</strong> {{ errorMessage }}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+        @click="errorMessage = ''"
+      ></button>
+    </div>
+
+    <hr class="my-4" />
 
     <!-- Botones finales -->
-    <div class="mt-4 d-flex gap-2">
+    <div class="mt-5 d-flex gap-3 justify-content-center">
       <button class="btn btn-primary" @click="editConvenio">Editar Convenio</button>
       <button class="btn btn-danger" @click="DeleteConvenio">Eliminar Convenio</button>
     </div>
@@ -188,27 +240,26 @@ const desvincularConvenioMarco = async () => {
   isLoading.value = false
 }
 
-const CargarDocumento = async (file: File, nombre: string) => {
+const CargarDocumento = async ({ file, nombre }: { file: File; nombre: string }) => {
   errorMessage.value = ''
   isLoading.value = true
+
   try {
-    const ArchivoCargado = await ApiService.CargarArchivo(nombre, file, Convenio.value!.id)
+    const ArchivoCargado = await ApiService.CargarArchivoToMarco(nombre, file, Convenio.value!.id)
+
     isLoading.value = false
+
     if (ArchivoCargado) {
       toast.success('documento cargado con exito')
+
       const convenio = Convenio.value!
-
-      if (!convenio.documentosAdjuntos) {
-        convenio.documentosAdjuntos = []
-      }
-
-      convenio.documentosAdjuntos.push(ArchivoCargado)
+      convenio.documentosAdjuntos ??= []
+      convenio.documentosAdjuntos = [...convenio.documentosAdjuntos, ArchivoCargado]
     } else {
       errorMessage.value = 'Error al cargar el docuemnto'
     }
   } catch (error) {
     isLoading.value = false
-    console.error('Error al cargar documento:', error)
     errorMessage.value = 'Error al cargar el docuemnto'
   }
 }
@@ -225,7 +276,7 @@ const BorrarDocumento = async (id: number) => {
 
       if (convenio && convenio.documentosAdjuntos) {
         convenio.documentosAdjuntos = convenio.documentosAdjuntos.filter(
-          (archivo) => archivo.idArchivo !== id
+          (archivo) => archivo.idArchivo !== id,
         )
       }
     } else {
@@ -233,7 +284,6 @@ const BorrarDocumento = async (id: number) => {
     }
   } catch (error) {
     isLoading.value = false
-    console.error('Error al eliminar documento:', error)
     errorMessage.value = 'ocurrio un error al eliminar el documento'
   }
 }

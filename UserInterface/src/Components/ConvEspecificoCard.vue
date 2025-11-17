@@ -1,5 +1,5 @@
 <template>
-  <div class="card h-100">
+  <div class="card h-100 bg-light">
     <div class="card-body">
       <h6 class="card-title">{{ convenio.titulo || 'Sin título' }}</h6>
       <p class="card-text"><strong>Número:</strong> {{ convenio.numeroConvenio || '-' }}</p>
@@ -11,7 +11,9 @@
         <strong>Fecha inicio:</strong> {{ convenio.fechaInicioActividades || '-' }}
       </p>
       <p class="card-text"><strong>Fecha fin:</strong> {{ convenio.fechaFin || '-' }}</p>
-      <p class="card-text"><strong>Estado:</strong> {{ EstadoConvenioTexto[convenio.estado] || '-' }}</p>
+      <p class="card-text">
+        <strong>Estado:</strong> {{ EstadoConvenioTexto[convenio.estado] || '-' }}
+      </p>
       <p class="card-text"><strong>Acta:</strong> {{ convenio.esActa ? 'Sí' : 'No' }}</p>
       <p class="card-text"><strong>Refrendado:</strong> {{ convenio.refrendado ? 'Sí' : 'No' }}</p>
     </div>
@@ -22,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import { EstadoConvenioTexto } from '@/Types/Enums/Enums';
-import type { ConvenioEspecificoDto } from '@/Types/ViewModels/ViewModels';
+import { EstadoConvenioTexto } from '@/Types/Enums/Enums'
+import type { ConvenioEspecificoDto } from '@/Types/ViewModels/ViewModels'
 
 const props = defineProps<{
   convenio: ConvenioEspecificoDto

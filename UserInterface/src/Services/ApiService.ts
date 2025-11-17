@@ -225,7 +225,7 @@ export default class ApiService {
     }
   }
 
-  static async CargarArchivo(
+  static async CargarArchivoToMarco(
     nombreArchivo: string,
     file: File,
     convenioMarcoId: number,
@@ -264,15 +264,51 @@ export default class ApiService {
     }
   }
 
-  static async EliminarArchivo(idDocumento: number): Promise<boolean> {
+  static async CargarArchivoToEspecifico(
+    nombreArchivo: string,
+    file: File,
+    convenioEspecificoId: number,
+  ): Promise<ViewArchivoDto | null> {
+    const formData = new FormData()
+    formData.append('NombreArchivo', nombreArchivo)
+    formData.append('file', file)
+    formData.append('ConvenioEspecificoId', convenioEspecificoId.toString())
+
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1])
+    }
+
     try {
-      const response = await axios.delete(`${API_URL}/Documents/${idDocumento}`, {
-        validateStatus: () => true,
+      const response = await axios.post<ViewArchivoDto>(`${API_URL}/Documents`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       })
 
-      return response.status === 200
+      console.log('Respuesta completa:', response)
+
+      return response.data
+    } catch (error: any) {
+      console.error('AXIOS ERROR COMPLETO:', error)
+
+      if (error.response) {
+        console.error('STATUS:', error.response.status)
+        console.error('DATA:', error.response.data)
+        console.error('HEADERS:', error.response.headers)
+      } else if (error.request) {
+        console.error('NO RESPONSE. REQUEST fue:', error.request)
+      } else {
+        console.error('Error general:', error.message)
+      }
+
+      return null
+    }
+  }
+
+  static async EliminarArchivo(idDocumento: number): Promise<boolean> {
+    try {
+      const response = await axios.delete(`${API_URL}/Documents/${idDocumento}`, {})
+      return true
     } catch (error) {
-      console.error('Error eliminando archivo:', error)
+      console.error('Error eliminando archivo:', getErrorMessage(error))
       return false
     }
   }

@@ -9,7 +9,8 @@
       <!-- Links (a la derecha) -->
       <nav class="nav-links">
         <router-link to="/">Panel de búsqueda</router-link>
-        <router-link to="/CargarConvenioMarco">Cargar Convenio Marco</router-link>
+        <router-link to="/CargarConvenioMarco">Cargar Marco</router-link>
+        <router-link to="/CargarConvenioEspecifico">Cargar Especifico</router-link>
       </nav>
     </div>
   </header>
@@ -51,7 +52,9 @@
   height: 40px;
   object-fit: contain;
   display: block;
-  transition: transform 0.3s ease, filter 0.25s ease;
+  transition:
+    transform 0.3s ease,
+    filter 0.25s ease;
 }
 
 .logo:hover {
@@ -79,7 +82,7 @@
 
 /* Efecto “barrita animada” debajo del link */
 .nav-links a::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -6px;
   left: 0;

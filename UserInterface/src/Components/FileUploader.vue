@@ -7,58 +7,64 @@
       </button>
     </div>
 
-    <!-- Lista de archivos -->
-    <div class="archivos-container p-3 rounded-4 shadow-sm bg-light">
-      <!-- Lista -->
-      <div v-if="archivos && archivos.length" class="row g-4">
-        <div
-          v-for="archivo in archivos"
-          :key="archivo.idArchivo"
-          class="col-lg-3 col-md-4 col-sm-6"
-        >
+    <!-- *** Manejo de lista *** -->
+    <template v-if="archivos && archivos.length">
+      <div class="archivos-container p-3 rounded-4 shadow-sm bg-light border">
+        <div class="row g-4">
           <div
-            class="archivo-card card h-100 shadow-sm position-relative"
-            @mouseenter="hoveredArchivo = archivo.idArchivo"
-            @mouseleave="hoveredArchivo = null"
+            v-for="archivo in archivos"
+            :key="archivo.idArchivo"
+            class="col-lg-3 col-md-4 col-sm-6"
           >
             <div
-              class="card-body d-flex flex-column justify-content-center align-items-center text-center"
+              class="archivo-card card h-100 shadow-sm position-relative"
+              @mouseenter="hoveredArchivo = archivo.idArchivo"
+              @mouseleave="hoveredArchivo = null"
             >
-              <i class="bi bi-file-earmark-text fs-1 text-primary"></i>
+              <div
+                class="card-body d-flex flex-column justify-content-center align-items-center text-center"
+              >
+                <i class="bi bi-file-earmark-text fs-1 text-primary"></i>
 
-              <h6 class="mt-3 text-truncate w-100" :title="archivo.nombreArchivo">
-                {{ archivo.nombreArchivo }}
-              </h6>
+                <h6 class="mt-3 text-truncate w-100" :title="archivo.nombreArchivo">
+                  {{ archivo.nombreArchivo }}
+                </h6>
+              </div>
+
+              <!-- Botón descargar -->
+              <button
+                v-if="hoveredArchivo === archivo.idArchivo"
+                class="btn btn-sm btn-success position-absolute bottom-0 start-0 m-2 rounded-circle"
+                @click="emitirDescarga(archivo.idArchivo, archivo.nombreArchivo)"
+                title="Descargar archivo"
+              >
+                <i class="bi bi-download"></i>
+              </button>
+
+              <!-- Botón eliminar -->
+              <button
+                v-if="hoveredArchivo === archivo.idArchivo"
+                class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle"
+                @click="emitirEliminado(archivo.idArchivo)"
+                title="Eliminar archivo"
+              >
+                <i class="bi bi-x-lg"></i>
+              </button>
             </div>
-
-            <!-- Botón descargar -->
-            <button
-              v-if="hoveredArchivo === archivo.idArchivo"
-              class="btn btn-sm btn-success position-absolute bottom-0 start-0 m-2 rounded-circle"
-              @click="emitirDescarga(archivo.idArchivo, archivo.nombreArchivo)"
-              title="Descargar archivo"
-            >
-              <i class="bi bi-download"></i>
-            </button>
-
-            <!-- Botón eliminar -->
-            <button
-              v-if="hoveredArchivo === archivo.idArchivo"
-              class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle"
-              @click="emitirEliminado(archivo.idArchivo)"
-              title="Eliminar archivo"
-            >
-              <i class="bi bi-x-lg"></i>
-            </button>
           </div>
         </div>
       </div>
+    </template>
 
-      <!-- Estado vacío -->
-      <div v-else class="card shadow-sm border rounded-3 p-4 text-center bg-light">
-        <p class="text-muted mb-0">Aún no hay documentos cargados.</p>
+    <!-- *** Estado vacío afuera del contenedor *** -->
+    <template v-else>
+      <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
+        <div class="card-body">
+          <h6 class="card-title mb-2">Sin documentos</h6>
+          <p class="text-muted mb-0">Aún no hay documentos vinculados a este convenio</p>
+        </div>
       </div>
-    </div>
+    </template>
 
     <!-- Modal para subir archivo -->
     <div
