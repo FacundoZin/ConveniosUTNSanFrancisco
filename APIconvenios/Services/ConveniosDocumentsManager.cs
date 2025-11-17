@@ -2,7 +2,6 @@
 using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.Helpers.Mappers;
-using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Interfaces.Servicios;
 using APIconvenios.Models;
 using APIconvenios.UnitOfWork;
@@ -60,13 +59,12 @@ namespace APIconvenios.Services
 
 
                 byte[] fileBytes = await File.ReadAllBytesAsync(archivo.RutaArchivo);
-                string nombreArchivo = Path.GetFileName(archivo.RutaArchivo);
 
                 var fileContent = new ConvenioFileContentDto
                 {
                     Bytes = fileBytes,
-                    FileName = nombreArchivo,
-                    ContentType = "application/octet-stream" // Tipo de contenido genérico
+                    FileName = archivo.NombreArchivo,
+                    ContentType = archivo.ContentType 
                 };
 
                 return Result<ConvenioFileContentDto>.Exito(fileContent);
@@ -77,15 +75,16 @@ namespace APIconvenios.Services
             }
         }
 
-        public async Task<Result<ArchivosAdjuntos>> UploadDocuemnt(InsertArchivoDto archivoDto)
+        public async Task<Result<viewArchivoDto>> UploadDocuemnt(InsertArchivoDto archivoDto)
         {
             try
             {
                 if (archivoDto.file == null || archivoDto.file.Length == 0)
-                    return Result<ArchivosAdjuntos>.Error("No se seleccionó ningún archivo para subir", 400);
+                    return Result<viewArchivoDto>.Error("No se seleccionó ningún archivo para subir", 400);
+
 
                 if (await _UnitOfWork._ArchivosRepository.NameArchivoExist(archivoDto.NombreArchivo))
-                    return Result<ArchivosAdjuntos>.Error($"Ya existe un archivo con el nombre {archivoDto.NombreArchivo}, " +
+                    return Result<viewArchivoDto>.Error($"Ya existe un archivo con el nombre {archivoDto.NombreArchivo}, " +
                         $"porfavor cambie el nombre para que el documento sea unico ", 400);
 
 
@@ -97,23 +96,27 @@ namespace APIconvenios.Services
                     }
                     catch (Exception ex)
                     {
-                        return Result<ArchivosAdjuntos>.Error("Error al crear la carpeta de destino", 500);
+                        return Result<viewArchivoDto>.Error("Error al crear la carpeta de destino", 500);
                     }
                 }
 
-                string rutaCompleta = Path.Combine(directorioArchivos, archivoDto.NombreArchivo);
+                
+                var extensionArchivo = Path.GetExtension(archivoDto.file.FileName); 
+                var nombreFinal = archivoDto.NombreArchivo+extensionArchivo;
 
-                var ArchivoCreado = await FileUploadTransaction(archivoDto.ToModel(rutaCompleta), archivoDto.file, rutaCompleta);
+                string rutaCompleta = Path.Combine(directorioArchivos, nombreFinal);
+
+                var ArchivoCreado = await FileUploadTransaction(archivoDto.ToModel(rutaCompleta,extensionArchivo), archivoDto.file, rutaCompleta);
 
                 if (ArchivoCreado == null)
-                    return Result<ArchivosAdjuntos>.Error("se produjo un error inesperado al cargar el documento en el servidor...",
+                    return Result<viewArchivoDto>.Error("se produjo un error inesperado al cargar el documento en el servidor...",
                         500);
 
-                return Result<ArchivosAdjuntos>.Exito(ArchivoCreado);
+                return Result<viewArchivoDto>.Exito(ArchivoCreado.ToViewDto());
             }
             catch
             {
-                return Result<ArchivosAdjuntos>.Error("Error al cargar el documento del convenio", 500);
+                return Result<viewArchivoDto>.Error("Error al cargar el documento del convenio", 500);
             }
         }
 

@@ -26,7 +26,7 @@ namespace APIconvenios.Controllers
             if (!result.Exit)
                 return StatusCode(result.Errorcode, result.Errormessage);
 
-            return CreatedAtAction(nameof(DownloadDocument), new { idDocumento = result.Data.Id }, result.Data);
+            return StatusCode(201, result.Data);
         }
 
         [HttpGet("{idDocumento:int}")]

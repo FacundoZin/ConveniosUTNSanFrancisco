@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIconvenios.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251028032039_NewMigration")]
-    partial class NewMigration
+    [Migration("20251117192253_AddContentTypeToArchivos")]
+    partial class AddContentTypeToArchivos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,10 @@ namespace APIconvenios.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ConvenioEspecificoId")
                         .HasColumnType("INTEGER");

@@ -23,6 +23,10 @@ namespace APIconvenios.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("ConvenioEspecificoId")
                         .HasColumnType("INTEGER");
 

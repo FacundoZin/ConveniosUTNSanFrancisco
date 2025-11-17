@@ -231,7 +231,7 @@ const CargarDocumento = async ({ file, nombre }: { file: File; nombre: string })
 
       const convenio = Convenio.value!
       convenio.archivosAdjuntos ??= []
-      convenio.archivosAdjuntos.push(ArchivoCargado)
+      convenio.archivosAdjuntos = [...convenio.archivosAdjuntos, ArchivoCargado]
     } else {
       errorMessage.value = 'Error al cargar el docuemnto'
     }
