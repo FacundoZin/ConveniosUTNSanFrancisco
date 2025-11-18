@@ -4,8 +4,12 @@
       <h3 class="text-primary">Cargar Convenio Marco</h3>
 
       <!-- Botón visible solo cuando se crea un convenio -->
-      <button v-if="ConvenioCreado" @click="irAlConvenio"
-        class="btn btn-outline-success d-flex align-items-center gap-2" title="Ver convenio creado">
+      <button
+        v-if="ConvenioCreado"
+        @click="irAlConvenio"
+        class="btn btn-outline-success d-flex align-items-center gap-2"
+        title="Ver convenio creado"
+      >
         <i class="bi bi-arrow-right-circle"></i>
         Ver Convenio
       </button>
@@ -20,33 +24,56 @@
       <!-- DATOS DEL CONVENIO -->
       <div class="col-md-6">
         <label class="form-label">Número de Convenio</label>
-        <input v-model="ConvenioMarcoRequest.insertConvenioDto.numeroConvenio" type="text" class="form-control" />
+        <input
+          v-model="ConvenioMarcoRequest.insertConvenioDto.numeroConvenio"
+          type="text"
+          class="form-control"
+        />
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Título</label>
-        <input v-model="ConvenioMarcoRequest.insertConvenioDto.titulo" type="text" class="form-control" />
+        <input
+          v-model="ConvenioMarcoRequest.insertConvenioDto.titulo"
+          type="text"
+          class="form-control"
+        />
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Fecha de Firma</label>
-        <input v-model="ConvenioMarcoRequest.insertConvenioDto.fechaFirmaConvenio" type="date" class="form-control" />
+        <input
+          v-model="ConvenioMarcoRequest.insertConvenioDto.fechaFirmaConvenio"
+          type="date"
+          class="form-control"
+        />
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Fecha de Fin</label>
-        <input v-model="ConvenioMarcoRequest.insertConvenioDto.fechaFin" type="date" class="form-control" />
+        <input
+          v-model="ConvenioMarcoRequest.insertConvenioDto.fechaFin"
+          type="date"
+          class="form-control"
+        />
       </div>
 
       <div class="col-12">
         <label class="form-label">Comentario Opcional</label>
-        <textarea v-model="ConvenioMarcoRequest.insertConvenioDto.comentarioOpcional" class="form-control"
-          rows="2"></textarea>
+        <textarea
+          v-model="ConvenioMarcoRequest.insertConvenioDto.comentarioOpcional"
+          class="form-control"
+          rows="2"
+        ></textarea>
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Estado</label>
-        <select v-model.number="ConvenioMarcoRequest.insertConvenioDto.estado" class="form-select" required>
+        <select
+          v-model.number="ConvenioMarcoRequest.insertConvenioDto.estado"
+          class="form-select"
+          required
+        >
           <option value="" disabled>Seleccionar...</option>
           <option :value="0">Borrador</option>
           <option :value="1">Vigente</option>
@@ -56,12 +83,20 @@
 
       <div class="col-md-4">
         <label class="form-label">Número de Resolución</label>
-        <input v-model="ConvenioMarcoRequest.insertConvenioDto.numeroResolucion" type="text" class="form-control" />
+        <input
+          v-model="ConvenioMarcoRequest.insertConvenioDto.numeroResolucion"
+          type="text"
+          class="form-control"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Refrendado</label>
-        <select v-model="ConvenioMarcoRequest.insertConvenioDto.refrendado" class="form-select" required>
+        <select
+          v-model="ConvenioMarcoRequest.insertConvenioDto.refrendado"
+          class="form-select"
+          required
+        >
           <option :value="true">Sí</option>
           <option :value="false">No</option>
         </select>
@@ -76,7 +111,12 @@
       <!-- EMPRESA EXISTENTE O NUEVA -->
       <div class="col-12 mb-3">
         <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" id="switchNuevaEmpresa" v-model="cargarNuevaEmpresa" />
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="switchNuevaEmpresa"
+            v-model="cargarNuevaEmpresa"
+          />
           <label class="form-check-label" for="switchNuevaEmpresa"> Cargar nueva empresa </label>
         </div>
       </div>
@@ -93,7 +133,7 @@
       </div>
 
       <!-- Nueva empresa -->
-      <div v-else class="col-12 border rounded p-3 bg-light">
+      <div v-else-if="empresaForm" class="col-12 border rounded p-3 bg-light">
         <h5 class="mb-3">Nueva Empresa</h5>
 
         <div class="row g-3">
@@ -165,6 +205,7 @@ const {
 } = useCreateConvMarcoComposable()
 
 const submitForm = async () => {
+  console.log('Objeto a enviar al backend:', JSON.stringify(ConvenioMarcoRequest.value, null, 2))
   const result = await submitFormLogic()
 
   if (result) {
@@ -178,7 +219,7 @@ const VincularConvenioEspecifico = async (NumeroConvenio: string) => {
   errorMensaje.value = null
 
   try {
-    const result = await ApiService.GetIdConvMarcoByNumeroConv(NumeroConvenio)
+    const result = await ApiService.GetIdConvEspByNumeroConv(NumeroConvenio)
 
     if (result.isSuccess) {
       ConvenioMarcoRequest.value.idsConveniosEspecificosParaVincular ??= []

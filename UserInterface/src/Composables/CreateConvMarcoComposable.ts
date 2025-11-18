@@ -7,7 +7,7 @@ import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import type { InsertEmpresaDto } from '@/Types/Empresa/InsertEmpresa'
 import type { ConvenioCreated } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
-import { computed, onMounted, ref, type Ref } from 'vue'
+import { computed, onMounted, ref, watch, type Ref } from 'vue'
 
 // Define el tipo de retorno para que TypeScript sepa qué devuelve el composable
 interface CreateConvenioMarcoComposable {
@@ -37,20 +37,32 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
       return (
         ConvenioMarcoRequest.value.insertEmpresaDto ?? {
           id: null,
-          nombre: null,
-          razonSocial: null,
-          cuit: null,
-          direccion: null,
-          telefono: null,
-          email: null,
+          nombre: '',
+          razonSocial: '',
+          cuit: '',
+          direccion: '',
+          telefono: '',
+          email: '',
         }
       )
     },
     set(value) {
-      if (Object.values(value).some((v) => v !== '' && v != null)) {
-        ConvenioMarcoRequest.value.insertEmpresaDto = { ...value }
-      } else {
+      const allEmpty = (
+        [
+          'nombre',
+          'razonSocial',
+          'cuit',
+          'direccion',
+          'telefono',
+          'email',
+        ] as (keyof InsertEmpresaDto)[]
+      ).every((key) => !value[key] || value[key] === '')
+
+      if (allEmpty) {
         ConvenioMarcoRequest.value.insertEmpresaDto = null
+      } else {
+        // Clonamos el objeto para que Vue detecte la actualización
+        ConvenioMarcoRequest.value.insertEmpresaDto = { ...value }
       }
     },
   })
@@ -104,6 +116,20 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
     IsLoading.value = true
     await getEmpresas()
     IsLoading.value = false
+  })
+
+  watch(cargarNuevaEmpresa, (nuevoValor) => {
+    if (nuevoValor && !ConvenioMarcoRequest.value.insertEmpresaDto) {
+      ConvenioMarcoRequest.value.insertEmpresaDto = {
+        id: null,
+        nombre: '',
+        razonSocial: '',
+        cuit: '',
+        direccion: '',
+        telefono: '',
+        email: '',
+      }
+    }
   })
 
   return {
