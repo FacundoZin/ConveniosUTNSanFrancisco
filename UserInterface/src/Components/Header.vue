@@ -22,6 +22,7 @@
   top: 0;
   left: 0;
   width: 100%;
+  background-color: #f5f5f58d;
   background: linear-gradient(
     to right,
     #ffffff 0%,

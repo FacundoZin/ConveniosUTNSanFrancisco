@@ -46,7 +46,7 @@ export function createRequestConvEspecifico(): CargarConvenioEspecificoRequestDt
     },
     insertEmpresaDto: null,
     insertInvolucradosDto: null,
-    idCarreras: null,
+    idCarreras: [],
     idConvenioMarcoVinculado: null,
   }
 }

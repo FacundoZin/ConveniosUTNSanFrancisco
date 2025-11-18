@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-4" v-if="Convenio?.id">
     <!-- Info del Convenio Especifico -->
-    <h5>Informacion del convenio</h5>
+    <h5>Informacion Del Convenio</h5>
     <div class="card mb-4 bg-light">
       <div class="card-body">
         <h4 class="card-title">
@@ -25,7 +25,7 @@
     <hr class="my-4" />
 
     <!-- Empresa Asociada -->
-    <h5>Informacion de empresa</h5>
+    <h5>Informacion De Empresa</h5>
     <EmpresaCard
       v-if="Convenio.empresa"
       :empresa="Convenio.empresa"
@@ -34,6 +34,7 @@
     <div v-else class="col-12">
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
+          <h6 class="card-title mb-2">Sin empresa</h6>
           <p class="text-muted mb-0">Aún no hay una empresa asociada a este convenio especifico.</p>
         </div>
       </div>
@@ -51,7 +52,16 @@
           class="mb-3"
         />
       </div>
-      <div v-else class="text-muted">No hay un convenio marco asociado.</div>
+      <div v-else class="col-12">
+        <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
+          <div class="card-body">
+            <h6 class="card-title mb-2">Sin convenio marco</h6>
+            <p class="text-muted mb-0">
+              Aún no hay un convenio marco asociado a este convenio especifico.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <hr class="my-4" />
