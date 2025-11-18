@@ -186,11 +186,13 @@
 import VincularConvEspecifico from '@/Components/VincularConvEspecifico.vue'
 import { useCreateConvMarcoComposable } from '@/Composables/CreateConvMarcoComposable'
 import ApiService from '@/Services/ApiService'
+import { toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
 const router = useRouter()
 const toast = useToast()
+const convMarcoState = useCreateConvMarcoComposable()
 
 const {
   IsLoading,
@@ -200,9 +202,9 @@ const {
   cargarNuevaEmpresa,
   ConvenioCreado,
   empresaForm,
-  submitForm: submitFormLogic, // Renombramos la función para evitar conflictos
-  resetForm,
-} = useCreateConvMarcoComposable()
+} = toRefs(convMarcoState)
+
+const { submitForm: submitFormLogic, resetForm } = convMarcoState
 
 const submitForm = async () => {
   console.log('Objeto a enviar al backend:', JSON.stringify(ConvenioMarcoRequest.value, null, 2))

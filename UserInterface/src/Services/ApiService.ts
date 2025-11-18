@@ -141,7 +141,8 @@ export default class ApiService {
   }
 
   static async GetEmpresas(): Promise<ComboBoxEmpresasDto[]> {
-    return await axios.get(`${API_URL}/Empresa`)
+    const response = await axios.get(`${API_URL}/Empresa`)
+    return response.data
   }
 
   static async GetIdConvMarcoByNumeroConv(numeroConvenio: string): Promise<Result<number>> {

@@ -70,7 +70,10 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
   const getEmpresas = async () => {
     try {
       const response = await ApiService.GetEmpresas()
-      if (response) empresas.value = response
+
+      if (response) {
+        empresas.value = response
+      }
     } catch (err) {
       console.error('Error al obtener empresas', err)
     }
