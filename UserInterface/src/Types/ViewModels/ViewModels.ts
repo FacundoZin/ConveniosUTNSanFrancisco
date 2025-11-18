@@ -2,7 +2,7 @@ import type { Carrera } from '../CarrerasInvolucradas/CarrerasInvolucradas'
 import type { EstadoConvenio } from '../Enums/Enums'
 
 export interface ConvenioCreated {
-  ID: number
+  id: number
   ConvenioType: string
 }
 

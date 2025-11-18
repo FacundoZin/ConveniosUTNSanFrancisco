@@ -240,7 +240,7 @@ const VincularConvenioEspecifico = async (NumeroConvenio: string) => {
 
 const irAlConvenio = () => {
   if (ConvenioCreado.value) {
-    router.push({ name: 'VistaConvenioMarco', params: { id: ConvenioCreado.value.ID } })
+    router.push({ name: 'VistaConvenioMarco', params: { id: ConvenioCreado.value.id } })
   }
 }
 </script>
