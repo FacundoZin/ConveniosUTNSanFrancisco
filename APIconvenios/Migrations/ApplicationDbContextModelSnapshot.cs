@@ -246,15 +246,15 @@ namespace APIconvenios.Migrations
 
             modelBuilder.Entity("CarrerasConvenioEspecifico", b =>
                 {
-                    b.Property<int>("CarrerasInvolucradasId")
+                    b.Property<int>("CarreraId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ConveniosInvolucradosId")
+                    b.Property<int>("ConvenioEspecificoId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("CarrerasInvolucradasId", "ConveniosInvolucradosId");
+                    b.HasKey("CarreraId", "ConvenioEspecificoId");
 
-                    b.HasIndex("ConveniosInvolucradosId");
+                    b.HasIndex("ConvenioEspecificoId");
 
                     b.ToTable("CarrerasConvenioEspecifico");
                 });
@@ -313,13 +313,13 @@ namespace APIconvenios.Migrations
                 {
                     b.HasOne("APIconvenios.Models.Carreras", null)
                         .WithMany()
-                        .HasForeignKey("CarrerasInvolucradasId")
+                        .HasForeignKey("CarreraId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("APIconvenios.Models.ConvenioEspecifico", null)
                         .WithMany()
-                        .HasForeignKey("ConveniosInvolucradosId")
+                        .HasForeignKey("ConvenioEspecificoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -3,6 +3,7 @@ using APIconvenios.DTOs.Filters;
 using APIconvenios.Helpers.Mappers;
 using APIconvenios.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace APIconvenios.Commands.FilterCommands.Commands
 {
@@ -18,10 +19,12 @@ namespace APIconvenios.Commands.FilterCommands.Commands
         {
            var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
 
-            var convenios = await query.Where(convenio => convenio.CarrerasInvolucradas != null
-            && convenio.CarrerasInvolucradas.Any(carrera => carrera.Nombre.ToLower() == _Dto.nombreCarrera.ToLower()))
+            var convenios = await query.Where(convenio => convenio.CarrerasInvolucradas.Any(carrera => carrera.Nombre == _Dto.nombreCarrera))
                 .Include(c => c.empresa)
+                .AsNoTracking()
                 .ToListAsync();
+
+
 
             if (convenios.Count == 0) return Result<object>.Error("no se encontraron convenios asociados a la carrera seleccionada", 404);
 

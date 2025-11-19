@@ -30,6 +30,23 @@ namespace APIconvenios.Data
                 new Carreras { Id = 4, Nombre = "Ingeniería Electromecánica" },
                 new Carreras { Id = 5, Nombre = "Tecnicatura en Programación" }
                 );
+
+            modelBuilder.Entity<ConvenioEspecifico>()
+               .HasMany(c => c.CarrerasInvolucradas)
+               .WithMany(c => c.ConveniosInvolucrados)
+               .UsingEntity<Dictionary<string, object>>(
+                   "CarrerasConvenioEspecifico", // nombre de la tabla intermedia
+                   j => j
+                       .HasOne<Carreras>()
+                       .WithMany()
+                       .HasForeignKey("CarreraId")
+                       .OnDelete(DeleteBehavior.Cascade), // opcional
+                   j => j
+                       .HasOne<ConvenioEspecifico>()
+                       .WithMany()
+                       .HasForeignKey("ConvenioEspecificoId")
+                       .OnDelete(DeleteBehavior.Cascade) // opcional
+               );
         }
     }
 }
