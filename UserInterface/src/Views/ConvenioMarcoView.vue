@@ -20,7 +20,7 @@
         </p>
         <p>
           <strong>Número de convenio:</strong>
-          {{ Convenio.numeroConvenio || ' -' }}
+          {{ Convenio.numeroconvenio || ' -' }}
         </p>
         <p><strong>Refrendado:</strong> {{ Convenio.refrendado ? 'Sí' : 'No' }}</p>
       </div>

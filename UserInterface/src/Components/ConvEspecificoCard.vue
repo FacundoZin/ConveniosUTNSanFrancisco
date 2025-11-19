@@ -2,7 +2,7 @@
   <div class="card h-100 bg-light">
     <div class="card-body">
       <h6 class="card-title">{{ convenio.titulo || 'Sin título' }}</h6>
-      <p class="card-text"><strong>Número:</strong> {{ convenio.numeroConvenio || '-' }}</p>
+      <p class="card-text"><strong>Número:</strong> {{ convenio.numeroconvenio || '-' }}</p>
       <p class="card-text"><strong>Empresa:</strong> {{ convenio.nombreEmpresa || '-' }}</p>
       <p class="card-text">
         <strong>Fecha firma:</strong> {{ convenio.fechaFirmaConvenio || '-' }}

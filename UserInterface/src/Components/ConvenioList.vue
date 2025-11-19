@@ -41,7 +41,7 @@
               @click="VerConvenioCompleto(conv.id, conv.convenioType)"
             >
               <td>{{ conv.titulo || 'Sin Título' }}</td>
-              <td>{{ conv.numeroConvenio || '_' }}</td>
+              <td>{{ conv.numeroconvenio || '_' }}</td>
               <td>{{ conv.nombreEmpresa || '-' }}</td>
               <td>{{ conv.fechaFirmaConvenio || '-' }}</td>
               <td>{{ conv.fechaInicioActividades || '-' }}</td>
@@ -89,7 +89,7 @@
               @click="VerConvenioCompleto(conv.id, conv.convenioType)"
             >
               <td>{{ conv.titulo || 'Sin Título' }}</td>
-              <td>{{ conv.numeroConvenio || '_' }}</td>
+              <td>{{ conv.numeroconvenio || '_' }}</td>
               <td>{{ conv.nombreEmpresa || '-' }}</td>
               <td>{{ conv.fechaFirmaConvenio || '-' }}</td>
               <td>{{ conv.fechaFin || '-' }}</td>

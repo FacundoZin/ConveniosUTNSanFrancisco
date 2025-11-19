@@ -23,7 +23,7 @@ export type ListConveniosDto =
 export interface ConvenioEspecificoDto {
   id: number
   titulo?: string | null
-  numeroConvenio?: string | null
+  numeroconvenio?: string | null
   nombreEmpresa?: string | null
   fechaFirmaConvenio?: string | null
   fechaInicioActividades?: string | null
@@ -37,7 +37,7 @@ export interface ConvenioEspecificoDto {
 export interface ConvenioMarcoDto {
   id: number
   titulo: string | null
-  numeroConvenio?: string | null
+  numeroconvenio?: string | null
   nombreEmpresa?: string | null
   fechaFirmaConvenio?: string | null
   fechaFin?: string | null
@@ -73,7 +73,7 @@ export interface ViewArchivoDto {
 
 export interface InfoConvenioEspecificoDto {
   id: number
-  numeroConvenio?: string
+  numeroconvenio?: string
   titulo?: string
   fechaFirmaConvenio?: string
   fechaInicioActividades?: string
@@ -93,7 +93,7 @@ export interface InfoConvenioEspecificoDto {
 
 export interface InfoConvenioMarcoDto {
   id: number
-  numeroConvenio?: string
+  numeroconvenio?: string
   titulo?: string
   fechaFirmaConvenio?: string
   fechaFin?: string

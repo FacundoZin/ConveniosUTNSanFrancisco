@@ -16,7 +16,7 @@
         </p>
         <p><strong>Fecha fin:</strong> {{ Convenio.fechaFinConvenio || ' -' }}</p>
         <p><strong>Comentario:</strong> {{ Convenio.comentarioOpcional || ' -' }}</p>
-        <p><strong>Número de convenio:</strong> {{ Convenio.numeroConvenio || ' -' }}</p>
+        <p><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</p>
         <p><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</p>
         <p><strong>Refrendado:</strong> {{ Convenio.refrendado ? 'Sí' : 'No' }}</p>
       </div>
