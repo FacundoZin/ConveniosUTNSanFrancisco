@@ -10,7 +10,7 @@ import type { InsertEmpresaDto } from '@/Types/Empresa/InsertEmpresa'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
 import type { ConvenioCreated } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
-import { computed, onMounted, ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref, watch } from 'vue'
 
 interface CreateConvenioEspecificoComposable {
   IsLoading: Ref<boolean>
@@ -38,41 +38,43 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
   const ConvenioCreado = ref<ConvenioCreated | null>(null)
   const Carreras: Carrera[] = carrerasList
 
-  const empresaForm = computed<InsertEmpresaDto>({
-    get() {
-      return (
-        ConvenioEspecificoRequest.value.insertEmpresaDto ?? {
-          id: null,
-          nombre: null,
-          razonSocial: null,
-          cuit: null,
-          direccion: null,
-          telefono: null,
-          email: null,
-        }
-      )
-    },
-    set(value) {
-      if (Object.values(value).some((v) => v !== '' && v != null)) {
-        ConvenioEspecificoRequest.value.insertEmpresaDto = { ...value }
+  const empresaForm = ref<InsertEmpresaDto>({
+    id: null,
+    nombre: null,
+    razonSocial: null,
+    cuit: null,
+    direccion: null,
+    telefono: null,
+    email: null,
+  })
+
+  const involucradosForm = ref<InsertInvolucradosDto[]>([])
+
+  // Watchers para sincronizar los formularios locales con el request principal
+
+  watch(
+    empresaForm,
+    (newValue: InsertEmpresaDto) => {
+      if (Object.values(newValue).some((v) => v !== '' && v != null)) {
+        ConvenioEspecificoRequest.value.insertEmpresaDto = { ...newValue }
       } else {
         ConvenioEspecificoRequest.value.insertEmpresaDto = null
       }
     },
-  })
+    { deep: true },
+  )
 
-  const involucradosForm = computed<InsertInvolucradosDto[]>({
-    get() {
-      return ConvenioEspecificoRequest.value.insertInvolucradosDto ?? []
-    },
-    set(value: InsertInvolucradosDto[] | null) {
-      if (value && value.length > 0) {
-        ConvenioEspecificoRequest.value.insertInvolucradosDto = value
+  watch(
+    involucradosForm,
+    (newValue: InsertInvolucradosDto[]) => {
+      if (newValue && newValue.length > 0) {
+        ConvenioEspecificoRequest.value.insertInvolucradosDto = newValue
       } else {
         ConvenioEspecificoRequest.value.insertInvolucradosDto = null
       }
     },
-  })
+    { deep: true },
+  )
 
   const getEmpresas = async () => {
     try {
@@ -117,6 +119,18 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
   const resetForm = () => {
     ConvenioEspecificoRequest.value = createRequestConvEspecifico()
     cargarNuevaEmpresa.value = false
+    
+    // Resetear formularios locales
+    empresaForm.value = {
+      id: null,
+      nombre: null,
+      razonSocial: null,
+      cuit: null,
+      direccion: null,
+      telefono: null,
+      email: null,
+    }
+    involucradosForm.value = []
   }
 
   onMounted(async () => {
