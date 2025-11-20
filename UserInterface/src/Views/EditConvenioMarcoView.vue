@@ -235,7 +235,7 @@
                   v-for="convenio in infoConvenioMarcoCompleta.conveniosEspecificos"
                   :key="convenio.id"
                 >
-                  <td class="text-nowrap">{{ convenio.numeroConvenio || 'N/A' }}</td>
+                  <td class="text-nowrap">{{ convenio.numeroconvenio || 'N/A' }}</td>
                   <td>{{ convenio.titulo || 'Sin título' }}</td>
                   <td>{{ convenio.nombreEmpresa || 'Desconocida' }}</td>
                   <td class="text-nowrap">{{ convenio.fechaFin || 'Indefinida' }}</td>
@@ -301,7 +301,10 @@
 
       <hr class="my-4" />
 
-      <VincularConvEspecifico @vincular-convenio-marco="VincularConvenioEspecifico" />
+      <div class="p-4 bg-light border rounded mb-4">
+        <h3 class="text-primary">Vincular Convenio Especifico</h3>
+        <VincularConvEspecifico :request="ConvenioMarcoRequest" />
+      </div>
 
       <hr class="my-4" />
 
@@ -320,9 +323,8 @@
 
 <script setup lang="ts">
 import { useUpdateConvMarcoComposable } from '@/Composables/UpdateConvMarcoComposable'
-import ApiService from '@/Services/ApiService'
 import { POSITION, useToast } from 'vue-toastification'
-
+import VincularConvEspecifico from '@/Components/VincularConvEspecifico.vue'
 const toast = useToast()
 const {
   infoConvenioMarcoCompleta,
@@ -347,26 +349,4 @@ const submitForm = async () => {
   }
 }
 
-const VincularConvenioEspecifico = async (NumeroConvenio: string) => {
-  errorMensaje.value = null
-
-  try {
-    const result = await ApiService.GetIdConvMarcoByNumeroConv(NumeroConvenio)
-
-    if (result.isSuccess) {
-      ConvenioMarcoRequest.value.idsConveniosEspecificosParaVincular ??= []
-      ConvenioMarcoRequest.value.idsConveniosEspecificosParaVincular.push(result.value)
-      toast.success('convenio especifico vinculado con éxito')
-    } else {
-      if (result.error.status === 404) {
-        errorMensaje.value = 'no se encontro el convenio especifico que esta intentando vincular'
-      }
-      errorMensaje.value = 'ocurrio un error al vincular el convenio especifico'
-    }
-  } catch (ex) {
-    errorMensaje.value = 'ocurrio un error al vincular el convenio especifico'
-
-    console.log(ex)
-  }
-}
 </script>

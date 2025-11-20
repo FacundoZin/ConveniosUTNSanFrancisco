@@ -39,9 +39,8 @@ namespace APIconvenios.Services
             if (requetsDto.EmpresaDesvinculada)
                 commands.Add(new UnlinkEmpresaFromMarcoCmd());
 
-            if (requetsDto.IdsConveniosEspecificosParaVincular != null
-                && requetsDto.IdsConveniosEspecificosParaVincular?.Length > 0)
-                commands.Add(new LinkerConvEspCmd(requetsDto.IdsConveniosEspecificosParaVincular));
+            if (requetsDto.NumeroConvenioEspecificosParaVincular != null)
+                commands.Add(new LinkerConvEspCmd(requetsDto.NumeroConvenioEspecificosParaVincular));
 
             if (requetsDto.IdsConveniosEspecificosParaDesvincular != null
                 && requetsDto.IdsConveniosEspecificosParaDesvincular?.Length > 0)
@@ -121,9 +120,8 @@ namespace APIconvenios.Services
             if (requestDto.InsertEmpresaDto != null)
                 commands.Add(new LinkEmpresaToMarcoCmd(requestDto.InsertEmpresaDto));
 
-            if (requestDto.IdsConveniosEspecificosParaVincular != null
-                && requestDto.IdsConveniosEspecificosParaVincular?.Length > 0)
-                commands.Add(new LinkerConvEspCmd(requestDto.IdsConveniosEspecificosParaVincular));
+            if (requestDto.NumeroConvEspecificoParaVincular != null)
+                commands.Add(new LinkerConvEspCmd(requestDto.NumeroConvEspecificoParaVincular));
 
 
             foreach (var cmd in commands)

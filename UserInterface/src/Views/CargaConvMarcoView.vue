@@ -113,7 +113,7 @@
 
       <div class="p-4 bg-light border rounded mb-4">
         <h3 class="text-primary">Vinvular Convenio Especifico</h3>
-        <VincularConvEspecifico @vincular-convenio-marco="VincularConvenioEspecifico" />
+        <VincularConvEspecifico :request="ConvenioMarcoRequest" />
       </div>
 
       <hr class="my-4" />
@@ -136,7 +136,7 @@
         <!-- Empresa existente -->
         <div v-if="!cargarNuevaEmpresa" class="col-md-6">
           <label class="form-label">Seleccionar Empresa</label>
-          <select v-model="empresaForm.id" class="form-select" required>
+          <select v-model="selectedEmpresaId" class="form-select" required>
             <option value="" disabled>Seleccionar...</option>
             <option v-for="empresa in empresas" :key="empresa.idEmpresa" :value="empresa.idEmpresa">
               {{ empresa.nombreEmpresa }}
@@ -198,7 +198,6 @@
 <script setup lang="ts">
 import VincularConvEspecifico from '@/Components/VincularConvEspecifico.vue'
 import { useCreateConvMarcoComposable } from '@/Composables/CreateConvMarcoComposable'
-import ApiService from '@/Services/ApiService'
 import { toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
@@ -215,6 +214,7 @@ const {
   cargarNuevaEmpresa,
   ConvenioCreado,
   empresaForm,
+  selectedEmpresaId
 } = toRefs(convMarcoState)
 
 const { submitForm: submitFormLogic, resetForm } = convMarcoState
@@ -230,28 +230,7 @@ const submitForm = async () => {
   }
 }
 
-const VincularConvenioEspecifico = async (NumeroConvenio: string) => {
-  errorMensaje.value = null
 
-  try {
-    const result = await ApiService.GetIdConvEspByNumeroConv(NumeroConvenio)
-
-    if (result.isSuccess) {
-      ConvenioMarcoRequest.value.idsConveniosEspecificosParaVincular ??= []
-      ConvenioMarcoRequest.value.idsConveniosEspecificosParaVincular.push(result.value)
-      toast.success('convenio especifico vinculado con éxito')
-    } else {
-      if (result.error.status === 404) {
-        errorMensaje.value = 'no se encontro el convenio especifico que esta intentando vincular'
-      }
-      errorMensaje.value = 'ocurrio un error al vincular el convenio especifico'
-    }
-  } catch (ex) {
-    errorMensaje.value = 'ocurrio un error al vincular el convenio especifico'
-
-    console.log(ex)
-  }
-}
 
 const irAlConvenio = () => {
   if (ConvenioCreado.value) {

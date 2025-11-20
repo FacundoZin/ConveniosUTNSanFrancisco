@@ -145,7 +145,7 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
     await getEmpresas()
     ConvenioMarcoRequest.value.updateConvenioMarcoDto.id = id
     ConvenioMarcoRequest.value.updateConvenioMarcoDto.numeroConvenio =
-      InfoConvenioMarcoCompleta?.numeroConvenio || null
+      InfoConvenioMarcoCompleta?.numeroconvenio || null
     ConvenioMarcoRequest.value.updateConvenioMarcoDto.titulo =
       InfoConvenioMarcoCompleta?.titulo || null
     ConvenioMarcoRequest.value.updateConvenioMarcoDto.fechaFirmaConvenio =

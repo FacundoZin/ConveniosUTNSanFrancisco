@@ -1,22 +1,43 @@
 <template>
-  <div class="card mb-4 bg-light">
-    <div class="row no-gutters align-items-center">
-      <div class="col-md-10">
-        <div class="card-body">
-          <h5 class="card-title">{{ empresa.nombre_Empresa }}</h5>
-          <p class="card-text"><strong>Razón social:</strong> {{ empresa.razonSocial || ' -' }}</p>
-          <p class="card-text"><strong>CUIT:</strong> {{ empresa.cuit || ' -' }}</p>
-          <p class="card-text">
-            <strong>Dirección:</strong> {{ empresa.direccion_Empresa || ' -' }}
-          </p>
-          <p class="card-text"><strong>Teléfono:</strong> {{ empresa.telefono_Empresa || ' -' }}</p>
-          <p class="card-text"><strong>Email:</strong> {{ empresa.email_Empresa || ' -' }}</p>
+  <div class="card shadow-sm h-100">
+    <div class="card-body position-relative">
+      <button 
+        @click="emitirDesvinculacion" 
+        class="btn-close position-absolute top-0 end-0 m-2" 
+        aria-label="Desvincular"
+      ></button>
+
+      <h6 class="card-title text-primary mb-3 pe-4">{{ empresa.nombre_Empresa }}</h6>
+
+      <div class="card-text">
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-building me-2 text-muted"></i>
+          <small><strong>Razón Social:</strong> {{ empresa.razonSocial || ' -' }}</small>
         </div>
-      </div>
-      <div class="col-md-2 text-center">
-        <button class="btn btn-outline-danger m-2" @click="emitirDesvinculacion">
-          Desvincular
-        </button>
+
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-hash me-2 text-muted"></i>
+          <small><strong>CUIT:</strong> {{ empresa.cuit || ' -' }}</small>
+        </div>
+
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-geo-alt me-2 text-muted"></i>
+          <small class="text-truncate" :title="empresa.direccion_Empresa || ''">
+            <strong>Dirección:</strong> {{ empresa.direccion_Empresa || ' -' }}
+          </small>
+        </div>
+
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-telephone me-2 text-muted"></i>
+          <small><strong>Teléfono:</strong> {{ empresa.telefono_Empresa || ' -' }}</small>
+        </div>
+
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-envelope me-2 text-muted"></i>
+          <small class="text-truncate" :title="empresa.email_Empresa || ''">
+            <strong>Email:</strong> {{ empresa.email_Empresa || ' -' }}
+          </small>
+        </div>
       </div>
     </div>
   </div>

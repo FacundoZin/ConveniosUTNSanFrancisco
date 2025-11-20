@@ -10,8 +10,6 @@ namespace APIconvenios.DTOs.Empresa
         public string? Cuit { get; set; }
         public string? Direccion { get; set; }
         public string? Telefono { get; set; }
-
-        [EmailAddress(ErrorMessage = "Email inválido.")]
         public string? Email { get; set; }
     }
 }

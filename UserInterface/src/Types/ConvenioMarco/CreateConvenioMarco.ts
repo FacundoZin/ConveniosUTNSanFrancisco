@@ -22,7 +22,7 @@ export interface CargarConvenioMarcoRequestDto {
   insertEmpresaDto: InsertEmpresaDto | null;
   
   // Array de números que es anulable
-  idsConveniosEspecificosParaVincular: number[] | null; 
+  numeroConvEspecificoParaVincular: string | null;
 }
 
 export function createRequestConvMarc(): CargarConvenioMarcoRequestDto{
@@ -38,6 +38,6 @@ export function createRequestConvMarc(): CargarConvenioMarcoRequestDto{
       refrendado: false
     },
     insertEmpresaDto: null,
-    idsConveniosEspecificosParaVincular: null
+    numeroConvEspecificoParaVincular: null
   }
 }

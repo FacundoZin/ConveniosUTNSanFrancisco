@@ -6,20 +6,19 @@ namespace APIconvenios.Commands.ConvenioMarco.commands
 {
     public class LinkerConvEspCmd : IConvMarcoCommand
     {
-        private readonly int[] _IdsConvEspToLink;
-        public LinkerConvEspCmd(int[] idsLink)
+        private readonly string _NumeroConvenio;
+        public LinkerConvEspCmd(string numeroConvenio)
         {
-            _IdsConvEspToLink = idsLink;
+            _NumeroConvenio = numeroConvenio;
         }
 
         public async Task ExecuteAsync(Models.ConvenioMarco convenio, _UnitOfWork _UnitOfWork)
         {
-            var ConvEspecificos = await _UnitOfWork._ConvenioEspecificoRepository.GetConveniosByIds(_IdsConvEspToLink);
+            var ConvEspecifico = await _UnitOfWork._ConvenioEspecificoRepository.GetByNumeroConvenio(_NumeroConvenio);
 
-            foreach (var ConvEsp in ConvEspecificos)
-            {
-                convenio.ConveniosEspecificos!.Add(ConvEsp);
-            }
+            if (ConvEspecifico != null)
+                convenio.ConveniosEspecificos!.Add(ConvEspecifico);
+
         }
     }
 }

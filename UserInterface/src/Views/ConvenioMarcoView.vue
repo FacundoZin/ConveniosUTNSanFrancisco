@@ -1,30 +1,57 @@
 <template>
   <div class="container mt-4" v-if="Convenio?.id">
     <!-- Info del Convenio Marco -->
-    <h5>Informacion del convenio</h5>
-    <div class="card mb-4 bg-light">
-      <div class="card-body">
-        <h4 class="card-title">
-          {{ Convenio.titulo || 'Sin título' }}
-        </h4>
-        <p><strong>Estado:</strong> {{ EstadoConvenioTexto[Convenio.estado] }}</p>
-        <p><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || '-' }}</p>
-        <p><strong>Fecha fin:</strong> {{ Convenio.fechaFin || ' -' }}</p>
-        <p>
-          <strong>Comentario:</strong>
-          {{ Convenio.comentarioOpcional || ' -' }}
-        </p>
-        <p>
-          <strong>Número de resolución:</strong>
-          {{ Convenio.numeroResolucion || ' -' }}
-        </p>
-        <p>
-          <strong>Número de convenio:</strong>
-          {{ Convenio.numeroconvenio || ' -' }}
-        </p>
-        <p><strong>Refrendado:</strong> {{ Convenio.refrendado ? 'Sí' : 'No' }}</p>
+<h5>Información del convenio</h5>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body position-relative">
+
+      <h6 class="card-title text-primary mb-3 pe-4">
+        {{ Convenio.titulo || 'Sin título' }}
+      </h6>
+
+      <div class="card-text">
+
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-calendar-check me-2 text-muted"></i>
+          <small><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || '-' }}</small>
+        </div>
+
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-calendar-x me-2 text-muted"></i>
+          <small><strong>Fecha fin:</strong> {{ Convenio.fechaFin || ' -' }}</small>
+        </div>
+
+        <div class="d-flex align-items-start mb-2">
+          <i class="bi bi-chat-left-text me-2 text-muted"></i>
+          <small class="text-break">
+            <strong>Comentario:</strong> {{ Convenio.comentarioOpcional || ' -' }}
+          </small>
+        </div>
+
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-hash me-2 text-muted"></i>
+          <small><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small>
+        </div>
+
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-hash me-2 text-muted"></i>
+          <small><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small>
+        </div>
+
+        <div class="mt-3 pt-2 border-top d-flex flex-wrap gap-2">
+          <span class="badge bg-info text-dark border">
+            {{ EstadoConvenioTexto[Convenio.estado] }}
+          </span>
+
+          <span v-if="Convenio.refrendado" class="badge bg-success text-white border">
+            Refrendado
+          </span>
+        </div>
+
       </div>
     </div>
+  </div>
 
     <hr class="my-4" />
 

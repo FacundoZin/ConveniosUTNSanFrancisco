@@ -18,6 +18,7 @@ interface CreateConvenioMarcoComposable {
   cargarNuevaEmpresa: Ref<boolean>
   ConvenioCreado: Ref<ConvenioCreated | null>
   empresaForm: Ref<InsertEmpresaDto> // Es un computed, pero se trata como Ref en el retorno
+  selectedEmpresaId: Ref<number | null>
   submitForm: () => Promise<ConvenioCreated | null>
   resetForm: () => void
 }
@@ -29,6 +30,7 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
   const errorMensaje = ref<string | null>(null)
   const empresas = ref<ComboBoxEmpresasDto[]>([])
   const cargarNuevaEmpresa = ref(false)
+  const selectedEmpresaId = ref<number | null>(null)
   const ConvenioCreado = ref<ConvenioCreated | null>(null)
 
   // --- COMPUTED PROPERTY ---
@@ -47,16 +49,18 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
       )
     },
     set(value) {
-      const allEmpty = (
-        [
-          'nombre',
-          'razonSocial',
-          'cuit',
-          'direccion',
-          'telefono',
-          'email',
-        ] as (keyof InsertEmpresaDto)[]
-      ).every((key) => !value[key] || value[key] === '')
+      const allEmpty =
+        !value.id &&
+        (
+          [
+            'nombre',
+            'razonSocial',
+            'cuit',
+            'direccion',
+            'telefono',
+            'email',
+          ] as (keyof InsertEmpresaDto)[]
+        ).every((key) => !value[key] || value[key] === '')
 
       if (allEmpty) {
         ConvenioMarcoRequest.value.insertEmpresaDto = null
@@ -83,6 +87,7 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
     IsLoading.value = true
     errorMensaje.value = null
     try {
+      console.log('Payload enviado al backend:', JSON.stringify(ConvenioMarcoRequest.value, null, 2))
       const result = await ApiService.CreateConvenioMarco(ConvenioMarcoRequest.value)
       if (!result.isSuccess) {
         IsLoading.value = false
@@ -113,6 +118,7 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
   const resetForm = () => {
     ConvenioMarcoRequest.value = createRequestConvMarc()
     cargarNuevaEmpresa.value = false
+    selectedEmpresaId.value = null
   }
 
   onMounted(async () => {
@@ -122,7 +128,9 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
   })
 
   watch(cargarNuevaEmpresa, (nuevoValor) => {
-    if (nuevoValor && !ConvenioMarcoRequest.value.insertEmpresaDto) {
+    if (nuevoValor) {
+      selectedEmpresaId.value = null
+      // Siempre reiniciamos el DTO para una nueva empresa, asegurando que el ID sea null
       ConvenioMarcoRequest.value.insertEmpresaDto = {
         id: null,
         nombre: '',
@@ -132,6 +140,28 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
         telefono: '',
         email: '',
       }
+    } else {
+      // Si se desmarca "Cargar nueva empresa", limpiamos el DTO si no hay empresa seleccionada
+      if (!selectedEmpresaId.value) {
+        ConvenioMarcoRequest.value.insertEmpresaDto = null
+      }
+    }
+  })
+
+  watch(selectedEmpresaId, (newId) => {
+    if (newId) {
+
+      ConvenioMarcoRequest.value.insertEmpresaDto = {
+        id: newId,
+        nombre: null,
+        razonSocial: null,
+        cuit: null,
+        direccion: null,
+        telefono: null,
+        email: null
+      }
+    } else if (!cargarNuevaEmpresa.value) {
+       ConvenioMarcoRequest.value.insertEmpresaDto = null
     }
   })
 
@@ -143,6 +173,7 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
     cargarNuevaEmpresa,
     ConvenioCreado,
     empresaForm,
+    selectedEmpresaId,
     submitForm,
     resetForm,
   }

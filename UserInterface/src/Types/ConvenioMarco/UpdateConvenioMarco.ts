@@ -19,7 +19,7 @@ export interface UpdateConvenioMarcoRequetsDto {
 
   insertEmpresaDto: InsertEmpresaDto | null
 
-  idsConveniosEspecificosParaVincular: number[] | null
+  numeroConvenioEspecificosParaVincular: string | null,
 
   idsConveniosEspecificosParaDesvincular: number[] | null
 
@@ -41,7 +41,7 @@ export function UpdateRequestConvMarc(): UpdateConvenioMarcoRequetsDto {
     },
     insertEmpresaDto: null,
     idsConveniosEspecificosParaDesvincular: null,
-    idsConveniosEspecificosParaVincular: null,
+    numeroConvenioEspecificosParaVincular: null,
     empresaDesvinculada: false,
   }
 }

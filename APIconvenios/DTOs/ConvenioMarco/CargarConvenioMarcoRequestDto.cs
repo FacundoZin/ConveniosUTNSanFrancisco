@@ -7,6 +7,6 @@ namespace APIconvenios.DTOs.ConvenioMarco
     {
         public InsertConvenioMarcoDto InsertConvenioDto { get; set; }
         public InsertEmpresaDto? InsertEmpresaDto { get; set; }   
-        public int[]? IdsConveniosEspecificosParaVincular { get; set; }
+        public string? NumeroConvEspecificoParaVincular { get; set; }
     }
 }
