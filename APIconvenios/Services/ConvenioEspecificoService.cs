@@ -87,18 +87,27 @@ namespace APIconvenios.Services
 
             if (Dto.InsertInvolucradosDtos != null && Dto.InsertInvolucradosDtos.Any())
                 commands.Add(new InsertInvolucradorToConvEspCmd(Dto.InsertInvolucradosDtos));
+
             if (Dto.idCarreras != null && Dto.idCarreras.Length > 0)
                 commands.Add(new LinkCarrerasCmd(Dto.idCarreras));
-            if (Dto.InsertEmpresaDto != null)
-                commands.Add(new LinkEmpresaToEspecificoCmd(Dto.InsertEmpresaDto));
-            if (Dto.IdsInvolucraodsEliminados != null && Dto.IdsInvolucraodsEliminados.Any())
-                commands.Add(new UnlinkInvolucradosCmd(Dto.IdsInvolucraodsEliminados));
-            if (Dto.numeroConvenioMarcoVinculado != null)
-                commands.Add(new LinkerConvMarcoCmd(Dto.numeroConvenioMarcoVinculado));
-            if (Dto.DesvincularConvenioMarco)
-                commands.Add(new UnlinkConvMarcoCmd());
+
             if (Dto.DesvincularEmpresa)
                 commands.Add(new UnlinkEmpresaFromEspecificoCmd());
+
+            if (Dto.InsertEmpresaDto != null)
+                commands.Add(new LinkEmpresaToEspecificoCmd(Dto.InsertEmpresaDto));
+
+            if (Dto.IdsInvolucraodsEliminados != null && Dto.IdsInvolucraodsEliminados.Any())
+                commands.Add(new UnlinkInvolucradosCmd(Dto.IdsInvolucraodsEliminados));
+
+            if (Dto.DesvincularConvenioMarco)
+                commands.Add(new UnlinkConvMarcoCmd());
+
+            if (Dto.numeroConvenioMarcoVinculado != null)
+                commands.Add(new LinkerConvMarcoCmd(Dto.numeroConvenioMarcoVinculado));
+
+
+            
 
             foreach (var command in commands)
                 await command.ExecuteAsync(Convenio, _UnitOfWork);

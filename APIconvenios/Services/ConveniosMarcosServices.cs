@@ -33,11 +33,11 @@ namespace APIconvenios.Services
             if (requetsDto.UpdateConvenioMarcoDto != null)
                 commands.Add(new UpdateConvMarcoDataCmd(requetsDto.UpdateConvenioMarcoDto));
 
-            if (requetsDto.InsertEmpresaDto != null)
-                commands.Add(new LinkEmpresaToMarcoCmd(requetsDto.InsertEmpresaDto));
-
             if (requetsDto.EmpresaDesvinculada)
                 commands.Add(new UnlinkEmpresaFromMarcoCmd());
+
+            if (requetsDto.InsertEmpresaDto != null)
+                commands.Add(new LinkEmpresaToMarcoCmd(requetsDto.InsertEmpresaDto));
 
             if (requetsDto.NumeroConvenioEspecificosParaVincular != null)
                 commands.Add(new LinkerConvEspCmd(requetsDto.NumeroConvenioEspecificosParaVincular));
