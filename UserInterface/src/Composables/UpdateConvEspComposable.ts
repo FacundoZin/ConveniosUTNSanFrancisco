@@ -143,7 +143,7 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
 
     UpdateConvEspRequest.value.updateConvenioDto.id = id
     UpdateConvEspRequest.value.updateConvenioDto.numeroConvenio =
-      infoConvenioMarcoCompleta?.numeroConvenio ?? null
+      infoConvenioMarcoCompleta?.numeroconvenio ?? null
     UpdateConvEspRequest.value.updateConvenioDto.titulo = infoConvenioMarcoCompleta?.titulo ?? null
     UpdateConvEspRequest.value.updateConvenioDto.fechaFirmaConvenio =
       infoConvenioMarcoCompleta?.fechaFirmaConvenio ?? null
@@ -158,8 +158,8 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
     UpdateConvEspRequest.value.updateConvenioDto.numeroResolucion =
       infoConvenioMarcoCompleta?.numeroResolucion ?? null
     UpdateConvEspRequest.value.updateConvenioDto.refrendado = infoConvenioMarcoCompleta!.refrendado
-    UpdateConvEspRequest.value.idConvenioMarcoVinculado =
-      infoConvenioMarcoCompleta?.convenioMarcoId ?? null
+    UpdateConvEspRequest.value.numeroConvenioMarcoVinculado =
+      infoConvenioMarcoCompleta?.convenioMarco?.numeroconvenio ?? null
     UpdateConvEspRequest.value.idCarreras =
       infoConvenioMarcoCompleta?.carrerasInvolucradas?.map((c) => c.Id) ?? null
 

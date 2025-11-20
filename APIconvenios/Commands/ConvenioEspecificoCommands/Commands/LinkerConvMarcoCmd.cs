@@ -5,15 +5,17 @@ namespace APIconvenios.Commands.ConvenioEspecificoCommands.Commands
 {
     public class LinkerConvMarcoCmd : IConvEspCommand
     {
-        private readonly int idConvMarco;
-        public LinkerConvMarcoCmd(int idConvMarco)
+        private readonly string _NumeroConvMarco;
+        public LinkerConvMarcoCmd(string numeroConvMarco)
         {
-            this.idConvMarco = idConvMarco;
+            this._NumeroConvMarco = numeroConvMarco;
         }
-        public Task ExecuteAsync(ConvenioEspecifico Convenio, _UnitOfWork _UnitOfWork)
+        public async Task ExecuteAsync(ConvenioEspecifico Convenio, _UnitOfWork _UnitOfWork)
         {
-            Convenio.ConvenioMarcoId = idConvMarco;
-            return Task.CompletedTask;
+            var convenioMarco = await _UnitOfWork._ConvenioMarcoRepository.GetByNumeroConvenio(_NumeroConvMarco);
+            
+            if(convenioMarco != null)
+                Convenio.ConvenioMarco = convenioMarco;
         }
     }
 }

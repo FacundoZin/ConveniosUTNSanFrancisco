@@ -222,7 +222,7 @@
       <!-- SECCIÓN: Convenio Marco -->
       <div class="p-4 bg-light border rounded mb-4">
         <h4 class="text-primary mb-3">Vincular Convenio Marco</h4>
-        <VincularConvMarco @vincular-convenio-marco="VincularConvenioMarco" />
+        <VincularConvMarco :request="ConvenioEspecificoRequest" />
       </div>
 
       <hr class="my-4" />
@@ -262,7 +262,6 @@ import InvolucradoForm from '@/Components/InvolucradoForm.vue'
 import InvolucradosCard from '@/Components/InvolucradosCard.vue'
 import VincularConvMarco from '@/Components/VincularConvMarco.vue'
 import { useCreateConvEspComposable } from '@/Composables/CreateConvEspComposable'
-import ApiService from '@/Services/ApiService'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
@@ -300,32 +299,6 @@ const guardarConvenio = async () => {
     ConvenioCreado.value = result
     resetForm()
     toast.success('Convenio cargado con éxito')
-  }
-}
-
-const VincularConvenioMarco = async (NumeroConvenio: string) => {
-  IsLoading.value = true
-  errorMensaje.value = null
-
-  try {
-    const result = await ApiService.GetIdConvMarcoByNumeroConv(NumeroConvenio)
-
-    if (result.isSuccess) {
-      ConvenioEspecificoRequest.value.idConvenioMarcoVinculado = result.value
-      IsLoading.value = false
-      toast.success('convenio marco vinculado con éxito')
-    } else {
-      IsLoading.value = false
-      if (result.error.status === 404) {
-        errorMensaje.value = 'no se encontro el convenio marco que esta intentando vincular'
-      }
-      errorMensaje.value = 'ocurrio un error al vincular el convenio marco'
-    }
-  } catch (ex) {
-    IsLoading.value = false
-    errorMensaje.value = 'ocurrio un error al vincular el convenio marco'
-
-    console.log(ex)
   }
 }
 

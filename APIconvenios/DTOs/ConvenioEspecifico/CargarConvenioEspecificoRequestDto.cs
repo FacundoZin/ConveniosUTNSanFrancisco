@@ -10,6 +10,6 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         public List<InsertInvolucradosDto>? InsertInvolucradosDto { get; set; }
         public int[]? idCarreras { get; set; }
         public InsertEmpresaDto? InsertEmpresaDto { get; set; }
-        public int? IdConvenioMarcoVinculado { get; set; }
+        public string? numeroConvenioMarcoVinculado { get; set; }
     }
 }

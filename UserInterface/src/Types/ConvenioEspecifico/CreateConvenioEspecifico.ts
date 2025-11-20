@@ -26,7 +26,7 @@ export interface CargarConvenioEspecificoRequestDto {
 
   idCarreras: number[] | null
 
-  idConvenioMarcoVinculado: number | null
+  numeroConvenioMarcoVinculado: string | null
 }
 
 export function createRequestConvEspecifico(): CargarConvenioEspecificoRequestDto {
@@ -47,6 +47,6 @@ export function createRequestConvEspecifico(): CargarConvenioEspecificoRequestDt
     insertEmpresaDto: null,
     insertInvolucradosDto: null,
     idCarreras: [],
-    idConvenioMarcoVinculado: null,
+    numeroConvenioMarcoVinculado: null, 
   }
 }

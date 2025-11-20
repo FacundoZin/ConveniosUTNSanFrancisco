@@ -25,7 +25,7 @@ export interface UpdateConvenioEspecificoRequestDto {
   insertInvolucradosDtos: InsertInvolucradosDto[] | null
   idCarreras: number[] | null
   idsInvolucraodsEliminados: number[] | null
-  idConvenioMarcoVinculado: number | null //id nuevo convenio vinculado
+  numeroConvenioMarcoVinculado: string | null
   desvincularConvenioMarco: boolean
   desvincularEmpresa: boolean
 }
@@ -50,7 +50,7 @@ export function CreateUpdateRequestConvEspecifico(): UpdateConvenioEspecificoReq
     insertInvolucradosDtos: null, //
     idCarreras: null, //
     idsInvolucraodsEliminados: null, //
-    idConvenioMarcoVinculado: null, //
+    numeroConvenioMarcoVinculado: null,
     desvincularConvenioMarco: false,
     desvincularEmpresa: false, //
   }
