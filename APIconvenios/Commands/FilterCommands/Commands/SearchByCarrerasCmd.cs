@@ -25,7 +25,6 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 .ToListAsync();
 
 
-
             if (convenios.Count == 0) return Result<object>.Error("no se encontraron convenios asociados a la carrera seleccionada", 404);
 
             return Result<object>.Exito(convenios.ToDto());

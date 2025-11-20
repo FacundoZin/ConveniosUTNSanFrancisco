@@ -233,9 +233,9 @@
 
         <InvolucradoForm @agregar="agregarInvolucrado" />
 
-        <div class="mt-3">
+        <div class="mt-4 d-flex flex-wrap gap-3">
           <InvolucradosCard
-            v-for="(inv, idx) in ConvenioEspecificoRequest.insertInvolucradosDto"
+            v-for="(inv, idx) in involucradosForm"
             :key="idx"
             :involucrado="inv"
             @eliminar="eliminarInvolucrado(idx)"
