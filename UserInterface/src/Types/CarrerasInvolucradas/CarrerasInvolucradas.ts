@@ -1,12 +1,12 @@
 export interface Carrera {
-  Id: number
-  Nombre: string
+  id?: number
+  nombre?: string
 }
 
 export const carrerasList: Carrera[] = [
-  { Id: 1, Nombre: 'Ingeniería Química' },
-  { Id: 2, Nombre: 'Ingeniería en Sistemas' },
-  { Id: 3, Nombre: 'Ingeniería Electrónica' },
-  { Id: 4, Nombre: 'Ingeniería Electromecánica' },
-  { Id: 5, Nombre: 'Tecnicatura en Programación' },
+  { id: 1, nombre: 'Ingeniería Química' },
+  { id: 2, nombre: 'Ingeniería en Sistemas' },
+  { id: 3, nombre: 'Ingeniería Electrónica' },
+  { id: 4, nombre: 'Ingeniería Electromecánica' },
+  { id: 5, nombre: 'Tecnicatura en Programación' },
 ]
