@@ -18,90 +18,101 @@
     </div>
     <div class="offcanvas-body">
       <div v-if="typeOfConvenio === 'marco'">
-        <ul class="list-group">
-          <div v-for="value in KeyFilters"></div>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByTitulo)">Titulo</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByEmpresa)">Empresa</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByEstado)">Estado</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroResolucion)">
-            Numero de Resolucion
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByTitulo)">
+            <i class="bi bi-type"></i> Título
           </li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroConvenio)">
-            Numero de Convenio
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByEmpresa)">
+            <i class="bi bi-building"></i> Empresa
           </li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByCarrera)">
-            Carrera Involucrada
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByEstado)">
+            <i class="bi bi-flag"></i> Estado
           </li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFirma)">
-            Fecha de Firma
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByNumeroResolucion)">
+            <i class="bi bi-file-text"></i> Número de Resolución
           </li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFin)">
-            Fecha de Finalizacion
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByNumeroConvenio)">
+            <i class="bi bi-hash"></i> Número de Convenio
           </li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByAntiguedadDto)">
-            Antiguedad
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByCarrera)">
+            <i class="bi bi-mortarboard"></i> Carrera Involucrada
+          </li>
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByFechaFirma)">
+            <i class="bi bi-pen"></i> Fecha de Firma
+          </li>
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByFechaFin)">
+            <i class="bi bi-calendar-x"></i> Fecha de Finalización
+          </li>
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByAntiguedadDto)">
+            <i class="bi bi-hourglass-split"></i> Antigüedad
           </li>
 
           <li
-            class="list-group-item"
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2 text-danger"
             @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByProximosAvencer)"
           >
-            Proximos a vencer
+            <i class="bi bi-exclamation-triangle"></i> Próximos a vencer
           </li>
           <li
-            class="list-group-item"
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2 text-success"
             @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByIsRefrendado)"
           >
-            Refrendados
+            <i class="bi bi-check2-circle"></i> Refrendados
           </li>
         </ul>
       </div>
       <div v-else-if="typeOfConvenio === 'especifico'">
-        <ul class="list-group">
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByTitulo)">Titulo</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByEmpresa)">Empresa</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByEstado)">Estado</li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroResolucion)">
-            Numero de Resolucion
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByTitulo)">
+            <i class="bi bi-type"></i> Título
           </li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByNumeroConvenio)">
-            Numero de Convenio
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByEmpresa)">
+            <i class="bi bi-building"></i> Empresa
           </li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByCarrera)">
-            Carrera Involucrada
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByEstado)">
+            <i class="bi bi-flag"></i> Estado
           </li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFirma)">
-            Fecha de Firma
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByNumeroResolucion)">
+            <i class="bi bi-file-text"></i> Número de Resolución
           </li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByFechaFin)">
-            Fecha de Finalizacion
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByNumeroConvenio)">
+            <i class="bi bi-hash"></i> Número de Convenio
           </li>
-          <li class="list-group-item" @click="selectFilter(KeyFilters.ByAntiguedadDto)">
-            Antiguedad
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByCarrera)">
+            <i class="bi bi-mortarboard"></i> Carrera Involucrada
+          </li>
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByFechaFirma)">
+            <i class="bi bi-pen"></i> Fecha de Firma
+          </li>
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByFechaFin)">
+            <i class="bi bi-calendar-x"></i> Fecha de Finalización
+          </li>
+          <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" @click="selectFilter(KeyFilters.ByAntiguedadDto)">
+            <i class="bi bi-hourglass-split"></i> Antigüedad
           </li>
 
           <li
-            class="list-group-item"
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2 text-success"
             @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByIsRefrendado)"
           >
-            Refrendados
+            <i class="bi bi-check2-circle"></i> Refrendados
           </li>
           <li
-            class="list-group-item"
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2 text-info"
             @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByIsActa)"
           >
-            Actas
+            <i class="bi bi-journal-text"></i> Actas
           </li>
           <li
-            class="list-group-item"
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2 text-danger"
             @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByProximosAvencer)"
           >
-            Proximos a vencer
+            <i class="bi bi-exclamation-triangle"></i> Próximos a vencer
           </li>
         </ul>
       </div>
       <div v-else>
-        <p>Selecciona un tipo de convenio para ver los filtros.</p>
+        <p class="text-muted text-center mt-4">Selecciona un tipo de convenio para ver los filtros.</p>
       </div>
     </div>
   </div>

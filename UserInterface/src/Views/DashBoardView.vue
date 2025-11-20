@@ -56,42 +56,39 @@ const handleFilterSelected = (filterKey: string) => {
 </script>
 
 <template>
-  <div class="d-flex justify-content-center my-3">
-    <div class="toggle-switch-convenios">
-      <input
-        type="radio"
-        name="tipoConvenio"
-        id="btn-marco"
-        value="marco"
-        :checked="TypeofConvenioToSearch === 'marco'"
-        @change="
-          () => {
-            TypeofConvenioToSearch = 'marco'
-            FilterPanelOpen = true
-          }
-        "
-      />
-      <label for="btn-marco"> <i class="bi bi-folder-fill me-2"></i> Convenios Marcos </label>
-
-      <input
-        type="radio"
-        name="tipoConvenio"
-        id="btn-especifico"
-        value="especifico"
-        :checked="TypeofConvenioToSearch === 'especifico'"
-        @change="
-          () => {
-            TypeofConvenioToSearch = 'especifico'
-            FilterPanelOpen = true
-          }
-        "
-      />
-      <label for="btn-especifico">
-        <i class="bi bi-file-earmark-text-fill me-2"></i> Convenios Específicos
-      </label>
-
-      <span class="toggle-slider"></span>
-    </div>
+  <div class="d-flex justify-content-center my-4">
+    <ul class="nav nav-pills p-1 bg-light rounded-pill shadow-sm">
+      <li class="nav-item">
+        <button
+          class="nav-link rounded-pill px-4 d-flex align-items-center gap-2"
+          :class="{ active: TypeofConvenioToSearch === 'marco' }"
+          @click="
+            () => {
+              TypeofConvenioToSearch = 'marco'
+              FilterPanelOpen = true
+            }
+          "
+        >
+          <i class="bi bi-folder-fill"></i>
+          Convenios Marcos
+        </button>
+      </li>
+      <li class="nav-item">
+        <button
+          class="nav-link rounded-pill px-4 d-flex align-items-center gap-2"
+          :class="{ active: TypeofConvenioToSearch === 'especifico' }"
+          @click="
+            () => {
+              TypeofConvenioToSearch = 'especifico'
+              FilterPanelOpen = true
+            }
+          "
+        >
+          <i class="bi bi-file-earmark-text-fill"></i>
+          Convenios Específicos
+        </button>
+      </li>
+    </ul>
   </div>
 
   <FilterPanel
@@ -186,4 +183,4 @@ const handleFilterSelected = (filterKey: string) => {
   <ConvenioList :convenios="ListadoConvenios" :isloading="isloading" />
 </template>
 
-<style scoped src="@/styles/toggle-convenios.css"></style>
+

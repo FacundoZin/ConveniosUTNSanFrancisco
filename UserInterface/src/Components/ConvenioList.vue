@@ -22,23 +22,22 @@
           <thead class="table-dark">
             <tr>
               <th>Título</th>
-              <th>Número Convenio</th>
-              <th>Nombre Empresa</th>
-              <th>Fecha de Firma</th>
-              <th>Inicio de Actividades</th>
-              <th>Fecha de Finalización</th>
-              <th>Tipo de convenio</th>
+              <th>N° Convenio</th>
+              <th>Empresa</th>
+              <th>Firma</th>
+              <th>Inicio</th>
+              <th>Fin</th>
               <th>Estado</th>
-              <th>Es Acta</th>
-              <th>Refrendado</th>
+              <th class="text-center">Acta</th>
+              <th class="text-center">Refrendado</th>
+              <th class="text-center">Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr
               v-for="conv in convenios.data"
               :key="conv.id"
-              class="clickable-row"
-              @click="VerConvenioCompleto(conv.id, conv.convenioType)"
+              class="align-middle"
             >
               <td>{{ conv.titulo || 'Sin Título' }}</td>
               <td>{{ conv.numeroconvenio || '_' }}</td>
@@ -46,17 +45,27 @@
               <td>{{ conv.fechaFirmaConvenio || '-' }}</td>
               <td>{{ conv.fechaInicioActividades || '-' }}</td>
               <td>{{ conv.fechaFin || '-' }}</td>
-              <td>{{ conv.convenioType }}</td>
-              <td>{{ EstadoConvenioTexto[conv.estado] }}</td>
               <td>
-                <span :class="conv.esActa ? 'badge bg-success' : 'badge bg-secondary'">
-                  {{ conv.esActa ? 'Sí' : 'No' }}
+                <span :class="getEstadoBadgeClass(conv.estado)">
+                  {{ EstadoConvenioTexto[conv.estado] }}
                 </span>
               </td>
-              <td>
-                <span :class="conv.refrendado ? 'badge bg-success' : 'badge bg-secondary'">
-                  {{ conv.refrendado ? 'Sí' : 'No' }}
-                </span>
+              <td class="text-center">
+                <i v-if="conv.esActa" class="bi bi-check-circle-fill text-success fs-5"></i>
+                <i v-else class="bi bi-x-circle-fill text-secondary fs-5"></i>
+              </td>
+              <td class="text-center">
+                <i v-if="conv.refrendado" class="bi bi-check-circle-fill text-success fs-5"></i>
+                <i v-else class="bi bi-x-circle-fill text-secondary fs-5"></i>
+              </td>
+              <td class="text-center">
+                <button 
+                  class="btn btn-sm btn-outline-primary" 
+                  @click="VerConvenioCompleto(conv.id, conv.convenioType)"
+                  title="Ver detalles"
+                >
+                  <i class="bi bi-eye"></i>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -72,33 +81,43 @@
           <thead class="table-dark">
             <tr>
               <th>Título</th>
-              <th>Número Convenio</th>
-              <th>Nombre Empresa</th>
-              <th>Fecha de Firma</th>
-              <th>Fecha de Finalización</th>
-              <th>Tipo de convenio</th>
+              <th>N° Convenio</th>
+              <th>Empresa</th>
+              <th>Firma</th>
+              <th>Fin</th>
               <th>Estado</th>
-              <th>Refrendado</th>
+              <th class="text-center">Refrendado</th>
+              <th class="text-center">Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr
               v-for="conv in convenios.data"
               :key="conv.id"
-              class="clickable-row"
-              @click="VerConvenioCompleto(conv.id, conv.convenioType)"
+              class="align-middle"
             >
               <td>{{ conv.titulo || 'Sin Título' }}</td>
               <td>{{ conv.numeroconvenio || '_' }}</td>
               <td>{{ conv.nombreEmpresa || '-' }}</td>
               <td>{{ conv.fechaFirmaConvenio || '-' }}</td>
               <td>{{ conv.fechaFin || '-' }}</td>
-              <td>{{ conv.convenioType || '_' }}</td>
-              <td>{{ EstadoConvenioTexto[conv.estado] }}</td>
               <td>
-                <span :class="conv.refrendado ? 'badge bg-success' : 'badge bg-secondary'">
-                  {{ conv.refrendado ? 'Sí' : 'No' }}
+                <span :class="getEstadoBadgeClass(conv.estado)">
+                  {{ EstadoConvenioTexto[conv.estado] }}
                 </span>
+              </td>
+              <td class="text-center">
+                <i v-if="conv.refrendado" class="bi bi-check-circle-fill text-success fs-5"></i>
+                <i v-else class="bi bi-x-circle-fill text-secondary fs-5"></i>
+              </td>
+              <td class="text-center">
+                <button 
+                  class="btn btn-sm btn-outline-primary" 
+                  @click="VerConvenioCompleto(conv.id, conv.convenioType)"
+                  title="Ver detalles"
+                >
+                  <i class="bi bi-eye"></i>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -125,6 +144,15 @@ const props = defineProps<{
   convenios: ListConveniosDto
   isloading?: boolean
 }>()
+
+const getEstadoBadgeClass = (estado: number) => {
+  switch (estado) {
+    case 0: return 'badge bg-warning text-dark' // Borrador/Pendiente
+    case 1: return 'badge bg-success' // Vigente
+    case 2: return 'badge bg-secondary' // Finalizado
+    default: return 'badge bg-light text-dark border'
+  }
+}
 </script>
 
 <style scoped>
