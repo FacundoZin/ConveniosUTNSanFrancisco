@@ -8,7 +8,7 @@ import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import type { InsertEmpresaDto } from '@/Types/Empresa/InsertEmpresa'
 import type { ConvenioCreated, InfoConvenioMarcoDto } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
-import { computed, onMounted, ref, type Ref } from 'vue'
+import { computed, onMounted, ref, watch, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 interface CreateConvenioMarcoComposable {
@@ -18,6 +18,7 @@ interface CreateConvenioMarcoComposable {
   empresas: Ref<ComboBoxEmpresasDto[]>
   cargarNuevaEmpresa: Ref<boolean>
   empresaForm: Ref<InsertEmpresaDto>
+  selectedEmpresaId: Ref<number | null>
   IsLoading: Ref<boolean>
   DesvincularConvenioEspecificos: (id: number) => void
   submitForm: () => Promise<ConvenioCreated | null>
@@ -32,6 +33,7 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
   const errorMensaje = ref<string | null>(null)
   const empresas = ref<ComboBoxEmpresasDto[]>([])
   const cargarNuevaEmpresa = ref(false)
+  const selectedEmpresaId = ref<number | null>(null)
   const IsLoading = ref(false)
 
   const route = useRoute()
@@ -70,6 +72,14 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
     ConvenioMarcoRequest.value = {
       ...currentValue,
       idsConveniosEspecificosParaDesvincular: newIdsArray,
+    }
+
+    // Remover visualmente de la lista
+    if (infoConvenioMarcoCompleta.value?.conveniosEspecificos) {
+      infoConvenioMarcoCompleta.value.conveniosEspecificos =
+        infoConvenioMarcoCompleta.value.conveniosEspecificos.filter(
+          (convenio) => convenio.id !== id,
+        )
     }
   }
 
@@ -165,6 +175,44 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
     IsLoading.value = false
   })
 
+  // --- WATCHERS ---
+  watch(cargarNuevaEmpresa, (nuevoValor) => {
+    if (nuevoValor) {
+      selectedEmpresaId.value = null
+      // Reiniciamos el DTO para una nueva empresa, asegurando que el ID sea null
+      ConvenioMarcoRequest.value.insertEmpresaDto = {
+        id: null,
+        nombre: '',
+        razonSocial: '',
+        cuit: '',
+        direccion: '',
+        telefono: '',
+        email: '',
+      }
+    } else {
+      // Si se desmarca "Cargar nueva empresa", limpiamos el DTO si no hay empresa seleccionada
+      if (!selectedEmpresaId.value) {
+        ConvenioMarcoRequest.value.insertEmpresaDto = null
+      }
+    }
+  })
+
+  watch(selectedEmpresaId, (newId) => {
+    if (newId) {
+      ConvenioMarcoRequest.value.insertEmpresaDto = {
+        id: newId,
+        nombre: null,
+        razonSocial: null,
+        cuit: null,
+        direccion: null,
+        telefono: null,
+        email: null,
+      }
+    } else if (!cargarNuevaEmpresa.value) {
+      ConvenioMarcoRequest.value.insertEmpresaDto = null
+    }
+  })
+
   return {
     infoConvenioMarcoCompleta,
     ConvenioMarcoRequest,
@@ -172,6 +220,7 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
     empresas,
     cargarNuevaEmpresa,
     empresaForm,
+    selectedEmpresaId,
     IsLoading,
     DesvincularConvenioEspecificos,
     submitForm,
