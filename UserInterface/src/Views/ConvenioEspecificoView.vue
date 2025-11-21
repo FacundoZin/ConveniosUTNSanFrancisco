@@ -3,69 +3,70 @@
     <!-- Info del Convenio Especifico -->
     <h5>Información del Convenio</h5>
 
-<div class="card shadow-sm mb-4">
-  <div class="card-body position-relative">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body position-relative">
+        <h6 class="card-title text-primary mb-3 pe-4">
+          {{ Convenio.titulo || 'Sin título' }}
+        </h6>
 
-    <h6 class="card-title text-primary mb-3 pe-4">
-      {{ Convenio.titulo || 'Sin título' }}
-    </h6>
+        <div class="card-text">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-calendar-check me-2 text-muted"></i>
+            <small><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || ' -' }}</small>
+          </div>
 
-    <div class="card-text">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-calendar-event me-2 text-muted"></i>
+            <small
+              ><strong>Fecha de inicio de actividades:</strong>
+              {{ Convenio.fechaInicioActividades || ' -' }}</small
+            >
+          </div>
 
-      <div class="d-flex align-items-center mb-2">
-        <i class="bi bi-calendar-check me-2 text-muted"></i>
-        <small><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || ' -' }}</small>
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-calendar-x me-2 text-muted"></i>
+            <small><strong>Fecha fin:</strong> {{ Convenio.fechaFinConvenio || ' -' }}</small>
+          </div>
+
+          <div class="d-flex align-items-start mb-2">
+            <i class="bi bi-chat-left-text me-2 text-muted"></i>
+            <small class="text-break"
+              ><strong>Comentario:</strong> {{ Convenio.comentarioOpcional || ' -' }}</small
+            >
+          </div>
+
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-hash me-2 text-muted"></i>
+            <small
+              ><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small
+            >
+          </div>
+
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-hash me-2 text-muted"></i>
+            <small
+              ><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small
+            >
+          </div>
+
+          <div class="mt-3 pt-2 border-top d-flex flex-wrap gap-2">
+            <span class="badge bg-info text-dark border">
+              {{ EstadoConvenioTexto[Convenio.estado] }}
+            </span>
+
+            <span v-if="Convenio.refrendado" class="badge bg-success text-white border">
+              Refrendado
+            </span>
+          </div>
+        </div>
       </div>
-
-      <div class="d-flex align-items-center mb-2">
-        <i class="bi bi-calendar-event me-2 text-muted"></i>
-        <small><strong>Fecha de inicio de actividades:</strong> {{ Convenio.fechaInicioActividades || ' -' }}</small>
-      </div>
-
-      <div class="d-flex align-items-center mb-2">
-        <i class="bi bi-calendar-x me-2 text-muted"></i>
-        <small><strong>Fecha fin:</strong> {{ Convenio.fechaFinConvenio || ' -' }}</small>
-      </div>
-
-      <div class="d-flex align-items-start mb-2">
-        <i class="bi bi-chat-left-text me-2 text-muted"></i>
-        <small class="text-break"><strong>Comentario:</strong> {{ Convenio.comentarioOpcional || ' -' }}</small>
-      </div>
-
-      <div class="d-flex align-items-center mb-2">
-        <i class="bi bi-hash me-2 text-muted"></i>
-        <small><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small>
-      </div>
-
-      <div class="d-flex align-items-center mb-2">
-        <i class="bi bi-hash me-2 text-muted"></i>
-        <small><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small>
-      </div>
-
-      <div class="mt-3 pt-2 border-top d-flex flex-wrap gap-2">
-        <span class="badge bg-info text-dark border">
-          {{ EstadoConvenioTexto[Convenio.estado] }}
-        </span>
-
-        <span v-if="Convenio.refrendado" class="badge bg-success text-white border">
-          Refrendado
-        </span>
-      </div>
-
     </div>
-
-  </div>
-</div>
 
     <hr class="my-4" />
 
     <!-- Empresa Asociada -->
     <h5>Informacion De Empresa</h5>
-    <EmpresaCard
-      v-if="Convenio.empresa"
-      :empresa="Convenio.empresa"
-      @desvincular-empresa="DesvincularEmpresa"
-    />
+    <EmpresaCardReadOnly v-if="Convenio.empresa" :empresa="Convenio.empresa" />
     <div v-else class="col-12">
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
@@ -81,11 +82,7 @@
     <h5>Convenio Marco Asociado</h5>
     <div class="mb-4">
       <div v-if="Convenio.convenioMarco">
-        <ConvMarcoCard
-          :convenio="Convenio.convenioMarco"
-          @desvincular-marco="desvincularConvenioMarco"
-          class="mb-3"
-        />
+        <ConvMarcoCardReadOnly :convenio="Convenio.convenioMarco" class="mb-3" />
       </div>
       <div v-else class="col-12">
         <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
@@ -183,8 +180,8 @@
 
 <script setup lang="ts">
 import CarrerasCardList from '@/Components/CarrerasCardList.vue'
-import ConvMarcoCard from '@/Components/ConvMarcoCard.vue'
-import EmpresaCard from '@/Components/EmpresaCard.vue'
+import ConvMarcoCardReadOnly from '@/Components/ConvMarcoCardReadOnly.vue'
+import EmpresaCardReadOnly from '@/Components/EmpresaCardReadOnly.vue'
 import FileUploader from '@/Components/FileUploader.vue'
 import InvolucradosViewCard from '@/Components/InvolucradosViewCard.vue'
 import router from '@/router'

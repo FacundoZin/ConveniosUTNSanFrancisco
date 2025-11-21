@@ -1,63 +1,64 @@
 <template>
   <div class="container mt-4" v-if="Convenio?.id">
     <!-- Info del Convenio Marco -->
-<h5>Información del convenio</h5>
+    <h5>Información del convenio</h5>
 
-  <div class="card shadow-sm mb-4">
-    <div class="card-body position-relative">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body position-relative">
+        <h6 class="card-title text-primary mb-3 pe-4">
+          {{ Convenio.titulo || 'Sin título' }}
+        </h6>
 
-      <h6 class="card-title text-primary mb-3 pe-4">
-        {{ Convenio.titulo || 'Sin título' }}
-      </h6>
+        <div class="card-text">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-calendar-check me-2 text-muted"></i>
+            <small><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || '-' }}</small>
+          </div>
 
-      <div class="card-text">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-calendar-x me-2 text-muted"></i>
+            <small><strong>Fecha fin:</strong> {{ Convenio.fechaFin || ' -' }}</small>
+          </div>
 
-        <div class="d-flex align-items-center mb-2">
-          <i class="bi bi-calendar-check me-2 text-muted"></i>
-          <small><strong>Fecha firma:</strong> {{ Convenio.fechaFirmaConvenio || '-' }}</small>
+          <div class="d-flex align-items-start mb-2">
+            <i class="bi bi-chat-left-text me-2 text-muted"></i>
+            <small class="text-break">
+              <strong>Comentario:</strong> {{ Convenio.comentarioOpcional || ' -' }}
+            </small>
+          </div>
+
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-hash me-2 text-muted"></i>
+            <small
+              ><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small
+            >
+          </div>
+
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-hash me-2 text-muted"></i>
+            <small
+              ><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small
+            >
+          </div>
+
+          <div class="mt-3 pt-2 border-top d-flex flex-wrap gap-2">
+            <span class="badge bg-info text-dark border">
+              {{ EstadoConvenioTexto[Convenio.estado] }}
+            </span>
+
+            <span v-if="Convenio.refrendado" class="badge bg-success text-white border">
+              Refrendado
+            </span>
+          </div>
         </div>
-
-        <div class="d-flex align-items-center mb-2">
-          <i class="bi bi-calendar-x me-2 text-muted"></i>
-          <small><strong>Fecha fin:</strong> {{ Convenio.fechaFin || ' -' }}</small>
-        </div>
-
-        <div class="d-flex align-items-start mb-2">
-          <i class="bi bi-chat-left-text me-2 text-muted"></i>
-          <small class="text-break">
-            <strong>Comentario:</strong> {{ Convenio.comentarioOpcional || ' -' }}
-          </small>
-        </div>
-
-        <div class="d-flex align-items-center mb-2">
-          <i class="bi bi-hash me-2 text-muted"></i>
-          <small><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small>
-        </div>
-
-        <div class="d-flex align-items-center mb-2">
-          <i class="bi bi-hash me-2 text-muted"></i>
-          <small><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small>
-        </div>
-
-        <div class="mt-3 pt-2 border-top d-flex flex-wrap gap-2">
-          <span class="badge bg-info text-dark border">
-            {{ EstadoConvenioTexto[Convenio.estado] }}
-          </span>
-
-          <span v-if="Convenio.refrendado" class="badge bg-success text-white border">
-            Refrendado
-          </span>
-        </div>
-
       </div>
     </div>
-  </div>
 
     <hr class="my-4" />
 
     <!-- Empresa Asociada -->
     <h5>Informacion de la empresa asociada</h5>
-    <EmpresaCard
+    <EmpresaCardReadOnly
       v-if="Convenio.empresa"
       :empresa="Convenio.empresa"
       @desvincular-empresa="DesvincularEmpresa"
@@ -77,7 +78,7 @@
     <div class="row">
       <div v-if="Convenio.conveniosEspecificos && Convenio.conveniosEspecificos.length > 0">
         <div class="col-md-4 mb-3" v-for="ce in Convenio.conveniosEspecificos" :key="ce.id">
-          <ConvEspecificoCard
+          <ConvEspecificoCardReadOnly
             :convenio="ce"
             @desvincular-especifico="desvincularConvenioEspecifico"
           />
@@ -135,8 +136,8 @@
 </template>
 
 <script setup lang="ts">
-import ConvEspecificoCard from '@/Components/ConvEspecificoCard.vue'
-import EmpresaCard from '@/Components/EmpresaCard.vue'
+import ConvEspecificoCardReadOnly from '@/Components/ConvEspecificoCardReadOnly.vue'
+import EmpresaCardReadOnly from '@/Components/EmpresaCardReadOnly.vue'
 import FileUploader from '@/Components/FileUploader.vue'
 import router from '@/router'
 import ApiService from '@/Services/ApiService'
