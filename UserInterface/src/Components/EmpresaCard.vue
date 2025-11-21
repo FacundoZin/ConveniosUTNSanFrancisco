@@ -1,9 +1,10 @@
 <template>
   <div class="card shadow-sm h-100">
     <div class="card-body position-relative">
-      <button 
-        @click="emitirDesvinculacion" 
-        class="btn-close position-absolute top-0 end-0 m-2" 
+      <button
+        type="button"
+        @click="emitirDesvinculacion"
+        class="btn-close position-absolute top-0 end-0 m-2"
         aria-label="Desvincular"
       ></button>
 

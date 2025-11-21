@@ -279,6 +279,7 @@ const {
 const modalDesvinculacion = ref({
   mostrar: false,
   convenioId: null as number | null,
+  tipo: '' as 'convenio' | 'empresa' | '',
   mensaje: '',
 })
 
@@ -286,14 +287,28 @@ const mostrarModalDesvinculacion = (id: number, tituloConvenio: string) => {
   modalDesvinculacion.value = {
     mostrar: true,
     convenioId: id,
+    tipo: 'convenio',
     mensaje: `¿Estás seguro de que querés desvincular el convenio "${tituloConvenio}"?`,
   }
 }
 
+const mostrarModalDesvinculacionEmpresa = (nombreEmpresa: string) => {
+  modalDesvinculacion.value = {
+    mostrar: true,
+    convenioId: null,
+    tipo: 'empresa',
+    mensaje: `¿Estás seguro de que querés desvincular la empresa "${nombreEmpresa}"?`,
+  }
+}
+
 const confirmarDesvinculacion = () => {
-  if (modalDesvinculacion.value.convenioId !== null) {
+  if (
+    modalDesvinculacion.value.tipo === 'convenio' &&
+    modalDesvinculacion.value.convenioId !== null
+  ) {
     DesvincularConvenioEspecificos(modalDesvinculacion.value.convenioId)
-    toast.success('Convenio específico desvinculado')
+  } else if (modalDesvinculacion.value.tipo === 'empresa') {
+    ejecutarDesvinculacionEmpresa()
   }
   cancelarDesvinculacion()
 }
@@ -302,14 +317,12 @@ const cancelarDesvinculacion = () => {
   modalDesvinculacion.value = {
     mostrar: false,
     convenioId: null,
+    tipo: '',
     mensaje: '',
   }
 }
 
 const submitForm = async () => {
-  console.log('📤 Datos a enviar al backend:', JSON.stringify(ConvenioMarcoRequest.value, null, 2))
-  console.log('📦 Objeto completo:', ConvenioMarcoRequest.value)
-
   try {
     await submitFormLogic()
     toast.success('Convenio editado con éxito')
@@ -318,11 +331,15 @@ const submitForm = async () => {
   }
 }
 
-const desvincularEmpresa = () => {
+const desvincularEmpresa = (id: number) => {
+  const nombreEmpresa = infoConvenioMarcoCompleta.value?.empresa?.nombre_Empresa || 'esta empresa'
+  mostrarModalDesvinculacionEmpresa(nombreEmpresa)
+}
+
+const ejecutarDesvinculacionEmpresa = () => {
   if (infoConvenioMarcoCompleta.value) {
     infoConvenioMarcoCompleta.value.empresa = undefined
     ConvenioMarcoRequest.value.empresaDesvinculada = true
   }
 }
 </script>
-
