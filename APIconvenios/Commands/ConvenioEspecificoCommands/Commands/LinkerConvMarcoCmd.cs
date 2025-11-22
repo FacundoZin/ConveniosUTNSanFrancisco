@@ -15,6 +15,7 @@ namespace APIconvenios.Commands.ConvenioEspecificoCommands.Commands
             var convenioMarco = await _UnitOfWork._ConvenioMarcoRepository.GetByNumeroConvenio(_NumeroConvMarco);
             
             if(convenioMarco != null)
+                Convenio.ConvenioMarcoId = convenioMarco.Id;
                 Convenio.ConvenioMarco = convenioMarco;
         }
     }

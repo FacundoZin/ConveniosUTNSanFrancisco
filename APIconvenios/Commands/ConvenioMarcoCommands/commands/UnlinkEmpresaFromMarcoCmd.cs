@@ -6,6 +6,7 @@ namespace APIconvenios.Commands.ConvenioMarcoCommands.commands
     {
         public async Task ExecuteAsync(Models.ConvenioMarco convenio, _UnitOfWork _UnitOfWork)
         {
+            convenio.Empresa = null;
             convenio.EmpresaId = null;
 
             await _UnitOfWork.Save();

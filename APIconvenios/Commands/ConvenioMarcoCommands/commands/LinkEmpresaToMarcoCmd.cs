@@ -18,7 +18,12 @@ namespace APIconvenios.Commands.ConvenioMarco.commands
         {
 
             if (_Dto.Id != null)
+            {
+                var empresa = await _UnitOfWork._EmpresaRepository.GetById((int)_Dto.Id);
+                convenio.Empresa = empresa; 
                 convenio.EmpresaId = _Dto.Id;
+            }
+                
             else
                 convenio.Empresa = _Dto.ToEmpresa();
             await Task.CompletedTask;

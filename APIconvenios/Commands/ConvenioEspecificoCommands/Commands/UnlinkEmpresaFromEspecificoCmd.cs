@@ -7,6 +7,7 @@ namespace APIconvenios.Commands.ConvenioEspecificoCommands.Commands
     {
         public Task ExecuteAsync(ConvenioEspecifico Convenio, _UnitOfWork _UnitOfWork)
         {
+            Convenio.empresa = null;
             Convenio.EmpresaId = null;
             return Task.CompletedTask;
         }

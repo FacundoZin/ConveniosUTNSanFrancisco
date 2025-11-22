@@ -17,9 +17,15 @@ namespace APIconvenios.Commands.ConvenioEspecificoCommands.Commands
         {
 
             if (DtoEmpresa.Id != null)
+            {
+                Convenio.empresa = await _UnitOfWork._EmpresaRepository.GetById((int)DtoEmpresa.Id);
                 Convenio.EmpresaId = DtoEmpresa.Id;
+            }
             else
+            {
                 Convenio.empresa = DtoEmpresa.ToEmpresa();
+            }
+                
 
         }
     }
