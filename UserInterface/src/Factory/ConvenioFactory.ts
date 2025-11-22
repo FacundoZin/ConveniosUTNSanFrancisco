@@ -6,10 +6,10 @@ import type {
 
 export function CreateListConveniosDto(
   data: ConvenioMarcoDto[] | ConvenioEspecificoDto[] | null,
-  type?: 'marco' | 'especifico',
+  type?: 'marco' | 'especifico' | '',
 ): ListConveniosDto {
-  let convenios: any
-  let convenioType: '' | 'marco' | 'especifico' = ''
+  let convenios: any = []
+  let convenioType: 'marco' | 'especifico' | '' = ''
 
   if (!data || data.length === 0) {
     convenios = []
@@ -20,7 +20,12 @@ export function CreateListConveniosDto(
   } else if (data[0].convenioType === 'especifico') {
     convenios = data
     convenioType = 'especifico'
+  } else {
+    // Si no tiene convenioType definido, usar el type pasado como parámetro
+    convenios = data
+    convenioType = type || ''
   }
 
   return { data: convenios, Type: convenioType }
 }
+

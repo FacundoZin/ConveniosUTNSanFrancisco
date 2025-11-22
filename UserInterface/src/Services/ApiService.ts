@@ -6,12 +6,12 @@ import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/Update
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import type { IConvenioQueryObject } from '@/Types/Filters'
 import type {
-  ConvenioCreated,
-  ConvenioEspecificoDto,
-  ConvenioMarcoDto,
-  InfoConvenioEspecificoDto,
-  InfoConvenioMarcoDto,
-  ViewArchivoDto,
+    ConvenioCreated,
+    ConvenioEspecificoDto,
+    ConvenioMarcoDto,
+    InfoConvenioEspecificoDto,
+    InfoConvenioMarcoDto,
+    ViewArchivoDto,
 } from '@/Types/ViewModels/ViewModels'
 import axios from 'axios'
 

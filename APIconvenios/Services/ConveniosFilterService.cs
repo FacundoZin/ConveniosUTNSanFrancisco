@@ -88,6 +88,24 @@ namespace APIconvenios.Services
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
+            else if(queryObject.ByMes != null)
+            {
+                var cmd = new SearchByMesCmd(queryObject.ByMes);
+                var result = await cmd.ExecuteAsync(_UnitOfWork);
+                return result;
+            }
+            else if (queryObject.ByAño != null)
+            {
+                var cmd = new SearchByAñoCmd(queryObject.ByAño);
+                var result = await cmd.ExecuteAsync(_UnitOfWork);
+                return result;
+            }
+            else if (queryObject.ByDesdeHastaDto != null)
+            {
+                var cmd = new SearchByDesdeHastaCmd(queryObject.ByDesdeHastaDto);
+                var result = await cmd.ExecuteAsync(_UnitOfWork);
+                return result;
+            }
 
             return Result<object>.Error("lo sentimos algo salio mal", 500);
         }

@@ -23,4 +23,10 @@ export class KeyFilters {
     public static readonly ByFechaFirma: string = 'ByFechaFirma';
 
     public static readonly ByProximosAvencer: string = 'ByProximosAvencer';
+
+    public static readonly ByMes: string = 'ByMes';
+
+    public static readonly ByAño: string = 'ByAño';
+
+    public static readonly ByDesdeHasta: string = 'ByDesdeHasta';
 }

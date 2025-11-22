@@ -59,6 +59,23 @@ export interface IByProximosAvencerParams {
   convenioType: string
 }
 
+export interface IByMesParams {
+  month: number
+  year: number
+  convenioType: string
+}
+
+export interface IByAñoParams {
+  year: number
+  convenioType: string
+}
+
+export interface IByDesdeHastaParams {
+  desde: string
+  hasta: string
+  convenioType: string
+}
+
 export interface IConvenioQueryObject {
   ByTitulo: IByTituloParams | null
   ByNumeroResolucion: IByNumeroResolucionParams | null
@@ -73,4 +90,7 @@ export interface IConvenioQueryObject {
 
   ByAntiguedadDto: IByAntiguedadDtoParams | null
   ByProximosAvencer: IByProximosAvencerParams | null
+  ByMes: IByMesParams | null
+  ByAño: IByAñoParams | null
+  ByDesdeHasta: IByDesdeHastaParams | null
 }
