@@ -80,14 +80,14 @@
               </button>
 
               <ul class="dropdown-menu w-100" data-bs-auto-close="outside">
-                <li v-for="carrera in Carreras" :key="carrera.Id" @click.stop>
+                <li v-for="carrera in Carreras" :key="carrera.id" @click.stop>
                   <label class="dropdown-item d-flex align-items-center gap-2">
                     <input
                       type="checkbox"
-                      :value="carrera.Id"
+                      :value="carrera.id"
                       v-model="ConvenioEspecificoRequest.idCarreras"
                     />
-                    {{ carrera.Nombre }}
+                    {{ carrera.nombre }}
                   </label>
                 </li>
               </ul>

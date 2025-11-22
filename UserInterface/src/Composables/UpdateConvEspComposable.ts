@@ -40,28 +40,15 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
   const Carreras: Carrera[] = carrerasList
   const route = useRoute()
 
-  // --- COMPUTED PROPERTY ---
-  const empresaForm = computed<InsertEmpresaDto>({
-    get() {
-      return (
-        UpdateConvEspRequest.value.insertEmpresaDto ?? {
-          id: null,
-          nombre: null,
-          razonSocial: null,
-          cuit: null,
-          direccion: null,
-          telefono: null,
-          email: null,
-        }
-      )
-    },
-    set(value) {
-      if (Object.values(value).some((v) => v !== '' && v != null)) {
-        UpdateConvEspRequest.value.insertEmpresaDto = { ...value }
-      } else {
-        UpdateConvEspRequest.value.insertEmpresaDto = null
-      }
-    },
+  // --- STATE ---
+  const empresaForm = ref<InsertEmpresaDto>({
+    id: null,
+    nombre: '',
+    razonSocial: '',
+    cuit: '',
+    direccion: '',
+    telefono: '',
+    email: '',
   })
 
   const involucradosForm = computed<InsertInvolucradosDto[]>({
@@ -89,15 +76,36 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
   const submitForm = async (): Promise<ConvenioCreated | null> => {
     IsLoading.value = true
     errorMensaje.value = null
+
+    // Mapear empresaForm a insertEmpresaDto
+    if (cargarNuevaEmpresa.value) {
+      // Si es nueva empresa, enviamos todos los datos
+      UpdateConvEspRequest.value.insertEmpresaDto = { ...empresaForm.value, id: null }
+    } else if (empresaForm.value.id) {
+      // Si es empresa existente, solo enviamos el ID
+      UpdateConvEspRequest.value.insertEmpresaDto = {
+        id: empresaForm.value.id,
+        nombre: '',
+        razonSocial: '',
+        cuit: '',
+        direccion: '',
+        telefono: '',
+        email: '',
+      }
+    } else {
+      UpdateConvEspRequest.value.insertEmpresaDto = null
+    }
+
     try {
+      console.log('UpdateConvEspRequest:', JSON.parse(JSON.stringify(UpdateConvEspRequest.value)))
       const result = await ApiService.EditarConvenioEspecifico(UpdateConvEspRequest.value)
       if (!result.isSuccess) {
         IsLoading.value = false
         errorMensaje.value = result.error.message
         return null
       }
-      return result.value
       IsLoading.value = false
+      return result.value
     } catch (error) {
       IsLoading.value = false
       errorMensaje.value = 'Ocurrió un error al cargar el convenio'
@@ -161,7 +169,9 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
     UpdateConvEspRequest.value.numeroConvenioMarcoVinculado =
       infoConvenioMarcoCompleta?.convenioMarco?.numeroconvenio ?? null
     UpdateConvEspRequest.value.idCarreras =
-      infoConvenioMarcoCompleta?.carrerasInvolucradas?.map((c) => c.Id) ?? null
+      infoConvenioMarcoCompleta?.carrerasInvolucradas
+        ?.map((c) => c.id)
+        .filter((id): id is number => id !== undefined) ?? null
 
     IsLoading.value = false
   })

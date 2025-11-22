@@ -1,157 +1,207 @@
 <template>
   <div class="container mt-4 position-relative">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 class="text-primary">Cargar Convenio Especifico</h3>
-
+      <!-- Botón visible cuando se actualiza el convenio -->
       <button
-        v-if="ConvenioCreado"
         @click="irAlConvenio"
         class="btn btn-outline-success d-flex align-items-center gap-2"
-        title="Ver convenio creado"
+        title="Ver convenio"
       >
         <i class="bi bi-arrow-right-circle"></i>
-        Ver Convenio
+        Ir al convenio
       </button>
     </div>
 
+    <!-- Mensaje de error -->
     <div v-if="errorMensaje" class="alert alert-danger" role="alert">
       {{ errorMensaje }}
     </div>
 
-    <form @submit.prevent="guardarConvenio" class="row g-3">
-      <div class="col-md-6">
-        <label class="form-label">Número de Convenio</label>
-        <input
-          v-model="UpdateConvEspRequest.updateConvenioDto.numeroConvenio"
-          type="text"
-          class="form-control"
-        />
-      </div>
+    <form @submit.prevent="submitForm" class="row g-3">
+      <!-- SECCIÓN: Datos del Convenio -->
+      <div class="p-4 bg-light border rounded mb-4">
+        <h4 class="text-primary mb-3">Editar Información de Convenio Específico</h4>
 
-      <div class="col-md-6">
-        <label class="form-label">Título</label>
-        <input
-          v-model="UpdateConvEspRequest.updateConvenioDto.titulo"
-          type="text"
-          class="form-control"
-        />
-      </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Número de Convenio</label>
+            <input
+              v-model="UpdateConvEspRequest.updateConvenioDto.numeroConvenio"
+              type="text"
+              class="form-control"
+            />
+          </div>
 
-      <div class="col-md-6">
-        <label class="form-label">Fecha de Firma</label>
-        <input
-          v-model="UpdateConvEspRequest.updateConvenioDto.fechaFirmaConvenio"
-          type="date"
-          class="form-control"
-        />
-      </div>
+          <div class="col-md-6">
+            <label class="form-label">Título</label>
+            <input
+              v-model="UpdateConvEspRequest.updateConvenioDto.titulo"
+              type="text"
+              class="form-control"
+            />
+          </div>
+        </div>
 
-      <div class="col-md-6">
-        <label class="form-label">Fecha de Inicio de Actividades</label>
-        <input
-          v-model="UpdateConvEspRequest.updateConvenioDto.fechaInicioActividades"
-          type="date"
-          class="form-control"
-        />
-      </div>
+        <div class="row g-3 mt-2">
+          <div class="col-md-6">
+            <label class="form-label">Fecha de Firma</label>
+            <input
+              v-model="UpdateConvEspRequest.updateConvenioDto.fechaFirmaConvenio"
+              type="date"
+              class="form-control"
+            />
+          </div>
 
-      <div class="col-md-6">
-        <label class="form-label">Fecha de Fin</label>
-        <input
-          v-model="UpdateConvEspRequest.updateConvenioDto.fechaFinConvenio"
-          type="date"
-          class="form-control"
-        />
-      </div>
+          <div class="col-md-6">
+            <label class="form-label">Fecha de Inicio de Actividades</label>
+            <input
+              v-model="UpdateConvEspRequest.updateConvenioDto.fechaInicioActividades"
+              type="date"
+              class="form-control"
+            />
+          </div>
+        </div>
 
-      <div class="col-md-6">
-        <label class="form-label">Carrera</label>
-        <select v-model="UpdateConvEspRequest.idCarreras" class="form-select" multiple>
-          <option value="" disabled>Seleccionar</option>
-          <option v-for="carrera in Carreras" :key="carrera.Id" :value="carrera.Id">
-            {{ carrera.Nombre }}
-          </option>
-        </select>
-      </div>
+        <div class="row g-3 mt-2">
+          <div class="col-md-6">
+            <label class="form-label">Fecha de Fin</label>
+            <input
+              v-model="UpdateConvEspRequest.updateConvenioDto.fechaFinConvenio"
+              type="date"
+              class="form-control"
+            />
+          </div>
 
-      <div class="col-12">
-        <label class="form-label">Comentario Opcional</label>
-        <textarea
-          v-model="UpdateConvEspRequest.updateConvenioDto.comentarioOpcional"
-          class="form-control"
-          rows="2"
-        ></textarea>
-      </div>
+          <div class="col-md-6">
+            <label class="form-label">Carreras</label>
+            <div class="dropdown w-100">
+              <button
+                class="btn btn-light border w-100 text-start"
+                type="button"
+                data-bs-toggle="dropdown"
+              >
+                Seleccionar...
+              </button>
 
-      <div class="col-md-4">
-        <label class="form-label">Estado</label>
-        <select
-          v-model.number="UpdateConvEspRequest.updateConvenioDto.estado"
-          class="form-select"
-          required
-        >
-          <option value="" disabled>Seleccionar...</option>
-          <option :value="0">Borrador</option>
-          <option :value="1">Vigente</option>
-          <option :value="3">Finalizado</option>
-        </select>
-      </div>
+              <ul class="dropdown-menu w-100" data-bs-auto-close="outside">
+                <li v-for="carrera in Carreras" :key="carrera.id" @click.stop>
+                  <label class="dropdown-item d-flex align-items-center gap-2">
+                    <input
+                      type="checkbox"
+                      :value="carrera.id"
+                      v-model="UpdateConvEspRequest.idCarreras"
+                    />
+                    {{ carrera.nombre }}
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-      <div class="col-md-4">
-        <label class="form-label">Número de Resolución</label>
-        <input
-          v-model="UpdateConvEspRequest.updateConvenioDto.numeroResolucion"
-          type="text"
-          class="form-control"
-        />
-      </div>
+        <div class="col-12 mt-4">
+          <label class="form-label">Comentario Opcional</label>
+          <textarea
+            v-model="UpdateConvEspRequest.updateConvenioDto.comentarioOpcional"
+            class="form-control"
+            rows="2"
+          ></textarea>
+        </div>
 
-      <div class="col-md-4">
-        <label class="form-label">Refrendado</label>
-        <select
-          v-model="UpdateConvEspRequest.updateConvenioDto.refrendado"
-          class="form-select"
-          required
-        >
-          <option :value="true">Sí</option>
-          <option :value="false">No</option>
-        </select>
-      </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-3">
+            <label class="form-label">Estado</label>
+            <select
+              v-model.number="UpdateConvEspRequest.updateConvenioDto.estado"
+              class="form-select"
+              required
+            >
+              <option value="" disabled>Seleccionar...</option>
+              <option :value="0">Borrador</option>
+              <option :value="1">Vigente</option>
+              <option :value="2">Finalizado</option>
+            </select>
+          </div>
 
-      <div class="col-md-4">
-        <label class="form-label">Es acta</label>
-        <select
-          v-model="UpdateConvEspRequest.updateConvenioDto.esActa"
-          class="form-select"
-          required
-        >
-          <option :value="true">Sí</option>
-          <option :value="false">No</option>
-        </select>
+          <div class="col-md-3">
+            <label class="form-label">Número de Resolución</label>
+            <input
+              v-model="UpdateConvEspRequest.updateConvenioDto.numeroResolucion"
+              type="text"
+              class="form-control"
+            />
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Refrendado</label>
+            <select
+              v-model="UpdateConvEspRequest.updateConvenioDto.refrendado"
+              class="form-select"
+              required
+            >
+              <option :value="true">Sí</option>
+              <option :value="false">No</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Es acta</label>
+            <select
+              v-model="UpdateConvEspRequest.updateConvenioDto.esActa"
+              class="form-select"
+              required
+            >
+              <option :value="true">Sí</option>
+              <option :value="false">No</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <hr class="my-4" />
 
-      <!-- Empresa o formulario -->
-      <div class="col-12 mb-3">
-        <div v-if="InfoConvenioEspecificoCompleta?.empresa">
-          <!-- Solo muestra la empresa asociada -->
-          <EmpresaAsociada
-            :empresa="InfoConvenioEspecificoCompleta.empresa"
-            @onDesvincularEmpresa="desvincularEmpresa"
+      <!-- SECCIÓN: Vincular Convenio Marco -->
+      <div class="p-4 bg-light border rounded mb-4">
+        <h4 class="text-primary mb-3">Convenio Marco Asociado</h4>
+
+        <div v-if="InfoConvenioEspecificoCompleta?.convenioMarco">
+          <ConvMarcoCard
+            :convenio="InfoConvenioEspecificoCompleta.convenioMarco"
+            @desvincular-marco="mostrarModalDesvinculacion('marco', null, '')"
           />
         </div>
 
         <div v-else>
-          <!-- Switch + formulario de empresa -->
-          <div class="form-check form-switch">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="switchNuevaEmpresa"
-              v-model="cargarNuevaEmpresa"
-            />
-            <label class="form-check-label" for="switchNuevaEmpresa"> Cargar nueva empresa </label>
+          <VincularConvMarco :request="UpdateConvEspRequest" />
+        </div>
+      </div>
+
+      <hr class="my-4" />
+
+      <!-- SECCIÓN: Empresa Asociada -->
+      <div class="p-4 bg-light border rounded mb-4">
+        <h4 class="text-primary mb-3">Vincular Empresa</h4>
+
+        <div v-if="InfoConvenioEspecificoCompleta && InfoConvenioEspecificoCompleta.empresa">
+          <EmpresaCard
+            :empresa="InfoConvenioEspecificoCompleta.empresa"
+            @desvincular-empresa="desvincularEmpresa"
+          />
+        </div>
+
+        <div v-else class="col-12">
+          <div class="col-12 mb-3">
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="switchNuevaEmpresa"
+                v-model="cargarNuevaEmpresa"
+              />
+              <label class="form-check-label" for="switchNuevaEmpresa">
+                Cargar nueva empresa
+              </label>
+            </div>
           </div>
 
           <!-- Empresa existente -->
@@ -170,7 +220,7 @@
           </div>
 
           <!-- Nueva empresa -->
-          <div v-else class="col-12 border rounded p-3 bg-light">
+          <div v-else class="col-12 border rounded p-3 bg-white">
             <h5 class="mb-3">Nueva Empresa</h5>
 
             <div class="row g-3">
@@ -210,12 +260,9 @@
 
       <hr class="my-4" />
 
-      <VincularConvMarco :request="UpdateConvEspRequest" />
-
-      <hr class="my-4" />
-
-      <div class="col-12 involucrados-section">
-        <h3 class="involucrados-title text-primary mb-3">👥 Agregar Involucrados</h3>
+      <!-- SECCIÓN: Involucrados -->
+      <div class="p-4 bg-light border rounded mb-4">
+        <h4 class="text-primary mb-3">Agregar Involucrados</h4>
 
         <InvolucradoForm @agregar="agregarInvolucrado" />
 
@@ -224,30 +271,57 @@
             v-for="(inv, idx) in UpdateConvEspRequest.insertInvolucradosDtos"
             :key="idx"
             :involucrado="inv"
-            @eliminar="eliminarInvolucrado(idx)"
+            @eliminar="
+              mostrarModalDesvinculacion('involucrado-nuevo', idx, `${inv.nombre} ${inv.apellido}`)
+            "
           />
         </div>
       </div>
 
       <hr class="my-4" />
 
-      <div class="col-12 involucrados-section">
-        <h3 class="involucrados-title text-primary mb-3">👥 Involucrados Existentes</h3>
+      <!-- SECCIÓN: Involucrados Existentes -->
+      <div
+        class="p-4 bg-light border rounded mb-4"
+        v-if="
+          InfoConvenioEspecificoCompleta?.involucrados &&
+          InfoConvenioEspecificoCompleta.involucrados.length > 0
+        "
+      >
+        <h4 class="text-primary mb-3">Involucrados Existentes</h4>
 
         <div class="involucrados-list mt-3">
           <InvolucradosExistingCard
             v-for="(inv, idx) in InfoConvenioEspecificoCompleta?.involucrados"
             :key="idx"
             :involucrado="inv"
-            @eliminar="eliminarInvolucradoExistente(idx)"
+            @eliminar="
+              mostrarModalDesvinculacion(
+                'involucrado-existente',
+                inv.id,
+                `${inv.nombre} ${inv.apellido}`,
+              )
+            "
           />
         </div>
       </div>
 
-      <div class="col-12 mt-4">
-        <button type="submit" class="btn btn-primary">Cargar Convenio</button>
+      <div class="col-12 mt-4 text-end">
+        <button type="submit" class="btn btn-primary">Actualizar Convenio</button>
       </div>
     </form>
+
+    <!-- Modal de confirmación -->
+    <ConfirmacionModal
+      :show="modalDesvinculacion.mostrar"
+      :titulo="modalDesvinculacion.titulo"
+      :mensaje="modalDesvinculacion.mensaje"
+      textoConfirmar="Sí, continuar"
+      textoCancelar="Cancelar"
+      tipo="danger"
+      @confirmar="confirmarDesvinculacion"
+      @cancelar="cancelarDesvinculacion"
+    />
 
     <div v-if="IsLoading" class="loader-overlay d-flex justify-content-center align-items-center">
       <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem">
@@ -258,17 +332,22 @@
 </template>
 
 <script setup lang="ts">
-import EmpresaAsociada from '@/Components/EmpresaAsociada.vue'
+import ConfirmacionModal from '@/Components/ConfirmacionModal.vue'
+import ConvMarcoCard from '@/Components/ConvMarcoCard.vue'
+import EmpresaCard from '@/Components/EmpresaCard.vue'
 import InvolucradoForm from '@/Components/InvolucradoForm.vue'
 import InvolucradosCard from '@/Components/InvolucradosCard.vue'
 import InvolucradosExistingCard from '@/Components/InvolucradosExistingCard.vue'
 import VincularConvMarco from '@/Components/VincularConvMarco.vue'
 import { UseUpdateConvEspComposable } from '@/Composables/UpdateConvEspComposable'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
-import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
+import { POSITION, useToast } from 'vue-toastification'
+import { useRouter, useRoute } from 'vue-router'
+import { ref } from 'vue'
 
 const router = useRouter()
+const route = useRoute()
+const toast = useToast()
 
 const {
   IsLoading,
@@ -281,13 +360,82 @@ const {
   ConvenioCreado,
   empresaForm,
   involucradosForm,
-  submitForm,
+  submitForm: submitFormLogic,
 } = UseUpdateConvEspComposable()
 
-const toast = useToast()
+// Estado del modal de desvinculación
+const modalDesvinculacion = ref({
+  mostrar: false,
+  tipo: '' as 'empresa' | 'marco' | 'involucrado-nuevo' | 'involucrado-existente' | '',
+  id: null as number | null,
+  titulo: '',
+  mensaje: '',
+})
+
+const mostrarModalDesvinculacion = (
+  tipo: 'empresa' | 'marco' | 'involucrado-nuevo' | 'involucrado-existente',
+  id: number | null,
+  nombre: string,
+) => {
+  let titulo = ''
+  let mensaje = ''
+
+  switch (tipo) {
+    case 'empresa':
+      titulo = 'Desvincular Empresa'
+      mensaje = `¿Estás seguro de que querés desvincular la empresa "${nombre}"?`
+      break
+    case 'marco':
+      titulo = 'Desvincular Convenio Marco'
+      mensaje = '¿Estás seguro de que querés desvincular el convenio marco asociado?'
+      break
+    case 'involucrado-nuevo':
+      titulo = 'Eliminar Involucrado'
+      mensaje = `¿Estás seguro de que querés eliminar a ${nombre}?`
+      break
+    case 'involucrado-existente':
+      titulo = 'Eliminar Involucrado'
+      mensaje = `¿Estás seguro de que querés eliminar a ${nombre}?`
+      break
+  }
+
+  modalDesvinculacion.value = {
+    mostrar: true,
+    tipo,
+    id,
+    titulo,
+    mensaje,
+  }
+}
+
+const confirmarDesvinculacion = () => {
+  const { tipo, id } = modalDesvinculacion.value
+
+  if (tipo === 'empresa') {
+    ejecutarDesvinculacionEmpresa()
+  } else if (tipo === 'marco') {
+    ejecutarDesvinculacionMarco()
+  } else if (tipo === 'involucrado-nuevo' && id !== null) {
+    eliminarInvolucrado(id)
+  } else if (tipo === 'involucrado-existente' && id !== null) {
+    eliminarInvolucradoExistente(id)
+  }
+
+  cancelarDesvinculacion()
+}
+
+const cancelarDesvinculacion = () => {
+  modalDesvinculacion.value = {
+    mostrar: false,
+    tipo: '',
+    id: null,
+    titulo: '',
+    mensaje: '',
+  }
+}
 
 const agregarInvolucrado = (nuevo: InsertInvolucradosDto) => {
-  involucradosForm.value.push(nuevo)
+  involucradosForm.value = [...involucradosForm.value, nuevo]
 }
 
 const eliminarInvolucrado = (index: number) => {
@@ -296,25 +444,47 @@ const eliminarInvolucrado = (index: number) => {
 
 const eliminarInvolucradoExistente = (Id: number) => {
   ;(UpdateConvEspRequest.value.idsInvolucraodsEliminados ??= []).push(Id)
+
+  // Remover visualmente de la lista
+  if (InfoConvenioEspecificoCompleta.value?.involucrados) {
+    InfoConvenioEspecificoCompleta.value.involucrados =
+      InfoConvenioEspecificoCompleta.value.involucrados.filter((inv) => inv.id !== Id)
+  }
 }
 
-const desvincularEmpresa = () => {
-  InfoConvenioEspecificoCompleta.value!.empresa = undefined
-  UpdateConvEspRequest.value.desvincularEmpresa = true
+const desvincularEmpresa = (id: number) => {
+  const nombreEmpresa =
+    InfoConvenioEspecificoCompleta.value?.empresa?.nombre_Empresa || 'esta empresa'
+  mostrarModalDesvinculacion('empresa', id, nombreEmpresa)
 }
 
-const guardarConvenio = async () => {
-  const result = await submitForm()
+const ejecutarDesvinculacionEmpresa = () => {
+  if (InfoConvenioEspecificoCompleta.value) {
+    InfoConvenioEspecificoCompleta.value.empresa = undefined
+    UpdateConvEspRequest.value.desvincularEmpresa = true
+  }
+}
 
-  if (result) {
-    ConvenioCreado.value = result
-    toast.success('Convenio cargado con éxito')
+const ejecutarDesvinculacionMarco = () => {
+  if (InfoConvenioEspecificoCompleta.value && InfoConvenioEspecificoCompleta.value.convenioMarco) {
+    InfoConvenioEspecificoCompleta.value.convenioMarco = null as any
+    UpdateConvEspRequest.value.desvincularConvenioMarco = true
+  }
+}
+
+const submitForm = async () => {
+  try {
+    await submitFormLogic()
+    toast.success('Convenio editado con éxito')
+  } catch (error) {
+    toast.error('Error al actualizar el convenio', { position: POSITION.BOTTOM_CENTER })
   }
 }
 
 const irAlConvenio = () => {
-  if (ConvenioCreado.value) {
-    router.push({ name: 'VistaConvenioEspecifico', params: { id: ConvenioCreado.value.id } })
+  const id = ConvenioCreado.value?.id || Number(route.params.id)
+  if (id) {
+    router.push({ name: 'VistaConvenioEspecifico', params: { id } })
   }
 }
 </script>

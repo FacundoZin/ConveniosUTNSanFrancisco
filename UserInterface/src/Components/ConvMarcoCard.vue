@@ -1,9 +1,10 @@
 <template>
   <div class="card shadow-sm h-100">
     <div class="card-body position-relative">
-      <button 
-        @click="emitirEliminacion" 
-        class="btn-close position-absolute top-0 end-0 m-2" 
+      <button
+        type="button"
+        @click="emitirEliminacion"
+        class="btn-close position-absolute top-0 end-0 m-2"
         aria-label="Close"
       ></button>
 
@@ -25,18 +26,18 @@
         <div class="d-flex align-items-center mb-2">
           <i class="bi bi-calendar-event me-2 text-muted"></i>
           <small>
-            <strong>Vigencia:</strong> 
+            <strong>Vigencia:</strong>
             ({{ convenio.fechaFirmaConvenio || '-' }}) - ({{ convenio.fechaFin || '-' }})
           </small>
         </div>
-
-
 
         <div class="mt-3 pt-2 border-top d-flex flex-wrap gap-2">
           <span class="badge bg-info text-dark border">
             {{ EstadoConvenioTexto[convenio.estado] || 'Desconocido' }}
           </span>
-          <span v-if="convenio.refrendado" class="badge bg-success text-white border">Refrendado</span>
+          <span v-if="convenio.refrendado" class="badge bg-success text-white border"
+            >Refrendado</span
+          >
         </div>
       </div>
     </div>

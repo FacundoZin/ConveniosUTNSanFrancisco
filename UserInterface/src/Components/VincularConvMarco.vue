@@ -17,9 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import type { CargarConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/CreateConvenioEspecifico'
+interface RequestWithConvenioMarco {
+  numeroConvenioMarcoVinculado: string | null
+}
 
 const props = defineProps<{
-  request: CargarConvenioEspecificoRequestDto
+  request: RequestWithConvenioMarco
 }>()
 </script>
