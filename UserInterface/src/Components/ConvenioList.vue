@@ -7,8 +7,30 @@
 
   <Transition name="slide-fade">
     <div v-if="!isloading && convenios.Type !== ''" class="convenios-container container-animada">
-      <div v-if="convenios.data.length === 0" class="alert alert-info text-center" role="alert">
-        No hay convenios que coincidan con la búsqueda.
+      <div v-if="convenios.data.length === 0" class="empty-state">
+        <div class="empty-state-icon">
+          <i class="bi bi-inbox"></i>
+        </div>
+        <h4 class="empty-state-title">No se encontraron convenios</h4>
+        <p class="empty-state-text text-muted">
+          No hay convenios {{ convenios.Type === 'marco' ? 'marco' : 'específicos' }} que coincidan con los criterios de búsqueda.
+        </p>
+        <div class="empty-state-suggestions">
+          <p class="text-muted mb-2">
+            <i class="bi bi-lightbulb me-2"></i>Sugerencias:
+          </p>
+          <ul class="list-unstyled text-muted mb-0">
+            <li><i class="bi bi-check2 me-2 text-primary"></i>Verifica los filtros aplicados</li>
+            <li><i class="bi bi-check2 me-2 text-primary"></i>Intenta con otros parámetros de búsqueda</li>
+            <li><i class="bi bi-check2 me-2 text-primary"></i>Busca en {{ convenios.Type === 'marco' ? 'Convenios Específicos' : 'Convenios Marco' }}</li>
+          </ul>
+        </div>
+        
+        <div class="mt-4">
+          <button class="btn btn-primary" @click="$emit('reset-search')">
+            <i class="bi bi-arrow-counterclockwise me-2"></i>Volver a realizar la búsqueda
+          </button>
+        </div>
       </div>
 
       <template v-else>
@@ -145,6 +167,8 @@ const props = defineProps<{
   isloading?: boolean
 }>()
 
+defineEmits(['reset-search'])
+
 const getEstadoBadgeClass = (estado: number) => {
   switch (estado) {
     case 0: return 'badge bg-warning text-dark' // Borrador/Pendiente
@@ -195,5 +219,79 @@ const getEstadoBadgeClass = (estado: number) => {
 
 .slide-fade-enter-to .container-animada {
   width: 95%;
+}
+
+/* Estilos para el estado vacío - Estilo minimalista institucional */
+.empty-state {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  color: #6c757d;
+}
+
+.empty-state-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+.empty-state-text {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.empty-state-suggestions {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.empty-state-suggestions p {
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.empty-state-suggestions ul {
+  margin: 0;
+}
+
+.empty-state-suggestions li {
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .empty-state {
+    padding: 2rem 1.5rem;
+  }
+  
+  .empty-state-icon {
+    font-size: 3rem;
+  }
+  
+  .empty-state-title {
+    font-size: 1.25rem;
+  }
+  
+  .empty-state-text {
+    font-size: 0.95rem;
+  }
 }
 </style>

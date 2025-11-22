@@ -29,6 +29,9 @@ export default class ApiService {
       const response = await axios.post(`${API_URL}/Convenios`, body)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
+      if (Ex.response?.status === 404) {
+        return { isSuccess: true, value:[], status: 404 }
+      }
       return {
         isSuccess: false,
         error: { message: getErrorMessage(Ex), status: Ex.response?.status },

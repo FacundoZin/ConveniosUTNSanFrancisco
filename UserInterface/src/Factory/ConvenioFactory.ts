@@ -6,13 +6,14 @@ import type {
 
 export function CreateListConveniosDto(
   data: ConvenioMarcoDto[] | ConvenioEspecificoDto[] | null,
+  type?: 'marco' | 'especifico',
 ): ListConveniosDto {
   let convenios: any
   let convenioType: '' | 'marco' | 'especifico' = ''
 
   if (!data || data.length === 0) {
     convenios = []
-    convenioType = ''
+    convenioType = type || ''
   } else if (data[0].convenioType === 'marco') {
     convenios = data
     convenioType = 'marco'
