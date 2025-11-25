@@ -106,6 +106,19 @@ namespace APIconvenios.Services
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
+            else if (queryObject.CountFirmadosByMesDto != null)
+            {
+                var cmd = new CountConvFirmadosByMesCmd(queryObject.CountFirmadosByMesDto);
+                var result = await cmd.ExecuteAsync(_UnitOfWork);
+                return result;
+            }
+            else if (queryObject.countFirmadosByRangoDto != null)
+            {
+                var cmd = new CountConvFirmadosByRangoCmd(queryObject.countFirmadosByRangoDto);
+                var result = await cmd.ExecuteAsync(_UnitOfWork);
+                return result;
+            }
+
 
             return Result<object>.Error("Porfavor seleccione un filtro", 400);
         }

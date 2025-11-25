@@ -21,6 +21,8 @@ namespace APIconvenios.Common
         public ByMesDto? ByMes { get; set; }
         public ByAñoDto? ByAño { get; set; }
         public ByDesdeHastaDto? ByDesdeHastaDto { get; set; }
+        public CountConvFirmadosByMesDto? CountFirmadosByMesDto { get; set; }
+        public CountConveniosFirmadosByRangoDto? countFirmadosByRangoDto { get; set; }
 
 
         public int PaginaActual { get; set; } = 1;
