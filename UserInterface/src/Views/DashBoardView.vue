@@ -14,6 +14,9 @@ import SearchByMes from '@/Components/SearchComponents/SearchByMes.vue'
 import SearchByNumeroConvenio from '@/Components/SearchComponents/SearchByNumeroConvenio.vue'
 import SearchByNumeroResolucion from '@/Components/SearchComponents/SearchByNumeroResolucion.vue'
 import SearchByTitle from '@/Components/SearchComponents/SearchByTitle.vue'
+import SearchCountByMes from '@/Components/SearchComponents/SearchCountByMes.vue'
+import SearchCountByRango from '@/Components/SearchComponents/SearchCountByRango.vue'
+import CountConveniosResult from '@/Components/CountConveniosResult.vue'
 import { useConvenioQuery } from '@/Composables/CreateConvenioQueryObject'
 import { CreateListConveniosDto } from '@/Factory/ConvenioFactory'
 import ApiService from '@/Services/ApiService'
@@ -30,11 +33,22 @@ const showNoResultsMode = ref(false)
 
 const activeFilterComponent = ref<string | null>(null)
 
+// Estado para el resultado del conteo
+const countResult = ref<number | null>(null)
+const countSearchType = ref<'mes' | 'rango' | null>(null)
+const countMonth = ref<number | undefined>(undefined)
+const countYear = ref<number | undefined>(undefined)
+const countFechaDesde = ref<string | undefined>(undefined)
+const countFechaHasta = ref<string | undefined>(undefined)
+
 const obtenerConvenios = async () => {
   errorMensaje.value = null
   isloading.value = true
 
-  console.log('📤 Query Object enviado al backend:', JSON.stringify(QueryComposable.queryObject, null, 2))
+  console.log(
+    '📤 Query Object enviado al backend:',
+    JSON.stringify(QueryComposable.queryObject, null, 2),
+  )
 
   const result = await ApiService.GetConvenios(QueryComposable.queryObject)
 
@@ -43,17 +57,43 @@ const obtenerConvenios = async () => {
     console.log('hay un error')
   } else {
     console.log('esta es la respuesta de la api', result.value)
-    ListadoConvenios.value = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
 
-    // Check if results are empty to toggle "No Results" mode
-    if (ListadoConvenios.value.data.length === 0) {
-      showNoResultsMode.value = true
-    } else {
+    // Check if this is a count request
+    if (
+      QueryComposable.queryObject.CountFirmadosByMesDto ||
+      QueryComposable.queryObject.countFirmadosByRangoDto
+    ) {
+      // Handle count result - API returns a simple number for count queries
+      countResult.value = typeof result.value === 'number' ? result.value : 0
+
+      if (QueryComposable.queryObject.CountFirmadosByMesDto) {
+        countSearchType.value = 'mes'
+        countMonth.value = QueryComposable.queryObject.CountFirmadosByMesDto.month
+        countYear.value = QueryComposable.queryObject.CountFirmadosByMesDto.year
+      } else if (QueryComposable.queryObject.countFirmadosByRangoDto) {
+        countSearchType.value = 'rango'
+        countFechaDesde.value = QueryComposable.queryObject.countFirmadosByRangoDto.desde
+        countFechaHasta.value = QueryComposable.queryObject.countFirmadosByRangoDto.hasta
+      }
+
       showNoResultsMode.value = false
-    }
+    } else {
+      // Handle regular list result
+      ListadoConvenios.value = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
 
-    const listaCreada = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
-    console.log('esta la lista de convenios creada:', listaCreada.data, listaCreada.Type)
+      // Check if results are empty to toggle "No Results" mode
+      if (ListadoConvenios.value.data.length === 0) {
+        showNoResultsMode.value = true
+      } else {
+        showNoResultsMode.value = false
+      }
+
+      const listaCreada = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
+      console.log('esta la lista de convenios creada:', listaCreada.data, listaCreada.Type)
+
+      // Clear count result when doing regular search
+      countResult.value = null
+    }
   }
 
   isloading.value = false
@@ -71,6 +111,11 @@ const handleFilterSelected = (filterKey: string) => {
 const resetSearch = () => {
   showNoResultsMode.value = false
   ListadoConvenios.value = CreateListConveniosDto(null)
+  countResult.value = null
+}
+
+const closeCountResult = () => {
+  countResult.value = null
 }
 </script>
 
@@ -79,25 +124,31 @@ const resetSearch = () => {
     <div class="d-flex justify-content-center my-4">
       <ul class="nav nav-pills p-1 bg-light rounded-pill shadow-sm">
         <li class="nav-item">
-          <button class="nav-link rounded-pill px-4 d-flex align-items-center gap-2"
-            :class="{ active: TypeofConvenioToSearch === 'marco' }" @click="
+          <button
+            class="nav-link rounded-pill px-4 d-flex align-items-center gap-2"
+            :class="{ active: TypeofConvenioToSearch === 'marco' }"
+            @click="
               () => {
                 TypeofConvenioToSearch = 'marco'
                 FilterPanelOpen = true
               }
-            ">
+            "
+          >
             <i class="bi bi-folder-fill"></i>
             Convenios Marcos
           </button>
         </li>
         <li class="nav-item">
-          <button class="nav-link rounded-pill px-4 d-flex align-items-center gap-2"
-            :class="{ active: TypeofConvenioToSearch === 'especifico' }" @click="
+          <button
+            class="nav-link rounded-pill px-4 d-flex align-items-center gap-2"
+            :class="{ active: TypeofConvenioToSearch === 'especifico' }"
+            @click="
               () => {
                 TypeofConvenioToSearch = 'especifico'
                 FilterPanelOpen = true
               }
-            ">
+            "
+          >
             <i class="bi bi-file-earmark-text-fill"></i>
             Convenios Específicos
           </button>
@@ -105,54 +156,140 @@ const resetSearch = () => {
       </ul>
     </div>
 
-    <FilterPanel :isPanelOpen="FilterPanelOpen" :typeOfConvenio="TypeofConvenioToSearch"
-      :QueryObject="QueryComposable.queryObject" @close-panel="FilterPanelOpen = false"
-      @filter-selected="handleFilterSelected" @DirectSearch="obtenerConvenios" />
+    <FilterPanel
+      :isPanelOpen="FilterPanelOpen"
+      :typeOfConvenio="TypeofConvenioToSearch"
+      :QueryObject="QueryComposable.queryObject"
+      @close-panel="FilterPanelOpen = false"
+      @filter-selected="handleFilterSelected"
+      @DirectSearch="obtenerConvenios"
+    />
 
-    <SearchByTitle v-if="activeFilterComponent === KeyFilters.ByTitulo" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByTitle>
+    <SearchByTitle
+      v-if="activeFilterComponent === KeyFilters.ByTitulo"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByTitle>
 
-    <SearchByEmpresa v-if="activeFilterComponent === KeyFilters.ByEmpresa" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByEmpresa>
+    <SearchByEmpresa
+      v-if="activeFilterComponent === KeyFilters.ByEmpresa"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByEmpresa>
 
-    <SearchByNumeroConvenio v-if="activeFilterComponent === KeyFilters.ByNumeroConvenio" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByNumeroConvenio>
+    <SearchByNumeroConvenio
+      v-if="activeFilterComponent === KeyFilters.ByNumeroConvenio"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByNumeroConvenio>
 
-    <SearchByNumeroResolucion v-if="activeFilterComponent === KeyFilters.ByNumeroResolucion"
-      @SearchDone="obtenerConvenios" :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"></SearchByNumeroResolucion>
+    <SearchByNumeroResolucion
+      v-if="activeFilterComponent === KeyFilters.ByNumeroResolucion"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByNumeroResolucion>
 
-    <SearchByFechaFin v-if="activeFilterComponent === KeyFilters.ByFechaFin" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByFechaFin>
+    <SearchByFechaFin
+      v-if="activeFilterComponent === KeyFilters.ByFechaFin"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByFechaFin>
 
-    <SearchByFechaFirma v-if="activeFilterComponent === KeyFilters.ByFechaFirma" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByFechaFirma>
+    <SearchByFechaFirma
+      v-if="activeFilterComponent === KeyFilters.ByFechaFirma"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByFechaFirma>
 
-    <SearchByCarreras v-if="activeFilterComponent === KeyFilters.ByCarrera" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByCarreras>
+    <SearchByCarreras
+      v-if="activeFilterComponent === KeyFilters.ByCarrera"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByCarreras>
 
-    <SearchByEstado v-if="activeFilterComponent === KeyFilters.ByEstado" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByEstado>
+    <SearchByEstado
+      v-if="activeFilterComponent === KeyFilters.ByEstado"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByEstado>
 
-    <SearchByAntiguedad v-if="activeFilterComponent === KeyFilters.ByAntiguedadDto" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByAntiguedad>
+    <SearchByAntiguedad
+      v-if="activeFilterComponent === KeyFilters.ByAntiguedadDto"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByAntiguedad>
 
-    <SearchByMes v-if="activeFilterComponent === KeyFilters.ByMes" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByMes>
+    <SearchByMes
+      v-if="activeFilterComponent === KeyFilters.ByMes"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByMes>
 
-    <SearchByAño v-if="activeFilterComponent === KeyFilters.ByAño" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByAño>
+    <SearchByAño
+      v-if="activeFilterComponent === KeyFilters.ByAño"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByAño>
 
-    <SearchByDesdeHasta v-if="activeFilterComponent === KeyFilters.ByDesdeHasta" @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject" :type-of-convenio="TypeofConvenioToSearch"></SearchByDesdeHasta>
+    <SearchByDesdeHasta
+      v-if="activeFilterComponent === KeyFilters.ByDesdeHasta"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchByDesdeHasta>
+
+    <SearchCountByMes
+      v-if="activeFilterComponent === KeyFilters.CountFirmadosByMes"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchCountByMes>
+
+    <SearchCountByRango
+      v-if="activeFilterComponent === KeyFilters.CountFirmadosByRango"
+      @SearchDone="obtenerConvenios"
+      :QueryObject="QueryComposable.queryObject"
+      :type-of-convenio="TypeofConvenioToSearch"
+    ></SearchCountByRango>
+
+    <CountConveniosResult
+      v-if="countResult !== null && TypeofConvenioToSearch !== ''"
+      :count="countResult"
+      :typeOfConvenio="TypeofConvenioToSearch as 'marco' | 'especifico'"
+      :searchType="countSearchType!"
+      :month="countMonth"
+      :year="countYear"
+      :fechaDesde="countFechaDesde"
+      :fechaHasta="countFechaHasta"
+      @close="closeCountResult"
+    />
   </div>
 
   <div class="d-flex justify-content-center mt-4">
-    <div v-if="errorMensaje" class="alert alert-danger alert-dismissible fade show w-30 text-center shadow"
-      role="alert">
+    <div
+      v-if="errorMensaje"
+      class="alert alert-danger alert-dismissible fade show w-30 text-center shadow"
+      role="alert"
+    >
       <strong>Error:</strong> {{ errorMensaje }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-        @click="errorMensaje = null"></button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+        @click="errorMensaje = null"
+      ></button>
     </div>
   </div>
 

@@ -76,6 +76,18 @@ export interface IByDesdeHastaParams {
   convenioType: string
 }
 
+export interface ICountFirmadosByMesParams {
+  month: number
+  year: number
+  convenioType: string
+}
+
+export interface ICountFirmadosByRangoParams {
+  desde: string
+  hasta: string
+  convenioType: string
+}
+
 export interface IConvenioQueryObject {
   ByTitulo: IByTituloParams | null
   ByNumeroResolucion: IByNumeroResolucionParams | null
@@ -93,4 +105,6 @@ export interface IConvenioQueryObject {
   ByMes: IByMesParams | null
   ByAño: IByAñoParams | null
   ByDesdeHastaDto: IByDesdeHastaParams | null
+  CountFirmadosByMesDto: ICountFirmadosByMesParams | null
+  countFirmadosByRangoDto: ICountFirmadosByRangoParams | null
 }
