@@ -45,25 +45,15 @@ const obtenerConvenios = async () => {
   errorMensaje.value = null
   isloading.value = true
 
-  console.log(
-    '📤 Query Object enviado al backend:',
-    JSON.stringify(QueryComposable.queryObject, null, 2),
-  )
-
   const result = await ApiService.GetConvenios(QueryComposable.queryObject)
 
   if (!result.isSuccess) {
     errorMensaje.value = result.error.message
-    console.log('hay un error')
   } else {
-    console.log('esta es la respuesta de la api', result.value)
-
-    // Check if this is a count request
     if (
       QueryComposable.queryObject.CountFirmadosByMesDto ||
       QueryComposable.queryObject.countFirmadosByRangoDto
     ) {
-      // Handle count result - API returns a simple number for count queries
       countResult.value = typeof result.value === 'number' ? result.value : 0
 
       if (QueryComposable.queryObject.CountFirmadosByMesDto) {
@@ -78,10 +68,8 @@ const obtenerConvenios = async () => {
 
       showNoResultsMode.value = false
     } else {
-      // Handle regular list result
       ListadoConvenios.value = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
 
-      // Check if results are empty to toggle "No Results" mode
       if (ListadoConvenios.value.data.length === 0) {
         showNoResultsMode.value = true
       } else {
@@ -91,7 +79,6 @@ const obtenerConvenios = async () => {
       const listaCreada = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
       console.log('esta la lista de convenios creada:', listaCreada.data, listaCreada.Type)
 
-      // Clear count result when doing regular search
       countResult.value = null
     }
   }
