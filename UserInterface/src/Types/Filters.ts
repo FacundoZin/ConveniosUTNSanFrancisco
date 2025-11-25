@@ -92,5 +92,5 @@ export interface IConvenioQueryObject {
   ByProximosAvencer: IByProximosAvencerParams | null
   ByMes: IByMesParams | null
   ByAño: IByAñoParams | null
-  ByDesdeHasta: IByDesdeHastaParams | null
+  ByDesdeHastaDto: IByDesdeHastaParams | null
 }

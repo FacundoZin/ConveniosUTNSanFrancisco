@@ -107,7 +107,7 @@ namespace APIconvenios.Services
                 return result;
             }
 
-            return Result<object>.Error("lo sentimos algo salio mal", 500);
+            return Result<object>.Error("Porfavor seleccione un filtro", 400);
         }
     }
 }

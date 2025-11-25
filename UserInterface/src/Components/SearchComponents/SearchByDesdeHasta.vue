@@ -39,7 +39,7 @@ const handleBuscar = () => {
     }
 
     mostrarAlerta.value = false;
-    props.QueryObject.ByDesdeHasta = objetoFiltroListo.value;
+    props.QueryObject.ByDesdeHastaDto = objetoFiltroListo.value;
     emit('SearchDone');
 };
 

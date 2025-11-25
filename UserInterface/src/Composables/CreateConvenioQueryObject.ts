@@ -18,7 +18,7 @@ export function useConvenioQuery() {
     ByProximosAvencer: null,
     ByMes: null,
     ByAño: null,
-    ByDesdeHasta: null,
+    ByDesdeHastaDto: null,
   });
 
   // Guardamos la última propiedad que se modificó
