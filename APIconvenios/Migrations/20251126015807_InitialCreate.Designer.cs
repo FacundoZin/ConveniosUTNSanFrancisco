@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIconvenios.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251119192456_FixMappeoCarreraConvenioEspecifico")]
-    partial class FixMappeoCarreraConvenioEspecifico
+    [Migration("20251126015807_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -26,7 +26,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+//var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
 /*var dbPath = Path.Combine(
     appDirectory,
     "SistemaConveniosUTN",
@@ -41,13 +41,13 @@ var LogPath = Path.Combine(
 var LogPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
     "SistemaConveniosUTNv2",
-    "Logsv2"
+    "Logs"
 );
 
 var dbPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
     "SistemaConveniosUTNv2",
-    "SistemaConveniosUTN.dbv2"
+    "SistemaConveniosUTN.db"
 );
 
 
@@ -94,7 +94,7 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
-//database migration
+// database migration
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
