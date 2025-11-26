@@ -40,13 +40,13 @@ var LogPath = Path.Combine(
 
 var LogPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-    "SistemaConveniosUTN",
+    "SistemaConveniosUTNv2",
     "Logs"
 );
 
 var dbPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-    "SistemaConveniosUTN",
+    "SistemaConveniosUTNv2",
     "SistemaConveniosUTN.db"
 );
 
@@ -95,11 +95,11 @@ builder.Services.AddControllers()
 var app = builder.Build();
 
 // database migration
-/*using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.Migrate();
-}*/
+}
 
 // Configure the HTTP request pipeline.
 
