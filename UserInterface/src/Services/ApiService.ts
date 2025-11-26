@@ -6,14 +6,20 @@ import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/Update
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import type { IConvenioQueryObject } from '@/Types/Filters'
 import type {
-    ConvenioCreated,
-    ConvenioEspecificoDto,
-    ConvenioMarcoDto,
-    InfoConvenioEspecificoDto,
-    InfoConvenioMarcoDto,
-    ViewArchivoDto,
+  ConvenioCreated,
+  ConvenioEspecificoDto,
+  ConvenioMarcoDto,
+  InfoConvenioEspecificoDto,
+  InfoConvenioMarcoDto,
+  ViewArchivoDto,
 } from '@/Types/ViewModels/ViewModels'
 import axios from 'axios'
+import MockDataService from './MockDataService'
+
+// ============================================================================
+// CONFIGURACIÓN: Cambiar a false para usar la API real
+// ============================================================================
+const USE_MOCK_DATA = true
 
 const API_URL = 'http://localhost:8888/api'
 
@@ -25,6 +31,9 @@ export default class ApiService {
   static async GetConvenios(
     body: IConvenioQueryObject,
   ): Promise<Result<ConvenioEspecificoDto[] | ConvenioMarcoDto[]>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.GetConvenios(body)
+    }
     try {
       const response = await axios.post(`${API_URL}/Convenios`, body)
       return { isSuccess: true, value: response.data, status: response.status }
@@ -40,6 +49,9 @@ export default class ApiService {
   }
 
   static async GetConvenioMarcoCompleto(id: number): Promise<Result<InfoConvenioMarcoDto>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.GetConvenioMarcoCompleto(id)
+    }
     try {
       const response = await axios.get(`${API_URL}/ConveniosMarcos/${id}`)
       return { isSuccess: true, value: response.data, status: response.status }
@@ -54,6 +66,9 @@ export default class ApiService {
   static async GetConvenioEspecificoCompleto(
     id: number,
   ): Promise<Result<InfoConvenioEspecificoDto>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.GetConvenioEspecificoCompleto(id)
+    }
     try {
       const response = await axios.get(`${API_URL}/ConveniosEspecificos/${id}`)
       return { isSuccess: true, value: response.data, status: response.status }
@@ -66,6 +81,9 @@ export default class ApiService {
   }
 
   static async DeleteConvenioMarco(id: number): Promise<Result<null>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.DeleteConvenioMarco(id)
+    }
     try {
       const response = await axios.delete(`${API_URL}/ConveniosMarcos/${id}`)
       return { isSuccess: true, value: null, status: response.status }
@@ -78,6 +96,9 @@ export default class ApiService {
   }
 
   static async DeleteConvenioEspecifico(id: number): Promise<Result<null>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.DeleteConvenioEspecifico(id)
+    }
     try {
       const response = await axios.delete(`${API_URL}/ConveniosEspecificos/${id}`)
       return { isSuccess: true, value: null, status: response.status }
@@ -92,6 +113,9 @@ export default class ApiService {
   static async CreateConvenioMarco(
     Dto: CargarConvenioMarcoRequestDto,
   ): Promise<Result<ConvenioCreated>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.CreateConvenioMarco(Dto)
+    }
     try {
       const response = await axios.post(`${API_URL}/ConveniosMarcos`, Dto)
       return { isSuccess: true, value: response.data, status: response.status }
@@ -106,6 +130,9 @@ export default class ApiService {
   static async CreateConvenioEspecifico(
     Dto: CargarConvenioEspecificoRequestDto,
   ): Promise<Result<ConvenioCreated>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.CreateConvenioEspecifico(Dto)
+    }
     try {
       const response = await axios.post(`${API_URL}/ConveniosEspecificos`, Dto)
       return { isSuccess: true, value: response.data, status: response.status }
@@ -118,6 +145,9 @@ export default class ApiService {
   }
 
   static async EditarConvenioMarco(Dto: UpdateConvenioMarcoRequetsDto): Promise<Result<null>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.EditarConvenioMarco(Dto)
+    }
     try {
       const response = await axios.put(`${API_URL}/ConveniosMarcos`, Dto)
       return { isSuccess: true, value: null, status: response.status }
@@ -132,6 +162,9 @@ export default class ApiService {
   static async EditarConvenioEspecifico(
     Dto: UpdateConvenioEspecificoRequestDto,
   ): Promise<Result<null>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.EditarConvenioEspecifico(Dto)
+    }
     try {
       const response = await axios.put(`${API_URL}/ConveniosEspecificos`, Dto)
       return { isSuccess: true, value: null, status: response.status }
@@ -144,11 +177,17 @@ export default class ApiService {
   }
 
   static async GetEmpresas(): Promise<ComboBoxEmpresasDto[]> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.GetEmpresas()
+    }
     const response = await axios.get(`${API_URL}/Empresa`)
     return response.data
   }
 
   static async GetIdConvMarcoByNumeroConv(numeroConvenio: string): Promise<Result<number>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.GetIdConvMarcoByNumeroConv(numeroConvenio)
+    }
     try {
       const response = await axios.get(`${API_URL}/ConveniosMarcos/${numeroConvenio}`)
       return { isSuccess: true, value: response.data, status: response.status }
@@ -161,6 +200,9 @@ export default class ApiService {
   }
 
   static async GetIdConvEspByNumeroConv(numeroConvenio: string): Promise<Result<number>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.GetIdConvEspByNumeroConv(numeroConvenio)
+    }
     try {
       const response = await axios.get(`${API_URL}/ConveniosEspecificos/${numeroConvenio}`)
       return { isSuccess: true, value: response.data, status: response.status }
@@ -176,6 +218,9 @@ export default class ApiService {
     idConvenioMarco: number,
     idConvenioEspecifico: number,
   ): Promise<Result<null>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.DesvincularConvenioEspecifico(idConvenioMarco, idConvenioEspecifico)
+    }
     try {
       const response = await axios.delete(
         `${API_URL}/ConveniosMarcos/${idConvenioMarco}/especificos/${idConvenioEspecifico}`,
@@ -190,6 +235,9 @@ export default class ApiService {
   }
 
   static async DesvincularEmpresaDeMarco(idConvenioMarco: number): Promise<Result<null>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.DesvincularEmpresaDeMarco(idConvenioMarco)
+    }
     try {
       const response = await axios.delete(`${API_URL}/ConveniosMarcos/${idConvenioMarco}/empresa`)
       return { isSuccess: true, value: null, status: response.status }
@@ -202,6 +250,9 @@ export default class ApiService {
   }
 
   static async DesvincularConvenioMarco(idConvenioEspecifico: number): Promise<Result<null>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.DesvincularConvenioMarco(idConvenioEspecifico)
+    }
     try {
       const response = await axios.delete(
         `${API_URL}/ConveniosEspecificos/${idConvenioEspecifico}/marco`,
@@ -216,6 +267,9 @@ export default class ApiService {
   }
 
   static async DesvincularEmpresaDeEspecifico(idConvenioEspecifico: number): Promise<Result<null>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.DesvincularEmpresaDeEspecifico(idConvenioEspecifico)
+    }
     try {
       const response = await axios.delete(
         `${API_URL}/ConveniosEspecificos/${idConvenioEspecifico}/empresa`,
@@ -234,6 +288,9 @@ export default class ApiService {
     file: File,
     convenioMarcoId: number,
   ): Promise<ViewArchivoDto | null> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.CargarArchivoToMarco(nombreArchivo, file, convenioMarcoId)
+    }
     const formData = new FormData()
     formData.append('NombreArchivo', nombreArchivo)
     formData.append('file', file)
@@ -273,6 +330,9 @@ export default class ApiService {
     file: File,
     convenioEspecificoId: number,
   ): Promise<ViewArchivoDto | null> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.CargarArchivoToEspecifico(nombreArchivo, file, convenioEspecificoId)
+    }
     const formData = new FormData()
     formData.append('NombreArchivo', nombreArchivo)
     formData.append('file', file)
@@ -308,6 +368,9 @@ export default class ApiService {
   }
 
   static async EliminarArchivo(idDocumento: number): Promise<boolean> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.EliminarArchivo(idDocumento)
+    }
     try {
       const response = await axios.delete(`${API_URL}/Documents/${idDocumento}`, {})
       return true
@@ -318,6 +381,9 @@ export default class ApiService {
   }
 
   static async DescargarArchivo(idDocumento: number, nombreArchivo: string): Promise<void> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.DescargarArchivo(idDocumento, nombreArchivo)
+    }
     try {
       const response = await axios.get(`${API_URL}/Documents/${idDocumento}`, {
         responseType: 'blob',
@@ -338,6 +404,9 @@ export default class ApiService {
   }
 
   static async GetArchivosConvMarco(idConvenio: number): Promise<Result<ViewArchivoDto[]>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.GetArchivosConvMarco(idConvenio)
+    }
     try {
       const response = await axios.get(`${API_URL}/ConveniosMarcos/archivos${idConvenio}`)
       return { isSuccess: true, value: response.data, status: response.status }
@@ -350,6 +419,9 @@ export default class ApiService {
   }
 
   static async GetArchivosConvEspecifico(idConvenio: number): Promise<Result<ViewArchivoDto[]>> {
+    if (USE_MOCK_DATA) {
+      return MockDataService.GetArchivosConvEspecifico(idConvenio)
+    }
     try {
       const response = await axios.get(`${API_URL}/ConveniosEspecificos/archivos${idConvenio}`)
       return { isSuccess: true, value: response.data, status: response.status }
