@@ -26,7 +26,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
 /*var dbPath = Path.Combine(
     appDirectory,
     "SistemaConveniosUTN",
@@ -40,14 +40,14 @@ var LogPath = Path.Combine(
 
 var LogPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-    "SistemaConveniosUTN",
-    "Logs"
+    "SistemaConveniosUTNv2",
+    "Logsv2"
 );
 
 var dbPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-    "SistemaConveniosUTN",
-    "SistemaConveniosUTN.db"
+    "SistemaConveniosUTNv2",
+    "SistemaConveniosUTN.dbv2"
 );
 
 
@@ -94,12 +94,12 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
-// database migration
-/*using (var scope = app.Services.CreateScope())
+//database migration
+using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.Migrate();
-}*/
+}
 
 // Configure the HTTP request pipeline.
 
