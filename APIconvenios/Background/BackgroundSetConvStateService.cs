@@ -1,7 +1,6 @@
-﻿
-using APIconvenios.Interfaces.Servicios;
+﻿using APIconvenios.Interfaces.Servicios;
 
-namespace APIconvenios.Services
+namespace APIconvenios.Background
 {
     public class BackgroundSetConvStateService : BackgroundService
     {
@@ -21,7 +20,7 @@ namespace APIconvenios.Services
                 try
                 {
                     var now = DateTime.Now;
-                    var nextRun = now.Date.AddDays(1); 
+                    var nextRun = now.Date.AddDays(1);
                     var delay = nextRun - now;
                     if (delay < TimeSpan.Zero)
                     {

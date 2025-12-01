@@ -26,7 +26,16 @@ namespace APIconvenios.Controllers
 
             return Ok(result.Data);
         }
-        
-        
+
+        [HttpGet("empresa/{empresaId}")]
+        public async Task<IActionResult> ObtenerConveniosPorEmpresa(int empresaId)
+        {
+            var result = await _conveniosFilterService.ListarConveniosPorEmpresa(empresaId);
+
+            if (!result.Exit)
+                return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok(result.Data);
+        }
     }
 }

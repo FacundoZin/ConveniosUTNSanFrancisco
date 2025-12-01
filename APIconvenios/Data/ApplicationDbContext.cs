@@ -28,7 +28,10 @@ namespace APIconvenios.Data
                 new Carreras { Id = 2, Nombre = "Ingeniería en Sistemas" },
                 new Carreras { Id = 3, Nombre = "Ingeniería Electrónica" },
                 new Carreras { Id = 4, Nombre = "Ingeniería Electromecánica" },
-                new Carreras { Id = 5, Nombre = "Tecnicatura en Programación" }
+                new Carreras { Id = 5, Nombre = "Tecnicatura en Programación" },
+                new Carreras { Id = 6, Nombre = "Materias Basicas" },
+                new Carreras { Id = 7, Nombre = "SEU" },
+                new Carreras { Id = 8, Nombre = "Vinculación Tecnológica" }
                 );
 
             modelBuilder.Entity<ConvenioEspecifico>()
@@ -47,6 +50,13 @@ namespace APIconvenios.Data
                        .HasForeignKey("ConvenioEspecificoId")
                        .OnDelete(DeleteBehavior.Cascade) // opcional
                );
+
+            modelBuilder.Entity<Empresa>()
+                .HasOne(e => e.ConvenioMarco)
+                .WithOne(cm => cm.Empresa)              
+                .HasForeignKey<ConvenioMarco>(cm => cm.EmpresaId)  
+                .IsRequired(false);                  
+
         }
     }
 }

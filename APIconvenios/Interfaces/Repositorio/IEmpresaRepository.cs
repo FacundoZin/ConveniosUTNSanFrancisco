@@ -7,5 +7,6 @@ namespace APIconvenios.Interfaces.Repositorio
         Task<List<Empresa>> GetAll();
         Task<Empresa> GetById(int id);
         Task<int> Add(Empresa empresa);
+        Task<Empresa?> GetEmpresaWithConvenios(int id);  
     }
 }

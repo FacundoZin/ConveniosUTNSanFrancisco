@@ -1,6 +1,9 @@
 ﻿using APIconvenios.Commands.FilterCommands.Commands;
 using APIconvenios.Common;
+using APIconvenios.DTOs.Empresa;
+using APIconvenios.Helpers.Mappers;
 using APIconvenios.UnitOfWork;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace APIconvenios.Services
 {
@@ -121,6 +124,15 @@ namespace APIconvenios.Services
 
 
             return Result<object>.Error("Porfavor seleccione un filtro", 400);
+        }
+
+        public async Task<Result<EmpresaWithConveniosDto>> ListarConveniosPorEmpresa(int empresaId)
+        {
+            var empresa = await _UnitOfWork._EmpresaRepository.GetEmpresaWithConvenios(empresaId);
+            if(empresa == null)
+                return Result<EmpresaWithConveniosDto>.Error("Empresa no encontrada", 404);
+
+            return Result<EmpresaWithConveniosDto>.Exito(empresa.ToEmpresaWithConveniosDto());
         }
     }
 }

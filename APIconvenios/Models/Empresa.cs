@@ -13,5 +13,9 @@ namespace APIconvenios.Models
 
         [EmailAddress(ErrorMessage = "Email inválido.")]
         public string? Email { get; set; }
+
+        public int? ConvenioMarcoId { get; set; }    
+        public ConvenioMarco? ConvenioMarco { get; set; } 
+        public List<ConvenioEspecifico>? ConveniosEspecificos { get; set; } = new List<ConvenioEspecifico>();
     }
 }

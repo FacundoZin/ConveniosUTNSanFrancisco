@@ -34,6 +34,15 @@ namespace APIconvenios.Repositorio
             await _Context.Empresas.AddAsync(empresa);
             return empresa.Id;
         }
+
+        public async Task<Empresa?> GetEmpresaWithConvenios(int id)
+        {
+            return await _Context.Empresas
+                .Include(e => e.ConveniosEspecificos)
+                .Include(e => e.ConvenioMarco)
+                .FirstOrDefaultAsync(e => e.Id == id);
+                
+        }
     }
 }
 

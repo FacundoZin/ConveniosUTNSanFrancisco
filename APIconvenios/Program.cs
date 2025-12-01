@@ -1,9 +1,7 @@
-using APIconvenios.Commands.ConvenioEspecificoCommands;
-using APIconvenios.Commands.ConvenioMarcoCommands;
+using APIconvenios.Background;
 using APIconvenios.Data;
 using APIconvenios.Helpers.JsonConverters;
 using APIconvenios.Helpers.Logger;
-using APIconvenios.Helpers.Validators;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Interfaces.Servicios;
 using APIconvenios.Middlewares;
@@ -11,7 +9,6 @@ using APIconvenios.Repositorio;
 using APIconvenios.Services;
 using APIconvenios.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
