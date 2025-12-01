@@ -11,6 +11,8 @@ namespace APIconvenios.Interfaces.Repositorio
         void ModificarConvenioEspecifico(ConvenioEspecifico convenio);
         IQueryable<ConvenioEspecifico> GetQuery();
 
+        Task SetStateTofinish(DateOnly finishDate);
+
         Task<ConvenioEspecifico?> GetByNumeroConvenio(string numero);
     }
 }

@@ -11,6 +11,7 @@ namespace APIconvenios.Interfaces.Repositorio
         void ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado);
         IQueryable<ConvenioMarco> GetQuery();
 
+        Task SetStateToFinish(DateOnly date);
         Task<ConvenioMarco?> GetByNumeroConvenio(string Numero);
     }
 }

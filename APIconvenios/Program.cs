@@ -57,7 +57,7 @@ Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
 builder.Services.AddDbContextFactory<ApplicationDbContext>(opt =>
     opt.UseSqlite($"Data Source={dbPath}"));
 
-
+builder.Services.AddScoped<IConveniosStateService, ConveniosStateService>();
 builder.Services.AddScoped<IConvenioMarcoService, ConveniosMarcosServices>();
 builder.Services.AddScoped<IConvenioEspecifcoService, ConvenioEspecificoService>();
 builder.Services.AddScoped<ConveniosFilterService>();
@@ -74,6 +74,9 @@ builder.Services.AddScoped<ICarreraRepository, CarrerasRepository>();
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
 builder.Services.AddScoped<IArchivosRepository, ArchivosRepository>();
 builder.Services.AddSingleton<ILogger>(new FileLogger(LogPath));
+
+// Registro del hosted service
+builder.Services.AddHostedService<BackgroundSetConvStateService>();
 
 
 builder.Services.AddCors(options =>

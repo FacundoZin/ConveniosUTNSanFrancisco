@@ -1,4 +1,5 @@
 ﻿using APIconvenios.Common;
+using APIconvenios.Common.Enums;
 using APIconvenios.Data;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.Interfaces.Repositorio;
@@ -9,11 +10,13 @@ namespace APIconvenios.Repositorio
 {
     public class ConveniosMarcoRepository : IConvenioMarcoRepository
     {
-        public ApplicationDbContext _Context { get; set; }
+        private readonly ApplicationDbContext _Context;
+        private readonly IDbContextFactory<ApplicationDbContext> _Factory;
 
-        public ConveniosMarcoRepository(ApplicationDbContext context)
+        public ConveniosMarcoRepository(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> factory)
         {
             _Context = context;
+            _Factory = factory;
         }
 
         public async Task<ConvenioMarco?> GetByid(int id)
@@ -48,6 +51,14 @@ namespace APIconvenios.Repositorio
             var convenio = await _Context.ConveniosMarcos.FirstOrDefaultAsync(c => c.numeroconvenio == Numero);
             if (convenio == null) return null;
             return convenio;
+        }
+
+
+        public async Task SetStateToFinish(DateOnly date)
+        {
+            using var context = _Factory.CreateDbContext();
+            await context.ConveniosMarcos.Where(c => c.FechaFin == date)
+                .ExecuteUpdateAsync(convenios => convenios.SetProperty(conv => conv.Estado, conv => EstadoConvenio.Finalizado));
         }
     }
 }

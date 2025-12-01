@@ -1,16 +1,20 @@
-﻿using APIconvenios.Data;
+﻿using APIconvenios.Common.Enums;
+using APIconvenios.Data;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Models;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace APIconvenios.Repositorio
 {
     public class ConvenioEspecificoRepository : IConvenioEspecificoRepository
     {
         private readonly ApplicationDbContext _Context;
-        public ConvenioEspecificoRepository(ApplicationDbContext context)
+        private readonly IDbContextFactory<ApplicationDbContext> _Factory;
+        public ConvenioEspecificoRepository(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> factory)
         {
             _Context = context;
+            _Factory = factory;
         }
 
         public void CreateConvenio(ConvenioEspecifico convenio)
@@ -48,6 +52,13 @@ namespace APIconvenios.Repositorio
         public void ModificarConvenioEspecifico(ConvenioEspecifico convenio)
         {
             _Context.ConveniosEspecificos.Update(convenio);
+        }
+
+        public async Task SetStateTofinish(DateOnly finishDate)
+        {
+            using var context = _Factory.CreateDbContext();
+            await context.ConveniosEspecificos.Where(c => c.FechaFinConvenio == finishDate)
+                .ExecuteUpdateAsync(convenios => convenios.SetProperty(conv => conv.Estado, conv => EstadoConvenio.Finalizado));
         }
     }
 }
