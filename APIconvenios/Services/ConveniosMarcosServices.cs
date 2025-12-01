@@ -42,7 +42,7 @@ namespace APIconvenios.Services
 
             if (requetsDto.InsertEmpresaDto != null)
             {
-                if(requetsDto.InsertEmpresaDto.Id == null && await _UnitOfWork._EmpresaRepository.NameEmpresaExist(requetsDto.InsertEmpresaDto.Nombre)
+                if(requetsDto.InsertEmpresaDto.Id == null && await _UnitOfWork._EmpresaRepository.NameEmpresaExist(requetsDto.InsertEmpresaDto.Nombre))
                 {
                     return Result<bool>.Error("la empresa que quiere cargar ya existe", 400);
                 }
