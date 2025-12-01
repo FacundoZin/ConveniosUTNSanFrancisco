@@ -7,6 +7,8 @@ namespace APIconvenios.Interfaces.Repositorio
         Task<List<Empresa>> GetAll();
         Task<Empresa> GetById(int id);
         Task<int> Add(Empresa empresa);
+        Task<bool> NameEmpresaExist(string Name);
+        Task<bool> NameEmpresaExistForUpdate(string Name, int idEmpresa);
         Task<Empresa?> GetEmpresaWithConvenios(int id);  
     }
 }

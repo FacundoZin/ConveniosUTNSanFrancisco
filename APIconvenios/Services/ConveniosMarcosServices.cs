@@ -28,6 +28,10 @@ namespace APIconvenios.Services
             var Convenio = await _UnitOfWork._ConvenioMarcoReadRepository.GetByidWithConvEspecifico(requetsDto.UpdateConvenioMarcoDto.Id);
             if (Convenio == null) return Result<bool>.Error("El convenio que quiere actualizar no existe", 404);
 
+            if (_UnitOfWork._ConvenioMarcoReadRepository
+                .TitleExistForUpdate(requetsDto.UpdateConvenioMarcoDto.Titulo, requetsDto.UpdateConvenioMarcoDto.Id).Result)
+                return Result<bool>.Error("Ya existe un convenio marco con ese titulo", 400);
+
             var commands = new List<IConvMarcoCommand>();
 
             if (requetsDto.UpdateConvenioMarcoDto != null)
@@ -37,7 +41,14 @@ namespace APIconvenios.Services
                 commands.Add(new UnlinkEmpresaFromMarcoCmd());
 
             if (requetsDto.InsertEmpresaDto != null)
+            {
+                if(requetsDto.InsertEmpresaDto.Id == null && await _UnitOfWork._EmpresaRepository.NameEmpresaExist(requetsDto.InsertEmpresaDto.Nombre)
+                {
+                    return Result<bool>.Error("la empresa que quiere cargar ya existe", 400);
+                }
                 commands.Add(new LinkEmpresaToMarcoCmd(requetsDto.InsertEmpresaDto));
+            }
+                
 
             if (requetsDto.NumeroConvenioEspecificosParaVincular != null)
                 commands.Add(new LinkerConvEspCmd(requetsDto.NumeroConvenioEspecificosParaVincular));
@@ -111,6 +122,9 @@ namespace APIconvenios.Services
 
         public async Task<Result<ConvenioCreated>> CargarConvenioMarco(CargarConvenioMarcoRequestDto requestDto)
         {
+            if(await _UnitOfWork._ConvenioMarcoReadRepository.TitleExist(requestDto.InsertConvenioDto.Titulo))
+                return Result<ConvenioCreated>.Error("Ya existe un convenio marco con ese titulo", 400);
+
             var convenio = new ConvenioMarco();
 
             convenio.UploadData(requestDto.InsertConvenioDto);
@@ -118,7 +132,15 @@ namespace APIconvenios.Services
             var commands = new List<IConvMarcoCommand>();
 
             if (requestDto.InsertEmpresaDto != null)
+            {
+                if (requestDto.InsertEmpresaDto.Id == null && await _UnitOfWork._EmpresaRepository.NameEmpresaExist(requestDto.InsertEmpresaDto.Nombre))
+                {
+                    return Result<ConvenioCreated>.Error("La empresa que quiere cargar ya existe", 400);
+                }
+              
                 commands.Add(new LinkEmpresaToMarcoCmd(requestDto.InsertEmpresaDto));
+            }
+                
 
             if (requestDto.NumeroConvEspecificoParaVincular != null)
                 commands.Add(new LinkerConvEspCmd(requestDto.NumeroConvEspecificoParaVincular));

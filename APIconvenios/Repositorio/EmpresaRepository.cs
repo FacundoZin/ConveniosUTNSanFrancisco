@@ -43,6 +43,17 @@ namespace APIconvenios.Repositorio
                 .FirstOrDefaultAsync(e => e.Id == id);
                 
         }
+
+        public Task<bool> NameEmpresaExist(string Title)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> NameEmpresaExistForUpdate(string Name, int idEmpresa)
+        {
+            return await _Context.Empresas
+               .AnyAsync(c => c.Nombre.ToLower() == Name.ToLower() && c.Id != idEmpresa);
+        }
     }
 }
 

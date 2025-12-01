@@ -6,7 +6,7 @@ namespace APIconvenios.DTOs.ConvenioMarco
     public class InsertConvenioMarcoDto
     {
         public string? numeroconvenio { get; set; }
-        public string? Titulo { get; set; }
+        public string Titulo { get; set; }
         public DateOnly? FechaFirmaConvenio { get; set; }
         public DateOnly? FechaFin { get; set; }
         public string? ComentarioOpcional { get; set; }

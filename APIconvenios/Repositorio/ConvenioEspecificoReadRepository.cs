@@ -49,12 +49,12 @@ namespace APIconvenios.Repositorio
 
         public async Task<bool> TitleExist(string title)
         {
-            return await _context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio == title);
+            return await _context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio.ToLower() == title.ToLower());
         }
 
         public async Task<bool> TitleExistForUpdate(string title, int idConvenio)
         {
-            return await _context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio == title && c.Id != idConvenio);
+            return await _context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio.ToLower() == title.ToLower() && c.Id != idConvenio);
         }
     }
 }
