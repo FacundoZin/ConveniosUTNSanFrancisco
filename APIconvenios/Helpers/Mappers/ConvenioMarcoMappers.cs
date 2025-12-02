@@ -1,5 +1,4 @@
-﻿using APIconvenios.Common.Enums;
-using APIconvenios.DTOs.Archivo;
+﻿using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
@@ -30,6 +29,23 @@ namespace APIconvenios.Helpers.Mappers
 
             return conveniosDto;
         }
+
+        public static ConvenioMarcoDto ToDto(this ConvenioMarco Convenio)
+        {
+            return new ConvenioMarcoDto
+            {
+                Id = Convenio.Id,
+                Titulo = Convenio.Titulo,
+                numeroconvenio = Convenio.numeroconvenio,
+                NombreEmpresa = Convenio.Empresa?.Nombre,
+                FechaFirmaConvenio = Convenio.FechaFirmaConvenio ?? null,
+                FechaFin = Convenio.FechaFin ?? null,
+                Estado = Convenio.Estado,
+                Refrendado = Convenio.Refrendado
+            };
+        }
+
+
 
         public static ConvenioMarco UpdateData(this ConvenioMarco convenio, UpdateConvenioMarcoDto convenioActualizado)
         {

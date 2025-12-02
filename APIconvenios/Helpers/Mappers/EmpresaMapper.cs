@@ -33,16 +33,5 @@ namespace APIconvenios.Helpers.Mappers
                 };
             }
         }
-
-        public static EmpresaWithConveniosDto ToEmpresaWithConveniosDto(this Empresa empresa)
-        {
-            return new EmpresaWithConveniosDto
-            {
-                NombreEmpresa = empresa.Nombre,
-                ConvenioMarco = empresa.ConvenioMarco,
-                conveniosEspecificos = empresa.ConveniosEspecificos
-            };
-        }
-
     }
 }
