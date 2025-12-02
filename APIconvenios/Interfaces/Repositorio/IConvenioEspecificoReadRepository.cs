@@ -10,6 +10,7 @@ namespace APIconvenios.Interfaces.Repositorio
         Task<bool> TitleExist(string title);
         Task<bool> TitleExistForUpdate(string title, int idConvenio);
         Task<ConvenioEspecifico?> GetConvenioWithRelations(int id);
+        Task<List<ComboBoxConvenioEspecificoDto>> GetAllWithoutTracking();
 
     }
 }

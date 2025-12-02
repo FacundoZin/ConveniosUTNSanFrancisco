@@ -11,6 +11,7 @@ namespace APIconvenios.Interfaces.Servicios
 {
     public interface IConvenioEspecifcoService
     {
+        Task<Result<List<ComboBoxConvenioEspecificoDto>>> GetAllConveniosEspecificos();
         Task<Result<ConvenioCreated>> CreateConvenioEspecifico(CargarConvenioEspecificoRequestDto Dto);
         Task<Result<object?>> DeleteConvenioEspecifico(int id);
         Task<Result<InfoConvenioEspeficoDto>> ObtenerConvenioEspecificoCompleto(int id);

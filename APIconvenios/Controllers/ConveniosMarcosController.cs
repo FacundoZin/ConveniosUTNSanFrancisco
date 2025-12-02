@@ -20,6 +20,15 @@ namespace APIconvenios.Controllers
             _ConvenioService = convenioservice;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllConveniosMarcos()
+        {
+            var result = await _ConvenioService.GetAllConveniosMarcos();
+            if(!result.Exit)
+                return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok(result.Data);
+        }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> VerConvenioMarcoCompleto([FromRoute] int id)

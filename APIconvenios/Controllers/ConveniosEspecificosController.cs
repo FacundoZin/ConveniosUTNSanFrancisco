@@ -18,6 +18,16 @@ namespace APIconvenios.Controllers
             _ConvenioEspecifcoService = convenioEspecifcoService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllConveniosEspecificos()
+        {
+            var result = await _ConvenioEspecifcoService.GetAllConveniosEspecificos();
+
+            if (!result.Exit) return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok(result.Data);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> ObtenerConvenioEspecificoCompleto(int id)
         {

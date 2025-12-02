@@ -22,6 +22,16 @@ namespace APIconvenios.Repositorio
             _ContextFactory = contextfactory;
         }
 
+        public async Task<List<ComboBoxConvenioMarcoDto>> GetAllWithoutTracking()
+        {
+            var convenios = await _Context.ConveniosMarcos.AsNoTracking()
+                .Select(cm => new ComboBoxConvenioMarcoDto { Id = cm.Id, Titulo = cm.Titulo }).ToListAsync();
+
+            if(convenios == null || convenios.Count == 0) return new List<ComboBoxConvenioMarcoDto>();
+
+            return convenios;
+        }
+
         public async Task<ConvenioMarco?> GetByidWithConvEspecifico(int id)
         {
             var convenio = await _Context.ConveniosMarcos.Include(c => c.ConveniosEspecificos)

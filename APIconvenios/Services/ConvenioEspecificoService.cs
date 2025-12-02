@@ -211,6 +211,20 @@ namespace APIconvenios.Services
                 return Result<List<viewArchivoDto>>.Error("ocurrio un error al obtener los archivos", 500);
             }
         }
+
+        public async Task<Result<List<ComboBoxConvenioEspecificoDto>>> GetAllConveniosEspecificos()
+        {
+            try
+            {
+                var convenios = await _UnitOfWork._ConvEspReadRepository.GetAllWithoutTracking();
+
+                return Result<List<ComboBoxConvenioEspecificoDto>>.Exito(convenios);
+            }
+            catch(Exception ex)
+            {
+                return Result<List<ComboBoxConvenioEspecificoDto>>.Error("Ocurrio un error al obtener los convenios especificos", 500);
+            }
+        }
     }
 
 }
