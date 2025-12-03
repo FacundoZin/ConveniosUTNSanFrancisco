@@ -19,13 +19,15 @@ namespace APIconvenios.UnitOfWork
         public IEmpresaRepository _EmpresaRepository { get; }
         public ICarreraRepository _CarreraRepository { get; } 
         public IArchivosRepository _ArchivosRepository { get; }
+        public IInvolucradosRepository _InvolucradosRepository { get; }
 
 
         public _UnitOfWork(ApplicationDbContext applicationDbContext, IConvenioEspecificoRepository convenioEspecificorepo,
             IConvenioEspecificoReadRepository convespreadrepo,
             IConvenioMarcoRepository convmarcRepository, IConvenioMarcoReadRepository convmarcReadRepo, 
             IEmpresaRepository empresaRepository,ICarreraRepository carreraRepository,
-            IArchivosRepository archivosRepository, IDbContextFactory<ApplicationDbContext> contextFactory)
+            IArchivosRepository archivosRepository, IDbContextFactory<ApplicationDbContext> contextFactory,
+            IInvolucradosRepository involucradosRepository)
         {
             _ContextFactory = contextFactory;
             _Context = applicationDbContext;
@@ -36,6 +38,7 @@ namespace APIconvenios.UnitOfWork
             _EmpresaRepository = empresaRepository;
             _CarreraRepository = carreraRepository;
             _ArchivosRepository = archivosRepository;
+            _InvolucradosRepository = involucradosRepository;   
         }   
 
         public async Task<int> Save ()
