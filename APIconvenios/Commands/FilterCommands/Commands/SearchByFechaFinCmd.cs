@@ -1,4 +1,5 @@
 ﻿using APIconvenios.Common;
+using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Filters;
 using APIconvenios.Helpers.Mappers;
 using APIconvenios.UnitOfWork;
@@ -18,25 +19,54 @@ namespace APIconvenios.Commands.FilterCommands.Commands
         {
             if (_Dto.convenioType == "marco")
             {
-                var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
+                var query = _UnitOfWork._ConvenioMarcoRepository.GetQueryByFiltering();
                 var convenios = await query.Where(c => c.FechaFin == _Dto.FechaFin)
-                    .Include(c => c.Empresa).ToListAsync();
+                    .ToListAsync();
 
                 if (convenios.Count == 0) return Result<object>.
                         Error("No se encontraron convenios marco con la fecha de finalizacion especificada.", 404);
 
                 return Result<object>.Exito(convenios.ToDto());
             }
-            else
+            else if (_Dto.convenioType == "especifico")
             {
-                var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
+                var query = _UnitOfWork._ConvenioEspecificoRepository.GetQueryByFiltering();
                 var convenios = await query.Where(c => c.FechaFinConvenio == _Dto.FechaFin)
-                    .Include(c => c.empresa).ToListAsync();
+                    .ToListAsync();
 
                 if (convenios.Count == 0) return Result<object>.
                         Error("No se encontraron convenios especificos con la fecha de finalizacion especificada.", 404);
 
                 return Result<object>.Exito(convenios.ToDto());
+            }
+            else
+            {
+                var context1 = await _UnitOfWork._ContextFactory.CreateDbContextAsync();
+                var context2 = await _UnitOfWork._ContextFactory.CreateDbContextAsync();
+
+                var task1 = context1.ConveniosEspecificos.Where(c => c.FechaFinConvenio == _Dto.FechaFin)
+                    .ToListAsync();
+
+                var task2 = context2.ConveniosMarcos.Where(c => c.FechaFin == _Dto.FechaFin)
+                    .ToListAsync();
+
+                await Task.WhenAll(task1, task2);
+
+                var conveniosEspecificos = await task1;
+                var conveniosMarcos = await task2;
+
+                if (conveniosMarcos.Count == 0 && conveniosEspecificos.Count == 0)
+                    return Result<object>.Error("no hay convenios que coincidan con la busqueda", 404);
+
+
+                var Data = new ListConveniosDto
+                {
+                    conveniosMarcos = conveniosMarcos.ToDto(),
+                    convenioEspecificos = conveniosEspecificos.ToDto(),
+                };
+
+
+                return Result<object>.Exito(Data);
             }
         }
     }

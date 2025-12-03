@@ -15,9 +15,9 @@ namespace APIconvenios.Commands.FilterCommands.Commands
         }
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
-            var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
+            var query = _UnitOfWork._ConvenioEspecificoRepository.GetQueryByFiltering();
 
-            var convenios = await query.Where(c => c.EsActa == true).Include(c => c.empresa).ToListAsync();
+            var convenios = await query.Where(c => c.EsActa == true).ToListAsync();
 
             if(convenios.Count == 0) return Result<object>.Error("No se encontraron convenios especificos de tipo acta", 404);
 

@@ -1,4 +1,5 @@
 ﻿using APIconvenios.Common;
+using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Filters;
 using APIconvenios.Helpers.Mappers;
 using APIconvenios.UnitOfWork;
@@ -18,11 +19,24 @@ namespace APIconvenios.Commands.FilterCommands.Commands
         {
             if (_Dto.convenioType == "marco")
             {
-                var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
+                var query = _UnitOfWork._ConvenioMarcoRepository.GetQueryByFiltering();
 
                 var convenios = await query
-                    .Where(c => c.FechaFin != null)
-                    .OrderByDescending(c => c.FechaFin).Take(30).Include(c => c.Empresa).ToListAsync();
+                    .Where(c => c.FechaFin != null).AsNoTracking()
+                    .OrderByDescending(c => c.FechaFin).Take(30).ToListAsync();
+
+                if (convenios.Count == 0) return Result<object>.
+                        Error("no hay convenios marcos registrados", 404);
+
+                return Result<object>.Exito(convenios.ToDto());
+            }
+            else if (_Dto.convenioType == "especifico")
+            {
+                var query = _UnitOfWork._ConvenioEspecificoRepository.GetQueryByFiltering();
+
+                var convenios = await query
+                    .Where(c => c.FechaFinConvenio != null).AsNoTracking()
+                    .OrderByDescending(c => c.FechaFinConvenio).Take(30).ToListAsync();
 
                 if (convenios.Count == 0) return Result<object>.
                         Error("no hay convenios marcos registrados", 404);
@@ -31,16 +45,32 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             }
             else
             {
-                var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
+                var context1 = _UnitOfWork._ContextFactory.CreateDbContext();
+                var context2 = _UnitOfWork._ContextFactory.CreateDbContext();
 
-                var convenios = await query
-                    .Where(c => c.FechaFinConvenio != null)
-                    .OrderByDescending(c => c.FechaFinConvenio).Take(30).Include(c => c.empresa).ToListAsync();
+                var Task1 = context1.ConveniosMarcos.Where(c => c.FechaFin != null)
+                    .OrderByDescending(c => c.FechaFin).Take(30).ToListAsync();
 
-                if (convenios.Count == 0) return Result<object>.
-                        Error("no hay convenios marcos registrados", 404);
+                var task2 = context2.ConveniosEspecificos.Where(c => c.FechaFinConvenio != null)
+                    .OrderByDescending(c => c.FechaFinConvenio).Take(30).ToListAsync();
 
-                return Result<object>.Exito(convenios.ToDto());
+                await Task.WhenAll(Task1, task2);
+
+                var conveniosMarco = await Task1;
+                var conveniosEspecificos = await task2;
+
+                if (conveniosMarco.Count == 0 && conveniosEspecificos.Count == 0) 
+                    return Result<object>.Error("no hay convenios que coincidan con la busqueda", 404);
+
+
+                var Data = new ListConveniosDto
+                {
+                    conveniosMarcos = conveniosMarco.ToDto(),
+                    convenioEspecificos = conveniosEspecificos.ToDto(),
+                };
+
+                
+                return Result<object>.Exito(Data);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using APIconvenios.Data;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Repositorio;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace APIconvenios.UnitOfWork
@@ -10,7 +11,7 @@ namespace APIconvenios.UnitOfWork
 
         private readonly ApplicationDbContext _Context;
 
-
+        public IDbContextFactory<ApplicationDbContext> _ContextFactory { get; }
         public IConvenioEspecificoRepository _ConvenioEspecificoRepository { get; }
         public IConvenioEspecificoReadRepository _ConvEspReadRepository { get; }
         public IConvenioMarcoRepository _ConvenioMarcoRepository { get; }
@@ -24,8 +25,9 @@ namespace APIconvenios.UnitOfWork
             IConvenioEspecificoReadRepository convespreadrepo,
             IConvenioMarcoRepository convmarcRepository, IConvenioMarcoReadRepository convmarcReadRepo, 
             IEmpresaRepository empresaRepository,ICarreraRepository carreraRepository,
-            IArchivosRepository archivosRepository)
+            IArchivosRepository archivosRepository, IDbContextFactory<ApplicationDbContext> contextFactory)
         {
+            _ContextFactory = contextFactory;
             _Context = applicationDbContext;
             _ConvenioEspecificoRepository = convenioEspecificorepo;
             _ConvEspReadRepository = convespreadrepo;

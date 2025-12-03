@@ -1,4 +1,5 @@
 ﻿using APIconvenios.Common;
+using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Filters;
 using APIconvenios.Helpers.Mappers;
 using APIconvenios.UnitOfWork;
@@ -18,9 +19,17 @@ namespace APIconvenios.Commands.FilterCommands.Commands
         {
             if (_Dto.convenioType == "marco")
             {
-                var query = _UnitOfWork._ConvenioMarcoRepository.GetQuery();
-                var Convenios = await query.Where(c => c.Refrendado == true)
-                    .Include(c => c.Empresa).ToListAsync();
+                var query = _UnitOfWork._ConvenioMarcoRepository.GetQueryByFiltering();
+                var Convenios = await query.Where(c => c.Refrendado == true).ToListAsync();
+
+                if (Convenios.Count == 0) return Result<object>.Error("No se encontraron convenios refrendados", 404);
+
+                return Result<object>.Exito(Convenios.ToDto());
+            }
+            else if(_Dto.convenioType == "especifico")
+            {
+                var query = _UnitOfWork._ConvenioEspecificoRepository.GetQueryByFiltering();
+                var Convenios = await query.Where(c => c.Refrendado == true).ToListAsync();
 
                 if (Convenios.Count == 0) return Result<object>.Error("No se encontraron convenios refrendados", 404);
 
@@ -28,13 +37,29 @@ namespace APIconvenios.Commands.FilterCommands.Commands
             }
             else
             {
-                var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
-                var Convenios = await query.Where(c => c.Refrendado == true)
-                    .Include(c => c.empresa).ToListAsync();
+                var context1 = await _UnitOfWork._ContextFactory.CreateDbContextAsync();
+                var context2 = await _UnitOfWork._ContextFactory.CreateDbContextAsync();
 
-                if (Convenios.Count == 0) return Result<object>.Error("No se encontraron convenios refrendados", 404);
+                var task1 = context1.ConveniosEspecificos.Where(c => c.Refrendado == true).ToListAsync();
+                var task2 = context2.ConveniosMarcos.Where(c => c.Refrendado == true).ToListAsync();
 
-                return Result<object>.Exito(Convenios.ToDto());
+                await Task.WhenAll(task1, task2);
+
+                var conveniosEspecificos = await task1;
+                var conveniosMarcos = await task2;
+
+                if (conveniosMarcos.Count == 0 && conveniosEspecificos.Count == 0)
+                    return Result<object>.Error("no hay convenios que coincidan con la busqueda", 404);
+
+
+                var Data = new ListConveniosDto
+                {
+                    conveniosMarcos = conveniosMarcos.ToDto(),
+                    convenioEspecificos = conveniosEspecificos.ToDto(),
+                };
+
+
+                return Result<object>.Exito(Data);
             }
         }
     }

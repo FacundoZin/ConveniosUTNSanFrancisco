@@ -44,9 +44,9 @@ namespace APIconvenios.Repositorio
             return await _Context.ConveniosEspecificos.Where(c => Ids.Contains(c.Id)).ToListAsync();
         }
 
-        public IQueryable<ConvenioEspecifico> GetQuery()
+        public IQueryable<ConvenioEspecifico> GetQueryByFiltering()
         {
-            return _Context.ConveniosEspecificos.AsQueryable();
+            return _Context.ConveniosEspecificos.Include(c => c.empresa).AsNoTracking().AsQueryable();
         }
 
         public void ModificarConvenioEspecifico(ConvenioEspecifico convenio)

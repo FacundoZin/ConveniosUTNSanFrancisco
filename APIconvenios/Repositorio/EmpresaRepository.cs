@@ -57,7 +57,7 @@ namespace APIconvenios.Repositorio
 
         public async Task EditEmpresaDto(int idEmpresa, EditEmpresaDto dto)
         {
-            var empresa = await _Context.Empresas.FindAsync(idEmpresa)
+            var empresa = await _Context.Empresas.FindAsync(idEmpresa);
 
             if(empresa == null) throw new Exception("Empresa no encontrada");
 

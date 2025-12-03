@@ -1,7 +1,5 @@
-﻿using APIconvenios.Common;
-using APIconvenios.Common.Enums;
+﻿using APIconvenios.Common.Enums;
 using APIconvenios.Data;
-using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Models;
 using Microsoft.EntityFrameworkCore;
@@ -41,9 +39,9 @@ namespace APIconvenios.Repositorio
             _Context.ConveniosMarcos.Update(convenioMarcoActualizado);
         }
 
-        public IQueryable<ConvenioMarco> GetQuery()
+        public IQueryable<ConvenioMarco> GetQueryByFiltering()
         {
-            return _Context.ConveniosMarcos.AsQueryable();
+            return _Context.ConveniosMarcos.Include(c => c.Empresa).AsNoTracking().AsQueryable();
         }
 
         public async Task<ConvenioMarco?> GetByNumeroConvenio(string Numero)

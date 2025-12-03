@@ -9,7 +9,7 @@ namespace APIconvenios.Interfaces.Repositorio
         void Delete(ConvenioMarco convenio);
         void CreateConvenio(ConvenioMarco convenioMarco);
         void ModificarConvenioMarco(ConvenioMarco convenioMarcoActualizado);
-        IQueryable<ConvenioMarco> GetQuery();
+        IQueryable<ConvenioMarco> GetQueryByFiltering();
 
         Task SetStateToFinish(DateOnly date);
         Task<ConvenioMarco?> GetByNumeroConvenio(string Numero);

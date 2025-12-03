@@ -17,11 +17,9 @@ namespace APIconvenios.Commands.FilterCommands.Commands
 
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
-           var query = _UnitOfWork._ConvenioEspecificoRepository.GetQuery();
+           var query = _UnitOfWork._ConvenioEspecificoRepository.GetQueryByFiltering();
 
             var convenios = await query.Where(convenio => convenio.CarrerasInvolucradas.Any(carrera => carrera.Nombre == _Dto.nombreCarrera))
-                .Include(c => c.empresa)
-                .AsNoTracking()
                 .ToListAsync();
 
 
