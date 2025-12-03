@@ -69,6 +69,7 @@ builder.Services.AddScoped<IConvenioMarcoRepository, ConveniosMarcoRepository>()
 builder.Services.AddScoped<IConvenioMarcoReadRepository, ConvenioMarcoReadRepository>();
 builder.Services.AddScoped<ICarreraRepository, CarrerasRepository>();
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+builder.Services.AddScoped<IInvolucradosRepository, InvolucradosRepository>();
 builder.Services.AddScoped<IArchivosRepository, ArchivosRepository>();
 builder.Services.AddSingleton<ILogger>(new FileLogger(LogPath));
 

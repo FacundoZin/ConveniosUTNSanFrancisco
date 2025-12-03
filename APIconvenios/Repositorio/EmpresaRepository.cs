@@ -4,6 +4,7 @@ using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace APIconvenios.Repositorio
 {
@@ -44,9 +45,10 @@ namespace APIconvenios.Repositorio
                 
         }
 
-        public Task<bool> NameEmpresaExist(string Title)
+        public async Task<bool> NameEmpresaExist(string Name)
         {
-            throw new NotImplementedException();
+            return await _Context.Empresas
+               .AnyAsync(c => c.Nombre.ToLower() == Name.ToLower());
         }
 
         public async Task<bool> NameEmpresaExistForUpdate(string Name, int idEmpresa)

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace APIconvenios.Migrations
 {
     /// <inheritdoc />
-    public partial class siembraInicialAñadimosCarrerasNuevas : Migration
+    public partial class addCarreraToInvolucrados : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,11 +56,18 @@ namespace APIconvenios.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     Telefono = table.Column<string>(type: "TEXT", nullable: true),
                     Legajo = table.Column<int>(type: "INTEGER", nullable: true),
-                    RolInvolucrado = table.Column<int>(type: "INTEGER", nullable: false)
+                    RolInvolucrado = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdArea = table.Column<int>(type: "INTEGER", nullable: true),
+                    AreaId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Involucrados", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Involucrados_Carreras_AreaId",
+                        column: x => x.AreaId,
+                        principalTable: "Carreras",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -228,20 +235,20 @@ namespace APIconvenios.Migrations
 
             migrationBuilder.InsertData(
                 table: "Involucrados",
-                columns: new[] { "Id", "Apellido", "Email", "Legajo", "Nombre", "RolInvolucrado", "Telefono" },
+                columns: new[] { "Id", "Apellido", "AreaId", "Email", "IdArea", "Legajo", "Nombre", "RolInvolucrado", "Telefono" },
                 values: new object[,]
                 {
-                    { 1, "Perez", "juan.perez@email.com", 12345, "Juan", 1, "3564998877" },
-                    { 2, "Martinez", "sofia.martinez@email.com", 12346, "Sofia", 1, "3564887766" },
-                    { 3, "Rodriguez", "lucas.rodriguez@email.com", 12347, "Lucas", 1, "3564776655" },
-                    { 4, "Gomez", "maria.gomez@email.com", 67890, "Maria", 0, "3564776655" },
-                    { 5, "Fernandez", "carlos.fernandez@utn.edu.ar", 67891, "Carlos", 0, "3564665544" },
-                    { 6, "Lopez", "ana.lopez@utn.edu.ar", 67892, "Ana", 0, "3564554433" },
-                    { 7, "Sanchez", "roberto.sanchez@utn.edu.ar", 89001, "Roberto", 2, "3564443322" },
-                    { 8, "Diaz", "laura.diaz@utn.edu.ar", 89002, "Laura", 2, "3564332211" },
-                    { 9, "Morales", "pedro.morales@techsolutions.com", null, "Pedro", 3, "3564221100" },
-                    { 10, "Torres", "gabriela.torres@innovacion.com", null, "Gabriela", 3, "3564110099" },
-                    { 11, "Ruiz", "miguel.ruiz@electronica.com", null, "Miguel", 3, "3564009988" }
+                    { 1, "Perez", null, "juan.perez@email.com", null, 12345, "Juan", 1, "3564998877" },
+                    { 2, "Martinez", null, "sofia.martinez@email.com", null, 12346, "Sofia", 1, "3564887766" },
+                    { 3, "Rodriguez", null, "lucas.rodriguez@email.com", null, 12347, "Lucas", 1, "3564776655" },
+                    { 4, "Gomez", null, "maria.gomez@email.com", null, 67890, "Maria", 0, "3564776655" },
+                    { 5, "Fernandez", null, "carlos.fernandez@utn.edu.ar", null, 67891, "Carlos", 0, "3564665544" },
+                    { 6, "Lopez", null, "ana.lopez@utn.edu.ar", null, 67892, "Ana", 0, "3564554433" },
+                    { 7, "Sanchez", null, "roberto.sanchez@utn.edu.ar", null, 89001, "Roberto", 2, "3564443322" },
+                    { 8, "Diaz", null, "laura.diaz@utn.edu.ar", null, 89002, "Laura", 2, "3564332211" },
+                    { 9, "Morales", null, "pedro.morales@techsolutions.com", null, null, "Pedro", 3, "3564221100" },
+                    { 10, "Torres", null, "gabriela.torres@innovacion.com", null, null, "Gabriela", 3, "3564110099" },
+                    { 11, "Ruiz", null, "miguel.ruiz@electronica.com", null, null, "Miguel", 3, "3564009988" }
                 });
 
             migrationBuilder.InsertData(
@@ -408,6 +415,11 @@ namespace APIconvenios.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Involucrados_AreaId",
+                table: "Involucrados",
+                column: "AreaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvolucradosConvenioEspecifico_InvolucradosId",
                 table: "InvolucradosConvenioEspecifico",
                 column: "InvolucradosId");
@@ -426,9 +438,6 @@ namespace APIconvenios.Migrations
                 name: "InvolucradosConvenioEspecifico");
 
             migrationBuilder.DropTable(
-                name: "Carreras");
-
-            migrationBuilder.DropTable(
                 name: "ConveniosEspecificos");
 
             migrationBuilder.DropTable(
@@ -436,6 +445,9 @@ namespace APIconvenios.Migrations
 
             migrationBuilder.DropTable(
                 name: "ConveniosMarcos");
+
+            migrationBuilder.DropTable(
+                name: "Carreras");
 
             migrationBuilder.DropTable(
                 name: "Empresas");

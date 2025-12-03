@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIconvenios.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251202200542_siembraInicial+AñadimosCarrerasNuevas")]
-    partial class siembraInicialAñadimosCarrerasNuevas
+    [Migration("20251203185430_addCarreraToInvolucrados")]
+    partial class addCarreraToInvolucrados
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -600,8 +600,14 @@ namespace APIconvenios.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("AreaId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("IdArea")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("Legajo")
                         .HasColumnType("INTEGER");
@@ -617,6 +623,8 @@ namespace APIconvenios.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
 
                     b.ToTable("Involucrados");
 
@@ -1014,6 +1022,15 @@ namespace APIconvenios.Migrations
                     b.Navigation("Empresa");
                 });
 
+            modelBuilder.Entity("APIconvenios.Models.Involucrados", b =>
+                {
+                    b.HasOne("APIconvenios.Models.Carreras", "Area")
+                        .WithMany("Involucrados")
+                        .HasForeignKey("AreaId");
+
+                    b.Navigation("Area");
+                });
+
             modelBuilder.Entity("CarrerasConvenioEspecifico", b =>
                 {
                     b.HasOne("APIconvenios.Models.Carreras", null)
@@ -1042,6 +1059,11 @@ namespace APIconvenios.Migrations
                         .HasForeignKey("InvolucradosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("APIconvenios.Models.Carreras", b =>
+                {
+                    b.Navigation("Involucrados");
                 });
 
             modelBuilder.Entity("APIconvenios.Models.ConvenioEspecifico", b =>

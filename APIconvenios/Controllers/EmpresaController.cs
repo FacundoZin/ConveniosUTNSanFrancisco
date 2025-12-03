@@ -29,7 +29,7 @@ namespace APIconvenios.Controllers
         }
 
         [HttpPut("{idEmpresa:int}")]
-        public async Task<IActionResult> EditarInfoEmpresa([FromQuery] int idEmpresa, [FromBody] EditEmpresaDto dto)
+        public async Task<IActionResult> EditarInfoEmpresa(int idEmpresa, [FromBody] EditEmpresaDto dto)
         {
             await _UnitOfWork._EmpresaRepository.EditEmpresaDto(idEmpresa, dto);
 
