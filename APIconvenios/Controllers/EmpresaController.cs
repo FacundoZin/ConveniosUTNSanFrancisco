@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace APIconvenios.Controllers
 {
@@ -32,6 +26,14 @@ namespace APIconvenios.Controllers
             });
 
             return Ok(dto);
+        }
+
+        [HttpPut("{idEmpresa:int}")]
+        public async Task<IActionResult> EditarInfoEmpresa([FromQuery] int idEmpresa, [FromBody] EditEmpresaDto dto)
+        {
+            await _UnitOfWork._EmpresaRepository.EditEmpresaDto(idEmpresa, dto);
+
+            return NoContent();
         }
     }
 }

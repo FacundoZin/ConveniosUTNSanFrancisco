@@ -132,7 +132,13 @@ namespace APIconvenios.Services
             if(empresa == null)
                 return Result<EmpresaWithConveniosDto>.Error("Empresa no encontrada", 404);
 
-            return Result<EmpresaWithConveniosDto>.Exito(empresa.ToEmpresaWithConveniosDto());
+
+            return Result<EmpresaWithConveniosDto>.Exito(new EmpresaWithConveniosDto
+            {
+                NombreEmpresa = empresa.Nombre,
+                ConvenioMarco = empresa.ConvenioMarco.ToDto(),
+                conveniosEspecificos = empresa.ConveniosEspecificos.ToDto()
+            });
         }
     }
 }

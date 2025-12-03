@@ -54,6 +54,22 @@ namespace APIconvenios.Repositorio
             return await _Context.Empresas
                .AnyAsync(c => c.Nombre.ToLower() == Name.ToLower() && c.Id != idEmpresa);
         }
+
+        public async Task EditEmpresaDto(int idEmpresa, EditEmpresaDto dto)
+        {
+            var empresa = await _Context.Empresas.FindAsync(idEmpresa)
+
+            if(empresa == null) throw new Exception("Empresa no encontrada");
+
+            empresa.Nombre = dto.Nombre;
+            empresa.Email = dto.Email;
+            empresa.Direccion = dto.Direccion;
+            empresa.RazonSocial = dto.RazonSocial;
+            empresa.Telefono = dto.Telefono;
+            empresa.Cuit = dto.Telefono;
+
+            await _Context.SaveChangesAsync();
+        }
     }
 }
 
