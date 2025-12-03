@@ -12,6 +12,10 @@ namespace APIconvenios.Models
         public int? Legajo { get; set; }
         public Roles RolInvolucrado { get; set; }
 
+        public int? IdArea { get; set; }
+        public Carreras? Area { get; set; }
+
         public List<ConvenioEspecifico> ConveniosEspecificos { get; set; }
+
     }
 }

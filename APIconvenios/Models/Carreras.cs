@@ -6,5 +6,6 @@
         public string Nombre { get; set; }
 
         public List<ConvenioEspecifico> ConveniosInvolucrados { get; set; }    
+        public List<Involucrados> Involucrados { get; set; }
     }
 }

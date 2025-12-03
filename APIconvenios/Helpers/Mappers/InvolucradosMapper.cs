@@ -14,7 +14,8 @@ namespace APIconvenios.Helpers.Mappers
                 Email = i.Email,
                 Telefono = i.Telefono,
                 Legajo = i.Legajo,
-                RolInvolucrado = i.RolInvolucrado
+                RolInvolucrado = i.RolInvolucrado,
+                IdArea = i.AreaInvlucrada
             }).ToList();
         }
     }
