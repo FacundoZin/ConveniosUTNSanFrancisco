@@ -19,11 +19,10 @@ namespace APIconvenios.Services
 
         public async Task<Result<object?>> ValidateCargaConvenioEspecifico(CargarConvenioEspecificoRequestDto _Dto)
         {
-            Task<Result<object?>> task1 = null;
+            var task1 = _UnitOfWork._ConvEspReadRepository.TitleConvenioExist(_Dto.InsertConvenioDto.Titulo);
+
             Task<Result<object?>>? task2 = null;
             Task<Result<object?>>? task3 = null;
-
-            task1 = _UnitOfWork._ConvEspReadRepository.TitleConvenioExist(_Dto.InsertConvenioDto.Titulo);
             
 
             if (_Dto.InsertConvenioDto.numeroconvenio != null)
@@ -70,11 +69,11 @@ namespace APIconvenios.Services
 
         public async Task<Result<object?>> ValidateUpdateConvenioEspecifico(UpdateConvenioEspecificoRequestDto _Dto)
         {
-            Task<Result<object?>> task1 = null;
+            var task1 = _UnitOfWork._ConvEspReadRepository.
+                TitleConvenioExistForUpdate(_Dto.UpdateConvenioDto.Titulo, _Dto.UpdateConvenioDto.Id);
+
             Task<Result<object?>>? task2 = null;
             Task<Result<object?>>? task3 = null;
-
-            task1 = _UnitOfWork._ConvEspReadRepository.TitleConvenioExist(_Dto.UpdateConvenioDto.Titulo);
 
 
             if (_Dto.UpdateConvenioDto.numeroconvenio != null)

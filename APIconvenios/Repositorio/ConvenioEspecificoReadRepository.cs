@@ -52,7 +52,7 @@ namespace APIconvenios.Repositorio
             return Result<object?>.Exito(null);
         }
 
-        public async Task<Result<object?>> NumeroConvenioExistForUpdate(string? numeroConvenio, int id)
+        public async Task<Result<object?>> NumeroConvenioExistForUpdate(string numeroConvenio, int id)
         {
             var context = _ContextFactory.CreateDbContext();
             bool Exist = await context.ConveniosEspecificos.AnyAsync(c => c.numeroconvenio == numeroConvenio && c.Id != id);

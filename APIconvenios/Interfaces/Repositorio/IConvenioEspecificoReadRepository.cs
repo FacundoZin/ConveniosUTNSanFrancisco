@@ -14,7 +14,7 @@ namespace APIconvenios.Interfaces.Repositorio
         Task<Result<object?>> TitleConvenioExist(string title);
         Task<Result<object?>> NumeroConvenioExist(string numeroConvenio);
         Task<Result<object?>> TitleConvenioExistForUpdate(string title, int id);
-        Task<Result<object?>> NumeroConvenioExistForUpdate(string? numeroConvenio, int id);
+        Task<Result<object?>> NumeroConvenioExistForUpdate(string numeroConvenio, int id);
 
     }
 }

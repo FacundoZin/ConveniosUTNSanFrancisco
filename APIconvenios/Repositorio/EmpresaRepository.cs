@@ -3,9 +3,7 @@ using APIconvenios.Data;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace APIconvenios.Repositorio
 {
