@@ -14,15 +14,19 @@ namespace APIconvenios.Services
     public class ConvenioEspecificoService : IConvenioEspecifcoService
     {
         private readonly _UnitOfWork _UnitOfWork;
-        public ConvenioEspecificoService(_UnitOfWork unitOfWork)
+        private readonly IValidateConveniosService _ValidateService;
+        public ConvenioEspecificoService(_UnitOfWork unitOfWork, IValidateConveniosService validateConveniosService)
         {
             _UnitOfWork = unitOfWork;
+            _ValidateService = validateConveniosService;
         }
 
         public async Task<Result<ConvenioCreated>> CreateConvenioEspecifico(CargarConvenioEspecificoRequestDto Dto)
         {
-            if(await _UnitOfWork._ConvenioMarcoReadRepository.TitleExist(Dto.InsertConvenioDto.Titulo))
-                return Result<ConvenioCreated>.Error("Ya existe un convenio especifico con ese titulo", 400);
+            var resultValidation = await _ValidateService.ValidateCargaConvenioEspecifico(Dto);
+
+            if (!resultValidation.Exit)
+                return Result<ConvenioCreated>.Error(resultValidation.Errormessage, resultValidation.Errorcode);
 
             var Convenio = Dto.InsertConvenioDto.UploadData();
 
@@ -35,14 +39,7 @@ namespace APIconvenios.Services
                 Commnands.Add(new LinkCarrerasCmd(Dto.idCarreras));
 
             if (Dto.InsertEmpresaDto != null)
-            {
-                if(Dto.InsertEmpresaDto.Id == null && await _UnitOfWork._EmpresaRepository.NameEmpresaExist(Dto.InsertEmpresaDto.Nombre))
-                {
-                    Result<ConvenioCreated>.Error("La empresa que quiere cargar ya existe", 400);
-                }
                 Commnands.Add(new LinkEmpresaToEspecificoCmd(Dto.InsertEmpresaDto));
-            }
-                
 
             if (Dto.numeroConvenioMarcoVinculado != null)
                 Commnands.Add(new LinkerConvMarcoCmd(Dto.numeroConvenioMarcoVinculado));
@@ -87,14 +84,17 @@ namespace APIconvenios.Services
 
         public async Task<Result<object?>> EditarConvenioEspecifico(UpdateConvenioEspecificoRequestDto Dto)
         {
+            var resultValidation = await _ValidateService.ValidateUpdateConvenioEspecifico(Dto);
+
+            if (!resultValidation.Exit)
+                return Result<object?>.Error(resultValidation.Errormessage, resultValidation.Errorcode);
+
+
             var Convenio = await _UnitOfWork._ConvEspReadRepository.GetConvenioWithRelations(Dto.UpdateConvenioDto.Id);
 
             if (Convenio == null) return Result<object?>.Error("El convenio que quiere actualizar no existe", 404);
 
-            if(await _UnitOfWork._ConvEspReadRepository
-                .TitleExistForUpdate(Dto.UpdateConvenioDto.Titulo, Dto.UpdateConvenioDto.Id)) 
-                return Result<object?>.Error("Ya existe un convenio con este nombre", 400);
-
+            
             var commands = new List<IConvEspCommand>();
 
             Convenio.UpdateConvenio(Dto.UpdateConvenioDto);
@@ -109,16 +109,7 @@ namespace APIconvenios.Services
                 commands.Add(new UnlinkEmpresaFromEspecificoCmd());
 
             if (Dto.InsertEmpresaDto != null)
-            {
-                if(Dto.InsertEmpresaDto.Id == null && 
-                    await _UnitOfWork._EmpresaRepository
-                    .NameEmpresaExist(Dto.InsertEmpresaDto.Nombre))
-                {
-                    return Result<object?>.Error("La empresa que quiere cargar ya existe", 400);
-                }
                 commands.Add(new LinkEmpresaToEspecificoCmd(Dto.InsertEmpresaDto));
-            }
-                
 
             if (Dto.IdsInvolucraodsEliminados != null && Dto.IdsInvolucraodsEliminados.Any())
                 commands.Add(new UnlinkInvolucradosCmd(Dto.IdsInvolucraodsEliminados));
@@ -128,7 +119,6 @@ namespace APIconvenios.Services
 
             if (Dto.numeroConvenioMarcoVinculado != null)
                 commands.Add(new LinkerConvMarcoCmd(Dto.numeroConvenioMarcoVinculado));
-   
 
             foreach (var command in commands)
                 await command.ExecuteAsync(Convenio, _UnitOfWork);

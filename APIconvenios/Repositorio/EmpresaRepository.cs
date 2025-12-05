@@ -1,4 +1,5 @@
-﻿using APIconvenios.Data;
+﻿using APIconvenios.Common;
+using APIconvenios.Data;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Models;
@@ -42,26 +43,33 @@ namespace APIconvenios.Repositorio
                 .Include(e => e.ConveniosEspecificos)
                 .Include(e => e.ConvenioMarco)
                 .FirstOrDefaultAsync(e => e.Id == id);
-                
+
         }
 
-        public async Task<bool> NameEmpresaExist(string Name)
+        public async Task<Result<object?>> NameEmpresaExist(string Name)
         {
-            return await _Context.Empresas
-               .AnyAsync(c => c.Nombre.ToLower() == Name.ToLower());
+            bool result = await _Context.Empresas
+                .AnyAsync(c => c.Nombre.ToLower() == Name.ToLower());
+
+            if(result) return Result<object?>.Error("Ya existe una empresa con ese nombre", 400);
+            return Result<object?>.Exito(null);
+
         }
 
-        public async Task<bool> NameEmpresaExistForUpdate(string Name, int idEmpresa)
+        public async Task<Result<object?>> NameEmpresaExistForUpdate(string Name, int idEmpresa)
         {
-            return await _Context.Empresas
+            bool result = await _Context.Empresas
                .AnyAsync(c => c.Nombre.ToLower() == Name.ToLower() && c.Id != idEmpresa);
+
+            if (result) return Result<object?>.Error("Ya existe una empresa con ese nombre", 400);
+            return Result<object?>.Exito(null);
         }
 
         public async Task EditEmpresaDto(int idEmpresa, EditEmpresaDto dto)
         {
             var empresa = await _Context.Empresas.FindAsync(idEmpresa);
 
-            if(empresa == null) throw new Exception("Empresa no encontrada");
+            if (empresa == null) throw new Exception("Empresa no encontrada");
 
             empresa.Nombre = dto.Nombre;
             empresa.Email = dto.Email;

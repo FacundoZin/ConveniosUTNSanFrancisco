@@ -1,4 +1,5 @@
-﻿using APIconvenios.Data;
+﻿using APIconvenios.Common;
+using APIconvenios.Data;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Helpers.Mappers;
@@ -19,6 +20,46 @@ namespace APIconvenios.Repositorio
         {
             _context = context;
             _ContextFactory = contextFactory;
+        }
+
+        public async Task<Result<object?>> TitleConvenioExist(string title)
+        {
+            var context = _ContextFactory.CreateDbContext();
+            bool Exist = await context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio.ToLower() == title.ToLower());
+
+            if(Exist) return Result<object?>.Error("Ya existe un convenio especifico con ese titulo", 400);
+
+            return Result<object?>.Exito(null);
+        }
+
+        public async Task<Result<object?>> NumeroConvenioExist(string numeroConvenio)
+        {
+            var context = _ContextFactory.CreateDbContext();
+            bool Exist = await context.ConveniosEspecificos.AnyAsync(c => c.numeroconvenio == numeroConvenio);
+
+            if (Exist) return Result<object?>.Error("Ya existe un convenio especifico con ese numero", 400);
+
+            return Result<object?>.Exito(null);
+        }
+
+        public async Task<Result<object?>> TitleConvenioExistForUpdate(string title, int id)
+        {
+            var context = _ContextFactory.CreateDbContext();
+            bool Exist = await context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio.ToLower() == title.ToLower() && c.Id != id);
+
+            if (Exist) return Result<object?>.Error("Ya existe un convenio especifico con ese titulo", 400);
+
+            return Result<object?>.Exito(null);
+        }
+
+        public async Task<Result<object?>> NumeroConvenioExistForUpdate(string? numeroConvenio, int id)
+        {
+            var context = _ContextFactory.CreateDbContext();
+            bool Exist = await context.ConveniosEspecificos.AnyAsync(c => c.numeroconvenio == numeroConvenio && c.Id != id);
+
+            if (Exist) return Result<object?>.Error("Ya existe un convenio especifico con ese numero", 400);
+
+            return Result<object?>.Exito(null);
         }
 
         public async Task<List<ComboBoxConvenioEspecificoDto>> GetAllWithoutTracking()
@@ -55,16 +96,6 @@ namespace APIconvenios.Repositorio
             .FirstOrDefaultAsync(c => c.Id == id);
 
             return convenio != null ? convenio : null;
-        }
-
-        public async Task<bool> TitleExist(string title)
-        {
-            return await _context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio.ToLower() == title.ToLower());
-        }
-
-        public async Task<bool> TitleExistForUpdate(string title, int idConvenio)
-        {
-            return await _context.ConveniosEspecificos.AnyAsync(c => c.TituloConvenio.ToLower() == title.ToLower() && c.Id != idConvenio);
         }
     }
 }
