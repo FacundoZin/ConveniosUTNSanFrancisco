@@ -17,20 +17,23 @@ namespace APIconvenios.Services
     public class ConveniosMarcosServices : IConvenioMarcoService
     {
         private readonly _UnitOfWork _UnitOfWork;
+        private readonly IValidateConveniosService _ValidateService;
 
-        public ConveniosMarcosServices(_UnitOfWork unitOfWork, ConveniosFilterService FilterService)
+        public ConveniosMarcosServices(_UnitOfWork unitOfWork, ConveniosFilterService FilterService, IValidateConveniosService validateService)
         {
             _UnitOfWork = unitOfWork;
+            _ValidateService = validateService;
         }
 
         public async Task<Result<bool>> ActualizarConvenioMarco(UpdateConvenioMarcoRequetsDto requetsDto)
         {
+            var resultValidation = await _ValidateService.ValidateUpdateConvenioMarco(requetsDto);
+
+            if (!resultValidation.Exit)
+                return Result<bool>.Error(resultValidation.Errormessage, resultValidation.Errorcode);
+
             var Convenio = await _UnitOfWork._ConvenioMarcoReadRepository.GetByidWithConvEspecifico(requetsDto.UpdateConvenioMarcoDto.Id);
             if (Convenio == null) return Result<bool>.Error("El convenio que quiere actualizar no existe", 404);
-
-            if (_UnitOfWork._ConvenioMarcoReadRepository
-                .TitleExistForUpdate(requetsDto.UpdateConvenioMarcoDto.Titulo, requetsDto.UpdateConvenioMarcoDto.Id).Result)
-                return Result<bool>.Error("Ya existe un convenio marco con ese titulo", 400);
 
             var commands = new List<IConvMarcoCommand>();
 
@@ -41,15 +44,8 @@ namespace APIconvenios.Services
                 commands.Add(new UnlinkEmpresaFromMarcoCmd());
 
             if (requetsDto.InsertEmpresaDto != null)
-            {
-                if(requetsDto.InsertEmpresaDto.Id == null && await _UnitOfWork._EmpresaRepository.NameEmpresaExist(requetsDto.InsertEmpresaDto.Nombre))
-                {
-                    return Result<bool>.Error("la empresa que quiere cargar ya existe", 400);
-                }
                 commands.Add(new LinkEmpresaToMarcoCmd(requetsDto.InsertEmpresaDto));
-            }
-                
-
+            
             if (requetsDto.NumeroConvenioEspecificosParaVincular != null)
                 commands.Add(new LinkerConvEspCmd(requetsDto.NumeroConvenioEspecificosParaVincular));
 
@@ -122,8 +118,10 @@ namespace APIconvenios.Services
 
         public async Task<Result<ConvenioCreated>> CargarConvenioMarco(CargarConvenioMarcoRequestDto requestDto)
         {
-            if(await _UnitOfWork._ConvenioMarcoReadRepository.TitleExist(requestDto.InsertConvenioDto.Titulo))
-                return Result<ConvenioCreated>.Error("Ya existe un convenio marco con ese titulo", 400);
+            var resultValidation = await _ValidateService.ValidateCargaConvenioMarco(requestDto);
+
+            if (!resultValidation.Exit)
+                return Result<ConvenioCreated>.Error(resultValidation.Errormessage, resultValidation.Errorcode);
 
             var convenio = new ConvenioMarco();
 
@@ -132,14 +130,7 @@ namespace APIconvenios.Services
             var commands = new List<IConvMarcoCommand>();
 
             if (requestDto.InsertEmpresaDto != null)
-            {
-                if (requestDto.InsertEmpresaDto.Id == null && await _UnitOfWork._EmpresaRepository.NameEmpresaExist(requestDto.InsertEmpresaDto.Nombre))
-                {
-                    return Result<ConvenioCreated>.Error("La empresa que quiere cargar ya existe", 400);
-                }
-              
                 commands.Add(new LinkEmpresaToMarcoCmd(requestDto.InsertEmpresaDto));
-            }
                 
 
             if (requestDto.NumeroConvEspecificoParaVincular != null)

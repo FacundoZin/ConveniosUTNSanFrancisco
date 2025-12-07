@@ -1,4 +1,5 @@
-﻿using APIconvenios.Data;
+﻿using APIconvenios.Common;
+using APIconvenios.Data;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
@@ -52,15 +53,44 @@ namespace APIconvenios.Repositorio
             return convenio != null ? convenio.ToFullInfo() : null;
         }
 
-        public async Task<bool> TitleExist(string Title)
+        public async Task<Result<object?>> TitleConvenioExist(string Title)
         {
-            return await _Context.ConveniosMarcos.AnyAsync(c => c.Titulo.ToLower() == Title.ToLower());
+            var context = _ContextFactory.CreateDbContext();
+            bool Exist = await context.ConveniosMarcos.AnyAsync(c => c.Titulo.ToLower() == Title.ToLower());
+
+            if (Exist) return Result<object?>.Error("Ya existe un convenio marco con ese titulo", 400);
+
+            return Result<object?>.Exito(null);
         }
 
-        public async Task<bool> TitleExistForUpdate(string Title, int idConvenio)
+        public async Task<Result<object?>> TitleConvenioExistForUpdate(string title, int id)
         {
-            return await _Context.ConveniosMarcos
-                .AnyAsync(c => c.Titulo.ToLower() == Title.ToLower() && c.Id != idConvenio);
+            var context = _ContextFactory.CreateDbContext();
+            bool Exist = await context.ConveniosMarcos.AnyAsync(c => c.Titulo.ToLower() == title.ToLower() && c.Id != id);
+
+            if (Exist) return Result<object?>.Error("Ya existe un convenio marco con ese titulo", 400);
+
+            return Result<object?>.Exito(null);
+        }
+
+        public async Task<Result<object?>> NumeroConvenioExist(string numeroConvenio)
+        {
+            var context = _ContextFactory.CreateDbContext();
+            bool Exist = await context.ConveniosMarcos.AnyAsync(c => c.numeroconvenio == numeroConvenio);
+
+            if (Exist) return Result<object?>.Error("Ya existe un convenio marco con ese numero", 400);
+
+            return Result<object?>.Exito(null);
+        }
+
+        public async Task<Result<object?>> NumeroConvenioExistForUpdate(string numeroConvenio, int id)
+        {
+            var context = _ContextFactory.CreateDbContext();
+            bool Exist = await context.ConveniosEspecificos.AnyAsync(c => c.numeroconvenio == numeroConvenio && c.Id != id);
+
+            if (Exist) return Result<object?>.Error("Ya existe un convenio marco con ese numero", 400);
+
+            return Result<object?>.Exito(null);
         }
 
     }

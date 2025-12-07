@@ -1,12 +1,11 @@
 ﻿using APIconvenios.Common;
 using APIconvenios.Data;
 using APIconvenios.DTOs.ConvenioEspecifico;
-using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Helpers.Mappers;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+
 
 namespace APIconvenios.Repositorio
 {

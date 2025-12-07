@@ -1,4 +1,5 @@
-﻿using APIconvenios.DTOs.ConvenioMarco;
+﻿using APIconvenios.Common;
+using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.Models;
 using System.Linq.Expressions;
 
@@ -8,8 +9,10 @@ namespace APIconvenios.Interfaces.Repositorio
     {
         Task<List<ComboBoxConvenioMarcoDto>> GetAllWithoutTracking();
         Task<InfoConvenioMarcoDto?> GetConvenioMarcosCompleto(int id);
-        Task<bool> TitleExist(string Title);
-        Task<bool> TitleExistForUpdate(string title, int idConvenio);
+        Task<Result<object?>> TitleConvenioExist(string Title);
+        Task<Result<object?>> TitleConvenioExistForUpdate(string title, int id);
         Task<ConvenioMarco?> GetByidWithConvEspecifico(int id);
+        Task<Result<object?>> NumeroConvenioExist(string numeroConvenio);
+        Task<Result<object?>> NumeroConvenioExistForUpdate(string numeroConvenio, int id);
     }
 }
