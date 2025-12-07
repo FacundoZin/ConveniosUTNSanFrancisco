@@ -41,8 +41,8 @@ namespace APIconvenios.Services
             if (Dto.InsertEmpresaDto != null)
                 Commnands.Add(new LinkEmpresaToEspecificoCmd(Dto.InsertEmpresaDto));
 
-            if (Dto.numeroConvenioMarcoVinculado != null)
-                Commnands.Add(new LinkerConvMarcoCmd(Dto.numeroConvenioMarcoVinculado));
+            if (Dto.idConvenioMarco != null)
+                Commnands.Add(new LinkerConvMarcoCmd((int)Dto.idConvenioMarco));
 
             foreach (var command in Commnands)
                 await command.ExecuteAsync(Convenio, _UnitOfWork);
