@@ -26,7 +26,24 @@ namespace APIconvenios.Controllers
 
             var existe = await _UnitOfWork._InvolucradosRepository.involucradoExist(_dto.nombre, _dto.apellido);
 
-            return Ok(existe);
+            if(existe)
+                return Ok(new InvolucradoExistDto { existe= true, message = "el involucrado que quiere agregar ya existe"});
+
+            return Ok(new InvolucradoExistDto { existe = false, message = "-" });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllInvolucrados()
+        {
+            var involucrados = await _UnitOfWork._InvolucradosRepository.GetAllInvolucraods();
+
+            var dto = involucrados.Select(i => new ComboBoxInvolucradosDto
+            {
+                Id = i.Id,
+                FullName = $"{i.Nombre} {i.Apellido}",
+            }).ToList();
+
+            return Ok(dto);
         }
     }
 }

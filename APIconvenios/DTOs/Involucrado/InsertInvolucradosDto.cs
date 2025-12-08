@@ -10,7 +10,7 @@ namespace APIconvenios.DTOs.Involucrados
         public string? Email { get; set; }
         public string? Telefono { get; set; }
         public int? Legajo { get; set; }
-        public int? AreaInvlucrada { get; set; }
+        public int? IdCarrera { get; set; }
         public Roles RolInvolucrado { get; set; }
     }
 }

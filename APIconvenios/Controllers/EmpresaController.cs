@@ -22,7 +22,7 @@ namespace APIconvenios.Controllers
             var dto = empresas.Select(e => new ComboBoxEmpresasDto
             {
                 IdEmpresa = e.Id,
-                NombreEmpresa = e.Nombre
+                NombreEmpresa = e.Nombre,
             });
 
             return Ok(dto);

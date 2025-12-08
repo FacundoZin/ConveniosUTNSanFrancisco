@@ -19,7 +19,13 @@ namespace APIconvenios.Repositorio
 
         public async Task<List<Models.Empresa>> GetAll()
         {
-            var empresas = await _Context.Empresas.ToListAsync();
+            var empresas = await _Context.Empresas
+                .Select(e => new Empresa
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                })
+                .ToListAsync();
             return empresas;
         }
 
