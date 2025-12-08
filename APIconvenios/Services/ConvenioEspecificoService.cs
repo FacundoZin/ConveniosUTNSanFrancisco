@@ -117,8 +117,8 @@ namespace APIconvenios.Services
             if (Dto.DesvincularConvenioMarco)
                 commands.Add(new UnlinkConvMarcoCmd());
 
-            if (Dto.numeroConvenioMarcoVinculado != null)
-                commands.Add(new LinkerConvMarcoCmd(Dto.numeroConvenioMarcoVinculado));
+            if (Dto.idMarcoVinculado != null)
+                commands.Add(new LinkerConvMarcoCmd((int)Dto.idMarcoVinculado));
 
             foreach (var command in commands)
                 await command.ExecuteAsync(Convenio, _UnitOfWork);

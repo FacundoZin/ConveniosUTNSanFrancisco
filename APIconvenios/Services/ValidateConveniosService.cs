@@ -30,7 +30,7 @@ namespace APIconvenios.Services
                 task2 = _UnitOfWork._ConvEspReadRepository.NumeroConvenioExist(_Dto.InsertConvenioDto.numeroconvenio);
             }
 
-            if (_Dto.InsertEmpresaDto != null && _Dto.InsertEmpresaDto.Id != null)
+            if (_Dto.InsertEmpresaDto != null && _Dto.InsertEmpresaDto.Id == null)
             {
                 task3 = _UnitOfWork._EmpresaRepository.NameEmpresaExist(_Dto.InsertEmpresaDto.Nombre);
             }
@@ -75,7 +75,7 @@ namespace APIconvenios.Services
                 task2 = _UnitOfWork._ConvenioMarcoReadRepository.NumeroConvenioExist(_Dto.InsertConvenioDto.numeroconvenio);
             }
 
-            if (_Dto.InsertEmpresaDto != null && _Dto.InsertEmpresaDto.Id != null)
+            if (_Dto.InsertEmpresaDto != null && _Dto.InsertEmpresaDto.Id == null)
             {
                 task3 = _UnitOfWork._EmpresaRepository.NameEmpresaExist(_Dto.InsertEmpresaDto.Nombre);
             }
@@ -122,7 +122,7 @@ namespace APIconvenios.Services
                     .NumeroConvenioExistForUpdate(_Dto.UpdateConvenioDto.numeroconvenio, _Dto.UpdateConvenioDto.Id);
             }
 
-            if (_Dto.InsertEmpresaDto != null && _Dto.InsertEmpresaDto.Id != null)
+            if (_Dto.InsertEmpresaDto != null && _Dto.InsertEmpresaDto.Id == null)
             {
                 task3 = _UnitOfWork._EmpresaRepository.NameEmpresaExist(_Dto.InsertEmpresaDto.Nombre);
             }
@@ -169,7 +169,7 @@ namespace APIconvenios.Services
                     .NumeroConvenioExistForUpdate(_Dto.UpdateConvenioMarcoDto.numeroconvenio, _Dto.UpdateConvenioMarcoDto.Id);
             }
 
-            if (_Dto.InsertEmpresaDto != null && _Dto.InsertEmpresaDto.Id != null)
+            if (_Dto.InsertEmpresaDto != null && _Dto.InsertEmpresaDto.Id == null)
             {
                 task3 = _UnitOfWork._EmpresaRepository.NameEmpresaExist(_Dto.InsertEmpresaDto.Nombre);
             }
