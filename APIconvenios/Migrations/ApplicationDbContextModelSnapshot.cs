@@ -597,7 +597,7 @@ namespace APIconvenios.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("CarreraId")
+                    b.Property<int?>("CarrerasId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
@@ -621,7 +621,9 @@ namespace APIconvenios.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarreraId");
+                    b.HasIndex("CarrerasId");
+
+                    b.HasIndex("IdCarrera");
 
                     b.ToTable("Involucrados");
 
@@ -631,6 +633,7 @@ namespace APIconvenios.Migrations
                             Id = 1,
                             Apellido = "Perez",
                             Email = "juan.perez@email.com",
+                            IdCarrera = 2,
                             Legajo = 12345,
                             Nombre = "Juan",
                             RolInvolucrado = 1,
@@ -641,6 +644,7 @@ namespace APIconvenios.Migrations
                             Id = 2,
                             Apellido = "Martinez",
                             Email = "sofia.martinez@email.com",
+                            IdCarrera = 5,
                             Legajo = 12346,
                             Nombre = "Sofia",
                             RolInvolucrado = 1,
@@ -651,6 +655,7 @@ namespace APIconvenios.Migrations
                             Id = 3,
                             Apellido = "Rodriguez",
                             Email = "lucas.rodriguez@email.com",
+                            IdCarrera = 3,
                             Legajo = 12347,
                             Nombre = "Lucas",
                             RolInvolucrado = 1,
@@ -661,6 +666,7 @@ namespace APIconvenios.Migrations
                             Id = 4,
                             Apellido = "Gomez",
                             Email = "maria.gomez@email.com",
+                            IdCarrera = 2,
                             Legajo = 67890,
                             Nombre = "Maria",
                             RolInvolucrado = 0,
@@ -671,6 +677,7 @@ namespace APIconvenios.Migrations
                             Id = 5,
                             Apellido = "Fernandez",
                             Email = "carlos.fernandez@utn.edu.ar",
+                            IdCarrera = 6,
                             Legajo = 67891,
                             Nombre = "Carlos",
                             RolInvolucrado = 0,
@@ -681,6 +688,7 @@ namespace APIconvenios.Migrations
                             Id = 6,
                             Apellido = "Lopez",
                             Email = "ana.lopez@utn.edu.ar",
+                            IdCarrera = 1,
                             Legajo = 67892,
                             Nombre = "Ana",
                             RolInvolucrado = 0,
@@ -691,6 +699,7 @@ namespace APIconvenios.Migrations
                             Id = 7,
                             Apellido = "Sanchez",
                             Email = "roberto.sanchez@utn.edu.ar",
+                            IdCarrera = 7,
                             Legajo = 89001,
                             Nombre = "Roberto",
                             RolInvolucrado = 2,
@@ -701,6 +710,7 @@ namespace APIconvenios.Migrations
                             Id = 8,
                             Apellido = "Diaz",
                             Email = "laura.diaz@utn.edu.ar",
+                            IdCarrera = 7,
                             Legajo = 89002,
                             Nombre = "Laura",
                             RolInvolucrado = 2,
@@ -1021,9 +1031,13 @@ namespace APIconvenios.Migrations
 
             modelBuilder.Entity("APIconvenios.Models.Involucrados", b =>
                 {
-                    b.HasOne("APIconvenios.Models.Carreras", "Carrera")
+                    b.HasOne("APIconvenios.Models.Carreras", null)
                         .WithMany("Involucrados")
-                        .HasForeignKey("CarreraId");
+                        .HasForeignKey("CarrerasId");
+
+                    b.HasOne("APIconvenios.Models.Carreras", "Carrera")
+                        .WithMany()
+                        .HasForeignKey("IdCarrera");
 
                     b.Navigation("Carrera");
                 });

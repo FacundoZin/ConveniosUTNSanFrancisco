@@ -27,6 +27,14 @@ namespace APIconvenios.Repositorio
                 .ToListAsync();
         }
 
+
+        public async Task<List<Involucrados>> GetInvolucradosByIds(int[] ids)
+        {
+            return await _context.Involucrados
+                .Where(i => ids.Contains(i.Id))
+                .ToListAsync();
+        }
+
         public async Task<bool> involucradoExist(string nombre, string apellido)
         {
             return await _context.Involucrados

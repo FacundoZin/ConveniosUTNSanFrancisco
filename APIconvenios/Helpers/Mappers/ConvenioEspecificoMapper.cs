@@ -113,6 +113,7 @@ namespace APIconvenios.Helpers.Mappers
                     RolInvolucrado = i.RolInvolucrado.ToString(),
                     Email = i.Email,
                     Telefono = i.Telefono,
+                    carrera = i.Carrera?.Nombre,
                     Legajo = i.Legajo
                 }).ToList(),
 

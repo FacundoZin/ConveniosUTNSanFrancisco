@@ -243,6 +243,16 @@
         </div>
       </div>
 
+      <hr class="my-4" />
+
+      <!-- SECCIÓN: Seleccionar Involucrados Existentes -->
+      <div class="p-4 bg-light border rounded mb-4">
+        <h4 class="text-primary mb-3">Vincular Involucrados Existentes</h4>
+        <InvolucradosExistentesSelector
+          v-model="ConvenioEspecificoRequest.idsInvolucradosExistentes"
+        />
+      </div>
+
       <!-- BOTÓN -->
       <div class="col-12 text-end">
         <button type="submit" class="btn btn-primary">Cargar Convenio</button>
@@ -260,6 +270,7 @@
 <script setup lang="ts">
 import InvolucradoForm from '@/Components/InvolucradoForm.vue'
 import InvolucradosCard from '@/Components/InvolucradosCard.vue'
+import InvolucradosExistentesSelector from '@/Components/InvolucradosExistentesSelector.vue'
 import VincularConvMarco from '@/Components/VincularConvMarco.vue'
 import { useCreateConvEspComposable } from '@/Composables/CreateConvEspComposable'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'

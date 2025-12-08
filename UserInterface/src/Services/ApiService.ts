@@ -6,13 +6,17 @@ import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/Update
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import type { IConvenioQueryObject } from '@/Types/Filters'
 import type {
-    ConvenioCreated,
-    ConvenioEspecificoDto,
-    ConvenioMarcoDto,
-    InfoConvenioEspecificoDto,
-    InfoConvenioMarcoDto,
-    ViewArchivoDto,
+  ConvenioCreated,
+  ConvenioEspecificoDto,
+  ConvenioMarcoDto,
+  InfoConvenioEspecificoDto,
+  InfoConvenioMarcoDto,
+  ViewArchivoDto,
 } from '@/Types/ViewModels/ViewModels'
+import type { ComboBoxInvolucradosDto } from '@/Types/Involucrados/ComboBoxInvolucradosDto'
+import type { ValidateInvolucradoDto } from '@/Types/Involucrados/ValidateInvolucradoDto'
+import type { InvolucradoExistDto } from '@/Types/Involucrados/InvolucradoExistDto'
+import type { ComboBoxConvenioMarcoDto } from '@/Types/ConvenioMarco/ComboBoxConvenioMarcoDto'
 import axios from 'axios'
 
 const API_URL = 'http://localhost:8888/api'
@@ -30,7 +34,7 @@ export default class ApiService {
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       if (Ex.response?.status === 404) {
-        return { isSuccess: true, value:[], status: 404 }
+        return { isSuccess: true, value: [], status: 404 }
       }
       return {
         isSuccess: false,
@@ -352,6 +356,44 @@ export default class ApiService {
   static async GetArchivosConvEspecifico(idConvenio: number): Promise<Result<ViewArchivoDto[]>> {
     try {
       const response = await axios.get(`${API_URL}/ConveniosEspecificos/archivos${idConvenio}`)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return {
+        isSuccess: false,
+        error: { message: getErrorMessage(Ex), status: Ex.response?.status },
+      }
+    }
+  }
+
+  static async GetAllInvolucrados(): Promise<Result<ComboBoxInvolucradosDto[]>> {
+    try {
+      const response = await axios.get(`${API_URL}/Involucrados`)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return {
+        isSuccess: false,
+        error: { message: getErrorMessage(Ex), status: Ex.response?.status },
+      }
+    }
+  }
+
+  static async ValidateInvolucrado(
+    dto: ValidateInvolucradoDto,
+  ): Promise<Result<InvolucradoExistDto>> {
+    try {
+      const response = await axios.post(`${API_URL}/Involucrados/validate`, dto)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return {
+        isSuccess: false,
+        error: { message: getErrorMessage(Ex), status: Ex.response?.status },
+      }
+    }
+  }
+
+  static async GetAllConveniosMarcos(): Promise<Result<ComboBoxConvenioMarcoDto[]>> {
+    try {
+      const response = await axios.get(`${API_URL}/ConveniosMarcos`)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return {

@@ -13,6 +13,7 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         public InsertEmpresaDto? InsertEmpresaDto { get; set; }
         public int[]? IdsInvolucraodsEliminados { get; set; }
         public int? idMarcoVinculado { get; set; }
+        public int[]? idsInvolucradosExistentes { get; set; }
 
         [DefaultValue(false)]
         public bool DesvincularConvenioMarco { get; set; } = false;

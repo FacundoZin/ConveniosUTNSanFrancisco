@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace APIconvenios.Migrations
 {
     /// <inheritdoc />
-    public partial class newMigration : Migration
+    public partial class migracionFinal : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,15 +57,20 @@ namespace APIconvenios.Migrations
                     Telefono = table.Column<string>(type: "TEXT", nullable: true),
                     Legajo = table.Column<int>(type: "INTEGER", nullable: true),
                     RolInvolucrado = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdArea = table.Column<int>(type: "INTEGER", nullable: true),
-                    AreaId = table.Column<int>(type: "INTEGER", nullable: true)
+                    IdCarrera = table.Column<int>(type: "INTEGER", nullable: true),
+                    CarrerasId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Involucrados", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Involucrados_Carreras_AreaId",
-                        column: x => x.AreaId,
+                        name: "FK_Involucrados_Carreras_CarrerasId",
+                        column: x => x.CarrerasId,
+                        principalTable: "Carreras",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Involucrados_Carreras_IdCarrera",
+                        column: x => x.IdCarrera,
                         principalTable: "Carreras",
                         principalColumn: "Id");
                 });
@@ -235,17 +240,9 @@ namespace APIconvenios.Migrations
 
             migrationBuilder.InsertData(
                 table: "Involucrados",
-                columns: new[] { "Id", "Apellido", "AreaId", "Email", "IdArea", "Legajo", "Nombre", "RolInvolucrado", "Telefono" },
+                columns: new[] { "Id", "Apellido", "CarrerasId", "Email", "IdCarrera", "Legajo", "Nombre", "RolInvolucrado", "Telefono" },
                 values: new object[,]
                 {
-                    { 1, "Perez", null, "juan.perez@email.com", null, 12345, "Juan", 1, "3564998877" },
-                    { 2, "Martinez", null, "sofia.martinez@email.com", null, 12346, "Sofia", 1, "3564887766" },
-                    { 3, "Rodriguez", null, "lucas.rodriguez@email.com", null, 12347, "Lucas", 1, "3564776655" },
-                    { 4, "Gomez", null, "maria.gomez@email.com", null, 67890, "Maria", 0, "3564776655" },
-                    { 5, "Fernandez", null, "carlos.fernandez@utn.edu.ar", null, 67891, "Carlos", 0, "3564665544" },
-                    { 6, "Lopez", null, "ana.lopez@utn.edu.ar", null, 67892, "Ana", 0, "3564554433" },
-                    { 7, "Sanchez", null, "roberto.sanchez@utn.edu.ar", null, 89001, "Roberto", 2, "3564443322" },
-                    { 8, "Diaz", null, "laura.diaz@utn.edu.ar", null, 89002, "Laura", 2, "3564332211" },
                     { 9, "Morales", null, "pedro.morales@techsolutions.com", null, null, "Pedro", 3, "3564221100" },
                     { 10, "Torres", null, "gabriela.torres@innovacion.com", null, null, "Gabriela", 3, "3564110099" },
                     { 11, "Ruiz", null, "miguel.ruiz@electronica.com", null, null, "Miguel", 3, "3564009988" }
@@ -271,6 +268,21 @@ namespace APIconvenios.Migrations
                     { 3, "Convenio finalizado exitosamente", 3, 2, new DateOnly(2024, 5, 10), new DateOnly(2023, 5, 10), "RES-2023-045", true, "Convenio Marco Electrónica - Finalizado", "CM-003/2023" },
                     { 4, "En proceso de revisión legal", 4, 0, null, null, null, false, "Convenio Marco Química Industrial - Borrador", "CM-004/2024" },
                     { 5, null, 5, 1, new DateOnly(2027, 6, 1), new DateOnly(2024, 6, 1), "RES-2024-078", true, "Convenio Marco Mecatrónica", "CM-005/2024" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Involucrados",
+                columns: new[] { "Id", "Apellido", "CarrerasId", "Email", "IdCarrera", "Legajo", "Nombre", "RolInvolucrado", "Telefono" },
+                values: new object[,]
+                {
+                    { 1, "Perez", null, "juan.perez@email.com", 2, 12345, "Juan", 1, "3564998877" },
+                    { 2, "Martinez", null, "sofia.martinez@email.com", 5, 12346, "Sofia", 1, "3564887766" },
+                    { 3, "Rodriguez", null, "lucas.rodriguez@email.com", 3, 12347, "Lucas", 1, "3564776655" },
+                    { 4, "Gomez", null, "maria.gomez@email.com", 2, 67890, "Maria", 0, "3564776655" },
+                    { 5, "Fernandez", null, "carlos.fernandez@utn.edu.ar", 6, 67891, "Carlos", 0, "3564665544" },
+                    { 6, "Lopez", null, "ana.lopez@utn.edu.ar", 1, 67892, "Ana", 0, "3564554433" },
+                    { 7, "Sanchez", null, "roberto.sanchez@utn.edu.ar", 7, 89001, "Roberto", 2, "3564443322" },
+                    { 8, "Diaz", null, "laura.diaz@utn.edu.ar", 7, 89002, "Laura", 2, "3564332211" }
                 });
 
             migrationBuilder.InsertData(
@@ -415,9 +427,14 @@ namespace APIconvenios.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Involucrados_AreaId",
+                name: "IX_Involucrados_CarrerasId",
                 table: "Involucrados",
-                column: "AreaId");
+                column: "CarrerasId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Involucrados_IdCarrera",
+                table: "Involucrados",
+                column: "IdCarrera");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvolucradosConvenioEspecifico_InvolucradosId",

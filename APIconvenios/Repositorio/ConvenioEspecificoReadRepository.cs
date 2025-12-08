@@ -77,7 +77,7 @@ namespace APIconvenios.Repositorio
                 .Include(c => c.empresa)
                 .Include(c => c.ConvenioMarco)
                 .Include(c => c.ArchivosAdjuntos)
-                .Include(c => c.Involucrados)
+                .Include(c => c.Involucrados!).ThenInclude(i => i.Carrera)
                 .Include(c => c.CarrerasInvolucradas)
                 .FirstOrDefaultAsync(c => c.Id == id);
 

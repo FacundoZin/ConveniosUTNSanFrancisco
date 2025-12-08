@@ -11,5 +11,6 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         public int[]? idCarreras { get; set; }
         public InsertEmpresaDto? InsertEmpresaDto { get; set; }
         public int? idConvenioMarco { get; set; }
+        public int[]? idsInvolucradosExistentes { get; set; }
     }
 }

@@ -31,8 +31,14 @@
         </div>
 
         <div class="mt-3 pt-2 border-top">
-          <span class="badge bg-light text-dark border">
+          <span class="badge bg-light text-dark border me-2">
             {{ rolesMap[involucrado.rolInvolucrado] }}
+          </span>
+          <span
+            v-if="involucrado.idCarrera && carrerasMap[involucrado.idCarrera]"
+            class="badge bg-info text-dark"
+          >
+            {{ carrerasMap[involucrado.idCarrera] }}
           </span>
         </div>
       </div>
@@ -42,8 +48,16 @@
 
 <script setup lang="ts">
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
+import { carrerasList } from '@/Types/CarrerasInvolucradas/CarrerasInvolucradas'
 
 defineProps<{ involucrado: InsertInvolucradosDto }>()
 
 const rolesMap = ['Docente', 'Alumno', 'Secretario', 'Externo']
+
+const carrerasMap: Record<number, string> = {}
+carrerasList.forEach((carrera) => {
+  if (carrera.id) {
+    carrerasMap[carrera.id] = carrera.nombre || ''
+  }
+})
 </script>

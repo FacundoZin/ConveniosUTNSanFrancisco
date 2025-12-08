@@ -21,12 +21,13 @@ export interface InsertConvenioEspecificoDto {
 export interface CargarConvenioEspecificoRequestDto {
   insertConvenioDto: InsertConvenioEspecificoDto
   insertEmpresaDto: InsertEmpresaDto | null
+  idsInvolucradosExistentes: number[] | null
 
   insertInvolucradosDto: InsertInvolucradosDto[] | null
 
   idCarreras: number[] | null
 
-  numeroConvenioMarcoVinculado: string | null
+  idConvenioMarco: number | null
 }
 
 export function createRequestConvEspecifico(): CargarConvenioEspecificoRequestDto {
@@ -47,6 +48,7 @@ export function createRequestConvEspecifico(): CargarConvenioEspecificoRequestDt
     insertEmpresaDto: null,
     insertInvolucradosDto: null,
     idCarreras: [],
-    numeroConvenioMarcoVinculado: null, 
+    idConvenioMarco: null,
+    idsInvolucradosExistentes: null,
   }
 }

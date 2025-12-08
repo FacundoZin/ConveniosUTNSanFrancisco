@@ -42,9 +42,25 @@
         </select>
       </div>
 
+      <div class="col-md-6">
+        <label class="form-label">Carrera</label>
+        <select v-model.number="form.idCarrera" class="form-select" required>
+          <option value="" disabled>Seleccione una carrera...</option>
+          <option v-for="carrera in carreras" :key="carrera.id" :value="carrera.id">
+            {{ carrera.nombre }}
+          </option>
+        </select>
+      </div>
+
       <div class="col-12 text-end mt-4">
-        <button type="submit" class="btn btn-outline-primary">
-          <i class="bi bi-plus-circle me-2"></i>Agregar Involucrado
+        <button type="submit" class="btn btn-outline-primary" :disabled="isValidating">
+          <span
+            v-if="isValidating"
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+          ></span>
+          <i v-else class="bi bi-plus-circle me-2"></i>
+          {{ isValidating ? 'Validando...' : 'Agregar Involucrado' }}
         </button>
       </div>
     </div>
@@ -52,10 +68,17 @@
 </template>
 
 <script setup lang="ts">
+import ApiService from '@/Services/ApiService'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
+import { carrerasList } from '@/Types/CarrerasInvolucradas/CarrerasInvolucradas'
 import { ref } from 'vue'
+import { useToast } from 'vue-toastification'
 
 const emit = defineEmits<{ (evento: 'agregar', inv: InsertInvolucradosDto): void }>()
+const toast = useToast()
+
+const carreras = carrerasList
+const isValidating = ref(false)
 
 const form = ref<InsertInvolucradosDto>({
   nombre: '',
@@ -63,25 +86,54 @@ const form = ref<InsertInvolucradosDto>({
   email: null,
   telefono: null,
   legajo: null,
+  idCarrera: 0,
   rolInvolucrado: 0,
 })
 
-const agregar = () => {
+const agregar = async () => {
+  // Validar que no exista el involucrado
+  isValidating.value = true
+
+  const validationResult = await ApiService.ValidateInvolucrado({
+    nombre: form.value.nombre || '',
+    apellido: form.value.apellido || '',
+  })
+
+  isValidating.value = false
+
+  if (!validationResult.isSuccess) {
+    toast.error('Error al validar involucrado')
+    return
+  }
+
+  if (validationResult.value.existe) {
+    toast.error(validationResult.value.message, {
+      timeout: 4000,
+    })
+    return
+  }
+
+  // Si no existe, proceder a agregar
   const InsertInvolucradosDto: InsertInvolucradosDto = {
     nombre: form.value.nombre,
     apellido: form.value.apellido,
     email: form.value.email ? form.value.email : null,
     telefono: form.value.telefono ? form.value.telefono : null,
     legajo: form.value.legajo ? form.value.legajo : null,
+    idCarrera: form.value.idCarrera,
     rolInvolucrado: form.value.rolInvolucrado,
   }
+
   emit('agregar', InsertInvolucradosDto)
+
+  // Reset form
   form.value = {
     nombre: '',
     apellido: '',
     email: null,
     telefono: null,
     legajo: null,
+    idCarrera: 0,
     rolInvolucrado: 0,
   }
 }

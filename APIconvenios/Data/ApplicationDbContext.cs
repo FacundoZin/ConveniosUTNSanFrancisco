@@ -79,23 +79,23 @@ namespace APIconvenios.Data
             // Seed Involucrados - Cubriendo todos los roles
             modelBuilder.Entity<Involucrados>().HasData(
                 // Alumnos
-                new Involucrados { Id = 1, Nombre = "Juan", Apellido = "Perez", Email = "juan.perez@email.com", Telefono = "3564998877", Legajo = 12345, RolInvolucrado = Roles.Alumno },
-                new Involucrados { Id = 2, Nombre = "Sofia", Apellido = "Martinez", Email = "sofia.martinez@email.com", Telefono = "3564887766", Legajo = 12346, RolInvolucrado = Roles.Alumno },
-                new Involucrados { Id = 3, Nombre = "Lucas", Apellido = "Rodriguez", Email = "lucas.rodriguez@email.com", Telefono = "3564776655", Legajo = 12347, RolInvolucrado = Roles.Alumno },
+                new Involucrados { Id = 1, Nombre = "Juan", Apellido = "Perez", Email = "juan.perez@email.com", Telefono = "3564998877", Legajo = 12345, RolInvolucrado = Roles.Alumno, IdCarrera = 2 }, // Ing. Sistemas
+                new Involucrados { Id = 2, Nombre = "Sofia", Apellido = "Martinez", Email = "sofia.martinez@email.com", Telefono = "3564887766", Legajo = 12346, RolInvolucrado = Roles.Alumno, IdCarrera = 5 }, // Tec. Programación
+                new Involucrados { Id = 3, Nombre = "Lucas", Apellido = "Rodriguez", Email = "lucas.rodriguez@email.com", Telefono = "3564776655", Legajo = 12347, RolInvolucrado = Roles.Alumno, IdCarrera = 3 }, // Ing. Electrónica
                 
                 // Docentes
-                new Involucrados { Id = 4, Nombre = "Maria", Apellido = "Gomez", Email = "maria.gomez@email.com", Telefono = "3564776655", Legajo = 67890, RolInvolucrado = Roles.Docente },
-                new Involucrados { Id = 5, Nombre = "Carlos", Apellido = "Fernandez", Email = "carlos.fernandez@utn.edu.ar", Telefono = "3564665544", Legajo = 67891, RolInvolucrado = Roles.Docente },
-                new Involucrados { Id = 6, Nombre = "Ana", Apellido = "Lopez", Email = "ana.lopez@utn.edu.ar", Telefono = "3564554433", Legajo = 67892, RolInvolucrado = Roles.Docente },
+                new Involucrados { Id = 4, Nombre = "Maria", Apellido = "Gomez", Email = "maria.gomez@email.com", Telefono = "3564776655", Legajo = 67890, RolInvolucrado = Roles.Docente, IdCarrera = 2 }, // Ing. Sistemas
+                new Involucrados { Id = 5, Nombre = "Carlos", Apellido = "Fernandez", Email = "carlos.fernandez@utn.edu.ar", Telefono = "3564665544", Legajo = 67891, RolInvolucrado = Roles.Docente, IdCarrera = 6 }, // Materias Básicas
+                new Involucrados { Id = 6, Nombre = "Ana", Apellido = "Lopez", Email = "ana.lopez@utn.edu.ar", Telefono = "3564554433", Legajo = 67892, RolInvolucrado = Roles.Docente, IdCarrera = 1 }, // Ing. Química
                 
                 // Secretarios
-                new Involucrados { Id = 7, Nombre = "Roberto", Apellido = "Sanchez", Email = "roberto.sanchez@utn.edu.ar", Telefono = "3564443322", Legajo = 89001, RolInvolucrado = Roles.Secretario },
-                new Involucrados { Id = 8, Nombre = "Laura", Apellido = "Diaz", Email = "laura.diaz@utn.edu.ar", Telefono = "3564332211", Legajo = 89002, RolInvolucrado = Roles.Secretario },
+                new Involucrados { Id = 7, Nombre = "Roberto", Apellido = "Sanchez", Email = "roberto.sanchez@utn.edu.ar", Telefono = "3564443322", Legajo = 89001, RolInvolucrado = Roles.Secretario, IdCarrera = 7 }, // SEU
+                new Involucrados { Id = 8, Nombre = "Laura", Apellido = "Diaz", Email = "laura.diaz@utn.edu.ar", Telefono = "3564332211", Legajo = 89002, RolInvolucrado = Roles.Secretario, IdCarrera = 7 }, // SEU
                 
-                // Externos
-                new Involucrados { Id = 9, Nombre = "Pedro", Apellido = "Morales", Email = "pedro.morales@techsolutions.com", Telefono = "3564221100", Legajo = null, RolInvolucrado = Roles.Externo },
-                new Involucrados { Id = 10, Nombre = "Gabriela", Apellido = "Torres", Email = "gabriela.torres@innovacion.com", Telefono = "3564110099", Legajo = null, RolInvolucrado = Roles.Externo },
-                new Involucrados { Id = 11, Nombre = "Miguel", Apellido = "Ruiz", Email = "miguel.ruiz@electronica.com", Telefono = "3564009988", Legajo = null, RolInvolucrado = Roles.Externo }
+                // Externos (sin carrera - null)
+                new Involucrados { Id = 9, Nombre = "Pedro", Apellido = "Morales", Email = "pedro.morales@techsolutions.com", Telefono = "3564221100", Legajo = null, RolInvolucrado = Roles.Externo, IdCarrera = null },
+                new Involucrados { Id = 10, Nombre = "Gabriela", Apellido = "Torres", Email = "gabriela.torres@innovacion.com", Telefono = "3564110099", Legajo = null, RolInvolucrado = Roles.Externo, IdCarrera = null },
+                new Involucrados { Id = 11, Nombre = "Miguel", Apellido = "Ruiz", Email = "miguel.ruiz@electronica.com", Telefono = "3564009988", Legajo = null, RolInvolucrado = Roles.Externo, IdCarrera = null }
             );
 
             // Seed Archivos Adjuntos - Para Convenios Específicos y Marcos
@@ -239,6 +239,13 @@ namespace APIconvenios.Data
                         );
                     }
                 );
+
+            // Configurar relación Involucrados -> Carrera con nombre de FK explícito
+            modelBuilder.Entity<Involucrados>()
+                .HasOne(i => i.Carrera)
+                .WithMany()
+                .HasForeignKey(i => i.IdCarrera)
+                .IsRequired(false);
 
             modelBuilder.Entity<Empresa>()
                 .HasOne(e => e.ConvenioMarco)

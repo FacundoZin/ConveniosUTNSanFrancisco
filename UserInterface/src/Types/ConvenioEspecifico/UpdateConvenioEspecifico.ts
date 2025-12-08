@@ -25,9 +25,10 @@ export interface UpdateConvenioEspecificoRequestDto {
   insertInvolucradosDtos: InsertInvolucradosDto[] | null
   idCarreras: number[] | null
   idsInvolucraodsEliminados: number[] | null
-  numeroConvenioMarcoVinculado: string | null
+  idMarcoVinculado: number | null
   desvincularConvenioMarco: boolean
   desvincularEmpresa: boolean
+  idsInvolucradosExistentes: number[] | null
 }
 
 export function CreateUpdateRequestConvEspecifico(): UpdateConvenioEspecificoRequestDto {
@@ -50,8 +51,9 @@ export function CreateUpdateRequestConvEspecifico(): UpdateConvenioEspecificoReq
     insertInvolucradosDtos: null, //
     idCarreras: null, //
     idsInvolucraodsEliminados: null, //
-    numeroConvenioMarcoVinculado: null,
+    idMarcoVinculado: null,
     desvincularConvenioMarco: false,
     desvincularEmpresa: false, //
+    idsInvolucradosExistentes: null,
   }
 }

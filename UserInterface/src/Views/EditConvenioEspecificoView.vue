@@ -306,6 +306,17 @@
         </div>
       </div>
 
+      <hr class="my-4" />
+
+      <!-- SECCIÓN: Vincular Involucrados Existentes Adicionales -->
+      <div class="p-4 bg-light border rounded mb-4">
+        <h4 class="text-primary mb-3">Vincular Involucrados Existentes Adicionales</h4>
+        <p class="text-muted">
+          Selecciona involucrados existentes para vincularlos a este convenio
+        </p>
+        <InvolucradosExistentesSelector v-model="UpdateConvEspRequest.idsInvolucradosExistentes" />
+      </div>
+
       <div class="col-12 mt-4 text-end">
         <button type="submit" class="btn btn-primary">Actualizar Convenio</button>
       </div>
@@ -338,6 +349,7 @@ import EmpresaCard from '@/Components/EmpresaCard.vue'
 import InvolucradoForm from '@/Components/InvolucradoForm.vue'
 import InvolucradosCard from '@/Components/InvolucradosCard.vue'
 import InvolucradosExistingCard from '@/Components/InvolucradosExistingCard.vue'
+import InvolucradosExistentesSelector from '@/Components/InvolucradosExistentesSelector.vue'
 import VincularConvMarco from '@/Components/VincularConvMarco.vue'
 import { UseUpdateConvEspComposable } from '@/Composables/UpdateConvEspComposable'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'

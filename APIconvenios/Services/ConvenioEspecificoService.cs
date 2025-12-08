@@ -41,6 +41,9 @@ namespace APIconvenios.Services
             if (Dto.InsertEmpresaDto != null)
                 Commnands.Add(new LinkEmpresaToEspecificoCmd(Dto.InsertEmpresaDto));
 
+            if(Dto.idsInvolucradosExistentes != null)
+                Commnands.Add(new LinkToInvolucradosExistentes(Dto.idsInvolucradosExistentes));
+
             if (Dto.idConvenioMarco != null)
                 Commnands.Add(new LinkerConvMarcoCmd((int)Dto.idConvenioMarco));
 
@@ -113,6 +116,9 @@ namespace APIconvenios.Services
 
             if (Dto.IdsInvolucraodsEliminados != null && Dto.IdsInvolucraodsEliminados.Any())
                 commands.Add(new UnlinkInvolucradosCmd(Dto.IdsInvolucraodsEliminados));
+
+            if (Dto.idsInvolucradosExistentes != null)
+                commands.Add(new LinkToInvolucradosExistentes(Dto.idsInvolucradosExistentes));
 
             if (Dto.DesvincularConvenioMarco)
                 commands.Add(new UnlinkConvMarcoCmd());

@@ -31,8 +31,11 @@
         </div>
 
         <div class="mt-3 pt-2 border-top">
-          <span class="badge bg-light text-dark border">
+          <span class="badge bg-light text-dark border me-2">
             {{ involucrado.rolInvolucrado }}
+          </span>
+          <span v-if="involucrado.carrera" class="badge bg-info text-dark">
+            {{ involucrado.carrera }}
           </span>
         </div>
       </div>

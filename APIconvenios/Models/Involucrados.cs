@@ -16,6 +16,5 @@ namespace APIconvenios.Models
         public Carreras? Carrera { get; set; }
 
         public List<ConvenioEspecifico> ConveniosEspecificos { get; set; }
-
     }
 }
