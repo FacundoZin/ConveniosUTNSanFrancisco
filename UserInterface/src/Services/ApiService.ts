@@ -18,6 +18,7 @@ import type { ValidateInvolucradoDto } from '@/Types/Involucrados/ValidateInvolu
 import type { InvolucradoExistDto } from '@/Types/Involucrados/InvolucradoExistDto'
 import type { ComboBoxConvenioMarcoDto } from '@/Types/ConvenioMarco/ComboBoxConvenioMarcoDto'
 import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDto'
+import type { EditEmpresaDto } from '@/Types/Empresa/EditEmpresaDto'
 import type { EmpresaWithConveniosDto } from '@/Types/Empresa/EmpresaWithConveniosDto'
 import axios from 'axios'
 
@@ -407,6 +408,18 @@ export default class ApiService {
   static async GetConveniosPorEmpresa(id: number): Promise<Result<EmpresaWithConveniosDto>> {
     try {
       const response = await axios.get(`${API_URL}/Convenios/empresa/${id}`)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return {
+        isSuccess: false,
+        error: { message: getErrorMessage(Ex), status: Ex.response?.status },
+      }
+    }
+  }
+
+  static async EditarInfoEmpresa(id: number, dto: EditEmpresaDto): Promise<Result<void>> {
+    try {
+      const response = await axios.put(`${API_URL}/Empresa/${id}`, dto)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return {

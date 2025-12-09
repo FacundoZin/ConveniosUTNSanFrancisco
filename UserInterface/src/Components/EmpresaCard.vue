@@ -8,7 +8,9 @@
         aria-label="Desvincular"
       ></button>
 
-      <h6 class="card-title text-primary mb-3 pe-4">{{ empresa.nombre_Empresa }}</h6>
+      <div class="d-flex align-items-center justify-content-between mb-3 pe-4">
+        <h6 class="card-title text-primary mb-0">{{ empresa.nombre_Empresa }}</h6>
+      </div>
 
       <div class="card-text">
         <div class="d-flex align-items-center mb-2">
@@ -40,22 +42,56 @@
           </small>
         </div>
       </div>
+
+      <button
+        v-if="allowEdit"
+        type="button"
+        class="btn btn-sm btn-outline-secondary border-0 rounded-circle position-absolute bottom-0 end-0 m-3"
+        @click="showEditModal = true"
+        title="Editar empresa"
+      >
+        <i class="bi bi-pencil"></i>
+      </button>
     </div>
+
+    <Teleport to="body">
+      <EditEmpresaModal
+        :show="showEditModal"
+        :empresa="empresa"
+        @close="showEditModal = false"
+        @success="handleUpdateSuccess"
+      />
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
+import EditEmpresaModal from '@/Components/Modals/EditEmpresaModal.vue'
 import type { EmpresaDto } from '@/Types/ViewModels/ViewModels'
+import { ref } from 'vue'
 
 const emit = defineEmits<{
   (e: 'desvincularEmpresa', id: number): void
+  (e: 'actualizarEmpresa'): void
 }>()
+
+const props = withDefaults(
+  defineProps<{
+    empresa: EmpresaDto
+    allowEdit?: boolean
+  }>(),
+  {
+    allowEdit: false,
+  },
+)
+
+const showEditModal = ref(false)
 
 const emitirDesvinculacion = () => {
   emit('desvincularEmpresa', props.empresa.id)
 }
 
-const props = defineProps<{
-  empresa: EmpresaDto
-}>()
+const handleUpdateSuccess = () => {
+  emit('actualizarEmpresa')
+}
 </script>

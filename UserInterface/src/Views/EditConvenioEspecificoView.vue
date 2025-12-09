@@ -185,7 +185,9 @@
         <div v-if="InfoConvenioEspecificoCompleta && InfoConvenioEspecificoCompleta.empresa">
           <EmpresaCard
             :empresa="InfoConvenioEspecificoCompleta.empresa"
+            :allow-edit="true"
             @desvincular-empresa="desvincularEmpresa"
+            @actualizar-empresa="handleActualizarEmpresa"
           />
         </div>
 
@@ -373,7 +375,14 @@ const {
   empresaForm,
   involucradosForm,
   submitForm: submitFormLogic,
+  GetInfoConvenioEspecifico,
 } = UseUpdateConvEspComposable()
+
+const handleActualizarEmpresa = async () => {
+  if (UpdateConvEspRequest.value.updateConvenioDto.id) {
+    await GetInfoConvenioEspecifico(UpdateConvEspRequest.value.updateConvenioDto.id)
+  }
+}
 
 // Estado del modal de desvinculación
 const modalDesvinculacion = ref({

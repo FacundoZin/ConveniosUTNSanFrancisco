@@ -140,7 +140,9 @@
         <div v-if="infoConvenioMarcoCompleta && infoConvenioMarcoCompleta.empresa">
           <EmpresaCard
             :empresa="infoConvenioMarcoCompleta.empresa"
+            :allow-edit="true"
             @desvincular-empresa="desvincularEmpresa"
+            @actualizar-empresa="handleActualizarEmpresa"
           />
         </div>
 
@@ -273,7 +275,14 @@ const {
   submitForm: submitFormLogic,
   IrAConvenio,
   IrAConvenioEspecifico,
+  getInfoConvenio,
 } = useUpdateConvMarcoComposable()
+
+const handleActualizarEmpresa = async () => {
+  if (ConvenioMarcoRequest.value.updateConvenioMarcoDto.id) {
+    await getInfoConvenio(ConvenioMarcoRequest.value.updateConvenioMarcoDto.id)
+  }
+}
 
 // Estado del modal de desvinculación
 const modalDesvinculacion = ref({

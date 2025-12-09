@@ -24,6 +24,7 @@ interface CreateConvenioMarcoComposable {
   submitForm: () => Promise<ConvenioCreated | null>
   IrAConvenio: () => void
   IrAConvenioEspecifico: (idConvenioEspecifico: number) => void
+  getInfoConvenio: (id: number) => Promise<InfoConvenioMarcoDto | null>
 }
 
 export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
@@ -226,5 +227,6 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
     submitForm,
     IrAConvenio,
     IrAConvenioEspecifico,
+    getInfoConvenio,
   }
 }

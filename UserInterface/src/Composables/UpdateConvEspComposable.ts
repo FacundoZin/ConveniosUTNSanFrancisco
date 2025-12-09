@@ -25,6 +25,7 @@ interface CreateConvenioEspecificoComposable {
   empresaForm: Ref<InsertEmpresaDto>
   involucradosForm: Ref<InsertInvolucradosDto[]>
   submitForm: () => Promise<ConvenioCreated | null>
+  GetInfoConvenioEspecifico: (id: number) => Promise<InfoConvenioEspecificoDto | null>
 }
 
 export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable {
@@ -146,30 +147,32 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
   onMounted(async () => {
     IsLoading.value = true
     const id = parseInt(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id)
-    const infoConvenioMarcoCompleta = await GetInfoConvenioEspecifico(id)
+    const infoConvenioEspecificoCompleta = await GetInfoConvenioEspecifico(id)
     await getEmpresas()
 
     UpdateConvEspRequest.value.updateConvenioDto.id = id
     UpdateConvEspRequest.value.updateConvenioDto.numeroConvenio =
-      infoConvenioMarcoCompleta?.numeroconvenio ?? null
-    UpdateConvEspRequest.value.updateConvenioDto.titulo = infoConvenioMarcoCompleta?.titulo ?? null
+      infoConvenioEspecificoCompleta?.numeroconvenio ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.titulo =
+      infoConvenioEspecificoCompleta?.titulo ?? null
     UpdateConvEspRequest.value.updateConvenioDto.fechaFirmaConvenio =
-      infoConvenioMarcoCompleta?.fechaFirmaConvenio ?? null
+      infoConvenioEspecificoCompleta?.fechaFirmaConvenio ?? null
     UpdateConvEspRequest.value.updateConvenioDto.fechaInicioActividades =
-      infoConvenioMarcoCompleta?.fechaInicioActividades ?? null
+      infoConvenioEspecificoCompleta?.fechaInicioActividades ?? null
     UpdateConvEspRequest.value.updateConvenioDto.fechaFinConvenio =
-      infoConvenioMarcoCompleta?.fechaFinConvenio ?? null
+      infoConvenioEspecificoCompleta?.fechaFinConvenio ?? null
     UpdateConvEspRequest.value.updateConvenioDto.comentarioOpcional =
-      infoConvenioMarcoCompleta?.comentarioOpcional ?? null
-    UpdateConvEspRequest.value.updateConvenioDto.estado = infoConvenioMarcoCompleta!.estado
-    UpdateConvEspRequest.value.updateConvenioDto.esActa = infoConvenioMarcoCompleta!.esActa
+      infoConvenioEspecificoCompleta?.comentarioOpcional ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.estado = infoConvenioEspecificoCompleta!.estado
+    UpdateConvEspRequest.value.updateConvenioDto.esActa = infoConvenioEspecificoCompleta!.esActa
     UpdateConvEspRequest.value.updateConvenioDto.numeroResolucion =
-      infoConvenioMarcoCompleta?.numeroResolucion ?? null
-    UpdateConvEspRequest.value.updateConvenioDto.refrendado = infoConvenioMarcoCompleta!.refrendado
-    UpdateConvEspRequest.value.numeroConvenioMarcoVinculado =
-      infoConvenioMarcoCompleta?.convenioMarco?.numeroconvenio ?? null
+      infoConvenioEspecificoCompleta?.numeroResolucion ?? null
+    UpdateConvEspRequest.value.updateConvenioDto.refrendado =
+      infoConvenioEspecificoCompleta!.refrendado
+    UpdateConvEspRequest.value.idMarcoVinculado =
+      infoConvenioEspecificoCompleta?.convenioMarcoId ?? null
     UpdateConvEspRequest.value.idCarreras =
-      infoConvenioMarcoCompleta?.carrerasInvolucradas
+      infoConvenioEspecificoCompleta?.carrerasInvolucradas
         ?.map((c) => c.id)
         .filter((id): id is number => id !== undefined) ?? null
 
@@ -188,5 +191,6 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
     empresaForm,
     involucradosForm,
     submitForm,
+    GetInfoConvenioEspecifico,
   }
 }
