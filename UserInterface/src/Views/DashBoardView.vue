@@ -93,6 +93,10 @@ const handleOpenofFilterPanel = (type: 'marco' | 'especifico') => {
 
 const handleFilterSelected = (filterKey: string) => {
   activeFilterComponent.value = filterKey
+  // Limpiar resultados previos al cambiar de filtro
+  ListadoConvenios.value = CreateListConveniosDto(null)
+  countResult.value = null
+  showNoResultsMode.value = false
 }
 
 const resetSearch = () => {

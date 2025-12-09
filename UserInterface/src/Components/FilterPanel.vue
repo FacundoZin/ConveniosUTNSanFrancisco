@@ -51,12 +51,6 @@
           </li>
           <li
             class="list-group-item list-group-item-action d-flex align-items-center gap-2"
-            @click="selectFilter(KeyFilters.ByCarrera)"
-          >
-            <i class="bi bi-mortarboard"></i> Carrera Involucrada
-          </li>
-          <li
-            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
             @click="selectFilter(KeyFilters.ByFechaFirma)"
           >
             <i class="bi bi-pen"></i> Fecha de Firma
@@ -245,7 +239,6 @@ import type {
   IByProximosAvencerParams,
   IConvenioQueryObject,
 } from '@/Types/Filters'
-import { defineEmits, defineProps } from 'vue'
 
 const props = defineProps<{
   isPanelOpen: boolean
