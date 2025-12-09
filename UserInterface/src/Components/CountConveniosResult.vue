@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDto'
 
 const props = defineProps<{
   count: number | null
+  countBoth: CantidadConveniosDto | null
   typeOfConvenio: 'marco' | 'especifico'
   searchType: 'mes' | 'rango'
   month?: number
@@ -53,7 +55,19 @@ const iconoConvenio = computed(() => {
   return props.typeOfConvenio === 'marco' ? 'bi-folder-fill' : 'bi-file-earmark-text-fill'
 })
 
+const isBothTypes = computed(() => {
+  return props.countBoth !== null
+})
+
 const mensajePrincipal = computed(() => {
+  if (isBothTypes.value && props.countBoth) {
+    const total = props.countBoth.cantidadMarcos + props.countBoth.cantidadEspecificos
+    if (total === 0) {
+      return 'No se firmaron convenios'
+    }
+    return `Se han firmado ${total} convenio${total === 1 ? '' : 's'} en total`
+  }
+
   if (props.count === null) return ''
   if (props.count === 0) {
     return `No se firmaron ${tipoConvenio.value.toLowerCase()}`
@@ -62,17 +76,20 @@ const mensajePrincipal = computed(() => {
 })
 
 const showSuggestions = computed(() => {
+  if (isBothTypes.value && props.countBoth) {
+    return props.countBoth.cantidadMarcos === 0 && props.countBoth.cantidadEspecificos === 0
+  }
   return props.count === 0
 })
 </script>
 
 <template>
   <Transition name="slide-fade">
-    <div v-if="count !== null" class="result-container container-animada">
+    <div v-if="count !== null || countBoth !== null" class="result-container container-animada">
       <div class="count-result-card">
         <div class="result-header">
           <div class="result-icon">
-            <i :class="['bi', iconoConvenio]"></i>
+            <i :class="['bi', isBothTypes ? 'bi-files' : iconoConvenio]"></i>
           </div>
           <button
             type="button"
@@ -88,9 +105,37 @@ const showSuggestions = computed(() => {
           <p class="result-period text-muted mb-2">
             <i class="bi bi-calendar3 me-2"></i>{{ periodoTexto }}
           </p>
-          <p class="result-type text-muted mb-0">
+          <p v-if="!isBothTypes" class="result-type text-muted mb-0">
             <i class="bi bi-tag me-2"></i>{{ tipoConvenio }}
           </p>
+        </div>
+
+        <!-- Breakdown para ambos tipos -->
+        <div v-if="isBothTypes && countBoth" class="count-breakdown mb-3">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="breakdown-card breakdown-marcos">
+                <div class="breakdown-icon">
+                  <i class="bi bi-folder-fill"></i>
+                </div>
+                <div class="breakdown-content">
+                  <h5 class="breakdown-number">{{ countBoth.cantidadMarcos }}</h5>
+                  <p class="breakdown-label">Convenios Marco</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="breakdown-card breakdown-especificos">
+                <div class="breakdown-icon">
+                  <i class="bi bi-file-earmark-text-fill"></i>
+                </div>
+                <div class="breakdown-content">
+                  <h5 class="breakdown-number">{{ countBoth.cantidadEspecificos }}</h5>
+                  <p class="breakdown-label">Convenios Específicos</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div v-if="showSuggestions" class="result-suggestions">
@@ -99,11 +144,11 @@ const showSuggestions = computed(() => {
             <li>
               <i class="bi bi-check2 me-2 text-primary"></i>Intenta con otro mes o rango de fechas
             </li>
-            <li>
+            <li v-if="!isBothTypes">
               <i class="bi bi-check2 me-2 text-primary"></i>Verifica el tipo de convenio
               seleccionado
             </li>
-            <li>
+            <li v-if="!isBothTypes">
               <i class="bi bi-check2 me-2 text-primary"></i>Busca en
               {{ typeOfConvenio === 'marco' ? 'Convenios Específicos' : 'Convenios Marco' }}
             </li>
@@ -316,5 +361,90 @@ const showSuggestions = computed(() => {
   .count-label {
     font-size: 0.9rem;
   }
+}
+
+/* Breakdown cards for both types */
+.count-breakdown {
+  padding-top: 1rem;
+}
+
+.breakdown-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 8px;
+  border: 2px solid;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.breakdown-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.breakdown-marcos {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-color: #1976d2;
+}
+
+.breakdown-especificos {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+  border-color: #7b1fa2;
+}
+
+.breakdown-icon {
+  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.breakdown-marcos .breakdown-icon {
+  color: #1976d2;
+}
+
+.breakdown-especificos .breakdown-icon {
+  color: #7b1fa2;
+}
+
+.breakdown-content {
+  flex: 1;
+}
+
+.breakdown-number {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1;
+}
+
+.breakdown-marcos .breakdown-number {
+  color: #0d47a1;
+}
+
+.breakdown-especificos .breakdown-number {
+  color: #4a148c;
+}
+
+.breakdown-label {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.breakdown-marcos .breakdown-label {
+  color: #1565c0;
+}
+
+.breakdown-especificos .breakdown-label {
+  color: #6a1b9a;
 }
 </style>

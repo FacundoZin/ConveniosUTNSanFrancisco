@@ -21,6 +21,7 @@ import { useConvenioQuery } from '@/Composables/CreateConvenioQueryObject'
 import { CreateListConveniosDto } from '@/Factory/ConvenioFactory'
 import ApiService from '@/Services/ApiService'
 import type { ListConveniosDto } from '@/Types/ViewModels/ViewModels'
+import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDto'
 import { ref } from 'vue'
 
 const ListadoConvenios = ref<ListConveniosDto>(CreateListConveniosDto(null))
@@ -35,6 +36,7 @@ const activeFilterComponent = ref<string | null>(null)
 
 // Estado para el resultado del conteo
 const countResult = ref<number | null>(null)
+const countResultBoth = ref<CantidadConveniosDto | null>(null)
 const countSearchType = ref<'mes' | 'rango' | null>(null)
 const countMonth = ref<number | undefined>(undefined)
 const countYear = ref<number | undefined>(undefined)
@@ -54,7 +56,14 @@ const obtenerConvenios = async () => {
       QueryComposable.queryObject.CountFirmadosByMesDto ||
       QueryComposable.queryObject.countFirmadosByRangoDto
     ) {
-      countResult.value = typeof result.value === 'number' ? result.value : 0
+      // Determinar si es un número (un tipo) o CantidadConveniosDto (ambos tipos)
+      if (typeof result.value === 'number') {
+        countResult.value = result.value
+        countResultBoth.value = null
+      } else if (typeof result.value === 'object' && 'cantidadMarcos' in result.value) {
+        countResultBoth.value = result.value as CantidadConveniosDto
+        countResult.value = null
+      }
 
       if (QueryComposable.queryObject.CountFirmadosByMesDto) {
         countSearchType.value = 'mes'
@@ -68,18 +77,22 @@ const obtenerConvenios = async () => {
 
       showNoResultsMode.value = false
     } else {
-      ListadoConvenios.value = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
+      // Solo procesar como lista si el resultado es un array
+      if (Array.isArray(result.value)) {
+        ListadoConvenios.value = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
 
-      if (ListadoConvenios.value.data.length === 0) {
-        showNoResultsMode.value = true
-      } else {
-        showNoResultsMode.value = false
+        if (ListadoConvenios.value.data.length === 0) {
+          showNoResultsMode.value = true
+        } else {
+          showNoResultsMode.value = false
+        }
+
+        const listaCreada = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
+        console.log('esta la lista de convenios creada:', listaCreada.data, listaCreada.Type)
       }
 
-      const listaCreada = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
-      console.log('esta la lista de convenios creada:', listaCreada.data, listaCreada.Type)
-
       countResult.value = null
+      countResultBoth.value = null
     }
   }
 
@@ -103,10 +116,12 @@ const resetSearch = () => {
   showNoResultsMode.value = false
   ListadoConvenios.value = CreateListConveniosDto(null)
   countResult.value = null
+  countResultBoth.value = null
 }
 
 const closeCountResult = () => {
   countResult.value = null
+  countResultBoth.value = null
 }
 </script>
 
@@ -255,8 +270,9 @@ const closeCountResult = () => {
     ></SearchCountByRango>
 
     <CountConveniosResult
-      v-if="countResult !== null && TypeofConvenioToSearch !== ''"
+      v-if="(countResult !== null || countResultBoth !== null) && TypeofConvenioToSearch !== ''"
       :count="countResult"
+      :countBoth="countResultBoth"
       :typeOfConvenio="TypeofConvenioToSearch as 'marco' | 'especifico'"
       :searchType="countSearchType!"
       :month="countMonth"

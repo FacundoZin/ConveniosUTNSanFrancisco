@@ -17,6 +17,7 @@ import type { ComboBoxInvolucradosDto } from '@/Types/Involucrados/ComboBoxInvol
 import type { ValidateInvolucradoDto } from '@/Types/Involucrados/ValidateInvolucradoDto'
 import type { InvolucradoExistDto } from '@/Types/Involucrados/InvolucradoExistDto'
 import type { ComboBoxConvenioMarcoDto } from '@/Types/ConvenioMarco/ComboBoxConvenioMarcoDto'
+import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDto'
 import axios from 'axios'
 
 const API_URL = 'http://localhost:8888/api'
@@ -28,7 +29,7 @@ const getErrorMessage = (error: any) => {
 export default class ApiService {
   static async GetConvenios(
     body: IConvenioQueryObject,
-  ): Promise<Result<ConvenioEspecificoDto[] | ConvenioMarcoDto[]>> {
+  ): Promise<Result<ConvenioEspecificoDto[] | ConvenioMarcoDto[] | number | CantidadConveniosDto>> {
     try {
       const response = await axios.post(`${API_URL}/Convenios`, body)
       return { isSuccess: true, value: response.data, status: response.status }
