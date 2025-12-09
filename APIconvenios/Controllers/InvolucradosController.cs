@@ -1,4 +1,5 @@
 ﻿using APIconvenios.DTOs.Involucrado;
+using APIconvenios.DTOs.Involucrados;
 using APIconvenios.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,5 +46,36 @@ namespace APIconvenios.Controllers
 
             return Ok(dto);
         }
+
+        [HttpGet("carrera/{carreraId:int}")]
+        public async Task<IActionResult> GetInvolucradosByCarrera(int carreraId)
+        {
+            if (carreraId <= 0)
+                return BadRequest("El área no es válida.");
+
+            var involucrados = await _UnitOfWork._InvolucradosRepository.GetInvolucradosByCarrera(carreraId);
+
+            if (involucrados == null || !involucrados.Any())
+                return Ok(new TableInvolucradosByCarreraDto { cantidad = 0, Involucrados = new List<InvolucradosDto>()});
+
+            TableInvolucradosByCarreraDto dto = new TableInvolucradosByCarreraDto
+            {
+                cantidad = involucrados.Count(),
+                Involucrados = involucrados.Select(i => new InvolucradosDto
+                {
+                    Id = i.Id,
+                    Nombre = i.Nombre,
+                    Apellido = i.Apellido,
+                    Email = i.Email,
+                    Telefono = i.Telefono,
+                    Legajo = i.Legajo,
+                    carrera = i.Carrera?.Nombre,
+                    RolInvolucrado = i.RolInvolucrado.ToString()    
+                }).ToList()
+            };
+
+            return Ok(dto);
+        }
+
     }
 }

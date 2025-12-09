@@ -12,6 +12,7 @@
         <router-link to="/empresas">Empresas</router-link>
         <router-link to="/CargarConvenioMarco">Cargar Marco</router-link>
         <router-link to="/CargarConvenioEspecifico">Cargar Especifico</router-link>
+        <router-link to="/involucrados-por-carrera">Involucrados</router-link>
       </nav>
     </div>
   </header>

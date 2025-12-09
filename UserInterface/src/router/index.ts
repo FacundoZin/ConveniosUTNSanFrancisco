@@ -7,6 +7,7 @@ import DashBoardView from '@/Views/DashBoardView.vue'
 import EditConvenioEspecificoView from '@/Views/EditConvenioEspecificoView.vue'
 import EditConvenioMarcoView from '@/Views/EditConvenioMarcoView.vue'
 import EmpresaConveniosView from '@/Views/EmpresaConveniosView.vue'
+import InvolucradosPorCarreraView from '@/Views/InvolucradosPorCarreraView.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
@@ -39,6 +40,11 @@ const router = createRouter({
       name: 'EmpresaConvenios',
       component: EmpresaConveniosView,
       props: true,
+    },
+    {
+      path: '/involucrados-por-carrera',
+      name: 'InvolucradosPorCarrera',
+      component: InvolucradosPorCarreraView,
     },
   ],
 })

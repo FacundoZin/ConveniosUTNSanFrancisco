@@ -7,7 +7,7 @@ namespace APIconvenios.Interfaces.Repositorio
     {
         Task<bool> involucradoExist(string nombre, string apellido);
         Task< List<Involucrados>> GetAllInvolucraods();
-        Task<List<Involucrados>> GetInvolucradosByIds(int[] ids);  
-
+        Task<List<Involucrados>> GetInvolucradosByIds(int[] ids);
+        Task<List<Involucrados>> GetInvolucradosByCarrera(int IdCarrera);
     }
 }

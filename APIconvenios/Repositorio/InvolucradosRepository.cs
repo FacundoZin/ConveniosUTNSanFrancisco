@@ -27,6 +27,14 @@ namespace APIconvenios.Repositorio
                 .ToListAsync();
         }
 
+        public async Task<List<Involucrados>> GetInvolucradosByCarrera(int IdCarrera)
+        {
+            return await _context.Involucrados
+                .Where(i => i.IdCarrera == IdCarrera)
+                .Include(i => i.Carrera)
+                .AsNoTracking()
+                .ToListAsync();    
+        }
 
         public async Task<List<Involucrados>> GetInvolucradosByIds(int[] ids)
         {

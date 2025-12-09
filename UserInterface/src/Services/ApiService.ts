@@ -1,4 +1,5 @@
 import type { Result } from '@/Common/Result'
+import type { TableInvolucradosByCarreraDto } from '@/Types/Involucrados/InvolucradosByCarrera'
 import type { CargarConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/CreateConvenioEspecifico'
 import type { UpdateConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/UpdateConvenioEspecifico'
 import type { CargarConvenioMarcoRequestDto } from '@/Types/ConvenioMarco/CreateConvenioMarco'
@@ -420,6 +421,20 @@ export default class ApiService {
   static async EditarInfoEmpresa(id: number, dto: EditEmpresaDto): Promise<Result<void>> {
     try {
       const response = await axios.put(`${API_URL}/Empresa/${id}`, dto)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return {
+        isSuccess: false,
+        error: { message: getErrorMessage(Ex), status: Ex.response?.status },
+      }
+    }
+  }
+
+  static async GetInvolucradosByCarrera(
+    carreraId: number,
+  ): Promise<Result<TableInvolucradosByCarreraDto>> {
+    try {
+      const response = await axios.get(`${API_URL}/Involucrados/carrera/${carreraId}`)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return {
