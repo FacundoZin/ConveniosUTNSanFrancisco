@@ -85,13 +85,13 @@ namespace APIconvenios.Helpers.Mappers
                 ConvenioMarcoId = convenio.ConvenioMarcoId,
                 convenioMarco = convenio.ConvenioMarco != null ? new ConvenioMarcoDto
                 {
-                    Id = convenio.Id,
-                    Titulo = convenio.TituloConvenio,
-                    numeroconvenio = convenio.numeroconvenio,
-                    FechaFirmaConvenio = convenio.FechaFinConvenio,
-                    FechaFin = convenio.FechaFinConvenio,
-                    Estado = convenio.Estado,
-                    Refrendado = convenio.Refrendado
+                    Id = convenio.ConvenioMarco.Id,
+                    Titulo = convenio.ConvenioMarco.Titulo,
+                    numeroconvenio = convenio.ConvenioMarco.numeroconvenio,
+                    FechaFirmaConvenio = convenio.ConvenioMarco.FechaFirmaConvenio,
+                    FechaFin = convenio.ConvenioMarco.FechaFin,
+                    Estado = convenio.ConvenioMarco.Estado,
+                    Refrendado = convenio.ConvenioMarco.Refrendado
                 } : null,
 
                 empresa = convenio.empresa != null ? new EmpresaDto
