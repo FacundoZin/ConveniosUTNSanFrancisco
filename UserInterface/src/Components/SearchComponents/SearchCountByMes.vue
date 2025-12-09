@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 
 const props = defineProps<{
   QueryObject: IConvenioQueryObject
-  typeOfConvenio: 'marco' | 'especifico' | ''
+  typeOfConvenio: 'marco' | 'especifico' | 'ambos' | ''
 }>()
 
 const emit = defineEmits<{

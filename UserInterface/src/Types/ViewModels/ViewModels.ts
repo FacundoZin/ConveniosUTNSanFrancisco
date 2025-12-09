@@ -19,6 +19,12 @@ export type ListConveniosDto =
       data: []
       Type: ''
     }
+  | {
+      conveniosMarcos: ConvenioMarcoDto[]
+      conveniosEspecificos: ConvenioEspecificoDto[]
+      Type: 'ambos'
+      data: any[]
+    }
 
 export interface ConvenioEspecificoDto {
   id: number

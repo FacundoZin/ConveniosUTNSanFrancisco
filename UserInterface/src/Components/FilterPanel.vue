@@ -221,6 +221,100 @@
           </li>
         </ul>
       </div>
+      <div v-else-if="typeOfConvenio === 'ambos'">
+        <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByTitulo)"
+          >
+            <i class="bi bi-type"></i> Título
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByEmpresa)"
+          >
+            <i class="bi bi-building"></i> Empresa
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByEstado)"
+          >
+            <i class="bi bi-flag"></i> Estado
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByNumeroResolucion)"
+          >
+            <i class="bi bi-file-text"></i> Número de Resolución
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByNumeroConvenio)"
+          >
+            <i class="bi bi-hash"></i> Número de Convenio
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByFechaFirma)"
+          >
+            <i class="bi bi-pen"></i> Fecha de Firma
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByFechaFin)"
+          >
+            <i class="bi bi-calendar-x"></i> Fecha de Finalización
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByAntiguedadDto)"
+          >
+            <i class="bi bi-hourglass-split"></i> Antigüedad
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByMes)"
+          >
+            <i class="bi bi-calendar2-month"></i> Mes de Firma
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByAño)"
+          >
+            <i class="bi bi-calendar2-month"></i> Año de Firma
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.ByDesdeHasta)"
+          >
+            <i class="bi bi-calendar2-range"></i> Rango de Firma
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.CountFirmadosByMes)"
+          >
+            <i class="bi bi-calculator"></i> Cantidad Firmados por Mes
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+            @click="selectFilter(KeyFilters.CountFirmadosByRango)"
+          >
+            <i class="bi bi-calculator"></i> Cantidad Firmados por Rango
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2 text-danger"
+            @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByProximosAvencer)"
+          >
+            <i class="bi bi-exclamation-triangle"></i> Próximos a vencer
+          </li>
+          <li
+            class="list-group-item list-group-item-action d-flex align-items-center gap-2 text-success"
+            @click="HandleDirectSearch(props.typeOfConvenio, KeyFilters.ByIsRefrendado)"
+          >
+            <i class="bi bi-check2-circle"></i> Refrendados
+          </li>
+        </ul>
+      </div>
       <div v-else>
         <p class="text-muted text-center mt-4">
           Selecciona un tipo de convenio para ver los filtros.
@@ -242,7 +336,7 @@ import type {
 
 const props = defineProps<{
   isPanelOpen: boolean
-  typeOfConvenio: 'marco' | 'especifico' | ''
+  typeOfConvenio: 'marco' | 'especifico' | 'ambos' | ''
   QueryObject: IConvenioQueryObject
 }>()
 

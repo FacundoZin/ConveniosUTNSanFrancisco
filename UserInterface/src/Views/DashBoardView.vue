@@ -28,7 +28,7 @@ const ListadoConvenios = ref<ListConveniosDto>(CreateListConveniosDto(null))
 const errorMensaje = ref<string | null>(null)
 const isloading = ref(false)
 const QueryComposable = useConvenioQuery()
-const TypeofConvenioToSearch = ref<'marco' | 'especifico' | ''>('marco')
+const TypeofConvenioToSearch = ref<'marco' | 'especifico' | 'ambos' | ''>('marco')
 const FilterPanelOpen = ref(true)
 const showNoResultsMode = ref(false)
 
@@ -78,13 +78,27 @@ const obtenerConvenios = async () => {
       showNoResultsMode.value = false
     } else {
       // Solo procesar como lista si el resultado es un array
-      if (Array.isArray(result.value)) {
+      // Solo procesar como lista si el resultado es un array o un objeto (caso Ambos)
+      if (
+        Array.isArray(result.value) ||
+        (typeof result.value === 'object' && result.value !== null)
+      ) {
         ListadoConvenios.value = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
 
-        if (ListadoConvenios.value.data.length === 0) {
-          showNoResultsMode.value = true
+        // Verificar si hay resultados
+        if (ListadoConvenios.value.Type === 'ambos') {
+          const ambos = ListadoConvenios.value as any // Cast explicito para acceder a propiedades de ambos
+          if (ambos.conveniosMarcos.length === 0 && ambos.conveniosEspecificos.length === 0) {
+            showNoResultsMode.value = true
+          } else {
+            showNoResultsMode.value = false
+          }
         } else {
-          showNoResultsMode.value = false
+          if (ListadoConvenios.value.data.length === 0) {
+            showNoResultsMode.value = true
+          } else {
+            showNoResultsMode.value = false
+          }
         }
 
         const listaCreada = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
@@ -99,7 +113,7 @@ const obtenerConvenios = async () => {
   isloading.value = false
 }
 
-const handleOpenofFilterPanel = (type: 'marco' | 'especifico') => {
+const handleOpenofFilterPanel = (type: 'marco' | 'especifico' | 'ambos') => {
   TypeofConvenioToSearch.value = type
   FilterPanelOpen.value = true
 }
@@ -157,6 +171,21 @@ const closeCountResult = () => {
           >
             <i class="bi bi-file-earmark-text-fill"></i>
             Convenios Específicos
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link rounded-pill px-4 d-flex align-items-center gap-2"
+            :class="{ active: TypeofConvenioToSearch === 'ambos' }"
+            @click="
+              () => {
+                TypeofConvenioToSearch = 'ambos'
+                FilterPanelOpen = true
+              }
+            "
+          >
+            <i class="bi bi-collection-fill"></i>
+            Ambos
           </button>
         </li>
       </ul>
@@ -273,7 +302,7 @@ const closeCountResult = () => {
       v-if="(countResult !== null || countResultBoth !== null) && TypeofConvenioToSearch !== ''"
       :count="countResult"
       :countBoth="countResultBoth"
-      :typeOfConvenio="TypeofConvenioToSearch as 'marco' | 'especifico'"
+      :typeOfConvenio="TypeofConvenioToSearch as 'marco' | 'especifico' | 'ambos'"
       :searchType="countSearchType!"
       :month="countMonth"
       :year="countYear"

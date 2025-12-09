@@ -5,7 +5,7 @@ import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDt
 const props = defineProps<{
   count: number | null
   countBoth: CantidadConveniosDto | null
-  typeOfConvenio: 'marco' | 'especifico'
+  typeOfConvenio: 'marco' | 'especifico' | 'ambos'
   searchType: 'mes' | 'rango'
   month?: number
   year?: number

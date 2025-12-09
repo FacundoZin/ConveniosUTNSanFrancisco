@@ -7,25 +7,37 @@
 
   <Transition name="slide-fade">
     <div v-if="!isloading && convenios.Type !== ''" class="convenios-container container-animada">
-      <div v-if="convenios.data.length === 0" class="empty-state">
+      <div
+        v-if="
+          (convenios.Type !== 'ambos' && convenios.data.length === 0) ||
+          (convenios.Type === 'ambos' &&
+            convenios.conveniosMarcos.length === 0 &&
+            convenios.conveniosEspecificos.length === 0)
+        "
+        class="empty-state"
+      >
         <div class="empty-state-icon">
           <i class="bi bi-inbox"></i>
         </div>
         <h4 class="empty-state-title">No se encontraron convenios</h4>
         <p class="empty-state-text text-muted">
-          No hay convenios {{ convenios.Type === 'marco' ? 'marco' : 'específicos' }} que coincidan con los criterios de búsqueda.
+          No hay convenios {{ convenios.Type === 'marco' ? 'marco' : 'específicos' }} que coincidan
+          con los criterios de búsqueda.
         </p>
         <div class="empty-state-suggestions">
-          <p class="text-muted mb-2">
-            <i class="bi bi-lightbulb me-2"></i>Sugerencias:
-          </p>
+          <p class="text-muted mb-2"><i class="bi bi-lightbulb me-2"></i>Sugerencias:</p>
           <ul class="list-unstyled text-muted mb-0">
             <li><i class="bi bi-check2 me-2 text-primary"></i>Verifica los filtros aplicados</li>
-            <li><i class="bi bi-check2 me-2 text-primary"></i>Intenta con otros parámetros de búsqueda</li>
-            <li><i class="bi bi-check2 me-2 text-primary"></i>Busca en {{ convenios.Type === 'marco' ? 'Convenios Específicos' : 'Convenios Marco' }}</li>
+            <li>
+              <i class="bi bi-check2 me-2 text-primary"></i>Intenta con otros parámetros de búsqueda
+            </li>
+            <li>
+              <i class="bi bi-check2 me-2 text-primary"></i>Busca en
+              {{ convenios.Type === 'marco' ? 'Convenios Específicos' : 'Convenios Marco' }}
+            </li>
           </ul>
         </div>
-        
+
         <div class="mt-4">
           <button class="btn btn-primary" @click="$emit('reset-search')">
             <i class="bi bi-arrow-counterclockwise me-2"></i>Volver a realizar la búsqueda
@@ -34,9 +46,13 @@
       </div>
 
       <template v-else>
+        <!-- TABLA ESPECIFICOS (Solo si es especifico o ambos) -->
         <table
-          v-if="convenios.Type === 'especifico'"
-          class="table table-striped table-hover table-bordered shadow-sm"
+          v-if="
+            convenios.Type === 'especifico' ||
+            (convenios.Type === 'ambos' && convenios.conveniosEspecificos.length > 0)
+          "
+          class="table table-striped table-hover table-bordered shadow-sm mb-5"
         >
           <caption class="caption-top text-center fs-5 p-2 bg-light rounded-top">
             <strong>Convenios Específicos</strong>
@@ -57,7 +73,9 @@
           </thead>
           <tbody>
             <tr
-              v-for="conv in convenios.data"
+              v-for="conv in convenios.Type === 'ambos'
+                ? convenios.conveniosEspecificos
+                : convenios.data"
               :key="conv.id"
               class="align-middle"
             >
@@ -81,8 +99,8 @@
                 <i v-else class="bi bi-x-circle-fill text-secondary fs-5"></i>
               </td>
               <td class="text-center">
-                <button 
-                  class="btn btn-sm btn-outline-primary" 
+                <button
+                  class="btn btn-sm btn-outline-primary"
                   @click="VerConvenioCompleto(conv.id, conv.convenioType)"
                   title="Ver detalles"
                 >
@@ -93,8 +111,12 @@
           </tbody>
         </table>
 
+        <!-- TABLA MARCOS (Solo si es marco o ambos) -->
         <table
-          v-if="convenios.Type === 'marco'"
+          v-if="
+            convenios.Type === 'marco' ||
+            (convenios.Type === 'ambos' && convenios.conveniosMarcos.length > 0)
+          "
           class="table table-striped table-hover table-bordered shadow-sm"
         >
           <caption class="caption-top text-center fs-5 p-2 bg-light rounded-top">
@@ -114,7 +136,9 @@
           </thead>
           <tbody>
             <tr
-              v-for="conv in convenios.data"
+              v-for="conv in convenios.Type === 'ambos'
+                ? convenios.conveniosMarcos
+                : convenios.data"
               :key="conv.id"
               class="align-middle"
             >
@@ -133,8 +157,8 @@
                 <i v-else class="bi bi-x-circle-fill text-secondary fs-5"></i>
               </td>
               <td class="text-center">
-                <button 
-                  class="btn btn-sm btn-outline-primary" 
+                <button
+                  class="btn btn-sm btn-outline-primary"
                   @click="VerConvenioCompleto(conv.id, conv.convenioType)"
                   title="Ver detalles"
                 >
@@ -171,10 +195,14 @@ defineEmits(['reset-search'])
 
 const getEstadoBadgeClass = (estado: number) => {
   switch (estado) {
-    case 0: return 'badge bg-warning text-dark' // Borrador/Pendiente
-    case 1: return 'badge bg-success' // Vigente
-    case 2: return 'badge bg-secondary' // Finalizado
-    default: return 'badge bg-light text-dark border'
+    case 0:
+      return 'badge bg-warning text-dark' // Borrador/Pendiente
+    case 1:
+      return 'badge bg-success' // Vigente
+    case 2:
+      return 'badge bg-secondary' // Finalizado
+    default:
+      return 'badge bg-light text-dark border'
   }
 }
 </script>
@@ -281,15 +309,15 @@ const getEstadoBadgeClass = (estado: number) => {
   .empty-state {
     padding: 2rem 1.5rem;
   }
-  
+
   .empty-state-icon {
     font-size: 3rem;
   }
-  
+
   .empty-state-title {
     font-size: 1.25rem;
   }
-  
+
   .empty-state-text {
     font-size: 0.95rem;
   }
