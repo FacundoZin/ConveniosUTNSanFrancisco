@@ -9,6 +9,7 @@
       <!-- Links (a la derecha) -->
       <nav class="nav-links">
         <router-link to="/">Panel de búsqueda</router-link>
+        <router-link to="/empresas">Empresas</router-link>
         <router-link to="/CargarConvenioMarco">Cargar Marco</router-link>
         <router-link to="/CargarConvenioEspecifico">Cargar Especifico</router-link>
       </nav>
