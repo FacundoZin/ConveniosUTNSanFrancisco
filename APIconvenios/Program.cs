@@ -37,13 +37,13 @@ var LogPath = Path.Combine(
 
 var LogPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-    "SistemaConveniosUTN",
+    "SistemaConveniosUTNv3",
     "Logs"
 );
 
 var dbPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-    "SistemaConveniosUTN",
+    "SistemaConveniosUTNv3",
     "SistemaConveniosUTN.db"
 );
 
