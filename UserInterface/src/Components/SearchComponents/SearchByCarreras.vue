@@ -19,6 +19,9 @@ const carreras: string[] = [
   'Ingeniería Electrónica',
   'Ingeniería Electromecánica',
   'Tecnicatura en Programación',
+  'Materias Basicas',
+  'SEU',
+  'Vinculación Tecnológica',
 ]
 
 const objetoFiltroListo = computed(() => {

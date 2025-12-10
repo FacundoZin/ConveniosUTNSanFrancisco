@@ -76,14 +76,14 @@
     <!-- Convenios Específicos -->
     <h5>Convenios Específicos</h5>
     <div class="row">
-      <div v-if="Convenio.conveniosEspecificos && Convenio.conveniosEspecificos.length > 0">
+      <template v-if="Convenio.conveniosEspecificos && Convenio.conveniosEspecificos.length > 0">
         <div class="col-md-4 mb-3" v-for="ce in Convenio.conveniosEspecificos" :key="ce.id">
           <ConvEspecificoCardReadOnly
             :convenio="ce"
             @desvincular-especifico="desvincularConvenioEspecifico"
           />
         </div>
-      </div>
+      </template>
       <div v-else class="col-12">
         <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
           <div class="card-body">

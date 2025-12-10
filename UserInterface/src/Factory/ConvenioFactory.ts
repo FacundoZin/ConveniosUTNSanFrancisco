@@ -14,6 +14,15 @@ export function CreateListConveniosDto(
   if (!data || (Array.isArray(data) && data.length === 0)) {
     convenios = []
     convenioType = type || ''
+
+    if (convenioType === 'ambos') {
+      return {
+        conveniosMarcos: [],
+        conveniosEspecificos: [],
+        Type: 'ambos',
+        data: [],
+      }
+    }
   } else if ('conveniosMarcos' in (data as any) && 'convenioEspecificos' in (data as any)) {
     // Caso "Ambos": la API devuelve un objeto con ambas listas
     return {

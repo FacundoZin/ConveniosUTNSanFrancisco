@@ -77,33 +77,24 @@ const obtenerConvenios = async () => {
 
       showNoResultsMode.value = false
     } else {
-      // Solo procesar como lista si el resultado es un array
-      // Solo procesar como lista si el resultado es un array o un objeto (caso Ambos)
-      if (
-        Array.isArray(result.value) ||
-        (typeof result.value === 'object' && result.value !== null)
-      ) {
-        ListadoConvenios.value = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
+      ListadoConvenios.value = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
 
-        // Verificar si hay resultados
-        if (ListadoConvenios.value.Type === 'ambos') {
-          const ambos = ListadoConvenios.value as any // Cast explicito para acceder a propiedades de ambos
-          if (ambos.conveniosMarcos.length === 0 && ambos.conveniosEspecificos.length === 0) {
-            showNoResultsMode.value = true
-          } else {
-            showNoResultsMode.value = false
-          }
+      if (ListadoConvenios.value.Type === 'ambos') {
+        const ambos = ListadoConvenios.value as any
+        if (ambos.conveniosMarcos.length === 0 && ambos.conveniosEspecificos.length === 0) {
+          showNoResultsMode.value = true
         } else {
-          if (ListadoConvenios.value.data.length === 0) {
-            showNoResultsMode.value = true
-          } else {
-            showNoResultsMode.value = false
-          }
+          showNoResultsMode.value = false
         }
-
-        const listaCreada = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
-        console.log('esta la lista de convenios creada:', listaCreada.data, listaCreada.Type)
+      } else {
+        if (ListadoConvenios.value.data.length === 0) {
+          showNoResultsMode.value = true
+        } else {
+          showNoResultsMode.value = false
+        }
       }
+
+      console.log('Lista de convenios actualizada:', ListadoConvenios.value)
 
       countResult.value = null
       countResultBoth.value = null
@@ -120,6 +111,8 @@ const handleOpenofFilterPanel = (type: 'marco' | 'especifico' | 'ambos') => {
 
 const handleFilterSelected = (filterKey: string) => {
   activeFilterComponent.value = filterKey
+  // Limpiar filtros previos para evitar búsquedas cruzadas indeseadas
+  QueryComposable.clearAllFilters()
   // Limpiar resultados previos al cambiar de filtro
   ListadoConvenios.value = CreateListConveniosDto(null)
   countResult.value = null
@@ -128,6 +121,7 @@ const handleFilterSelected = (filterKey: string) => {
 
 const resetSearch = () => {
   showNoResultsMode.value = false
+  QueryComposable.clearAllFilters() // Asegurar limpieza total
   ListadoConvenios.value = CreateListConveniosDto(null)
   countResult.value = null
   countResultBoth.value = null
