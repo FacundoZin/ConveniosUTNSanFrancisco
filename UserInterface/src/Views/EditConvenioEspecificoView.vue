@@ -268,7 +268,7 @@
 
         <InvolucradoForm @agregar="agregarInvolucrado" />
 
-        <div class="involucrados-list mt-3">
+        <div class="d-flex flex-wrap gap-3 mt-3">
           <InvolucradosCard
             v-for="(inv, idx) in UpdateConvEspRequest.insertInvolucradosDtos"
             :key="idx"
@@ -292,7 +292,7 @@
       >
         <h4 class="text-primary mb-3">Involucrados Existentes</h4>
 
-        <div class="involucrados-list mt-3">
+        <div class="d-flex flex-wrap gap-3 mt-3">
           <InvolucradosExistingCard
             v-for="(inv, idx) in InfoConvenioEspecificoCompleta?.involucrados"
             :key="idx"

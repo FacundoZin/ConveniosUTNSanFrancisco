@@ -100,23 +100,21 @@
 
     <!-- involucrados asociado -->
     <h5>Involucrados Asociados</h5>
-    <div class="row">
-      <div
-        v-if="Convenio?.involucrados && Convenio.involucrados.length > 0"
-        class="d-flex flex-wrap gap-3"
-      >
-        <InvolucradosViewCard
-          v-for="involucrado in Convenio.involucrados"
-          :key="involucrado.id"
-          :involucrado="involucrado"
-        />
-      </div>
-      <div v-else class="col-12 text-muted">
-        <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
-          <div class="card-body">
-            <h6 class="card-title mb-2">Sin involucrados</h6>
-            <p class="text-muted mb-0">Aún no hay involucrados asociados a este convenio.</p>
-          </div>
+    <div
+      v-if="Convenio?.involucrados && Convenio.involucrados.length > 0"
+      class="d-flex flex-wrap gap-3"
+    >
+      <InvolucradosViewCard
+        v-for="involucrado in Convenio.involucrados"
+        :key="involucrado.id"
+        :involucrado="involucrado"
+      />
+    </div>
+    <div v-else class="w-100 text-muted">
+      <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
+        <div class="card-body">
+          <h6 class="card-title mb-2">Sin involucrados</h6>
+          <p class="text-muted mb-0">Aún no hay involucrados asociados a este convenio.</p>
         </div>
       </div>
     </div>
