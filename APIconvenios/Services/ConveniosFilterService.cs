@@ -136,7 +136,7 @@ namespace APIconvenios.Services
             return Result<EmpresaWithConveniosDto>.Exito(new EmpresaWithConveniosDto
             {
                 NombreEmpresa = empresa.Nombre,
-                ConvenioMarco = empresa.ConvenioMarco.ToDto(),
+                ConvenioMarco = empresa.ConvenioMarco?.ToDto(),
                 conveniosEspecificos = empresa.ConveniosEspecificos.ToDto()
             });
         }
