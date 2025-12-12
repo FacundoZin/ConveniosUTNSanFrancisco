@@ -29,16 +29,12 @@
 
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-hash me-2 text-muted"></i>
-            <small
-              ><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small
-            >
+            <small><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small>
           </div>
 
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-hash me-2 text-muted"></i>
-            <small
-              ><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small
-            >
+            <small><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small>
           </div>
 
           <div class="mt-3 pt-2 border-top d-flex flex-wrap gap-2">
@@ -58,11 +54,7 @@
 
     <!-- Empresa Asociada -->
     <h5>Informacion de la empresa asociada</h5>
-    <EmpresaCardReadOnly
-      v-if="Convenio.empresa"
-      :empresa="Convenio.empresa"
-      @desvincular-empresa="DesvincularEmpresa"
-    />
+    <EmpresaCardReadOnly v-if="Convenio.empresa" :empresa="Convenio.empresa" />
     <div v-else class="col-12">
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
@@ -78,10 +70,7 @@
     <div class="row">
       <template v-if="Convenio.conveniosEspecificos && Convenio.conveniosEspecificos.length > 0">
         <div class="col-md-4 mb-3" v-for="ce in Convenio.conveniosEspecificos" :key="ce.id">
-          <ConvEspecificoCardReadOnly
-            :convenio="ce"
-            @desvincular-especifico="desvincularConvenioEspecifico"
-          />
+          <ConvEspecificoCardReadOnly :convenio="ce" />
         </div>
       </template>
       <div v-else class="col-12">
@@ -98,23 +87,13 @@
 
     <hr class="my-4" />
 
-    <FileUploader
-      :archivos="Convenio?.archivosAdjuntos"
-      @archivo-cargado="CargarDocumento"
-      class="mb-3"
-      @archivo-eliminado="BorrarDocumento"
-      @archivo-descargado="DescargarDocumento"
-    />
+    <FileUploader :archivos="Convenio?.archivosAdjuntos" @archivo-cargado="CargarDocumento" class="mb-3"
+      @archivo-eliminado="BorrarDocumento" @archivo-descargado="DescargarDocumento" />
 
     <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
       <strong>Error:</strong> {{ errorMessage }}
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-        @click="errorMessage = ''"
-      ></button>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+        @click="errorMessage = ''"></button>
     </div>
 
     <hr class="my-4" />
@@ -223,29 +202,7 @@ const DeleteConvenio = async () => {
   }
 }
 
-const DesvincularEmpresa = async () => {
-  errorMessage.value = ''
-  isLoading.value = true
-
-  const response = await ApiService.DesvincularEmpresaDeMarco(id)
-  if (!response.isSuccess) {
-    errorMessage.value = response.error.message
-  }
-  isLoading.value = false
-}
-
-const desvincularConvenioEspecifico = async (idConvenioEspecifico: number) => {
-  errorMessage.value = ''
-  isLoading.value = true
-
-  const response = await ApiService.DesvincularConvenioEspecifico(id, idConvenioEspecifico)
-
-  if (!response.isSuccess) {
-    errorMessage.value = response.error.message
-  }
-
-  isLoading.value = false
-}
+// Funciones de desvinculación eliminadas (código muerto)
 
 const CargarDocumento = async ({ file, nombre }: { file: File; nombre: string }) => {
   errorMessage.value = ''
