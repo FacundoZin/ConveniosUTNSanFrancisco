@@ -1,11 +1,18 @@
 import type { Result } from '@/Common/Result'
-import type { TableInvolucradosByCarreraDto } from '@/Types/Involucrados/InvolucradosByCarrera'
 import type { CargarConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/CreateConvenioEspecifico'
 import type { UpdateConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/UpdateConvenioEspecifico'
+import type { ComboBoxConvenioMarcoDto } from '@/Types/ConvenioMarco/ComboBoxConvenioMarcoDto'
 import type { CargarConvenioMarcoRequestDto } from '@/Types/ConvenioMarco/CreateConvenioMarco'
 import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/UpdateConvenioMarco'
+import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDto'
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
+import type { EditEmpresaDto } from '@/Types/Empresa/EditEmpresaDto'
+import type { EmpresaWithConveniosDto } from '@/Types/Empresa/EmpresaWithConveniosDto'
 import type { IConvenioQueryObject } from '@/Types/Filters'
+import type { ComboBoxInvolucradosDto } from '@/Types/Involucrados/ComboBoxInvolucradosDto'
+import type { InvolucradoExistDto } from '@/Types/Involucrados/InvolucradoExistDto'
+import type { TableInvolucradosByCarreraDto } from '@/Types/Involucrados/InvolucradosByCarrera'
+import type { ValidateInvolucradoDto } from '@/Types/Involucrados/ValidateInvolucradoDto'
 import type {
   ConvenioCreated,
   ConvenioEspecificoDto,
@@ -14,13 +21,6 @@ import type {
   InfoConvenioMarcoDto,
   ViewArchivoDto,
 } from '@/Types/ViewModels/ViewModels'
-import type { ComboBoxInvolucradosDto } from '@/Types/Involucrados/ComboBoxInvolucradosDto'
-import type { ValidateInvolucradoDto } from '@/Types/Involucrados/ValidateInvolucradoDto'
-import type { InvolucradoExistDto } from '@/Types/Involucrados/InvolucradoExistDto'
-import type { ComboBoxConvenioMarcoDto } from '@/Types/ConvenioMarco/ComboBoxConvenioMarcoDto'
-import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDto'
-import type { EditEmpresaDto } from '@/Types/Empresa/EditEmpresaDto'
-import type { EmpresaWithConveniosDto } from '@/Types/Empresa/EmpresaWithConveniosDto'
 import axios from 'axios'
 
 const API_URL = 'http://localhost:8888/api'
@@ -372,6 +372,20 @@ export default class ApiService {
   static async GetAllInvolucrados(): Promise<Result<ComboBoxInvolucradosDto[]>> {
     try {
       const response = await axios.get(`${API_URL}/Involucrados`)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return {
+        isSuccess: false,
+        error: { message: getErrorMessage(Ex), status: Ex.response?.status },
+      }
+    }
+  }
+
+  static async GetInvolucradosDisponibles(
+    idConvenio: number,
+  ): Promise<Result<ComboBoxInvolucradosDto[]>> {
+    try {
+      const response = await axios.get(`${API_URL}/Involucrados/available/${idConvenio}`)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return {

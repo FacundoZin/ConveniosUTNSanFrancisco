@@ -36,6 +36,13 @@ namespace APIconvenios.Repositorio
                 .ToListAsync();    
         }
 
+        public async Task<List<Involucrados>> GetAvailableForConvenio(int idConvenio)
+        {
+            return await _context.Involucrados
+                .Where(i => !i.ConveniosEspecificos.Any(c => c.Id == idConvenio))
+                .ToListAsync();
+        }
+
         public async Task<List<Involucrados>> GetInvolucradosByIds(int[] ids)
         {
             return await _context.Involucrados

@@ -15,6 +15,6 @@ namespace APIconvenios.Models
         public int? IdCarrera { get; set; }
         public Carreras? Carrera { get; set; }
 
-        public List<ConvenioEspecifico> ConveniosEspecificos { get; set; }
+        public List<ConvenioEspecifico> ConveniosEspecificos { get; set; } = new List<ConvenioEspecifico>();
     }
 }

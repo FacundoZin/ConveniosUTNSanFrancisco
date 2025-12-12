@@ -21,12 +21,8 @@
 
       <li v-for="involucrado in involucrados" :key="involucrado.id" @click.stop>
         <label class="dropdown-item d-flex align-items-center gap-2">
-          <input
-            type="checkbox"
-            :value="involucrado.id"
-            :checked="isSelected(involucrado.id)"
-            @change="toggleSelection(involucrado.id)"
-          />
+          <input type="checkbox" :value="involucrado.id" :checked="isSelected(involucrado.id)"
+            @change="toggleSelection(involucrado.id)" />
           {{ involucrado.fullName }}
         </label>
       </li>
@@ -44,10 +40,11 @@
 <script setup lang="ts">
 import ApiService from '@/Services/ApiService'
 import type { ComboBoxInvolucradosDto } from '@/Types/Involucrados/ComboBoxInvolucradosDto'
-import { ref, onMounted, computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 interface Props {
   modelValue: number[] | null
+  idConvenioExcluded?: number
 }
 
 const props = defineProps<Props>()
@@ -84,7 +81,12 @@ const fetchInvolucrados = async () => {
   isLoading.value = true
   errorMensaje.value = ''
 
-  const result = await ApiService.GetAllInvolucrados()
+  let result
+  if (props.idConvenioExcluded) {
+    result = await ApiService.GetInvolucradosDisponibles(props.idConvenioExcluded)
+  } else {
+    result = await ApiService.GetAllInvolucrados()
+  }
 
   isLoading.value = false
 

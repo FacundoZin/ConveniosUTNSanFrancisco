@@ -9,5 +9,6 @@ namespace APIconvenios.Interfaces.Repositorio
         Task< List<Involucrados>> GetAllInvolucraods();
         Task<List<Involucrados>> GetInvolucradosByIds(int[] ids);
         Task<List<Involucrados>> GetInvolucradosByCarrera(int IdCarrera);
+        Task<List<Involucrados>> GetAvailableForConvenio(int idConvenio);
     }
 }

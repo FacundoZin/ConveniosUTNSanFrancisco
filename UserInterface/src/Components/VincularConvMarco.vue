@@ -3,12 +3,7 @@
     <label for="convenioMarcoSelect" class="form-label">
       Seleccione el convenio marco a vincular
     </label>
-    <select
-      id="convenioMarcoSelect"
-      v-model="selectedId"
-      @change="handleChange"
-      class="form-select"
-    >
+    <select id="convenioMarcoSelect" v-model="selectedId" @change="handleChange" class="form-select">
       <option value="" disabled>Seleccione un convenio marco...</option>
       <option v-for="convenio in conveniosMarcos" :key="convenio.id" :value="convenio.id">
         {{ convenio.titulo }}
@@ -25,11 +20,7 @@
       {{ errorMensaje }}
     </div>
 
-    <div
-      v-if="!isLoading && conveniosMarcos.length === 0"
-      class="alert alert-info mt-2"
-      role="alert"
-    >
+    <div v-if="!isLoading && conveniosMarcos.length === 0" class="alert alert-info mt-2" role="alert">
       No hay convenios marcos disponibles
     </div>
 
@@ -43,10 +34,11 @@
 <script setup lang="ts">
 import ApiService from '@/Services/ApiService'
 import type { ComboBoxConvenioMarcoDto } from '@/Types/ConvenioMarco/ComboBoxConvenioMarcoDto'
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 interface RequestWithConvenioMarco {
   idConvenioMarco?: number | null
+  idMarcoVinculado?: number | null
 }
 
 const props = defineProps<{
@@ -56,13 +48,19 @@ const props = defineProps<{
 const conveniosMarcos = ref<ComboBoxConvenioMarcoDto[]>([])
 const isLoading = ref(false)
 const errorMensaje = ref('')
-const selectedId = ref<number | null>(props.request.idConvenioMarco || null)
+const selectedId = ref<number | null>(
+  props.request.idConvenioMarco ?? props.request.idMarcoVinculado ?? null,
+)
 
 const handleChange = () => {
-  if (selectedId.value) {
-    props.request.idConvenioMarco = selectedId.value
-  } else {
-    props.request.idConvenioMarco = null
+  const val = selectedId.value || null
+
+  if ('idConvenioMarco' in props.request) {
+    props.request.idConvenioMarco = val
+  }
+
+  if ('idMarcoVinculado' in props.request) {
+    props.request.idMarcoVinculado = val
   }
 }
 

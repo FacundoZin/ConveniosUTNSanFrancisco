@@ -47,6 +47,20 @@ namespace APIconvenios.Controllers
             return Ok(dto);
         }
 
+        [HttpGet("available/{idConvenio:int}")]
+        public async Task<IActionResult> GetAvailableInvolucrados(int idConvenio)
+        {
+            var involucrados = await _UnitOfWork._InvolucradosRepository.GetAvailableForConvenio(idConvenio);
+
+            var dto = involucrados.Select(i => new ComboBoxInvolucradosDto
+            {
+                Id = i.Id,
+                FullName = $"{i.Nombre} {i.Apellido}",
+            }).ToList();
+
+            return Ok(dto);
+        }
+
         [HttpGet("carrera/{carreraId:int}")]
         public async Task<IActionResult> GetInvolucradosByCarrera(int carreraId)
         {
