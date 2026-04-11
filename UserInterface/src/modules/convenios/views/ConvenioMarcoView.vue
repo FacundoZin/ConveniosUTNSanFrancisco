@@ -1,12 +1,12 @@
 <template>
   <div class="container mt-4" v-if="Convenio?.id">
     <!-- Info del Convenio Marco -->
-    <h5>Información del convenio</h5>
+    <h5>InformaciÃ³n del convenio</h5>
 
     <div class="card shadow-sm mb-4">
       <div class="card-body position-relative">
         <h6 class="card-title text-primary mb-3 pe-4">
-          {{ Convenio.titulo || 'Sin título' }}
+          {{ Convenio.titulo || 'Sin tÃ­tulo' }}
         </h6>
 
         <div class="card-text">
@@ -29,12 +29,16 @@
 
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-hash me-2 text-muted"></i>
-            <small><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small>
+            <small
+              ><strong>Nï¿½mero de resoluciï¿½n:</strong> {{ Convenio.numeroResolucion || ' -' }}</small
+            >
           </div>
 
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-hash me-2 text-muted"></i>
-            <small><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small>
+            <small
+              ><strong>Numero de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small
+            >
           </div>
 
           <div class="mt-3 pt-2 border-top d-flex flex-wrap gap-2">
@@ -58,15 +62,15 @@
     <div v-else class="col-12">
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
-          <p class="text-muted mb-0">Aún no hay una empresa asociada a este convenio marco.</p>
+          <p class="text-muted mb-0">AÃºn no hay una empresa asociada a este convenio marco.</p>
         </div>
       </div>
     </div>
 
     <hr class="my-4" />
 
-    <!-- Convenios Específicos -->
-    <h5>Convenios Específicos</h5>
+    <!-- Convenios Especficos -->
+    <h5>Convenios Especficos</h5>
     <div class="row">
       <template v-if="Convenio.conveniosEspecificos && Convenio.conveniosEspecificos.length > 0">
         <div class="col-md-4 mb-3" v-for="ce in Convenio.conveniosEspecificos" :key="ce.id">
@@ -76,9 +80,9 @@
       <div v-else class="col-12">
         <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
           <div class="card-body">
-            <h6 class="card-title mb-2">Sin convenios específicos</h6>
+            <h6 class="card-title mb-2">Sin convenios especÃ­ficos</h6>
             <p class="text-muted mb-0">
-              Aún no hay convenios específicos vinculados a este convenio marco.
+              AÃºn no hay convenios especÃ­ficos vinculados a este convenio marco.
             </p>
           </div>
         </div>
@@ -87,13 +91,23 @@
 
     <hr class="my-4" />
 
-    <FileUploader :archivos="Convenio?.archivosAdjuntos" @archivo-cargado="CargarDocumento" class="mb-3"
-      @archivo-eliminado="BorrarDocumento" @archivo-descargado="DescargarDocumento" />
+    <FileUploader
+      :archivos="Convenio?.archivosAdjuntos"
+      @archivo-cargado="CargarDocumento"
+      class="mb-3"
+      @archivo-eliminado="BorrarDocumento"
+      @archivo-descargado="DescargarDocumento"
+    />
 
     <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
       <strong>Error:</strong> {{ errorMessage }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-        @click="errorMessage = ''"></button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+        @click="errorMessage = ''"
+      ></button>
     </div>
 
     <hr class="my-4" />
@@ -101,7 +115,7 @@
     <!-- Botones finales -->
     <div class="mt-5 d-flex gap-3 justify-content-center">
       <button class="btn btn-primary" @click="editConvenio">Editar Convenio</button>
-      <button class="btn btn-primary" @click="CargarEspecifico">Cargar Convenio Específico</button>
+      <button class="btn btn-primary" @click="CargarEspecifico">Cargar Convenio Especï¿½fico</button>
       <button class="btn btn-danger" @click="DeleteConvenio">Eliminar Convenio</button>
     </div>
   </div>
@@ -119,8 +133,8 @@ import ConvEspecificoCardReadOnly from '@/modules/convenios/components/ConvEspec
 import EmpresaCardReadOnly from '@/modules/empresas/components/EmpresaCardReadOnly.vue'
 import FileUploader from '@/modules/convenios/components/FileUploader.vue'
 import router from '@/router'
-import ConvenioService from '@/modules/convenios/services/ConvenioService';
-import DocumentService from '@/modules/shared/services/DocumentService';
+import ConvenioService from '@/modules/convenios/services/ConvenioService'
+import DocumentService from '@/modules/shared/services/DocumentService'
 import { EstadoConvenioTexto } from '@/Types/Enums/Enums'
 import type { InfoConvenioMarcoDto } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
@@ -188,7 +202,7 @@ const DeleteConvenio = async () => {
       const response = await ConvenioService.DeleteConvenioMarco(Convenio.value.id)
       if (response.isSuccess) {
         isLoading.value = false
-        toast.success(`"${Convenio.value.titulo}" eliminado con éxito`)
+        toast.success(`"${Convenio.value.titulo}" eliminado con ï¿½xito`)
         router.push({ name: 'ListaConvenios' })
       }
     }
@@ -203,14 +217,18 @@ const DeleteConvenio = async () => {
   }
 }
 
-// Funciones de desvinculación eliminadas (código muerto)
+// Funciones de desvinculaciï¿½n eliminadas (cï¿½digo muerto)
 
 const CargarDocumento = async ({ file, nombre }: { file: File; nombre: string }) => {
   errorMessage.value = ''
   isLoading.value = true
 
   try {
-    const ArchivoCargado = await DocumentService.CargarArchivoToMarco(nombre, file, Convenio.value!.id)
+    const ArchivoCargado = await DocumentService.CargarArchivoToMarco(
+      nombre,
+      file,
+      Convenio.value!.id,
+    )
 
     isLoading.value = false
 

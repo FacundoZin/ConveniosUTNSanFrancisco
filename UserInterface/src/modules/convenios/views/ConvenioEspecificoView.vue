@@ -1,12 +1,12 @@
 <template>
   <div class="container mt-4" v-if="Convenio?.id">
     <!-- Info del Convenio Especifico -->
-    <h5>Información del Convenio</h5>
+    <h5>InformaciÃ³n del Convenio</h5>
 
     <div class="card shadow-sm mb-4">
       <div class="card-body position-relative">
         <h6 class="card-title text-primary mb-3 pe-4">
-          {{ Convenio.titulo || 'Sin título' }}
+          {{ Convenio.titulo || 'Sin tÃ­tulo' }}
         </h6>
 
         <div class="card-text">
@@ -17,8 +17,10 @@
 
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-calendar-event me-2 text-muted"></i>
-            <small><strong>Fecha de inicio de actividades:</strong>
-              {{ Convenio.fechaInicioActividades || ' -' }}</small>
+            <small
+              ><strong>Fecha de inicio de actividades:</strong>
+              {{ Convenio.fechaInicioActividades || ' -' }}</small
+            >
           </div>
 
           <div class="d-flex align-items-center mb-2">
@@ -28,17 +30,23 @@
 
           <div class="d-flex align-items-start mb-2">
             <i class="bi bi-chat-left-text me-2 text-muted"></i>
-            <small class="text-break"><strong>Comentario:</strong> {{ Convenio.comentarioOpcional || ' -' }}</small>
+            <small class="text-break"
+              ><strong>Comentario:</strong> {{ Convenio.comentarioOpcional || ' -' }}</small
+            >
           </div>
 
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-hash me-2 text-muted"></i>
-            <small><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small>
+            <small
+              ><strong>Numero de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small
+            >
           </div>
 
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-hash me-2 text-muted"></i>
-            <small><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small>
+            <small
+              ><strong>Numero de resoluciÃ³n:</strong> {{ Convenio.numeroResolucion || ' -' }}</small
+            >
           </div>
 
           <div class="mt-3 pt-2 border-top d-flex flex-wrap gap-2">
@@ -63,7 +71,7 @@
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
           <h6 class="card-title mb-2">Sin empresa</h6>
-          <p class="text-muted mb-0">Aún no hay una empresa asociada a este convenio especifico.</p>
+          <p class="text-muted mb-0">Aï¿½n no hay una empresa asociada a este convenio especifico.</p>
         </div>
       </div>
     </div>
@@ -81,7 +89,7 @@
           <div class="card-body">
             <h6 class="card-title mb-2">Sin convenio marco</h6>
             <p class="text-muted mb-0">
-              Aún no hay un convenio marco asociado a este convenio especifico.
+              Aï¿½n no hay un convenio marco asociado a este convenio especifico.
             </p>
           </div>
         </div>
@@ -92,15 +100,21 @@
 
     <!-- involucrados asociado -->
     <h5>Involucrados Asociados</h5>
-    <div v-if="Convenio?.involucrados && Convenio.involucrados.length > 0" class="d-flex flex-wrap gap-3">
-      <InvolucradosViewCard v-for="involucrado in Convenio.involucrados" :key="involucrado.id"
-        :involucrado="involucrado" />
+    <div
+      v-if="Convenio?.involucrados && Convenio.involucrados.length > 0"
+      class="d-flex flex-wrap gap-3"
+    >
+      <InvolucradosViewCard
+        v-for="involucrado in Convenio.involucrados"
+        :key="involucrado.id"
+        :involucrado="involucrado"
+      />
     </div>
     <div v-else class="w-100 text-muted">
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
           <h6 class="card-title mb-2">Sin involucrados</h6>
-          <p class="text-muted mb-0">Aún no hay involucrados asociados a este convenio.</p>
+          <p class="text-muted mb-0">Aï¿½n no hay involucrados asociados a este convenio.</p>
         </div>
       </div>
     </div>
@@ -116,20 +130,33 @@
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
           <h6 class="card-title mb-2">Sin carreras involucradas</h6>
-          <p class="text-muted mb-0">Aún no hay carreras involucradas en este convenio</p>
+          <p class="text-muted mb-0">Aï¿½n no hay carreras involucradas en este convenio</p>
         </div>
       </div>
     </div>
 
     <hr class="my-4" />
 
-    <FileUploader :archivos="Convenio?.documentosAdjuntos" @archivo-cargado="CargarDocumento"
-      @archivo-eliminado="BorrarDocumento" @archivo-descargado="DescargarDocumento" />
+    <FileUploader
+      :archivos="Convenio?.documentosAdjuntos"
+      @archivo-cargado="CargarDocumento"
+      @archivo-eliminado="BorrarDocumento"
+      @archivo-descargado="DescargarDocumento"
+    />
 
-    <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show gap-3" role="alert">
+    <div
+      v-if="errorMessage"
+      class="alert alert-danger alert-dismissible fade show gap-3"
+      role="alert"
+    >
       <strong>Error:</strong> {{ errorMessage }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-        @click="errorMessage = ''"></button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+        @click="errorMessage = ''"
+      ></button>
     </div>
 
     <hr class="my-4" />
@@ -156,8 +183,8 @@ import EmpresaCardReadOnly from '@/modules/empresas/components/EmpresaCardReadOn
 import FileUploader from '@/modules/convenios/components/FileUploader.vue'
 import InvolucradosViewCard from '@/modules/involucrados/components/InvolucradosViewCard.vue'
 import router from '@/router'
-import ConvenioService from '@/modules/convenios/services/ConvenioService';
-import DocumentService from '@/modules/shared/services/DocumentService';
+import ConvenioService from '@/modules/convenios/services/ConvenioService'
+import DocumentService from '@/modules/shared/services/DocumentService'
 import { EstadoConvenioTexto } from '@/Types/Enums/Enums'
 import type { InfoConvenioEspecificoDto } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
@@ -215,7 +242,7 @@ const DeleteConvenio = async () => {
       const response = await ConvenioService.DeleteConvenioEspecifico(Convenio.value.id)
       if (response.isSuccess) {
         isLoading.value = false
-        toast.success(`"${Convenio.value.titulo}" eliminado con éxito`)
+        toast.success(`"${Convenio.value.titulo}" eliminado con ï¿½xito`)
         router.push({ name: 'ListaConvenios' })
       }
     }
@@ -230,14 +257,18 @@ const DeleteConvenio = async () => {
   }
 }
 
-// Funciones de desvinculación eliminadas (código muerto)
+// Funciones de desvinculaciï¿½n eliminadas (cï¿½digo muerto)
 
 const CargarDocumento = async ({ file, nombre }: { file: File; nombre: string }) => {
   errorMessage.value = ''
   isLoading.value = true
 
   try {
-    const ArchivoCargado = await DocumentService.CargarArchivoToMarco(nombre, file, Convenio.value!.id)
+    const ArchivoCargado = await DocumentService.CargarArchivoToMarco(
+      nombre,
+      file,
+      Convenio.value!.id,
+    )
 
     isLoading.value = false
 
