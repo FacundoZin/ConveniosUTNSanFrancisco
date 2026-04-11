@@ -101,6 +101,14 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.Migrate();
+
+    // 👉 Lógica de Seeding por consola
+    if (args.Contains("--seed"))
+    {
+        DbSeeder.Seed(dbContext);
+        Console.WriteLine("Seeding finalizado. Saliendo...");
+        return;
+    }
 }
 
 // Configure the HTTP request pipeline.
