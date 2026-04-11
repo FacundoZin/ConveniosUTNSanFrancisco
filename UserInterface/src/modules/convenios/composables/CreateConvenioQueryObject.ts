@@ -21,6 +21,8 @@ export function useConvenioQuery() {
     ByDesdeHastaDto: null,
     CountFirmadosByMesDto: null,
     countFirmadosByRangoDto: null,
+    PaginaActual: 1,
+    CantidadResultados: 10,
   })
 
   // Guardamos la última propiedad que se modificó
@@ -29,8 +31,8 @@ export function useConvenioQuery() {
   // Función de limpieza interna que usará el watcher
   const clearExcept = (keepFilter: keyof IConvenioQueryObject) => {
     for (const key in queryObject) {
-      if (key !== keepFilter) {
-        queryObject[key as keyof IConvenioQueryObject] = null
+      if (key !== keepFilter && key !== 'PaginaActual' && key !== 'CantidadResultados') {
+        queryObject[key as keyof IConvenioQueryObject] = null as any
       }
     }
   }
@@ -38,7 +40,9 @@ export function useConvenioQuery() {
   // Función pública para limpiar todos los filtros manualmente
   const clearAllFilters = () => {
     for (const key in queryObject) {
-      queryObject[key as keyof IConvenioQueryObject] = null
+      if (key !== 'PaginaActual' && key !== 'CantidadResultados') {
+        queryObject[key as keyof IConvenioQueryObject] = null as any
+      }
     }
     lastModifiedKey.value = null
   }
@@ -52,6 +56,12 @@ export function useConvenioQuery() {
       // Encontramos la clave que ha cambiado
       for (const key in newValue) {
         // Comparamos el valor actual con el anterior
+        if (
+          ['PaginaActual', 'CantidadResultados'].includes(key)
+        ) {
+          continue
+        }
+
         if (
           newValue[key as keyof IConvenioQueryObject] !==
           oldValue[key as keyof IConvenioQueryObject]

@@ -20,6 +20,7 @@ import CountConveniosResult from '@/modules/convenios/components/CountConveniosR
 import { useConvenioQuery } from '@/modules/convenios/composables/CreateConvenioQueryObject'
 import { CreateListConveniosDto } from '@/Factory/ConvenioFactory'
 import ConvenioService from '@/modules/convenios/services/ConvenioService';
+import AppPagination from '@/modules/shared/components/AppPagination.vue'
 import type { ListConveniosDto } from '@/Types/ViewModels/ViewModels'
 import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDto'
 import { ref } from 'vue'
@@ -31,6 +32,8 @@ const QueryComposable = useConvenioQuery()
 const TypeofConvenioToSearch = ref<'marco' | 'especifico' | 'ambos' | ''>('marco')
 const FilterPanelOpen = ref(true)
 const showNoResultsMode = ref(false)
+
+const pagination = ref({ currentPage: 1, totalPages: 1, totalItems: 0 })
 
 const activeFilterComponent = ref<string | null>(null)
 
@@ -77,7 +80,22 @@ const obtenerConvenios = async () => {
 
       showNoResultsMode.value = false
     } else {
-      ListadoConvenios.value = CreateListConveniosDto(result.value, TypeofConvenioToSearch.value)
+      let dataToProcess = result.value
+      
+      // Manejar respuesta paginada
+      if (result.value && typeof result.value === 'object' && 'totalPages' in result.value) {
+        const pagedData = result.value as any
+        dataToProcess = pagedData.data
+        pagination.value = {
+          currentPage: pagedData.currentPage,
+          totalPages: pagedData.totalPages,
+          totalItems: pagedData.totalItems
+        }
+      } else {
+        pagination.value = { currentPage: 1, totalPages: 1, totalItems: 0 }
+      }
+
+      ListadoConvenios.value = CreateListConveniosDto(dataToProcess, TypeofConvenioToSearch.value)
 
       if (ListadoConvenios.value.Type === 'ambos') {
         const ambos = ListadoConvenios.value as any
@@ -114,6 +132,8 @@ const handleFilterSelected = (filterKey: string) => {
   // Limpiar filtros previos para evitar búsquedas cruzadas indeseadas
   QueryComposable.clearAllFilters()
   // Limpiar resultados previos al cambiar de filtro
+  QueryComposable.queryObject.PaginaActual = 1
+  QueryComposable.queryObject.CantidadResultados = 10
   ListadoConvenios.value = CreateListConveniosDto(null)
   countResult.value = null
   showNoResultsMode.value = false
@@ -130,6 +150,11 @@ const resetSearch = () => {
 const closeCountResult = () => {
   countResult.value = null
   countResultBoth.value = null
+}
+
+const changePage = (page: number) => {
+  QueryComposable.queryObject.PaginaActual = page
+  obtenerConvenios()
 }
 </script>
 
@@ -324,4 +349,12 @@ const closeCountResult = () => {
   </div>
 
   <ConvenioList :convenios="ListadoConvenios" :isloading="isloading" @reset-search="resetSearch" />
+  
+  <div v-if="!isloading && !showNoResultsMode && (ListadoConvenios.Type !== 'ambos' ? ListadoConvenios.data.length > 0 : (ListadoConvenios.conveniosMarcos?.length > 0 || ListadoConvenios.conveniosEspecificos?.length > 0))" class="d-flex justify-content-center mb-5">
+    <AppPagination 
+      :current-page="pagination.currentPage" 
+      :total-pages="pagination.totalPages" 
+      @page-changed="changePage" 
+    />
+  </div>
 </template>

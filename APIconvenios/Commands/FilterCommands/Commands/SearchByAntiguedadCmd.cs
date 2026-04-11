@@ -1,4 +1,4 @@
-﻿using APIconvenios.Common;
+using APIconvenios.Common;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Filters;
 using APIconvenios.Helpers.Mappers;
@@ -10,68 +10,102 @@ namespace APIconvenios.Commands.FilterCommands.Commands
 {
     public class SearchByAntiguedadCmd : IFilterCommands
     {
+        private readonly ConvenioQueryObject _query;
         private readonly ByAntiguedadDto _Dto;
 
-        public SearchByAntiguedadCmd(ByAntiguedadDto dto)
+        public SearchByAntiguedadCmd(ConvenioQueryObject query)
         {
-            _Dto = dto;
+            _query = query;
+            _Dto = query.ByAntiguedadDto;
         }
 
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
             if (_Dto.convenioType == "marco")
             {
-                var query = _UnitOfWork._ConvenioMarcoRepository.GetQueryByFiltering();
+                var queryBase = _UnitOfWork._ConvenioMarcoRepository.GetQueryByFiltering()
+                    .Where(c => c.FechaFirmaConvenio != null);
 
-                var convenios = new List<APIconvenios.Models.ConvenioMarco>();
-
+                int total = await queryBase.CountAsync();
+                
+                IQueryable<APIconvenios.Models.ConvenioMarco> query;
                 if (_Dto.ascendente)
-                    convenios = await query
-                        .Where(c => c.FechaFirmaConvenio != null)
-                        .OrderBy(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
+                    query = queryBase.OrderBy(c => c.FechaFirmaConvenio);
+                else
+                    query = queryBase.OrderByDescending(c => c.FechaFirmaConvenio);
 
-                convenios = await query.OrderByDescending(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
+                var convenios = await query
+                    .Skip((_query.PaginaActual - 1) * _query.CantidadResultados)
+                    .Take(_query.CantidadResultados)
+                    .ToListAsync();
 
-                if (convenios.Count == 0) Result<object>.Error("no hay convenios marcos registrados", 404);
+                if (total == 0) return Result<object>.Error("no hay convenios marcos registrados", 404);
 
-                return Result<object>.Exito(convenios.ToDto());
+                return PaginatedResult<object>.ExitoPaginado(convenios.ToDto(), total, _query.PaginaActual, _query.CantidadResultados);
             }
             else if(_Dto.convenioType == "especifico")
             {
-                var query = _UnitOfWork._ConvenioEspecificoRepository.GetQueryByFiltering();
+                var queryBase = _UnitOfWork._ConvenioEspecificoRepository.GetQueryByFiltering()
+                    .Where(c => c.FechaFirmaConvenio != null);
 
-                var convenios = new List<APIconvenios.Models.ConvenioEspecifico>();
-
+                int total = await queryBase.CountAsync();
+                
+                IQueryable<APIconvenios.Models.ConvenioEspecifico> query;
                 if (_Dto.ascendente)
-                    convenios = await query
-                        .Where(c => c.FechaFirmaConvenio != null)
-                        .OrderBy(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
+                    query = queryBase.OrderBy(c => c.FechaFirmaConvenio);
+                else
+                    query = queryBase.OrderByDescending(c => c.FechaFirmaConvenio);
 
-                convenios = await query.OrderByDescending(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
+                var convenios = await query
+                    .Skip((_query.PaginaActual - 1) * _query.CantidadResultados)
+                    .Take(_query.CantidadResultados)
+                    .ToListAsync();
 
-                if (convenios.Count == 0) Result<object>.Error("no hay convenios especificos registrados", 404);
+                if (total == 0) return Result<object>.Error("no hay convenios especificos registrados", 404);
 
-                return Result<object>.Exito(convenios.ToDto());
+                return PaginatedResult<object>.ExitoPaginado(convenios.ToDto(), total, _query.PaginaActual, _query.CantidadResultados);
             }
             else
             {
                 var context1 = await _UnitOfWork._ContextFactory.CreateDbContextAsync();
                 var context2 = await _UnitOfWork._ContextFactory.CreateDbContextAsync();
 
-                var task1 = context1.ConveniosEspecificos.Where(c => c.FechaFirmaConvenio != null)
-                        .OrderBy(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
+                var q1Base = context1.ConveniosEspecificos.Where(c => c.FechaFirmaConvenio != null);
+                var q2Base = context2.ConveniosMarcos.Where(c => c.FechaFirmaConvenio != null);
 
-                var task2 = context2.ConveniosMarcos.Where(c => c.FechaFirmaConvenio != null)
-                        .OrderBy(c => c.FechaFirmaConvenio).Take(30).ToListAsync();
+                var taskTotal1 = q1Base.CountAsync();
+                var taskTotal2 = q2Base.CountAsync();
+                await Task.WhenAll(taskTotal1, taskTotal2);
+                
+                int maxTotal = System.Math.Max(taskTotal1.Result, taskTotal2.Result);
+
+                if (maxTotal == 0)
+                    return Result<object>.Error("no hay convenios que coincidan con la busqueda", 404);
+
+                int skip = (_query.PaginaActual - 1) * _query.CantidadResultados;
+                int take = _query.CantidadResultados;
+
+                IQueryable<APIconvenios.Models.ConvenioEspecifico> q1;
+                IQueryable<APIconvenios.Models.ConvenioMarco> q2;
+
+                if (_Dto.ascendente)
+                {
+                    q1 = q1Base.OrderBy(c => c.FechaFirmaConvenio);
+                    q2 = q2Base.OrderBy(c => c.FechaFirmaConvenio);
+                }
+                else
+                {
+                    q1 = q1Base.OrderByDescending(c => c.FechaFirmaConvenio);
+                    q2 = q2Base.OrderByDescending(c => c.FechaFirmaConvenio);
+                }
+
+                var task1 = q1.Skip(skip).Take(take).ToListAsync();
+                var task2 = q2.Skip(skip).Take(take).ToListAsync();
 
                 await Task.WhenAll(task1, task2);
 
                 var conveniosEspecificos = await task1;
                 var conveniosMarcos = await task2;
-
-                if (conveniosMarcos.Count == 0 && conveniosEspecificos.Count == 0)
-                    return Result<object>.Error("no hay convenios que coincidan con la busqueda", 404);
-
 
                 var Data = new ListConveniosDto
                 {
@@ -79,8 +113,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                     convenioEspecificos = conveniosEspecificos.ToDto(),
                 };
 
-
-                return Result<object>.Exito(Data);
+                return PaginatedResult<object>.ExitoPaginado(Data, maxTotal, _query.PaginaActual, take);
             }
         }
     }

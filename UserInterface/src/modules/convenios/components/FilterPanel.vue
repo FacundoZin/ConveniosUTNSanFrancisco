@@ -348,6 +348,7 @@ const closePanel = () => {
 
 const selectFilter = (filterKey: string) => {
   emit('filter-selected', filterKey)
+  closePanel()
 }
 
 const HandleDirectSearch = (convenioType: string, filterKey: string) => {

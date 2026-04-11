@@ -1,4 +1,4 @@
-﻿using APIconvenios.Common;
+using APIconvenios.Common;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Filters;
 using APIconvenios.Helpers.Mappers;
@@ -10,52 +10,74 @@ namespace APIconvenios.Commands.FilterCommands.Commands
 {
     public class SearchByNumeroResolucionCmd : IFilterCommands
     {
+        private readonly ConvenioQueryObject _query;
         private readonly ByNumeroResolucionDto _dto;
-        public SearchByNumeroResolucionCmd(ByNumeroResolucionDto dto)
+        public SearchByNumeroResolucionCmd(ConvenioQueryObject query)
         {
-            _dto = dto;
+            _query = query;
+            _dto = query.ByNumeroResolucion;
         }
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
             if (_dto.convenioType == "marco")
             {
-                var query = _UnitOfWork._ConvenioMarcoRepository.GetQueryByFiltering();
-                var Convenios = await query.Where(c => c.NumeroResolucion == _dto.NumeroResolucion)
+                var query = _UnitOfWork._ConvenioMarcoRepository.GetQueryByFiltering()
+                    .Where(c => c.NumeroResolucion == _dto.NumeroResolucion);
+
+                int total = await query.CountAsync();
+
+                var Convenios = await query
+                    .Skip((_query.PaginaActual - 1) * _query.CantidadResultados)
+                    .Take(_query.CantidadResultados)
                     .ToListAsync();
 
-                if (Convenios.Count == 0) return Result<object>.Error("convenio no encontrado", 404);
+                if (total == 0) return Result<object>.Error("convenio no encontrado", 404);
 
-                return Result<object>.Exito(Convenios.ToDto());
+                return PaginatedResult<object>.ExitoPaginado(Convenios.ToDto(), total, _query.PaginaActual, _query.CantidadResultados);
             }
             else if(_dto.convenioType == "especifico")
             {
-                var query = _UnitOfWork._ConvenioEspecificoRepository.GetQueryByFiltering();
-                var Convenios = await query.Where(c => c.NumeroResolucion == _dto.NumeroResolucion)
+                var query = _UnitOfWork._ConvenioEspecificoRepository.GetQueryByFiltering()
+                    .Where(c => c.NumeroResolucion == _dto.NumeroResolucion);
+
+                int total = await query.CountAsync();
+
+                var Convenios = await query
+                    .Skip((_query.PaginaActual - 1) * _query.CantidadResultados)
+                    .Take(_query.CantidadResultados)
                     .ToListAsync();
 
-                if (Convenios.Count == 0) return Result<object>.Error("convenio  no encontrado", 404);
+                if (total == 0) return Result<object>.Error("convenio  no encontrado", 404);
 
-                return Result<object>.Exito(Convenios.ToDto());
+                return PaginatedResult<object>.ExitoPaginado(Convenios.ToDto(), total, _query.PaginaActual, _query.CantidadResultados);
             }
             else
             {
                 var context1 = await _UnitOfWork._ContextFactory.CreateDbContextAsync();
                 var context2 = await _UnitOfWork._ContextFactory.CreateDbContextAsync();
 
-                var task1 = context1.ConveniosEspecificos.Where(c => c.NumeroResolucion == _dto.NumeroResolucion)
-                    .ToListAsync();
+                var q1 = context1.ConveniosEspecificos.Where(c => c.NumeroResolucion == _dto.NumeroResolucion);
+                var q2 = context2.ConveniosMarcos.Where(c => c.NumeroResolucion == _dto.NumeroResolucion);
 
-                var task2 = context2.ConveniosMarcos.Where(c => c.NumeroResolucion == _dto.NumeroResolucion)
-                    .ToListAsync();
+                var taskTotal1 = q1.CountAsync();
+                var taskTotal2 = q2.CountAsync();
+                await Task.WhenAll(taskTotal1, taskTotal2);
+                
+                int maxTotal = System.Math.Max(taskTotal2.Result, taskTotal1.Result);
+
+                if (maxTotal == 0)
+                    return Result<object>.Error("no hay convenios que coincidan con la busqueda", 404);
+
+                int skip = (_query.PaginaActual - 1) * _query.CantidadResultados;
+                int take = _query.CantidadResultados;
+
+                var task1 = q1.Skip(skip).Take(take).ToListAsync();
+                var task2 = q2.Skip(skip).Take(take).ToListAsync();
 
                 await Task.WhenAll(task1, task2);
 
                 var conveniosEspecificos = await task1;
                 var conveniosMarcos = await task2;
-
-                if (conveniosMarcos.Count == 0 && conveniosEspecificos.Count == 0)
-                    return Result<object>.Error("no hay convenios que coincidan con la busqueda", 404);
-
 
                 var Data = new ListConveniosDto
                 {
@@ -63,8 +85,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                     convenioEspecificos = conveniosEspecificos.ToDto(),
                 };
 
-
-                return Result<object>.Exito(Data);
+                return PaginatedResult<object>.ExitoPaginado(Data, maxTotal, _query.PaginaActual, take);
             }
         }
     }

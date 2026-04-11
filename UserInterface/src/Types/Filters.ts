@@ -107,4 +107,6 @@ export interface IConvenioQueryObject {
   ByDesdeHastaDto: IByDesdeHastaParams | null
   CountFirmadosByMesDto: ICountFirmadosByMesParams | null
   countFirmadosByRangoDto: ICountFirmadosByRangoParams | null
+  PaginaActual?: number
+  CantidadResultados?: number
 }

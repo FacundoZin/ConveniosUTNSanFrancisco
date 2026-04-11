@@ -1,4 +1,4 @@
-﻿using APIconvenios.Common;
+using APIconvenios.Common;
 using APIconvenios.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +22,18 @@ namespace APIconvenios.Controllers
             if (!result.Exit)
             {
                 return StatusCode(result.Errorcode, result.Errormessage);
+            }
+
+            if (result is PaginatedResult<object> paginatedResult)
+            {
+                return Ok(new 
+                { 
+                    data = paginatedResult.Data, 
+                    totalItems = paginatedResult.TotalItems, 
+                    totalPages = paginatedResult.TotalPages, 
+                    currentPage = paginatedResult.CurrentPage, 
+                    pageSize = paginatedResult.PageSize 
+                });
             }
 
             return Ok(result.Data);

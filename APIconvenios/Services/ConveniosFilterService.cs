@@ -21,105 +21,105 @@ namespace APIconvenios.Services
         {
             if (queryObject.ByTitulo != null)
             {
-                var cmd = new SearchByTitleCmd(queryObject.ByTitulo);
+                var cmd = new SearchByTitleCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByNumeroResolucion != null)
             {
-                var cmd = new SearchByNumeroResolucionCmd(queryObject.ByNumeroResolucion);
+                var cmd = new SearchByNumeroResolucionCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByNumeroConvenio != null)
             {
-                var cmd = new SearchByNumeroConvenioCmd(queryObject.ByNumeroConvenio);
+                var cmd = new SearchByNumeroConvenioCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByEmpresa != null)
             {
-                var cmd = new SearchByEmpresaCmd(queryObject.ByEmpresa);
+                var cmd = new SearchByEmpresaCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByIsActa != null)
             {
-                var cmd = new SearchActaCmd(queryObject.ByIsActa);
+                var cmd = new SearchActaCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByIsRefrendado != null)
             {
-                var cmd = new SearchByRefrendadoCmd(queryObject.ByIsRefrendado);
+                var cmd = new SearchByRefrendadoCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByEstado != null)
             {
-                var cmd = new SearchByEstadoCmd(queryObject.ByEstado);
+                var cmd = new SearchByEstadoCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByCarrera != null)
             {
-                var cmd = new SearchByCarrerasCmd(queryObject.ByCarrera);
+                var cmd = new SearchByCarrerasCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByFechaFirma != null)
             {
-                var cmd = new SearchByFechaFirmaCmd(queryObject.ByFechaFirma);
+                var cmd = new SearchByFechaFirmaCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByFechaFin != null)
             {
-                var cmd = new SearchByFechaFinCmd(queryObject.ByFechaFin);
+                var cmd = new SearchByFechaFinCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByAntiguedadDto != null)
             {
-                var cmd = new SearchByAntiguedadCmd(queryObject.ByAntiguedadDto);
+                var cmd = new SearchByAntiguedadCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByProximosAvencer != null)
             {
-                var cmd = new SearchProximosAvencerCmd(queryObject.ByProximosAvencer);
+                var cmd = new SearchProximosAvencerCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if(queryObject.ByMes != null)
             {
-                var cmd = new SearchByMesCmd(queryObject.ByMes);
+                var cmd = new SearchByMesCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByAnio != null)
             {
-                var cmd = new SearchByAnioCmd(queryObject.ByAnio);
+                var cmd = new SearchByAnioCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.ByDesdeHastaDto != null)
             {
-                var cmd = new SearchByDesdeHastaCmd(queryObject.ByDesdeHastaDto);
+                var cmd = new SearchByDesdeHastaCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.CountFirmadosByMesDto != null)
             {
                 var cmd = new CountConvFirmadosByMesCmd(queryObject.CountFirmadosByMesDto);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
             else if (queryObject.countFirmadosByRangoDto != null)
             {
                 var cmd = new CountConvFirmadosByRangoCmd(queryObject.countFirmadosByRangoDto);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
-                return result;
+                return ApplyPagination(result, queryObject);
             }
 
 
@@ -139,6 +139,40 @@ namespace APIconvenios.Services
                 ConvenioMarco = empresa.ConvenioMarco?.ToDto(),
                 conveniosEspecificos = empresa.ConveniosEspecificos.ToDto()
             });
+        }
+
+        private Result<object> ApplyPagination(Result<object> result, ConvenioQueryObject query)
+        {
+            if (!result.Exit || result.Data == null || result is PaginatedResult<object>) return result;
+
+            int skip = (query.PaginaActual - 1) * query.CantidadResultados;
+            int take = query.CantidadResultados;
+
+            if (result.Data is APIconvenios.DTOs.Convenios.ListConveniosDto ambos)
+            {
+                var totalMarcos = ambos.conveniosMarcos.Count();
+                var totalEspecificos = ambos.convenioEspecificos.Count();
+                var maxTotal = System.Math.Max(totalMarcos, totalEspecificos);
+                
+                ambos.conveniosMarcos = ambos.conveniosMarcos.Skip(skip).Take(take).ToList();
+                ambos.convenioEspecificos = ambos.convenioEspecificos.Skip(skip).Take(take).ToList();
+                
+                return PaginatedResult<object>.ExitoPaginado(ambos, maxTotal, query.PaginaActual, take);
+            }
+            else if (result.Data is IEnumerable<APIconvenios.DTOs.ConvenioMarco.ConvenioMarcoDto> marcos)
+            {
+                var total = marcos.Count();
+                var paged = marcos.Skip(skip).Take(take).ToList();
+                return PaginatedResult<object>.ExitoPaginado(paged, total, query.PaginaActual, take);
+            }
+            else if (result.Data is IEnumerable<APIconvenios.DTOs.ConvenioEspecifico.ConvenioEspecificoDto> especificos)
+            {
+                var total = especificos.Count();
+                var paged = especificos.Skip(skip).Take(take).ToList();
+                return PaginatedResult<object>.ExitoPaginado(paged, total, query.PaginaActual, take);
+            }
+
+            return result;
         }
     }
 }
