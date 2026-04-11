@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import ApiService from '@/Services/ApiService'
+import InvolucradoService from '@/modules/involucrados/services/InvolucradoService'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
 import { carrerasList } from '@/Types/CarrerasInvolucradas/CarrerasInvolucradas'
 import { ref } from 'vue'
@@ -94,7 +94,7 @@ const agregar = async () => {
   // Validar que no exista el involucrado
   isValidating.value = true
 
-  const validationResult = await ApiService.ValidateInvolucrado({
+  const validationResult = await InvolucradoService.ValidateInvolucrado({
     nombre: form.value.nombre || '',
     apellido: form.value.apellido || '',
   })

@@ -1,9 +1,9 @@
-﻿<script lang="ts" setup>
+<script lang="ts" setup>
 import { KeyFilters } from '@/Common/KeyFilter'
 import ConvenioList from '@/modules/convenios/components/ConvenioList.vue'
 import FilterPanel from '@/modules/convenios/components/FilterPanel.vue'
 import SearchByAntiguedad from '@/modules/convenios/components/search/SearchByAntiguedad.vue'
-import SearchByAño from '@/modules/convenios/components/search/SearchByAño.vue'
+import SearchByAnio from '@/modules/convenios/components/search/SearchByAnio.vue'
 import SearchByCarreras from '@/modules/convenios/components/search/SearchByCarreras.vue'
 import SearchByDesdeHasta from '@/modules/convenios/components/search/SearchByDesdeHasta.vue'
 import SearchByEmpresa from '@/modules/convenios/components/search/SearchByEmpresa.vue'
@@ -19,7 +19,7 @@ import SearchCountByRango from '@/modules/convenios/components/search/SearchCoun
 import CountConveniosResult from '@/modules/convenios/components/CountConveniosResult.vue'
 import { useConvenioQuery } from '@/modules/convenios/composables/CreateConvenioQueryObject'
 import { CreateListConveniosDto } from '@/Factory/ConvenioFactory'
-import ApiService from '@/Services/ApiService'
+import ConvenioService from '@/modules/convenios/services/ConvenioService';
 import type { ListConveniosDto } from '@/Types/ViewModels/ViewModels'
 import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDto'
 import { ref } from 'vue'
@@ -47,7 +47,7 @@ const obtenerConvenios = async () => {
   errorMensaje.value = null
   isloading.value = true
 
-  const result = await ApiService.GetConvenios(QueryComposable.queryObject)
+  const result = await ConvenioService.GetConvenios(QueryComposable.queryObject)
 
   if (!result.isSuccess) {
     errorMensaje.value = result.error.message
@@ -264,12 +264,12 @@ const closeCountResult = () => {
       :type-of-convenio="TypeofConvenioToSearch"
     ></SearchByMes>
 
-    <SearchByAño
-      v-if="activeFilterComponent === KeyFilters.ByAño"
+    <SearchByAnio
+      v-if="activeFilterComponent === KeyFilters.ByAnio"
       @SearchDone="obtenerConvenios"
       :QueryObject="QueryComposable.queryObject"
       :type-of-convenio="TypeofConvenioToSearch"
-    ></SearchByAño>
+    ></SearchByAnio>
 
     <SearchByDesdeHasta
       v-if="activeFilterComponent === KeyFilters.ByDesdeHasta"

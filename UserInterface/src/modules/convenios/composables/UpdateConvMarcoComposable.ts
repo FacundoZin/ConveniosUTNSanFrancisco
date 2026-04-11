@@ -1,5 +1,6 @@
+import EmpresaService from '@/modules/empresas/services/EmpresaService';
 import router from '@/router'
-import ApiService from '@/Services/ApiService'
+import ConvenioService from '@/modules/convenios/services/ConvenioService'
 import {
   UpdateRequestConvMarc,
   type UpdateConvenioMarcoRequetsDto,
@@ -86,7 +87,7 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
 
   const getEmpresas = async () => {
     try {
-      const response = await ApiService.GetEmpresas()
+      const response = await EmpresaService.GetEmpresas()
       if (response) empresas.value = response
     } catch (err) {
       console.error('Error al obtener empresas', err)
@@ -95,7 +96,7 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
 
   const getInfoConvenio = async (id: number): Promise<InfoConvenioMarcoDto | null> => {
     try {
-      const response = await ApiService.GetConvenioMarcoCompleto(id)
+      const response = await ConvenioService.GetConvenioMarcoCompleto(id)
       if (response && response.isSuccess) {
         infoConvenioMarcoCompleta.value = response.value
         return response.value
@@ -122,7 +123,7 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
     IsLoading.value = true
     errorMensaje.value = null
     try {
-      const result = await ApiService.EditarConvenioMarco(ConvenioMarcoRequest.value)
+      const result = await ConvenioService.EditarConvenioMarco(ConvenioMarcoRequest.value)
       if (!result.isSuccess) {
         IsLoading.value = false
         errorMensaje.value = result.error.message

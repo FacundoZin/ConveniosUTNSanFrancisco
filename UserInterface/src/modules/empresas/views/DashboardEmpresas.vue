@@ -1,5 +1,5 @@
-﻿<script setup lang="ts">
-import ApiService from '@/Services/ApiService'
+<script setup lang="ts">
+import EmpresaService from '@/modules/empresas/services/EmpresaService';
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import CreateEmpresaModal from '@/modules/empresas/components/modals/CreateEmpresaModal.vue'
 import { onMounted, ref } from 'vue'
@@ -15,7 +15,7 @@ const fetchEmpresas = async () => {
   isLoading.value = true
   error.value = null
   try {
-    const response = await ApiService.GetEmpresas()
+    const response = await EmpresaService.GetEmpresas()
     empresas.value = response
   } catch (e) {
     console.error(e)

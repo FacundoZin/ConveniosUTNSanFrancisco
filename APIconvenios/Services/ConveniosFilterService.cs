@@ -1,4 +1,4 @@
-﻿using APIconvenios.Commands.FilterCommands.Commands;
+using APIconvenios.Commands.FilterCommands.Commands;
 using APIconvenios.Common;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Helpers.Mappers;
@@ -97,9 +97,9 @@ namespace APIconvenios.Services
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }
-            else if (queryObject.ByAño != null)
+            else if (queryObject.ByAnio != null)
             {
-                var cmd = new SearchByAñoCmd(queryObject.ByAño);
+                var cmd = new SearchByAnioCmd(queryObject.ByAnio);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return result;
             }

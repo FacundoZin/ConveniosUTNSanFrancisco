@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IByAñoParams, IConvenioQueryObject } from '@/Types/Filters'
+import type { IByAnioParams, IConvenioQueryObject } from '@/Types/Filters'
 import { computed, ref } from 'vue'
 
 const props = defineProps<{
@@ -14,7 +14,7 @@ const emit = defineEmits<{
 const añoSeleccionado = ref<number>(new Date().getFullYear())
 const mostrarAlerta = ref<boolean>(false)
 
-const objetoFiltroListo = computed<IByAñoParams | null>(() => {
+const objetoFiltroListo = computed<IByAnioParams | null>(() => {
   if (!añoSeleccionado.value) {
     return null
   }
@@ -31,7 +31,7 @@ const handleBuscar = () => {
   }
 
   mostrarAlerta.value = false
-  props.QueryObject.ByAño = objetoFiltroListo.value
+  props.QueryObject.ByAnio = objetoFiltroListo.value
   emit('SearchDone')
 }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import ApiService from '@/Services/ApiService'
+import InvolucradoService from '@/modules/involucrados/services/InvolucradoService'
 import type { InvolucradosDto } from '@/Types/Involucrados/InvolucradosByCarrera'
 import { useToast } from 'vue-toastification'
 
@@ -31,7 +31,7 @@ const handleSearch = async () => {
   involucrados.value = []
   cantidadTotal.value = null
 
-  const result = await ApiService.GetInvolucradosByCarrera(carreraSeleccionada.value)
+  const result = await InvolucradoService.GetInvolucradosByCarrera(carreraSeleccionada.value)
 
   loading.value = false
   busquedaRealizada.value = true

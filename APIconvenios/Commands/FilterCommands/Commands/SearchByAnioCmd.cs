@@ -1,4 +1,4 @@
-﻿using APIconvenios.Common;
+using APIconvenios.Common;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Filters;
 using APIconvenios.Helpers.Mappers;
@@ -7,40 +7,40 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIconvenios.Commands.FilterCommands.Commands
 {
-    public class SearchByAñoCmd : IFilterCommands
+    public class SearchByAnioCmd : IFilterCommands
     {
-        private readonly ByAñoDto _byAñoDto;
+        private readonly ByAnioDto _byAnioDto;
 
-        public SearchByAñoCmd(ByAñoDto byAñoDto)
+        public SearchByAnioCmd(ByAnioDto byAnioDto)
         {
-            _byAñoDto = byAñoDto;
+            _byAnioDto = byAnioDto;
         }   
         public async Task<Result<object>> ExecuteAsync(_UnitOfWork _UnitOfWork)
         {
-            if(_byAñoDto.convenioType == "marco")
+            if(_byAnioDto.convenioType == "marco")
             {
                 var query = _UnitOfWork._ConvenioMarcoRepository.GetQueryByFiltering();
 
-                var convenios = await query.Where(c => c.FechaFirmaConvenio.Value.Year == _byAñoDto.year).ToListAsync();
+                var convenios = await query.Where(c => c.FechaFirmaConvenio.Value.Year == _byAnioDto.year).ToListAsync();
 
-                return Result<object>.Exito(convenios);
+                return Result<object>.Exito(convenios.ToDto());
             }
-            else if(_byAñoDto.convenioType == "especifico")
+            else if(_byAnioDto.convenioType == "especifico")
             {
                 var query = _UnitOfWork._ConvenioEspecificoRepository.GetQueryByFiltering();
 
-                var convenios = await query.Where(c => c.FechaFirmaConvenio.Value.Year == _byAñoDto.year).ToListAsync();
+                var convenios = await query.Where(c => c.FechaFirmaConvenio.Value.Year == _byAnioDto.year).ToListAsync();
 
-                return Result<object>.Exito(convenios);
+                return Result<object>.Exito(convenios.ToDto());
             }
             else
             {
                 var context1 = await _UnitOfWork._ContextFactory.CreateDbContextAsync();
                 var context2 = await _UnitOfWork._ContextFactory.CreateDbContextAsync();
 
-                var task1 = context1.ConveniosEspecificos.Where(c => c.FechaFirmaConvenio.Value.Year == _byAñoDto.year).ToListAsync();
+                var task1 = context1.ConveniosEspecificos.Where(c => c.FechaFirmaConvenio.Value.Year == _byAnioDto.year).ToListAsync();
 
-                var task2 = context2.ConveniosMarcos.Where(c => c.FechaFirmaConvenio.Value.Year == _byAñoDto.year).ToListAsync();
+                var task2 = context2.ConveniosMarcos.Where(c => c.FechaFirmaConvenio.Value.Year == _byAnioDto.year).ToListAsync();
 
                 await Task.WhenAll(task1, task2);
 

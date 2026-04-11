@@ -1,4 +1,5 @@
-import ApiService from '@/Services/ApiService'
+import EmpresaService from '@/modules/empresas/services/EmpresaService';
+import ConvenioService from '@/modules/convenios/services/ConvenioService'
 import {
   createRequestConvMarc,
   type CargarConvenioMarcoRequestDto,
@@ -73,7 +74,7 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
 
   const getEmpresas = async () => {
     try {
-      const response = await ApiService.GetEmpresas()
+      const response = await EmpresaService.GetEmpresas()
 
       if (response) {
         empresas.value = response
@@ -88,7 +89,7 @@ export function useCreateConvMarcoComposable(): CreateConvenioMarcoComposable {
     errorMensaje.value = null
     try {
       console.log('Payload enviado al backend:', JSON.stringify(ConvenioMarcoRequest.value, null, 2))
-      const result = await ApiService.CreateConvenioMarco(ConvenioMarcoRequest.value)
+      const result = await ConvenioService.CreateConvenioMarco(ConvenioMarcoRequest.value)
       if (!result.isSuccess) {
         IsLoading.value = false
         errorMensaje.value = result.error.message

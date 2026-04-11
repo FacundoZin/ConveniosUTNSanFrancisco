@@ -1,4 +1,4 @@
-﻿using APIconvenios.Common;
+using APIconvenios.Common;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Filters;
 using APIconvenios.Helpers.Mappers;
@@ -24,7 +24,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                     c.FechaFirmaConvenio.Value.Month == _byMesDto.month)
                     .ToListAsync();
 
-                return Result<object>.Exito(convenios);
+                return Result<object>.Exito(convenios.ToDto());
             }
             else if (_byMesDto.convenioType == "especifico")
             {
@@ -33,7 +33,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                     c.FechaFirmaConvenio.Value.Month == _byMesDto.month)
                     .ToListAsync();
 
-                return Result<object>.Exito(convenios); 
+                return Result<object>.Exito(convenios.ToDto());
             }
             else
             {

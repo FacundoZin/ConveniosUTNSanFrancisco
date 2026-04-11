@@ -1,12 +1,12 @@
-ï»¿<template>
+<template>
   <div class="container mt-4" v-if="Convenio?.id">
     <!-- Info del Convenio Especifico -->
-    <h5>InformaciÃ³n del Convenio</h5>
+    <h5>Información del Convenio</h5>
 
     <div class="card shadow-sm mb-4">
       <div class="card-body position-relative">
         <h6 class="card-title text-primary mb-3 pe-4">
-          {{ Convenio.titulo || 'Sin tÃ­tulo' }}
+          {{ Convenio.titulo || 'Sin título' }}
         </h6>
 
         <div class="card-text">
@@ -33,12 +33,12 @@
 
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-hash me-2 text-muted"></i>
-            <small><strong>NÃºmero de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small>
+            <small><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small>
           </div>
 
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-hash me-2 text-muted"></i>
-            <small><strong>NÃºmero de resoluciÃ³n:</strong> {{ Convenio.numeroResolucion || ' -' }}</small>
+            <small><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small>
           </div>
 
           <div class="mt-3 pt-2 border-top d-flex flex-wrap gap-2">
@@ -63,7 +63,7 @@
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
           <h6 class="card-title mb-2">Sin empresa</h6>
-          <p class="text-muted mb-0">AÃºn no hay una empresa asociada a este convenio especifico.</p>
+          <p class="text-muted mb-0">Aún no hay una empresa asociada a este convenio especifico.</p>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
           <div class="card-body">
             <h6 class="card-title mb-2">Sin convenio marco</h6>
             <p class="text-muted mb-0">
-              AÃºn no hay un convenio marco asociado a este convenio especifico.
+              Aún no hay un convenio marco asociado a este convenio especifico.
             </p>
           </div>
         </div>
@@ -100,7 +100,7 @@
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
           <h6 class="card-title mb-2">Sin involucrados</h6>
-          <p class="text-muted mb-0">AÃºn no hay involucrados asociados a este convenio.</p>
+          <p class="text-muted mb-0">Aún no hay involucrados asociados a este convenio.</p>
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
           <h6 class="card-title mb-2">Sin carreras involucradas</h6>
-          <p class="text-muted mb-0">AÃºn no hay carreras involucradas en este convenio</p>
+          <p class="text-muted mb-0">Aún no hay carreras involucradas en este convenio</p>
         </div>
       </div>
     </div>
@@ -156,7 +156,8 @@ import EmpresaCardReadOnly from '@/modules/empresas/components/EmpresaCardReadOn
 import FileUploader from '@/modules/convenios/components/FileUploader.vue'
 import InvolucradosViewCard from '@/modules/involucrados/components/InvolucradosViewCard.vue'
 import router from '@/router'
-import ApiService from '@/Services/ApiService'
+import ConvenioService from '@/modules/convenios/services/ConvenioService';
+import DocumentService from '@/modules/shared/services/DocumentService';
 import { EstadoConvenioTexto } from '@/Types/Enums/Enums'
 import type { InfoConvenioEspecificoDto } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
@@ -182,7 +183,7 @@ const Convenio = ref<InfoConvenioEspecificoDto | null>(null)
 onMounted(async () => {
   isLoading.value = true
   try {
-    const response = await ApiService.GetConvenioEspecificoCompleto(id)
+    const response = await ConvenioService.GetConvenioEspecificoCompleto(id)
     isLoading.value = false
     if (response.isSuccess) {
       Convenio.value = response.value
@@ -211,10 +212,10 @@ const DeleteConvenio = async () => {
   isLoading.value = true
   try {
     if (Convenio.value) {
-      const response = await ApiService.DeleteConvenioEspecifico(Convenio.value.id)
+      const response = await ConvenioService.DeleteConvenioEspecifico(Convenio.value.id)
       if (response.isSuccess) {
         isLoading.value = false
-        toast.success(`"${Convenio.value.titulo}" eliminado con Ã©xito`)
+        toast.success(`"${Convenio.value.titulo}" eliminado con éxito`)
         router.push({ name: 'ListaConvenios' })
       }
     }
@@ -229,14 +230,14 @@ const DeleteConvenio = async () => {
   }
 }
 
-// Funciones de desvinculaciÃ³n eliminadas (cÃ³digo muerto)
+// Funciones de desvinculación eliminadas (código muerto)
 
 const CargarDocumento = async ({ file, nombre }: { file: File; nombre: string }) => {
   errorMessage.value = ''
   isLoading.value = true
 
   try {
-    const ArchivoCargado = await ApiService.CargarArchivoToMarco(nombre, file, Convenio.value!.id)
+    const ArchivoCargado = await DocumentService.CargarArchivoToMarco(nombre, file, Convenio.value!.id)
 
     isLoading.value = false
 
@@ -259,7 +260,7 @@ const BorrarDocumento = async (id: number) => {
   errorMessage.value = ''
   isLoading.value = true
   try {
-    const exito = await ApiService.EliminarArchivo(id)
+    const exito = await DocumentService.EliminarArchivo(id)
     isLoading.value = false
     if (exito) {
       toast.success('documento eliminado correctamente')
@@ -283,7 +284,7 @@ const DescargarDocumento = async (id: number, nombre: string) => {
   errorMessage.value = ''
   isLoading.value = true
   try {
-    await ApiService.DescargarArchivo(id, nombre)
+    await DocumentService.DescargarArchivo(id, nombre)
     isLoading.value = false
   } catch (error) {
     isLoading.value = false

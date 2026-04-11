@@ -1,4 +1,4 @@
-﻿using APIconvenios.DTOs.Filters;
+using APIconvenios.DTOs.Filters;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIconvenios.Common
@@ -19,7 +19,7 @@ namespace APIconvenios.Common
         public ByAntiguedadDto? ByAntiguedadDto { get; set; }
         public ByProximosAvencerDto? ByProximosAvencer { get; set; }
         public ByMesDto? ByMes { get; set; }
-        public ByAñoDto? ByAño { get; set; }
+        public ByAnioDto? ByAnio { get; set; }
         public ByDesdeHastaDto? ByDesdeHastaDto { get; set; }
         public CountConvFirmadosByMesDto? CountFirmadosByMesDto { get; set; }
         public CountConveniosFirmadosByRangoDto? countFirmadosByRangoDto { get; set; }

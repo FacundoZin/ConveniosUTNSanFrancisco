@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import ApiService from '@/Services/ApiService'
+import ConvenioService from '@/modules/convenios/services/ConvenioService';
 import type { ComboBoxConvenioMarcoDto } from '@/Types/ConvenioMarco/ComboBoxConvenioMarcoDto'
 import { onMounted, ref } from 'vue'
 
@@ -68,7 +68,7 @@ const fetchConveniosMarcos = async () => {
   isLoading.value = true
   errorMensaje.value = ''
 
-  const result = await ApiService.GetAllConveniosMarcos()
+  const result = await ConvenioService.GetAllConveniosMarcos()
 
   isLoading.value = false
 

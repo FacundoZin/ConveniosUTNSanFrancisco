@@ -75,7 +75,7 @@
           </li>
           <li
             class="list-group-item list-group-item-action d-flex align-items-center gap-2"
-            @click="selectFilter(KeyFilters.ByAño)"
+            @click="selectFilter(KeyFilters.ByAnio)"
           >
             <i class="bi bi-calendar2-month"></i> Año de Firma
           </li>
@@ -177,7 +177,7 @@
           </li>
           <li
             class="list-group-item list-group-item-action d-flex align-items-center gap-2"
-            @click="selectFilter(KeyFilters.ByAño)"
+            @click="selectFilter(KeyFilters.ByAnio)"
           >
             <i class="bi bi-calendar2-month"></i> Año de Firma
           </li>
@@ -279,7 +279,7 @@
           </li>
           <li
             class="list-group-item list-group-item-action d-flex align-items-center gap-2"
-            @click="selectFilter(KeyFilters.ByAño)"
+            @click="selectFilter(KeyFilters.ByAnio)"
           >
             <i class="bi bi-calendar2-month"></i> Año de Firma
           </li>

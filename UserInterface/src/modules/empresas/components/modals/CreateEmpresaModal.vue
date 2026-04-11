@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import ApiService from '@/Services/ApiService'
+import EmpresaService from '@/modules/empresas/services/EmpresaService';
 import type { InsertEmpresaDto } from '@/Types/Empresa/InsertEmpresa'
 import { ref } from 'vue'
 import { POSITION, useToast } from 'vue-toastification'
@@ -152,7 +152,7 @@ const submitForm = async () => {
 
   isSubmitting.value = true
   try {
-    const response = await ApiService.CrearEmpresa(form.value)
+    const response = await EmpresaService.CrearEmpresa(form.value)
     if (response.isSuccess) {
       toast.success('Empresa registrada con éxito')
       resetForm()

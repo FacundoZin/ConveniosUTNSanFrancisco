@@ -1,4 +1,5 @@
-import ApiService from '@/Services/ApiService'
+import EmpresaService from '@/modules/empresas/services/EmpresaService';
+import ConvenioService from '@/modules/convenios/services/ConvenioService'
 import { carrerasList, type Carrera } from '@/Types/CarrerasInvolucradas/CarrerasInvolucradas'
 import {
   createRequestConvEspecifico,
@@ -78,7 +79,7 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
 
   const getEmpresas = async () => {
     try {
-      const response = await ApiService.GetEmpresas()
+      const response = await EmpresaService.GetEmpresas()
       if (response) empresas.value = response
     } catch (err) {
       console.error('Error al obtener empresas', err)
@@ -89,7 +90,7 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
     IsLoading.value = true
     errorMensaje.value = null
     try {
-      const result = await ApiService.CreateConvenioEspecifico(ConvenioEspecificoRequest.value)
+      const result = await ConvenioService.CreateConvenioEspecifico(ConvenioEspecificoRequest.value)
       if (!result.isSuccess) {
         IsLoading.value = false
         errorMensaje.value = result.error.message

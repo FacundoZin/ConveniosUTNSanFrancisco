@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import ApiService from '@/Services/ApiService'
+import InvolucradoService from '@/modules/involucrados/services/InvolucradoService'
 import type { ComboBoxInvolucradosDto } from '@/Types/Involucrados/ComboBoxInvolucradosDto'
 import { computed, onMounted, ref } from 'vue'
 
@@ -83,9 +83,9 @@ const fetchInvolucrados = async () => {
 
   let result
   if (props.idConvenioExcluded) {
-    result = await ApiService.GetInvolucradosDisponibles(props.idConvenioExcluded)
+    result = await InvolucradoService.GetInvolucradosDisponibles(props.idConvenioExcluded)
   } else {
-    result = await ApiService.GetAllInvolucrados()
+    result = await InvolucradoService.GetAllInvolucrados()
   }
 
   isLoading.value = false

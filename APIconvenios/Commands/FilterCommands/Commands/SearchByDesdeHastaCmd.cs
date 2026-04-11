@@ -1,4 +1,4 @@
-﻿using APIconvenios.Common;
+using APIconvenios.Common;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Filters;
 using APIconvenios.Helpers.Mappers;
@@ -25,7 +25,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 && c.FechaFirmaConvenio.Value >= _Dto.desde
                 && c.FechaFirmaConvenio.Value <= _Dto.hasta).ToListAsync();
 
-                return Result<object>.Exito(convenios);
+                return Result<object>.Exito(convenios.ToDto());
             }
             else if(_Dto.convenioType == "especifico")
             {
@@ -35,7 +35,7 @@ namespace APIconvenios.Commands.FilterCommands.Commands
                 && c.FechaFirmaConvenio.Value >= _Dto.desde
                 && c.FechaFirmaConvenio.Value <= _Dto.hasta).ToListAsync();
 
-                return Result<object>.Exito(convenios);
+                return Result<object>.Exito(convenios.ToDto());
             }
             else
             {

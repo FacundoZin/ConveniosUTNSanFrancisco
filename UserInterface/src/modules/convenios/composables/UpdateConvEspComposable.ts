@@ -1,4 +1,5 @@
-import ApiService from '@/Services/ApiService'
+import EmpresaService from '@/modules/empresas/services/EmpresaService';
+import ConvenioService from '@/modules/convenios/services/ConvenioService'
 import { carrerasList, type Carrera } from '@/Types/CarrerasInvolucradas/CarrerasInvolucradas'
 import {
   CreateUpdateRequestConvEspecifico,
@@ -67,7 +68,7 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
 
   const getEmpresas = async () => {
     try {
-      const response = await ApiService.GetEmpresas()
+      const response = await EmpresaService.GetEmpresas()
       if (response) empresas.value = response
     } catch (err) {
       console.error('Error al obtener empresas', err)
@@ -99,7 +100,7 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
 
     try {
       console.log('UpdateConvEspRequest:', JSON.parse(JSON.stringify(UpdateConvEspRequest.value)))
-      const result = await ApiService.EditarConvenioEspecifico(UpdateConvEspRequest.value)
+      const result = await ConvenioService.EditarConvenioEspecifico(UpdateConvEspRequest.value)
       if (!result.isSuccess) {
         IsLoading.value = false
         errorMensaje.value = result.error.message
@@ -130,7 +131,7 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
     id: number,
   ): Promise<InfoConvenioEspecificoDto | null> => {
     try {
-      const response = await ApiService.GetConvenioEspecificoCompleto(id)
+      const response = await ConvenioService.GetConvenioEspecificoCompleto(id)
       if (response && response.isSuccess) {
         InfoConvenioEspecificoCompleta.value = response.value
         return response.value

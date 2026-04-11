@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import ApiService from '@/Services/ApiService'
+import EmpresaService from '@/modules/empresas/services/EmpresaService';
 import type { EditEmpresaDto } from '@/Types/Empresa/EditEmpresaDto'
 import type { EmpresaDto } from '@/Types/ViewModels/ViewModels'
 import { ref, watch } from 'vue'
@@ -137,7 +137,7 @@ const submitForm = async () => {
 
   isSubmitting.value = true
   try {
-    const response = await ApiService.EditarInfoEmpresa(props.empresa.id, form.value)
+    const response = await EmpresaService.EditarInfoEmpresa(props.empresa.id, form.value)
     if (response.isSuccess) {
       toast.success('Empresa actualizada con éxito')
       emit('success')

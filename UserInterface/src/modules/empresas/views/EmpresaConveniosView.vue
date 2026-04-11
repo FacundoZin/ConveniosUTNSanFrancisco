@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import ApiService from '@/Services/ApiService'
+import ConvenioService from '@/modules/convenios/services/ConvenioService';
+import EmpresaService from '@/modules/empresas/services/EmpresaService';
 import type { EmpresaWithConveniosDto } from '@/Types/Empresa/EmpresaWithConveniosDto'
 import { EstadoConvenio, EstadoConvenioTexto } from '@/Types/Enums/Enums'
 import { onMounted, ref } from 'vue'
@@ -17,7 +18,7 @@ const fetchConvenios = async () => {
   isLoading.value = true
   error.value = null
   try {
-    const response = await ApiService.GetConveniosPorEmpresa(empresaId)
+    const response = await ConvenioService.GetConveniosPorEmpresa(empresaId)
     if (response.isSuccess) {
       empresaData.value = response.value as EmpresaWithConveniosDto
     } else {

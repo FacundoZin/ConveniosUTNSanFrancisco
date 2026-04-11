@@ -65,7 +65,7 @@ export interface IByMesParams {
   convenioType: string
 }
 
-export interface IByAñoParams {
+export interface IByAnioParams {
   year: number
   convenioType: string
 }
@@ -103,7 +103,7 @@ export interface IConvenioQueryObject {
   ByAntiguedadDto: IByAntiguedadDtoParams | null
   ByProximosAvencer: IByProximosAvencerParams | null
   ByMes: IByMesParams | null
-  ByAño: IByAñoParams | null
+  ByAnio: IByAnioParams | null
   ByDesdeHastaDto: IByDesdeHastaParams | null
   CountFirmadosByMesDto: ICountFirmadosByMesParams | null
   countFirmadosByRangoDto: ICountFirmadosByRangoParams | null

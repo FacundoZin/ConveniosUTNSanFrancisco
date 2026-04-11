@@ -17,7 +17,7 @@ export function useConvenioQuery() {
     ByFechaFirma: null,
     ByProximosAvencer: null,
     ByMes: null,
-    ByAño: null,
+    ByAnio: null,
     ByDesdeHastaDto: null,
     CountFirmadosByMesDto: null,
     countFirmadosByRangoDto: null,

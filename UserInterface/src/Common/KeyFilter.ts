@@ -25,7 +25,7 @@ export class KeyFilters {
 
   public static readonly ByMes: string = 'ByMes'
 
-  public static readonly ByAño: string = 'ByAño'
+  public static readonly ByAnio: string = 'ByAnio'
 
   public static readonly ByDesdeHasta: string = 'ByDesdeHasta'
 
