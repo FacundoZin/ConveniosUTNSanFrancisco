@@ -55,6 +55,17 @@ onMounted(() => {
 
 <template>
   <div class="container-fluid px-4 py-5" v-if="!isLoading && empresaData">
+    <!-- Back Button -->
+    <div class="mb-4">
+      <button 
+        class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-2 text-primary fw-semibold transition-all hover-translate-x"
+        @click="router.push({ name: 'Empresas' })"
+      >
+        <i class="bi bi-arrow-left-circle-fill fs-4"></i>
+        <span>Volver al Panel de Empresas</span>
+      </button>
+    </div>
+
     <!-- Header -->
     <div class="mb-5 border-bottom pb-4">
       <h6 class="text-uppercase text-muted fw-bold mb-1">Empresa</h6>
@@ -253,5 +264,13 @@ onMounted(() => {
 
 .bg-primary-subtle {
   background-color: var(--bs-primary-bg-subtle);
+}
+
+.hover-translate-x {
+  transition: transform 0.2s ease;
+}
+
+.hover-translate-x:hover {
+  transform: translateX(-5px);
 }
 </style>

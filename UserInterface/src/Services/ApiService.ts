@@ -7,6 +7,7 @@ import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/Update
 import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDto'
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import type { EditEmpresaDto } from '@/Types/Empresa/EditEmpresaDto'
+import type { InsertEmpresaDto } from '@/Types/Empresa/InsertEmpresa'
 import type { EmpresaWithConveniosDto } from '@/Types/Empresa/EmpresaWithConveniosDto'
 import type { IConvenioQueryObject } from '@/Types/Filters'
 import type { ComboBoxInvolucradosDto } from '@/Types/Involucrados/ComboBoxInvolucradosDto'
@@ -449,6 +450,18 @@ export default class ApiService {
   ): Promise<Result<TableInvolucradosByCarreraDto>> {
     try {
       const response = await axios.get(`${API_URL}/Involucrados/carrera/${carreraId}`)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return {
+        isSuccess: false,
+        error: { message: getErrorMessage(Ex), status: Ex.response?.status },
+      }
+    }
+  }
+
+  static async CrearEmpresa(dto: InsertEmpresaDto): Promise<Result<number>> {
+    try {
+      const response = await axios.post(`${API_URL}/Empresa`, dto)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return {

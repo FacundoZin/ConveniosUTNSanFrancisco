@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ApiService from '@/Services/ApiService'
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
+import CreateEmpresaModal from '@/Components/Modals/CreateEmpresaModal.vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -8,6 +9,7 @@ const router = useRouter()
 const empresas = ref<ComboBoxEmpresasDto[]>([])
 const isLoading = ref(false)
 const error = ref<string | null>(null)
+const showCreateModal = ref(false)
 
 const fetchEmpresas = async () => {
   isLoading.value = true
@@ -35,10 +37,19 @@ onMounted(() => {
 <template>
   <div class="container-fluid px-4 py-5">
     <div class="d-flex justify-content-between align-items-center mb-5">
-      <h2 class="fw-bold text-primary mb-0">Empresas Registradas</h2>
-      <span class="badge bg-primary rounded-pill px-3 py-2 fs-6" v-if="!isLoading">
-        {{ empresas.length }} Empresas
-      </span>
+      <div>
+        <h2 class="fw-bold text-primary mb-0">Empresas Registradas</h2>
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 mt-2" v-if="!isLoading">
+          {{ empresas.length }} Empresas en el sistema
+        </span>
+      </div>
+      <button 
+        class="btn btn-primary btn-lg rounded-pill shadow-sm px-4 d-flex align-items-center gap-2 transition-all hover-lift"
+        @click="showCreateModal = true"
+      >
+        <i class="bi bi-plus-circle-fill fs-5"></i>
+        <span class="fw-semibold">Registrar Empresa</span>
+      </button>
     </div>
 
     <!-- Loading State -->
@@ -95,6 +106,13 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
+    <!-- Modals -->
+    <CreateEmpresaModal 
+      :show="showCreateModal" 
+      @close="showCreateModal = false" 
+      @success="fetchEmpresas" 
+    />
   </div>
 </template>
 
@@ -121,5 +139,14 @@ onMounted(() => {
 .hover-card:hover .icon-wrapper {
   background-color: var(--bs-primary-bg-subtle) !important;
   color: var(--bs-primary) !important;
+}
+
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3) !important;
 }
 </style>
