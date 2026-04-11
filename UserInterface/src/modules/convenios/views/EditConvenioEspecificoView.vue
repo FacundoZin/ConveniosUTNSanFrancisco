@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="container mt-4 position-relative">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <!-- Botón visible cuando se actualiza el convenio -->
@@ -266,15 +266,15 @@
 </template>
 
 <script setup lang="ts">
-import ConfirmacionModal from '@/Components/ConfirmacionModal.vue'
-import ConvMarcoCard from '@/Components/ConvMarcoCard.vue'
-import EmpresaCard from '@/Components/EmpresaCard.vue'
-import InvolucradoForm from '@/Components/InvolucradoForm.vue'
-import InvolucradosCard from '@/Components/InvolucradosCard.vue'
-import InvolucradosExistentesSelector from '@/Components/InvolucradosExistentesSelector.vue'
-import InvolucradosExistingCard from '@/Components/InvolucradosExistingCard.vue'
-import VincularConvMarco from '@/Components/VincularConvMarco.vue'
-import { UseUpdateConvEspComposable } from '@/Composables/UpdateConvEspComposable'
+import ConfirmacionModal from '@/modules/shared/components/ConfirmacionModal.vue'
+import ConvMarcoCard from '@/modules/convenios/components/ConvMarcoCard.vue'
+import EmpresaCard from '@/modules/empresas/components/EmpresaCard.vue'
+import InvolucradoForm from '@/modules/involucrados/components/InvolucradoForm.vue'
+import InvolucradosCard from '@/modules/involucrados/components/InvolucradosCard.vue'
+import InvolucradosExistentesSelector from '@/modules/involucrados/components/InvolucradosExistentesSelector.vue'
+import InvolucradosExistingCard from '@/modules/involucrados/components/InvolucradosExistingCard.vue'
+import VincularConvMarco from '@/modules/convenios/components/VincularConvMarco.vue'
+import { UseUpdateConvEspComposable } from '@/modules/convenios/composables/UpdateConvEspComposable'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'

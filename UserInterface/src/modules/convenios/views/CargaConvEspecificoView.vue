@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="container mt-4 position-relative">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <button
@@ -268,11 +268,11 @@
 </template>
 
 <script setup lang="ts">
-import InvolucradoForm from '@/Components/InvolucradoForm.vue'
-import InvolucradosCard from '@/Components/InvolucradosCard.vue'
-import InvolucradosExistentesSelector from '@/Components/InvolucradosExistentesSelector.vue'
-import VincularConvMarco from '@/Components/VincularConvMarco.vue'
-import { useCreateConvEspComposable } from '@/Composables/CreateConvEspComposable'
+import InvolucradoForm from '@/modules/involucrados/components/InvolucradoForm.vue'
+import InvolucradosCard from '@/modules/involucrados/components/InvolucradosCard.vue'
+import InvolucradosExistentesSelector from '@/modules/involucrados/components/InvolucradosExistentesSelector.vue'
+import VincularConvMarco from '@/modules/convenios/components/VincularConvMarco.vue'
+import { useCreateConvEspComposable } from '@/modules/convenios/composables/CreateConvEspComposable'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'

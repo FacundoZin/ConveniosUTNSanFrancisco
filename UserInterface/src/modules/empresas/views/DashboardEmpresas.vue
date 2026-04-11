@@ -1,7 +1,7 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import ApiService from '@/Services/ApiService'
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
-import CreateEmpresaModal from '@/Components/Modals/CreateEmpresaModal.vue'
+import CreateEmpresaModal from '@/modules/empresas/components/modals/CreateEmpresaModal.vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 

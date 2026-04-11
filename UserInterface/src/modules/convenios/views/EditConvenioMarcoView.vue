@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="container mt-4 position-relative">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <!-- Botón visible solo cuando se crea un convenio -->
@@ -254,10 +254,10 @@
 </template>
 
 <script setup lang="ts">
-import ConfirmacionModal from '@/Components/ConfirmacionModal.vue'
-import ConveniosEspecificosTable from '@/Components/ConveniosEspecificosTable.vue'
-import EmpresaCard from '@/Components/EmpresaCard.vue'
-import { useUpdateConvMarcoComposable } from '@/Composables/UpdateConvMarcoComposable'
+import ConfirmacionModal from '@/modules/shared/components/ConfirmacionModal.vue'
+import ConveniosEspecificosTable from '@/modules/convenios/components/ConveniosEspecificosTable.vue'
+import EmpresaCard from '@/modules/empresas/components/EmpresaCard.vue'
+import { useUpdateConvMarcoComposable } from '@/modules/convenios/composables/UpdateConvMarcoComposable'
 import { POSITION, useToast } from 'vue-toastification'
 import { ref } from 'vue'
 

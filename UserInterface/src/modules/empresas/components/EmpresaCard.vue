@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="card shadow-sm h-100">
     <div class="card-body position-relative">
       <button
@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import EditEmpresaModal from '@/Components/Modals/EditEmpresaModal.vue'
+import EditEmpresaModal from '@/modules/empresas/components/modals/EditEmpresaModal.vue'
 import type { EmpresaDto } from '@/Types/ViewModels/ViewModels'
 import { ref } from 'vue'
 

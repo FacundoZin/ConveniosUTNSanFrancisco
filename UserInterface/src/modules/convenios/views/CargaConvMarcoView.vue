@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="container mt-4 position-relative">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <!-- Botón visible solo cuando se crea un convenio -->
@@ -196,8 +196,8 @@
 </template>
 
 <script setup lang="ts">
-import VincularConvEspecifico from '@/Components/VincularConvEspecifico.vue'
-import { useCreateConvMarcoComposable } from '@/Composables/CreateConvMarcoComposable'
+import VincularConvEspecifico from '@/modules/convenios/components/VincularConvEspecifico.vue'
+import { useCreateConvMarcoComposable } from '@/modules/convenios/composables/CreateConvMarcoComposable'
 import { toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
