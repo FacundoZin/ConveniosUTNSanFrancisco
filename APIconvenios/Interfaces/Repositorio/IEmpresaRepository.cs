@@ -1,4 +1,4 @@
-﻿using APIconvenios.Common;
+using APIconvenios.Common;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Models;
 
@@ -13,5 +13,6 @@ namespace APIconvenios.Interfaces.Repositorio
         Task<Result<object?>> NameEmpresaExistForUpdate(string Name, int idEmpresa);
         Task<Empresa?> GetEmpresaWithConvenios(int id);
         Task EditEmpresaDto(int idEmpresa, EditEmpresaDto dto);
+        IQueryable<Empresa> GetAllAsQueryable();
     }
 }

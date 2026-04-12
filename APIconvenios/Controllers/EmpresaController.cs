@@ -1,6 +1,5 @@
 using APIconvenios.DTOs.Empresa;
-using APIconvenios.Models;
-using APIconvenios.UnitOfWork;
+using APIconvenios.Interfaces.Servicios;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIconvenios.Controllers
@@ -9,60 +8,41 @@ namespace APIconvenios.Controllers
     [ApiController]
     public class EmpresaController : ControllerBase
     {
-        private readonly _UnitOfWork _UnitOfWork;
-        public EmpresaController(_UnitOfWork UnitOfWork)
+        private readonly IEmpresaService _empresaService;
+
+        public EmpresaController(IEmpresaService empresaService)
         {
-            _UnitOfWork = UnitOfWork;
+            _empresaService = empresaService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListarEmpresas()
+        public async Task<IActionResult> ListarEmpresasPaginado([FromQuery] int pagina = 1, [FromQuery] int cantidad = 10)
         {
-            var empresas = await _UnitOfWork._EmpresaRepository.GetAll();
+            var result = await _empresaService.ListarEmpresasPaginado(pagina, cantidad);
+            return Ok(result);
+        }
 
-            var dto = empresas.Select(e => new ComboBoxEmpresasDto
-            {
-                IdEmpresa = e.Id,
-                NombreEmpresa = e.Nombre,
-            });
-
-            return Ok(dto);
+        [HttpGet("all")]
+        public async Task<IActionResult> ListarTodasLasEmpresas()
+        {
+            var result = await _empresaService.ListarTodasLasEmpresas();
+            return Ok(result.Data);
         }
 
         [HttpPut("{idEmpresa:int}")]
         public async Task<IActionResult> EditarInfoEmpresa(int idEmpresa, [FromBody] EditEmpresaDto dto)
         {
-            await _UnitOfWork._EmpresaRepository.EditEmpresaDto(idEmpresa, dto);
-
+            var result = await _empresaService.EditarEmpresa(idEmpresa, dto);
+            if (!result.Exit) return BadRequest(result.Errormessage);
             return NoContent();
         }
 
         [HttpPost]
         public async Task<IActionResult> CrearEmpresa([FromBody] InsertEmpresaDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Nombre))
-                return BadRequest("El nombre de la empresa es requerido.");
-
-            var exists = await _UnitOfWork._EmpresaRepository.NameEmpresaExist(dto.Nombre);
-            if (!exists.Exit)
-            {
-                return BadRequest(exists.Errormessage);
-            }
-
-            var nuevaEmpresa = new Empresa
-            {
-                Nombre = dto.Nombre,
-                RazonSocial = dto.RazonSocial,
-                Cuit = dto.Cuit,
-                Direccion = dto.Direccion,
-                Telefono = dto.Telefono,
-                Email = dto.Email
-            };
-
-            await _UnitOfWork._EmpresaRepository.Add(nuevaEmpresa);
-            await _UnitOfWork.Save();
-
-            return Ok(nuevaEmpresa.Id);
+            var result = await _empresaService.CrearEmpresa(dto);
+            if (!result.Exit) return BadRequest(result.Errormessage);
+            return Ok(result.Data);
         }
     }
 }

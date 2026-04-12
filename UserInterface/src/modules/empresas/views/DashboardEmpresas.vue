@@ -2,6 +2,7 @@
 import EmpresaService from '@/modules/empresas/services/EmpresaService';
 import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import CreateEmpresaModal from '@/modules/empresas/components/modals/CreateEmpresaModal.vue'
+import AppPagination from '@/modules/shared/components/AppPagination.vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -11,18 +12,37 @@ const isLoading = ref(false)
 const error = ref<string | null>(null)
 const showCreateModal = ref(false)
 
-const fetchEmpresas = async () => {
+// Pagination State
+const pagination = ref({
+  currentPage: 1,
+  totalPages: 1,
+  totalItems: 0,
+  pageSize: 12
+})
+
+const fetchEmpresas = async (page: number = 1) => {
   isLoading.value = true
   error.value = null
   try {
-    const response = await EmpresaService.GetEmpresas()
-    empresas.value = response
+    const response = await EmpresaService.GetEmpresasPaginado(page, pagination.value.pageSize)
+    if (response.exit) {
+      empresas.value = response.data
+      pagination.value.currentPage = response.currentPage
+      pagination.value.totalPages = response.totalPages
+      pagination.value.totalItems = response.totalItems
+    } else {
+      error.value = response.errormessage || 'Error al cargar las empresas.'
+    }
   } catch (e) {
     console.error(e)
     error.value = 'Error al cargar las empresas.'
   } finally {
     isLoading.value = false
   }
+}
+
+const handlePageChange = (page: number) => {
+  fetchEmpresas(page)
 }
 
 const navigateToConvenios = (idEmpresa: number) => {
@@ -40,7 +60,7 @@ onMounted(() => {
       <div>
         <h2 class="fw-bold text-primary mb-0">Empresas Registradas</h2>
         <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 mt-2" v-if="!isLoading">
-          {{ empresas.length }} Empresas en el sistema
+          {{ pagination.totalItems }} Empresas en el sistema
         </span>
       </div>
       <button 
@@ -105,6 +125,15 @@ onMounted(() => {
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Pagination -->
+    <div v-if="!isLoading && pagination.totalPages > 1" class="d-flex justify-content-center mt-5">
+      <AppPagination
+        :current-page="pagination.currentPage"
+        :total-pages="pagination.totalPages"
+        @page-changed="handlePageChange"
+      />
     </div>
 
     <!-- Modals -->

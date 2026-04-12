@@ -1,4 +1,4 @@
-﻿using APIconvenios.Common;
+using APIconvenios.Common;
 using APIconvenios.Data;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Interfaces.Repositorio;
@@ -17,7 +17,7 @@ namespace APIconvenios.Repositorio
         }
 
 
-        public async Task<List<Models.Empresa>> GetAll()
+        public async Task<List<Empresa>> GetAll()
         {
             var empresas = await _Context.Empresas
                 .Select(e => new Empresa
@@ -55,7 +55,7 @@ namespace APIconvenios.Repositorio
             bool result = await _Context.Empresas
                 .AnyAsync(c => c.Nombre.ToLower() == Name.ToLower());
 
-            if(result) return Result<object?>.Error("Ya existe una empresa con ese nombre", 400);
+            if (result) return Result<object?>.Error("Ya existe una empresa con ese nombre", 400);
             return Result<object?>.Exito(null);
 
         }
@@ -83,6 +83,11 @@ namespace APIconvenios.Repositorio
             empresa.Cuit = dto.Telefono;
 
             await _Context.SaveChangesAsync();
+        }
+
+        public IQueryable<Empresa> GetAllAsQueryable()
+        {
+            return _Context.Empresas.AsNoTracking();
         }
     }
 }

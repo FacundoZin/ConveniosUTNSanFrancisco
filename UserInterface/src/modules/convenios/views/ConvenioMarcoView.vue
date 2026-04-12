@@ -30,14 +30,14 @@
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-hash me-2 text-muted"></i>
             <small
-              ><strong>N�mero de resoluci�n:</strong> {{ Convenio.numeroResolucion || ' -' }}</small
+              ><strong>Número de resolución:</strong> {{ Convenio.numeroResolucion || ' -' }}</small
             >
           </div>
 
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-hash me-2 text-muted"></i>
             <small
-              ><strong>Numero de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small
+              ><strong>Número de convenio:</strong> {{ Convenio.numeroconvenio || ' -' }}</small
             >
           </div>
 
@@ -115,7 +115,7 @@
     <!-- Botones finales -->
     <div class="mt-5 d-flex gap-3 justify-content-center">
       <button class="btn btn-primary" @click="editConvenio">Editar Convenio</button>
-      <button class="btn btn-primary" @click="CargarEspecifico">Cargar Convenio Espec�fico</button>
+      <button class="btn btn-primary" @click="CargarEspecifico">Cargar Convenio Específico</button>
       <button class="btn btn-danger" @click="DeleteConvenio">Eliminar Convenio</button>
     </div>
   </div>

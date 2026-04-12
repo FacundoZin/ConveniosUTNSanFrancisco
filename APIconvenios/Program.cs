@@ -60,6 +60,7 @@ builder.Services.AddScoped<IConvenioEspecifcoService, ConvenioEspecificoService>
 builder.Services.AddScoped<ConveniosFilterService>();
 builder.Services.AddScoped<IConveniosDocumentManager, ConveniosDocumentsManager>();
 builder.Services.AddScoped<IValidateConveniosService, ValidateConveniosService>();
+builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 
 
 builder.Services.AddScoped<_UnitOfWork>();
