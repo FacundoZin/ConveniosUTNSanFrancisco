@@ -1,5 +1,16 @@
 <template>
   <div class="container mt-4" v-if="Convenio?.id">
+    <!-- Back Button -->
+    <div class="mb-4">
+      <button 
+        class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-2 text-primary fw-semibold transition-all hover-translate-x"
+        @click="router.back()"
+      >
+        <i class="bi bi-arrow-left-circle-fill fs-4"></i>
+        <span>Volver</span>
+      </button>
+    </div>
+
     <!-- Info del Convenio Especifico -->
     <h5>Información del Convenio</h5>
 

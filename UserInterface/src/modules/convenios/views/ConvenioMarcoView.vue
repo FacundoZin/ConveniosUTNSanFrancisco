@@ -1,5 +1,16 @@
 <template>
   <div class="container mt-4" v-if="Convenio?.id">
+    <!-- Back Button -->
+    <div class="mb-4">
+      <button 
+        class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-2 text-primary fw-semibold transition-all hover-translate-x"
+        @click="router.back()"
+      >
+        <i class="bi bi-arrow-left-circle-fill fs-4"></i>
+        <span>Volver</span>
+      </button>
+    </div>
+
     <!-- Info del Convenio Marco -->
     <h5>Información del convenio</h5>
 
@@ -141,6 +152,8 @@ import { isAxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { POSITION, useToast } from 'vue-toastification'
+import { useConvenioStore } from '../stores/convenioStore'
+import { storeToRefs } from 'pinia'
 
 const isLoading = ref(false)
 const errorMessage = ref<string>('')
@@ -155,16 +168,20 @@ if (Array.isArray(idparam)) {
   id = parseInt(idparam)
 }
 
-const Convenio = ref<InfoConvenioMarcoDto | null>(null)
+const store = useConvenioStore()
+const { currentConvenioMarco: Convenio } = storeToRefs(store)
 
-onMounted(async () => {
+const fetchConvenio = async (forceLoad = false) => {
+  if (!forceLoad && store.lastMarcoId === id && store.currentConvenioMarco) {
+    return
+  }
+
   isLoading.value = true
   try {
     const response = await ConvenioService.GetConvenioMarcoCompleto(id)
     isLoading.value = false
     if (response.isSuccess) {
-      Convenio.value = response.value
-      console.log('Convenio.value =', JSON.parse(JSON.stringify(Convenio.value)))
+      store.setConvenioMarco(response.value)
     }
   } catch (error) {
     isLoading.value = false
@@ -175,6 +192,10 @@ onMounted(async () => {
       console.log(error)
     }
   }
+}
+
+onMounted(async () => {
+  await fetchConvenio()
 })
 
 const editConvenio = () => {

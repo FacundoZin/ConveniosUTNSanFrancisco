@@ -24,6 +24,7 @@ namespace APIconvenios.Services
 
             return Result<EmpresaWithConveniosDto>.Exito(new EmpresaWithConveniosDto
             {
+                IdEmpresa = empresa.Id,
                 NombreEmpresa = empresa.Nombre,
                 ConvenioMarco = empresa.ConvenioMarco?.ToDto(),
                 conveniosEspecificos = empresa.ConveniosEspecificos.ToDto()
@@ -38,6 +39,7 @@ namespace APIconvenios.Services
 
             return Result<InvolucradosWithConveniosDto>.Exito(new InvolucradosWithConveniosDto
             {
+                Id = involucrado.Id,
                 Nombre = involucrado.Nombre,
                 Apellido = involucrado.Apellido,
                 conveniosEspecificos = involucrado.ConveniosEspecificos.ToDto()

@@ -17,47 +17,47 @@ import SearchByTitle from '@/modules/convenios/components/search/SearchByTitle.v
 import SearchCountByMes from '@/modules/convenios/components/search/SearchCountByMes.vue'
 import SearchCountByRango from '@/modules/convenios/components/search/SearchCountByRango.vue'
 import CountConveniosResult from '@/modules/convenios/components/CountConveniosResult.vue'
-import { useConvenioQuery } from '@/modules/convenios/composables/CreateConvenioQueryObject'
 import { CreateListConveniosDto } from '@/Factory/ConvenioFactory'
 import ConvenioService from '@/modules/convenios/services/ConvenioService';
 import AppPagination from '@/modules/shared/components/AppPagination.vue'
-import type { ListConveniosDto } from '@/Types/ViewModels/ViewModels'
 import type { CantidadConveniosDto } from '@/Types/Convenios/CantidadConveniosDto'
 import { ref } from 'vue'
+import { useConvenioStore } from '@/modules/convenios/stores/convenioStore'
+import { storeToRefs } from 'pinia'
 
-const ListadoConvenios = ref<ListConveniosDto>(CreateListConveniosDto(null))
+const store = useConvenioStore()
+const {
+  listadoConvenios,
+  typeofConvenioToSearch,
+  filterPanelOpen,
+  activeFilterComponent,
+  showNoResultsMode,
+  pagination,
+  countResult,
+  countResultBoth,
+  countSearchType,
+  countMonth,
+  countYear,
+  countFechaDesde,
+  countFechaHasta,
+  queryObject
+} = storeToRefs(store)
+
 const errorMensaje = ref<string | null>(null)
 const isloading = ref(false)
-const QueryComposable = useConvenioQuery()
-const TypeofConvenioToSearch = ref<'marco' | 'especifico' | 'ambos' | ''>('marco')
-const FilterPanelOpen = ref(true)
-const showNoResultsMode = ref(false)
-
-const pagination = ref({ currentPage: 1, totalPages: 1, totalItems: 0 })
-
-const activeFilterComponent = ref<string | null>(null)
-
-// Estado para el resultado del conteo
-const countResult = ref<number | null>(null)
-const countResultBoth = ref<CantidadConveniosDto | null>(null)
-const countSearchType = ref<'mes' | 'rango' | null>(null)
-const countMonth = ref<number | undefined>(undefined)
-const countYear = ref<number | undefined>(undefined)
-const countFechaDesde = ref<string | undefined>(undefined)
-const countFechaHasta = ref<string | undefined>(undefined)
 
 const obtenerConvenios = async () => {
   errorMensaje.value = null
   isloading.value = true
 
-  const result = await ConvenioService.GetConvenios(QueryComposable.queryObject)
+  const result = await ConvenioService.GetConvenios(queryObject.value)
 
   if (!result.isSuccess) {
     errorMensaje.value = result.error.message
   } else {
     if (
-      QueryComposable.queryObject.CountFirmadosByMesDto ||
-      QueryComposable.queryObject.countFirmadosByRangoDto
+      queryObject.value.CountFirmadosByMesDto ||
+      queryObject.value.countFirmadosByRangoDto
     ) {
       // Determinar si es un número (un tipo) o CantidadConveniosDto (ambos tipos)
       if (typeof result.value === 'number') {
@@ -68,14 +68,14 @@ const obtenerConvenios = async () => {
         countResult.value = null
       }
 
-      if (QueryComposable.queryObject.CountFirmadosByMesDto) {
+      if (queryObject.value.CountFirmadosByMesDto) {
         countSearchType.value = 'mes'
-        countMonth.value = QueryComposable.queryObject.CountFirmadosByMesDto.month
-        countYear.value = QueryComposable.queryObject.CountFirmadosByMesDto.year
-      } else if (QueryComposable.queryObject.countFirmadosByRangoDto) {
+        countMonth.value = queryObject.value.CountFirmadosByMesDto.month
+        countYear.value = queryObject.value.CountFirmadosByMesDto.year
+      } else if (queryObject.value.countFirmadosByRangoDto) {
         countSearchType.value = 'rango'
-        countFechaDesde.value = QueryComposable.queryObject.countFirmadosByRangoDto.desde
-        countFechaHasta.value = QueryComposable.queryObject.countFirmadosByRangoDto.hasta
+        countFechaDesde.value = queryObject.value.countFirmadosByRangoDto.desde
+        countFechaHasta.value = queryObject.value.countFirmadosByRangoDto.hasta
       }
 
       showNoResultsMode.value = false
@@ -95,24 +95,24 @@ const obtenerConvenios = async () => {
         pagination.value = { currentPage: 1, totalPages: 1, totalItems: 0 }
       }
 
-      ListadoConvenios.value = CreateListConveniosDto(dataToProcess, TypeofConvenioToSearch.value)
+      listadoConvenios.value = CreateListConveniosDto(dataToProcess, typeofConvenioToSearch.value)
 
-      if (ListadoConvenios.value.Type === 'ambos') {
-        const ambos = ListadoConvenios.value as any
+      if (listadoConvenios.value.Type === 'ambos') {
+        const ambos = listadoConvenios.value as any
         if (ambos.conveniosMarcos.length === 0 && ambos.conveniosEspecificos.length === 0) {
           showNoResultsMode.value = true
         } else {
           showNoResultsMode.value = false
         }
       } else {
-        if (ListadoConvenios.value.data.length === 0) {
+        if (listadoConvenios.value.data.length === 0) {
           showNoResultsMode.value = true
         } else {
           showNoResultsMode.value = false
         }
       }
 
-      console.log('Lista de convenios actualizada:', ListadoConvenios.value)
+      console.log('Lista de convenios actualizada:', listadoConvenios.value)
 
       countResult.value = null
       countResultBoth.value = null
@@ -123,26 +123,26 @@ const obtenerConvenios = async () => {
 }
 
 const handleOpenofFilterPanel = (type: 'marco' | 'especifico' | 'ambos') => {
-  TypeofConvenioToSearch.value = type
-  FilterPanelOpen.value = true
+  typeofConvenioToSearch.value = type
+  filterPanelOpen.value = true
 }
 
 const handleFilterSelected = (filterKey: string) => {
   activeFilterComponent.value = filterKey
   // Limpiar filtros previos para evitar búsquedas cruzadas indeseadas
-  QueryComposable.clearAllFilters()
+  store.clearAllFilters()
   // Limpiar resultados previos al cambiar de filtro
-  QueryComposable.queryObject.PaginaActual = 1
-  QueryComposable.queryObject.CantidadResultados = 10
-  ListadoConvenios.value = CreateListConveniosDto(null)
+  queryObject.value.PaginaActual = 1
+  queryObject.value.CantidadResultados = 10
+  listadoConvenios.value = CreateListConveniosDto(null)
   countResult.value = null
   showNoResultsMode.value = false
 }
 
 const resetSearch = () => {
   showNoResultsMode.value = false
-  QueryComposable.clearAllFilters() // Asegurar limpieza total
-  ListadoConvenios.value = CreateListConveniosDto(null)
+  store.clearAllFilters() // Asegurar limpieza total
+  listadoConvenios.value = CreateListConveniosDto(null)
   countResult.value = null
   countResultBoth.value = null
 }
@@ -153,7 +153,7 @@ const closeCountResult = () => {
 }
 
 const changePage = (page: number) => {
-  QueryComposable.queryObject.PaginaActual = page
+  queryObject.value.PaginaActual = page
   obtenerConvenios()
 }
 </script>
@@ -165,11 +165,11 @@ const changePage = (page: number) => {
         <li class="nav-item">
           <button
             class="nav-link rounded-pill px-4 d-flex align-items-center gap-2"
-            :class="{ active: TypeofConvenioToSearch === 'marco' }"
+            :class="{ active: typeofConvenioToSearch === 'marco' }"
             @click="
               () => {
-                TypeofConvenioToSearch = 'marco'
-                FilterPanelOpen = true
+                typeofConvenioToSearch = 'marco'
+                filterPanelOpen = true
               }
             "
           >
@@ -180,11 +180,11 @@ const changePage = (page: number) => {
         <li class="nav-item">
           <button
             class="nav-link rounded-pill px-4 d-flex align-items-center gap-2"
-            :class="{ active: TypeofConvenioToSearch === 'especifico' }"
+            :class="{ active: typeofConvenioToSearch === 'especifico' }"
             @click="
               () => {
-                TypeofConvenioToSearch = 'especifico'
-                FilterPanelOpen = true
+                typeofConvenioToSearch = 'especifico'
+                filterPanelOpen = true
               }
             "
           >
@@ -195,11 +195,11 @@ const changePage = (page: number) => {
         <li class="nav-item">
           <button
             class="nav-link rounded-pill px-4 d-flex align-items-center gap-2"
-            :class="{ active: TypeofConvenioToSearch === 'ambos' }"
+            :class="{ active: typeofConvenioToSearch === 'ambos' }"
             @click="
               () => {
-                TypeofConvenioToSearch = 'ambos'
-                FilterPanelOpen = true
+                typeofConvenioToSearch = 'ambos'
+                filterPanelOpen = true
               }
             "
           >
@@ -211,10 +211,10 @@ const changePage = (page: number) => {
     </div>
 
     <FilterPanel
-      :isPanelOpen="FilterPanelOpen"
-      :typeOfConvenio="TypeofConvenioToSearch"
-      :QueryObject="QueryComposable.queryObject"
-      @close-panel="FilterPanelOpen = false"
+      :isPanelOpen="filterPanelOpen"
+      :typeOfConvenio="typeofConvenioToSearch"
+      :QueryObject="queryObject"
+      @close-panel="filterPanelOpen = false"
       @filter-selected="handleFilterSelected"
       @DirectSearch="obtenerConvenios"
     />
@@ -222,106 +222,106 @@ const changePage = (page: number) => {
     <SearchByTitle
       v-if="activeFilterComponent === KeyFilters.ByTitulo"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByTitle>
 
     <SearchByEmpresa
       v-if="activeFilterComponent === KeyFilters.ByEmpresa"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByEmpresa>
 
     <SearchByNumeroConvenio
       v-if="activeFilterComponent === KeyFilters.ByNumeroConvenio"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByNumeroConvenio>
 
     <SearchByNumeroResolucion
       v-if="activeFilterComponent === KeyFilters.ByNumeroResolucion"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByNumeroResolucion>
 
     <SearchByFechaFin
       v-if="activeFilterComponent === KeyFilters.ByFechaFin"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByFechaFin>
 
     <SearchByFechaFirma
       v-if="activeFilterComponent === KeyFilters.ByFechaFirma"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByFechaFirma>
 
     <SearchByAreas
       v-if="activeFilterComponent === KeyFilters.ByArea"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByAreas>
 
     <SearchByEstado
       v-if="activeFilterComponent === KeyFilters.ByEstado"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByEstado>
 
     <SearchByAntiguedad
       v-if="activeFilterComponent === KeyFilters.ByAntiguedadDto"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByAntiguedad>
 
     <SearchByMes
       v-if="activeFilterComponent === KeyFilters.ByMes"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByMes>
 
     <SearchByAnio
       v-if="activeFilterComponent === KeyFilters.ByAnio"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByAnio>
 
     <SearchByDesdeHasta
       v-if="activeFilterComponent === KeyFilters.ByDesdeHasta"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchByDesdeHasta>
 
     <SearchCountByMes
       v-if="activeFilterComponent === KeyFilters.CountFirmadosByMes"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchCountByMes>
 
     <SearchCountByRango
       v-if="activeFilterComponent === KeyFilters.CountFirmadosByRango"
       @SearchDone="obtenerConvenios"
-      :QueryObject="QueryComposable.queryObject"
-      :type-of-convenio="TypeofConvenioToSearch"
+      :QueryObject="queryObject"
+      :type-of-convenio="typeofConvenioToSearch"
     ></SearchCountByRango>
 
     <CountConveniosResult
-      v-if="(countResult !== null || countResultBoth !== null) && TypeofConvenioToSearch !== ''"
+      v-if="(countResult !== null || countResultBoth !== null) && typeofConvenioToSearch !== ''"
       :count="countResult"
       :countBoth="countResultBoth"
-      :typeOfConvenio="TypeofConvenioToSearch as 'marco' | 'especifico' | 'ambos'"
+      :typeOfConvenio="typeofConvenioToSearch as 'marco' | 'especifico' | 'ambos'"
       :searchType="countSearchType!"
       :month="countMonth"
       :year="countYear"
@@ -348,9 +348,9 @@ const changePage = (page: number) => {
     </div>
   </div>
 
-  <ConvenioList :convenios="ListadoConvenios" :isloading="isloading" @reset-search="resetSearch" />
+  <ConvenioList :convenios="listadoConvenios" :isloading="isloading" @reset-search="resetSearch" />
   
-  <div v-if="!isloading && !showNoResultsMode && (ListadoConvenios.Type !== 'ambos' ? ListadoConvenios.data.length > 0 : (ListadoConvenios.conveniosMarcos?.length > 0 || ListadoConvenios.conveniosEspecificos?.length > 0))" class="d-flex justify-content-center mb-5">
+  <div v-if="!isloading && !showNoResultsMode && (listadoConvenios.Type !== 'ambos' ? listadoConvenios.data.length > 0 : (listadoConvenios.conveniosMarcos?.length > 0 || listadoConvenios.conveniosEspecificos?.length > 0))" class="d-flex justify-content-center mb-5">
     <AppPagination 
       :current-page="pagination.currentPage" 
       :total-pages="pagination.totalPages" 

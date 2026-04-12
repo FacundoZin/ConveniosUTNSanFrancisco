@@ -4,22 +4,30 @@ import type { EmpresaWithConveniosDto } from '@/Types/Empresa/EmpresaWithConveni
 import { EstadoConvenio, EstadoConvenioTexto } from '@/Types/Enums/Enums'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useEmpresaStore } from '../stores/empresaStore'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const router = useRouter()
 const empresaId = Number(route.params.id)
 
-const empresaData = ref<EmpresaWithConveniosDto | null>(null)
+const store = useEmpresaStore()
+const { currentEmpresa: empresaData } = storeToRefs(store)
+
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 
-const fetchConvenios = async () => {
+const fetchConvenios = async (forceLoad = false) => {
+  if (!forceLoad && store.lastEmpresaId === empresaId && store.currentEmpresa) {
+    return
+  }
+
   isLoading.value = true
   error.value = null
   try {
     const response = await EmpresaService.GetConveniosPorEmpresa(empresaId)
     if (response.isSuccess) {
-      empresaData.value = response.value as EmpresaWithConveniosDto
+      store.setEmpresa(response.value as EmpresaWithConveniosDto)
     } else {
       error.value = response.error ? response.error.message : 'Error desconocido al cargar datos.'
     }

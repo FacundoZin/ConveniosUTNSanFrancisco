@@ -1,5 +1,16 @@
-﻿<template>
+<template>
   <div class="container mt-4 position-relative">
+    <!-- Back Button -->
+    <div class="mb-4">
+      <button 
+        class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-2 text-primary fw-semibold transition-all hover-translate-x"
+        @click="router.back()"
+      >
+        <i class="bi bi-arrow-left-circle-fill fs-4"></i>
+        <span>Volver</span>
+      </button>
+    </div>
+
     <div class="d-flex justify-content-between align-items-center mb-4">
       <!-- Botón visible solo cuando se crea un convenio -->
       <button

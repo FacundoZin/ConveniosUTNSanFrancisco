@@ -4,22 +4,30 @@ import type { InvolucradosWithConveniosDto } from '@/Types/Involucrados/Involucr
 import { EstadoConvenio, EstadoConvenioTexto } from '@/Types/Enums/Enums'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useInvolucradoStore } from '../stores/involucradoStore'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const router = useRouter()
 const involucradoId = Number(route.params.id)
 
-const involucradoData = ref<InvolucradosWithConveniosDto | null>(null)
+const store = useInvolucradoStore()
+const { currentInvolucrado: involucradoData } = storeToRefs(store)
+
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 
-const fetchConvenios = async () => {
+const fetchConvenios = async (forceLoad = false) => {
+  if (!forceLoad && store.lastInvolucradoId === involucradoId && store.currentInvolucrado) {
+    return
+  }
+
   isLoading.value = true
   error.value = null
   try {
     const response = await ConvenioService.GetConveniosPorInvolucrado(involucradoId)
     if (response.isSuccess) {
-      involucradoData.value = response.value
+      store.setInvolucrado(response.value)
     } else {
       error.value = response.error ? response.error.message : 'Error desconocido al cargar datos.'
     }

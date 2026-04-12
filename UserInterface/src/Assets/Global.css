@@ -10,3 +10,15 @@ body {
   padding-top: 80px;
   padding-bottom: 40px; 
 }
+
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+.hover-translate-x {
+  transition: transform 0.2s ease;
+}
+
+.hover-translate-x:hover {
+  transform: translateX(-5px);
+}

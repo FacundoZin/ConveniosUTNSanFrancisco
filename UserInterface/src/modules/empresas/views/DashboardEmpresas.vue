@@ -5,31 +5,34 @@ import CreateEmpresaModal from '@/modules/empresas/components/modals/CreateEmpre
 import AppPagination from '@/modules/shared/components/AppPagination.vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useEmpresaStore } from '../stores/empresaStore'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
-const empresas = ref<ComboBoxEmpresasDto[]>([])
+const store = useEmpresaStore()
+const { dashboardEmpresas: empresas, dashboardPagination: pagination } = storeToRefs(store)
+
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 const showCreateModal = ref(false)
 
-// Pagination State
-const pagination = ref({
-  currentPage: 1,
-  totalPages: 1,
-  totalItems: 0,
-  pageSize: 12
-})
+const fetchEmpresas = async (page: number = 1, forceLoad = false) => {
+  // If we have data and it's the requested page, and not forced, don't refetch
+  if (!forceLoad && empresas.value.length > 0 && pagination.value.currentPage === page) {
+    return
+  }
 
-const fetchEmpresas = async (page: number = 1) => {
   isLoading.value = true
   error.value = null
   try {
     const response = await EmpresaService.GetEmpresasPaginado(page, pagination.value.pageSize)
     if (response.exit) {
-      empresas.value = response.data
-      pagination.value.currentPage = response.currentPage
-      pagination.value.totalPages = response.totalPages
-      pagination.value.totalItems = response.totalItems
+      store.setDashboardState(response.data, {
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalItems: response.totalItems,
+        pageSize: pagination.value.pageSize
+      })
     } else {
       error.value = response.errormessage || 'Error al cargar las empresas.'
     }
@@ -42,7 +45,7 @@ const fetchEmpresas = async (page: number = 1) => {
 }
 
 const handlePageChange = (page: number) => {
-  fetchEmpresas(page)
+  fetchEmpresas(page, true)
 }
 
 const navigateToConvenios = (idEmpresa: number) => {
@@ -50,7 +53,7 @@ const navigateToConvenios = (idEmpresa: number) => {
 }
 
 onMounted(() => {
-  fetchEmpresas()
+  fetchEmpresas(pagination.value.currentPage)
 })
 </script>
 
