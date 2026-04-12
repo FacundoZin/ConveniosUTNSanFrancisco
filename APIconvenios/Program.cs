@@ -57,7 +57,8 @@ builder.Services.AddDbContextFactory<ApplicationDbContext>(opt =>
 builder.Services.AddScoped<IConveniosStateService, ConveniosStateService>();
 builder.Services.AddScoped<IConvenioMarcoService, ConveniosMarcosServices>();
 builder.Services.AddScoped<IConvenioEspecifcoService, ConvenioEspecificoService>();
-builder.Services.AddScoped<ConveniosFilterService>();
+builder.Services.AddScoped<IConvenioFilterService, ConveniosFilterService>();
+builder.Services.AddScoped<IConvenioGetterService, ConveniosGetterService>();
 builder.Services.AddScoped<IConveniosDocumentManager, ConveniosDocumentsManager>();
 builder.Services.AddScoped<IValidateConveniosService, ValidateConveniosService>();
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();

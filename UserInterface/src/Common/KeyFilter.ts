@@ -5,7 +5,7 @@ export class KeyFilters {
 
   public static readonly ByAntiguedadDto: string = 'ByAntiguedadDto'
 
-  public static readonly ByCarrera: string = 'ByCarrera'
+  public static readonly ByArea: string = 'ByArea'
 
   public static readonly ByEstado: string = 'ByEstado'
 

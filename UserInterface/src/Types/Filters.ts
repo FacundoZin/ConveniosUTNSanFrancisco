@@ -35,8 +35,8 @@ export interface IByEstadoParams {
   convenioType: string
 }
 
-export interface IByCarreraParams {
-  nombreCarrera: string // REQUERIDA
+export interface IByAreaParams {
+  nombreArea: string // REQUERIDA
   conveniotype: string // REQUERIDA
 }
 
@@ -96,7 +96,7 @@ export interface IConvenioQueryObject {
   ByIsActa: IByIsActaParams | null
   ByIsRefrendado: IByIsRefrendadoParams | null
   ByEstado: IByEstadoParams | null
-  ByCarrera: IByCarreraParams | null
+  ByArea: IByAreaParams | null
   ByFechaFirma: IByFechaFirmaParams | null
   ByFechaFin: IByFechaFinParams | null
 

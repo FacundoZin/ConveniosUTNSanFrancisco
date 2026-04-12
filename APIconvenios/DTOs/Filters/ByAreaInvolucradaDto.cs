@@ -1,9 +1,9 @@
-﻿
+
 namespace APIconvenios.DTOs.Filters
 {
-    public class ByCarreraInvolucradaDto
+    public class ByAreaInvolucradaDto
     {
-        public string nombreCarrera { get; set; } = string.Empty;
+        public string nombreArea { get; set; } = string.Empty;
         public string convenioType { get; set; } = string.Empty;
     }
 }

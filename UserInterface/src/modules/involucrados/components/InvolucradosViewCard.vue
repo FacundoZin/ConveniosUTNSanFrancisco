@@ -27,8 +27,8 @@
           <span class="badge bg-light text-dark border me-2">
             {{ involucrado.rolInvolucrado }}
           </span>
-          <span v-if="involucrado.carrera" class="badge bg-info text-dark">
-            {{ involucrado.carrera }}
+          <span v-if="involucrado.area" class="badge bg-info text-dark">
+            {{ involucrado.area }}
           </span>
         </div>
       </div>

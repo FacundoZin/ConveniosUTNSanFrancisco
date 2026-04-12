@@ -1,4 +1,4 @@
-﻿using APIconvenios.DTOs.Archivo;
+using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
@@ -76,7 +76,7 @@ namespace APIconvenios.Helpers.Mappers
                 NumeroResolucion = convenio.NumeroResolucion,
                 Refrendado = convenio.Refrendado,
 
-                CarrerasInvolucradas = convenio.CarrerasInvolucradas?.Select(c => new Carreras
+                CarrerasInvolucradas = convenio.CarrerasInvolucradas?.Select(c => new Area
                 {
                     Id = c.Id,
                     Nombre = c.Nombre
@@ -113,7 +113,7 @@ namespace APIconvenios.Helpers.Mappers
                     RolInvolucrado = i.RolInvolucrado.ToString(),
                     Email = i.Email,
                     Telefono = i.Telefono,
-                    carrera = i.Carrera?.Nombre,
+                    area = i.Carrera?.Nombre,
                     Legajo = i.Legajo
                 }).ToList(),
 

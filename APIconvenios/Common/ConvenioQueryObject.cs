@@ -13,7 +13,7 @@ namespace APIconvenios.Common
         public ByIsActaDto? ByIsActa { get; set; }
         public ByRefrendadoDto? ByIsRefrendado { get; set; }
         public ByEstadoConvenioDto? ByEstado { get; set; }
-        public ByCarreraInvolucradaDto? ByCarrera { get; set; }
+        public ByAreaInvolucradaDto? ByArea { get; set; }
         public ByFechaFirmaDto? ByFechaFirma { get; set; }
         public ByFechaFinDto? ByFechaFin { get; set; }
         public ByAntiguedadDto? ByAntiguedadDto { get; set; }

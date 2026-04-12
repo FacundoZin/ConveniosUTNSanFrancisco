@@ -13,7 +13,7 @@ namespace APIconvenios.Repositorio
         {
             _context = context;
         }   
-        public async Task<List<Carreras>> GetCarrerasByID(int[] ids)
+        public async Task<List<Area>> GetCarrerasByID(int[] ids)
         {
             return await _context.Carreras.Where(c => ids.Contains(c.Id)).ToListAsync();
         }

@@ -1,4 +1,4 @@
-﻿using APIconvenios.DTOs.Involucrado;
+using APIconvenios.DTOs.Involucrado;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.UnitOfWork;
 using Microsoft.AspNetCore.Http;
@@ -61,18 +61,18 @@ namespace APIconvenios.Controllers
             return Ok(dto);
         }
 
-        [HttpGet("carrera/{carreraId:int}")]
-        public async Task<IActionResult> GetInvolucradosByCarrera(int carreraId)
+        [HttpGet("area/{areaId:int}")]
+        public async Task<IActionResult> GetInvolucradosByArea(int areaId)
         {
-            if (carreraId <= 0)
+            if (areaId <= 0)
                 return BadRequest("El área no es válida.");
 
-            var involucrados = await _UnitOfWork._InvolucradosRepository.GetInvolucradosByCarrera(carreraId);
+            var involucrados = await _UnitOfWork._InvolucradosRepository.GetInvolucradosByArea(areaId);
 
             if (involucrados == null || !involucrados.Any())
-                return Ok(new TableInvolucradosByCarreraDto { cantidad = 0, Involucrados = new List<InvolucradosDto>()});
+                return Ok(new TableInvolucradosByAreaDto { cantidad = 0, Involucrados = new List<InvolucradosDto>()});
 
-            TableInvolucradosByCarreraDto dto = new TableInvolucradosByCarreraDto
+            TableInvolucradosByAreaDto dto = new TableInvolucradosByAreaDto
             {
                 cantidad = involucrados.Count(),
                 Involucrados = involucrados.Select(i => new InvolucradosDto
@@ -83,7 +83,7 @@ namespace APIconvenios.Controllers
                     Email = i.Email,
                     Telefono = i.Telefono,
                     Legajo = i.Legajo,
-                    carrera = i.Carrera?.Nombre,
+                    area = i.Carrera?.Nombre,
                     RolInvolucrado = i.RolInvolucrado.ToString()    
                 }).ToList()
             };

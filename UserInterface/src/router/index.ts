@@ -7,7 +7,7 @@ import EditConvenioMarcoView from '@/modules/convenios/views/EditConvenioMarcoVi
 import DashBoardView from '@/modules/convenios/views/DashBoardView.vue'
 import DashboardEmpresas from '@/modules/empresas/views/DashboardEmpresas.vue'
 import EmpresaConveniosView from '@/modules/empresas/views/EmpresaConveniosView.vue'
-import InvolucradosPorCarreraView from '@/modules/involucrados/views/InvolucradosPorCarreraView.vue'
+import InvolucradosPorAreaView from '@/modules/involucrados/views/InvolucradosPorAreaView.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
@@ -42,9 +42,9 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/involucrados-por-carrera',
-      name: 'InvolucradosPorCarrera',
-      component: InvolucradosPorCarreraView,
+      path: '/involucrados-por-area',
+      name: 'InvolucradosPorArea',
+      component: InvolucradosPorAreaView,
     },
   ],
 })

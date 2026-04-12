@@ -5,11 +5,11 @@ export interface InvolucradosDto {
   email: string
   telefono: string
   legajo: number | null
-  carrera: string | null
+  area: string | null
   rolInvolucrado: string
 }
 
-export interface TableInvolucradosByCarreraDto {
+export interface TableInvolucradosByAreaDto {
   involucrados: InvolucradosDto[]
   cantidad: number
 }

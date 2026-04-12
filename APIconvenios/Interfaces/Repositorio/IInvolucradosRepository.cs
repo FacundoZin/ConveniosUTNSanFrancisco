@@ -1,4 +1,4 @@
-﻿using APIconvenios.DTOs.Involucrado;
+using APIconvenios.DTOs.Involucrado;
 using APIconvenios.Models;
 
 namespace APIconvenios.Interfaces.Repositorio
@@ -8,7 +8,8 @@ namespace APIconvenios.Interfaces.Repositorio
         Task<bool> involucradoExist(string nombre, string apellido);
         Task< List<Involucrados>> GetAllInvolucraods();
         Task<List<Involucrados>> GetInvolucradosByIds(int[] ids);
-        Task<List<Involucrados>> GetInvolucradosByCarrera(int IdCarrera);
+        Task<List<Involucrados>> GetInvolucradosByArea(int IdArea);
         Task<List<Involucrados>> GetAvailableForConvenio(int idConvenio);
+        Task<Involucrados?> GetInvolucradoWithConvenios(int id);
     }
 }

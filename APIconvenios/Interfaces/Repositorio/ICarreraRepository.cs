@@ -4,6 +4,6 @@ namespace APIconvenios.Interfaces.Repositorio
 {
     public interface ICarreraRepository
     {
-        public Task<List<Carreras>> GetCarrerasByID(int[] ids);
+        public Task<List<Area>> GetCarrerasByID(int[] ids);
     }
 }

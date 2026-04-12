@@ -1,13 +1,12 @@
 using APIconvenios.Commands.FilterCommands.Commands;
 using APIconvenios.Common;
-using APIconvenios.DTOs.Empresa;
-using APIconvenios.Helpers.Mappers;
+using APIconvenios.DTOs.Convenios;
+using APIconvenios.Interfaces.Servicios;
 using APIconvenios.UnitOfWork;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace APIconvenios.Services
 {
-    public class ConveniosFilterService
+    public class ConveniosFilterService : IConvenioFilterService
     {
 
         private readonly _UnitOfWork _UnitOfWork;
@@ -61,9 +60,9 @@ namespace APIconvenios.Services
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return ApplyPagination(result, queryObject);
             }
-            else if (queryObject.ByCarrera != null)
+            else if (queryObject.ByArea != null)
             {
-                var cmd = new SearchByCarrerasCmd(queryObject);
+                var cmd = new SearchByAreasCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return ApplyPagination(result, queryObject);
             }
@@ -91,7 +90,7 @@ namespace APIconvenios.Services
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
                 return ApplyPagination(result, queryObject);
             }
-            else if(queryObject.ByMes != null)
+            else if (queryObject.ByMes != null)
             {
                 var cmd = new SearchByMesCmd(queryObject);
                 var result = await cmd.ExecuteAsync(_UnitOfWork);
@@ -126,21 +125,6 @@ namespace APIconvenios.Services
             return Result<object>.Error("Porfavor seleccione un filtro", 400);
         }
 
-        public async Task<Result<EmpresaWithConveniosDto>> ListarConveniosPorEmpresa(int empresaId)
-        {
-            var empresa = await _UnitOfWork._EmpresaRepository.GetEmpresaWithConvenios(empresaId);
-            if(empresa == null)
-                return Result<EmpresaWithConveniosDto>.Error("Empresa no encontrada", 404);
-
-
-            return Result<EmpresaWithConveniosDto>.Exito(new EmpresaWithConveniosDto
-            {
-                NombreEmpresa = empresa.Nombre,
-                ConvenioMarco = empresa.ConvenioMarco?.ToDto(),
-                conveniosEspecificos = empresa.ConveniosEspecificos.ToDto()
-            });
-        }
-
         private Result<object> ApplyPagination(Result<object> result, ConvenioQueryObject query)
         {
             if (!result.Exit || result.Data == null || result is PaginatedResult<object>) return result;
@@ -148,15 +132,15 @@ namespace APIconvenios.Services
             int skip = (query.PaginaActual - 1) * query.CantidadResultados;
             int take = query.CantidadResultados;
 
-            if (result.Data is APIconvenios.DTOs.Convenios.ListConveniosDto ambos)
+            if (result.Data is ListConveniosDto ambos)
             {
                 var totalMarcos = ambos.conveniosMarcos.Count();
                 var totalEspecificos = ambos.convenioEspecificos.Count();
                 var maxTotal = System.Math.Max(totalMarcos, totalEspecificos);
-                
+
                 ambos.conveniosMarcos = ambos.conveniosMarcos.Skip(skip).Take(take).ToList();
                 ambos.convenioEspecificos = ambos.convenioEspecificos.Skip(skip).Take(take).ToList();
-                
+
                 return PaginatedResult<object>.ExitoPaginado(ambos, maxTotal, query.PaginaActual, take);
             }
             else if (result.Data is IEnumerable<APIconvenios.DTOs.ConvenioMarco.ConvenioMarcoDto> marcos)

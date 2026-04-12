@@ -1,6 +1,6 @@
 import EmpresaService from '@/modules/empresas/services/EmpresaService';
 import ConvenioService from '@/modules/convenios/services/ConvenioService'
-import { carrerasList, type Carrera } from '@/Types/CarrerasInvolucradas/CarrerasInvolucradas'
+import { areasList, type Area } from '@/Types/AreasInvolucradas/AreasInvolucradas'
 import {
   CreateUpdateRequestConvEspecifico,
   type UpdateConvenioEspecificoRequestDto,
@@ -20,7 +20,7 @@ interface CreateConvenioEspecificoComposable {
   UpdateConvEspRequest: Ref<UpdateConvenioEspecificoRequestDto>
   errorMensaje: Ref<string | null>
   empresas: Ref<ComboBoxEmpresasDto[]>
-  Carreras: Carrera[]
+  Areas: Area[]
   cargarNuevaEmpresa: Ref<boolean>
   ConvenioCreado: Ref<ConvenioCreated | null>
   empresaForm: Ref<InsertEmpresaDto>
@@ -39,7 +39,7 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
   const empresas = ref<ComboBoxEmpresasDto[]>([])
   const cargarNuevaEmpresa = ref(false)
   const ConvenioCreado = ref<ConvenioCreated | null>(null)
-  const Carreras: Carrera[] = carrerasList
+  const Areas: Area[] = areasList
   const route = useRoute()
 
   // --- STATE ---
@@ -173,7 +173,7 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
     UpdateConvEspRequest.value.idMarcoVinculado =
       infoConvenioEspecificoCompleta?.convenioMarcoId ?? null
     UpdateConvEspRequest.value.idCarreras =
-      infoConvenioEspecificoCompleta?.carrerasInvolucradas
+      infoConvenioEspecificoCompleta?.areasInvolucradas
         ?.map((c) => c.id)
         .filter((id): id is number => id !== undefined) ?? null
 
@@ -186,7 +186,7 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
     InfoConvenioEspecificoCompleta,
     errorMensaje,
     empresas,
-    Carreras,
+    Areas,
     cargarNuevaEmpresa,
     ConvenioCreado,
     empresaForm,

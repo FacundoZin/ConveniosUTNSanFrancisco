@@ -1,9 +1,9 @@
-export interface Carrera {
+export interface Area {
   id?: number
   nombre?: string
 }
 
-export const carrerasList: Carrera[] = [
+export const areasList: Area[] = [
   { id: 1, nombre: 'Ingeniería Química' },
   { id: 2, nombre: 'Ingeniería en Sistemas' },
   { id: 3, nombre: 'Ingeniería Electrónica' },

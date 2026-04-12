@@ -1,4 +1,4 @@
-﻿using APIconvenios.DTOs.ConvenioMarco;
+using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Interfaces.Servicios;
 using APIconvenios.Models;
@@ -19,7 +19,7 @@ namespace APIconvenios.Services
         private readonly _UnitOfWork _UnitOfWork;
         private readonly IValidateConveniosService _ValidateService;
 
-        public ConveniosMarcosServices(_UnitOfWork unitOfWork, ConveniosFilterService FilterService, IValidateConveniosService validateService)
+        public ConveniosMarcosServices(_UnitOfWork unitOfWork, IValidateConveniosService validateService)
         {
             _UnitOfWork = unitOfWork;
             _ValidateService = validateService;

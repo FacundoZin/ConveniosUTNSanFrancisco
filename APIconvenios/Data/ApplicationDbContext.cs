@@ -17,22 +17,22 @@ namespace APIconvenios.Data
         public DbSet<Empresa> Empresas { get; set; }
         public DbSet<Involucrados> Involucrados { get; set; }
         public DbSet<ArchivosAdjuntos> ArchivosAdjuntos { get; set; }
-        public DbSet<Carreras> Carreras { get; set; }
+        public DbSet<Area> Carreras { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // 👉 Seed fijo de Carreras (esto sí queda)
-            modelBuilder.Entity<Carreras>().HasData(
-                new Carreras { Id = 1, Nombre = "Ingeniería Química" },
-                new Carreras { Id = 2, Nombre = "Ingeniería en Sistemas" },
-                new Carreras { Id = 3, Nombre = "Ingeniería Electrónica" },
-                new Carreras { Id = 4, Nombre = "Ingeniería Electromecánica" },
-                new Carreras { Id = 5, Nombre = "Tecnicatura en Programación" },
-                new Carreras { Id = 6, Nombre = "Materias Basicas" },
-                new Carreras { Id = 7, Nombre = "SEU" },
-                new Carreras { Id = 8, Nombre = "Vinculación Tecnológica" }
+            modelBuilder.Entity<Area>().HasData(
+                new Area { Id = 1, Nombre = "Ingeniería Química" },
+                new Area { Id = 2, Nombre = "Ingeniería en Sistemas" },
+                new Area { Id = 3, Nombre = "Ingeniería Electrónica" },
+                new Area { Id = 4, Nombre = "Ingeniería Electromecánica" },
+                new Area { Id = 5, Nombre = "Tecnicatura en Programación" },
+                new Area { Id = 6, Nombre = "Materias Basicas" },
+                new Area { Id = 7, Nombre = "SEU" },
+                new Area { Id = 8, Nombre = "Vinculación Tecnológica" }
             );
 
             // 👉 Many-to-Many: Carreras <-> ConvenioEspecifico (sin seed)
@@ -42,7 +42,7 @@ namespace APIconvenios.Data
                 .UsingEntity<Dictionary<string, object>>(
                     "CarrerasConvenioEspecifico",
                     j => j
-                        .HasOne<Carreras>()
+                        .HasOne<Area>()
                         .WithMany()
                         .HasForeignKey("CarreraId")
                         .OnDelete(DeleteBehavior.Cascade),

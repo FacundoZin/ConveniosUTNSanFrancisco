@@ -147,9 +147,9 @@
           </li>
           <li
             class="list-group-item list-group-item-action d-flex align-items-center gap-2"
-            @click="selectFilter(KeyFilters.ByCarrera)"
+            @click="selectFilter(KeyFilters.ByArea)"
           >
-            <i class="bi bi-mortarboard"></i> Carrera Involucrada
+            <i class="bi bi-mortarboard"></i> Área Involucrada
           </li>
           <li
             class="list-group-item list-group-item-action d-flex align-items-center gap-2"

@@ -71,7 +71,7 @@
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
           <h6 class="card-title mb-2">Sin empresa</h6>
-          <p class="text-muted mb-0">A�n no hay una empresa asociada a este convenio especifico.</p>
+          <p class="text-muted mb-0">Aún no hay una empresa asociada a este convenio especifico.</p>
         </div>
       </div>
     </div>
@@ -89,7 +89,7 @@
           <div class="card-body">
             <h6 class="card-title mb-2">Sin convenio marco</h6>
             <p class="text-muted mb-0">
-              A�n no hay un convenio marco asociado a este convenio especifico.
+              Aún no hay un convenio marco asociado a este convenio especifico.
             </p>
           </div>
         </div>
@@ -114,23 +114,23 @@
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
           <h6 class="card-title mb-2">Sin involucrados</h6>
-          <p class="text-muted mb-0">A�n no hay involucrados asociados a este convenio.</p>
+          <p class="text-muted mb-0">Aún no hay involucrados asociados a este convenio.</p>
         </div>
       </div>
     </div>
 
     <hr class="my-4" />
 
-    <!-- carreras involucradas -->
-    <h5>Carreras Involucradas</h5>
-    <div v-if="Convenio.carrerasInvolucradas && Convenio.carrerasInvolucradas.length > 0">
-      <CarrerasCardList :carreras="Convenio.carrerasInvolucradas" />
+    <!-- areas involucradas -->
+    <h5>Áreas Involucradas</h5>
+    <div v-if="Convenio.areasInvolucradas && Convenio.areasInvolucradas.length > 0">
+      <AreasCardList :areas="Convenio.areasInvolucradas" />
     </div>
     <div v-else class="text-muted">
       <div class="card shadow-sm p-3 text-center" style="background-color: #f8f9fa">
         <div class="card-body">
-          <h6 class="card-title mb-2">Sin carreras involucradas</h6>
-          <p class="text-muted mb-0">A�n no hay carreras involucradas en este convenio</p>
+          <h6 class="card-title mb-2">Sin áreas involucradas</h6>
+          <p class="text-muted mb-0">Aún no hay áreas involucradas en este convenio</p>
         </div>
       </div>
     </div>
@@ -177,7 +177,7 @@
 </template>
 
 <script setup lang="ts">
-import CarrerasCardList from '@/modules/involucrados/components/CarrerasCardList.vue'
+import AreasCardList from '@/modules/involucrados/components/AreasCardList.vue'
 import ConvMarcoCardReadOnly from '@/modules/convenios/components/ConvMarcoCardReadOnly.vue'
 import EmpresaCardReadOnly from '@/modules/empresas/components/EmpresaCardReadOnly.vue'
 import FileUploader from '@/modules/convenios/components/FileUploader.vue'
@@ -242,7 +242,7 @@ const DeleteConvenio = async () => {
       const response = await ConvenioService.DeleteConvenioEspecifico(Convenio.value.id)
       if (response.isSuccess) {
         isLoading.value = false
-        toast.success(`"${Convenio.value.titulo}" eliminado con �xito`)
+        toast.success(`"${Convenio.value.titulo}" eliminado con éxito`)
         router.push({ name: 'ListaConvenios' })
       }
     }
@@ -257,7 +257,7 @@ const DeleteConvenio = async () => {
   }
 }
 
-// Funciones de desvinculaci�n eliminadas (c�digo muerto)
+// Funciones de desvinculación eliminadas (código muerto)
 
 const CargarDocumento = async ({ file, nombre }: { file: File; nombre: string }) => {
   errorMessage.value = ''

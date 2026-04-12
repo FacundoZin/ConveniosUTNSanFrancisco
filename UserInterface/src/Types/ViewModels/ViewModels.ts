@@ -1,4 +1,4 @@
-import type { Carrera } from '../CarrerasInvolucradas/CarrerasInvolucradas'
+import type { Area } from '../AreasInvolucradas/AreasInvolucradas'
 import type { EstadoConvenio } from '../Enums/Enums'
 
 export interface ConvenioCreated {
@@ -95,7 +95,7 @@ export interface InfoConvenioEspecificoDto {
   empresa?: EmpresaDto
   involucrados?: InvolucradosDto[]
   documentosAdjuntos?: ViewArchivoDto[]
-  carrerasInvolucradas?: Carrera[]
+  areasInvolucradas?: Area[]
 }
 
 export interface InfoConvenioMarcoDto {

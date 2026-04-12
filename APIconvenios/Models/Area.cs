@@ -1,6 +1,6 @@
 ﻿namespace APIconvenios.Models
 {
-    public class Carreras
+    public class Area
     {
         public int Id { get; set; }
         public string Nombre { get; set; }

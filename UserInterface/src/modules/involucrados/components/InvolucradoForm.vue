@@ -43,11 +43,11 @@
       </div>
 
       <div class="col-md-6">
-        <label class="form-label">Carrera</label>
-        <select v-model.number="form.idCarrera" class="form-select" required>
-          <option value="" disabled>Seleccione una carrera...</option>
-          <option v-for="carrera in carreras" :key="carrera.id" :value="carrera.id">
-            {{ carrera.nombre }}
+        <label class="form-label">area</label>
+        <select v-model.number="form.idarea" class="form-select" required>
+          <option value="" disabled>Seleccione una area...</option>
+          <option v-for="area in areas" :key="area.id" :value="area.id">
+            {{ area.nombre }}
           </option>
         </select>
       </div>
@@ -70,14 +70,14 @@
 <script setup lang="ts">
 import InvolucradoService from '@/modules/involucrados/services/InvolucradoService'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
-import { carrerasList } from '@/Types/CarrerasInvolucradas/CarrerasInvolucradas'
+import { areasList } from '@/Types/AreasInvolucradas/AreasInvolucradas'
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 
 const emit = defineEmits<{ (evento: 'agregar', inv: InsertInvolucradosDto): void }>()
 const toast = useToast()
 
-const carreras = carrerasList
+const areas = areasList
 const isValidating = ref(false)
 
 const form = ref<InsertInvolucradosDto>({
@@ -86,7 +86,7 @@ const form = ref<InsertInvolucradosDto>({
   email: null,
   telefono: null,
   legajo: null,
-  idCarrera: 0,
+  idarea: 0,
   rolInvolucrado: 0,
 })
 
@@ -120,7 +120,7 @@ const agregar = async () => {
     email: form.value.email ? form.value.email : null,
     telefono: form.value.telefono ? form.value.telefono : null,
     legajo: form.value.legajo ? form.value.legajo : null,
-    idCarrera: form.value.idCarrera,
+    idarea: form.value.idarea,
     rolInvolucrado: form.value.rolInvolucrado,
   }
 
@@ -133,7 +133,7 @@ const agregar = async () => {
     email: null,
     telefono: null,
     legajo: null,
-    idCarrera: 0,
+    idarea: 0,
     rolInvolucrado: 0,
   }
 }

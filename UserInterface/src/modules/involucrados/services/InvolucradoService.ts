@@ -3,7 +3,7 @@ import type { Result } from '@/Common/Result'
 import type { ComboBoxInvolucradosDto } from '@/Types/Involucrados/ComboBoxInvolucradosDto'
 import type { ValidateInvolucradoDto } from '@/Types/Involucrados/ValidateInvolucradoDto'
 import type { InvolucradoExistDto } from '@/Types/Involucrados/InvolucradoExistDto'
-import type { TableInvolucradosByCarreraDto } from '@/Types/Involucrados/InvolucradosByCarrera'
+import type { TableInvolucradosByAreaDto } from '@/Types/Involucrados/InvolucradosByArea'
 
 import { API_URL, getErrorMessage } from '@/Services/apiBaseService'
 
@@ -35,9 +35,9 @@ export default class InvolucradoService {
     }
   }
 
-  static async GetInvolucradosByCarrera(carreraId: number): Promise<Result<TableInvolucradosByCarreraDto>> {
+  static async GetInvolucradosByArea(areaId: number): Promise<Result<TableInvolucradosByAreaDto>> {
     try {
-      const response = await axios.get(`${API_URL}/Involucrados/carrera/${carreraId}`)
+      const response = await axios.get(`${API_URL}/Involucrados/area/${areaId}`)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }

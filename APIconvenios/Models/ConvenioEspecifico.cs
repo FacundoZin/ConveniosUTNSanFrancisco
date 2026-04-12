@@ -27,7 +27,7 @@ namespace APIconvenios.Models
 
         public List<Involucrados>? Involucrados { get; set; } = new List<Involucrados>();
 
-        public List<Carreras>? CarrerasInvolucradas { get; set; } = new List<Carreras>();
+        public List<Area>? CarrerasInvolucradas { get; set; } = new List<Area>();
 
     }
 }

@@ -4,7 +4,7 @@ import ConvenioList from '@/modules/convenios/components/ConvenioList.vue'
 import FilterPanel from '@/modules/convenios/components/FilterPanel.vue'
 import SearchByAntiguedad from '@/modules/convenios/components/search/SearchByAntiguedad.vue'
 import SearchByAnio from '@/modules/convenios/components/search/SearchByAnio.vue'
-import SearchByCarreras from '@/modules/convenios/components/search/SearchByCarreras.vue'
+import SearchByAreas from '@/modules/convenios/components/search/SearchByAreas.vue'
 import SearchByDesdeHasta from '@/modules/convenios/components/search/SearchByDesdeHasta.vue'
 import SearchByEmpresa from '@/modules/convenios/components/search/SearchByEmpresa.vue'
 import SearchByEstado from '@/modules/convenios/components/search/SearchByEstado.vue'
@@ -261,12 +261,12 @@ const changePage = (page: number) => {
       :type-of-convenio="TypeofConvenioToSearch"
     ></SearchByFechaFirma>
 
-    <SearchByCarreras
-      v-if="activeFilterComponent === KeyFilters.ByCarrera"
+    <SearchByAreas
+      v-if="activeFilterComponent === KeyFilters.ByArea"
       @SearchDone="obtenerConvenios"
       :QueryObject="QueryComposable.queryObject"
       :type-of-convenio="TypeofConvenioToSearch"
-    ></SearchByCarreras>
+    ></SearchByAreas>
 
     <SearchByEstado
       v-if="activeFilterComponent === KeyFilters.ByEstado"

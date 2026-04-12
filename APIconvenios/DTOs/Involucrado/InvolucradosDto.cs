@@ -1,4 +1,4 @@
-﻿
+
 namespace APIconvenios.DTOs.Involucrados
 {
     public class InvolucradosDto
@@ -9,7 +9,7 @@ namespace APIconvenios.DTOs.Involucrados
         public string? Email { get; set; }
         public string? Telefono { get; set; }
         public int? Legajo { get; set; }
-        public string? carrera { get; set; }
+        public string? area { get; set; }
         public string RolInvolucrado { get; set; }
     }
 }

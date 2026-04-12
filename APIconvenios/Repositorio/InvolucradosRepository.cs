@@ -1,4 +1,4 @@
-﻿using APIconvenios.Data;
+using APIconvenios.Data;
 using APIconvenios.DTOs.Involucrado;
 using APIconvenios.Interfaces.Repositorio;
 using APIconvenios.Models;
@@ -27,10 +27,10 @@ namespace APIconvenios.Repositorio
                 .ToListAsync();
         }
 
-        public async Task<List<Involucrados>> GetInvolucradosByCarrera(int IdCarrera)
+        public async Task<List<Involucrados>> GetInvolucradosByArea(int IdArea)
         {
             return await _context.Involucrados
-                .Where(i => i.IdCarrera == IdCarrera)
+                .Where(i => i.IdCarrera == IdArea)
                 .Include(i => i.Carrera)
                 .AsNoTracking()
                 .ToListAsync();    
@@ -54,6 +54,14 @@ namespace APIconvenios.Repositorio
         {
             return await _context.Involucrados
                 .AnyAsync(i => i.Nombre.ToLower().Trim() == nombre.ToLower().Trim() && i.Apellido.ToLower() == apellido.ToLower());
+        }
+
+        public async Task<Involucrados?> GetInvolucradoWithConvenios(int id)
+        {
+            return await _context.Involucrados
+                .Include(i => i.ConveniosEspecificos)
+                    .ThenInclude(ce => ce.empresa)
+                .FirstOrDefaultAsync(i => i.Id == id);
         }
     }
 }

@@ -1,6 +1,6 @@
 import EmpresaService from '@/modules/empresas/services/EmpresaService';
 import ConvenioService from '@/modules/convenios/services/ConvenioService'
-import { carrerasList, type Carrera } from '@/Types/CarrerasInvolucradas/CarrerasInvolucradas'
+import { areasList, type Area } from '@/Types/AreasInvolucradas/AreasInvolucradas'
 import {
   createRequestConvEspecifico,
   type CargarConvenioEspecificoRequestDto,
@@ -18,7 +18,7 @@ interface CreateConvenioEspecificoComposable {
   ConvenioEspecificoRequest: Ref<CargarConvenioEspecificoRequestDto>
   errorMensaje: Ref<string | null>
   empresas: Ref<ComboBoxEmpresasDto[]>
-  Carreras: Carrera[]
+  Areas: Area[]
   cargarNuevaEmpresa: Ref<boolean>
   ConvenioCreado: Ref<ConvenioCreated | null>
   empresaForm: Ref<InsertEmpresaDto>
@@ -37,7 +37,7 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
   const empresas = ref<ComboBoxEmpresasDto[]>([])
   const cargarNuevaEmpresa = ref(false)
   const ConvenioCreado = ref<ConvenioCreated | null>(null)
-  const Carreras: Carrera[] = carrerasList
+  const Areas: Area[] = areasList
 
   const empresaForm = ref<InsertEmpresaDto>({
     id: null,
@@ -145,7 +145,7 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
     ConvenioEspecificoRequest,
     errorMensaje,
     empresas,
-    Carreras,
+    Areas,
     cargarNuevaEmpresa,
     ConvenioCreado,
     empresaForm,

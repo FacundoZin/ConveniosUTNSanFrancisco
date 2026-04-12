@@ -11,9 +11,9 @@ const emit = defineEmits<{
   (e: 'SearchDone'): void
 }>()
 
-const carreraSeleccionada = ref<string | null>(null)
+const areaSeleccionada = ref<string | null>(null)
 
-const carreras: string[] = [
+const areas: string[] = [
   'Ingeniería Química',
   'Ingeniería en Sistemas',
   'Ingeniería Electrónica',
@@ -25,29 +25,29 @@ const carreras: string[] = [
 ]
 
 const objetoFiltroListo = computed(() => {
-  if (!carreraSeleccionada.value) {
+  if (!areaSeleccionada.value) {
     return null
   }
   return {
-    nombreCarrera: carreraSeleccionada.value,
+    nombreArea: areaSeleccionada.value,
     conveniotype: props.typeOfConvenio,
   }
 })
 
 const handleSelectChange = () => {
-  if (carreraSeleccionada.value === null) {
-    if (props.QueryObject.ByCarrera) {
-      props.QueryObject.ByCarrera = null
+  if (areaSeleccionada.value === null) {
+    if (props.QueryObject.ByArea) {
+      props.QueryObject.ByArea = null
     }
   }
 }
 
 const handleSearch = () => {
-  if (carreraSeleccionada.value === null) {
+  if (areaSeleccionada.value === null) {
     return
   }
 
-  props.QueryObject.ByCarrera = objetoFiltroListo.value
+  props.QueryObject.ByArea = objetoFiltroListo.value
 
   emit('SearchDone')
 }
@@ -59,19 +59,19 @@ const handleSearch = () => {
   >
     <div class="row g-2 align-items-center">
       <div class="col-12">
-        <h6 class="mb-0 card-title text-primary fw-bold">Filtrar por Carrera</h6>
+        <h6 class="mb-0 card-title text-primary fw-bold">Filtrar por Área</h6>
       </div>
 
       <div class="col-auto">
         <select
           class="form-select form-select-sm"
-          v-model="carreraSeleccionada"
+          v-model="areaSeleccionada"
           @change="handleSelectChange"
-          aria-label="Seleccionar carrera"
+          aria-label="Seleccionar área"
         >
-          <option :value="null" disabled selected>Seleccione una carrera</option>
-          <option v-for="carrera in carreras" :key="carrera" :value="carrera">
-            {{ carrera }}
+          <option :value="null" disabled selected>Seleccione un área</option>
+          <option v-for="area in areas" :key="area" :value="area">
+            {{ area }}
           </option>
         </select>
       </div>
@@ -80,7 +80,7 @@ const handleSearch = () => {
         <button
           class="btn btn-sm btn-primary"
           @click="handleSearch"
-          :disabled="carreraSeleccionada === null"
+          :disabled="areaSeleccionada === null"
         >
           <i class="bi bi-search"></i>
           Buscar

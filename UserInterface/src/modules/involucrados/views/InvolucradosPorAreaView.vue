@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import InvolucradoService from '@/modules/involucrados/services/InvolucradoService'
-import type { InvolucradosDto } from '@/Types/Involucrados/InvolucradosByCarrera'
+import type { TableInvolucradosByAreaDto, InvolucradosDto } from '@/Types/Involucrados/InvolucradosByArea'
 import { useToast } from 'vue-toastification'
 
 const toast = useToast()
 
 const loading = ref(false)
-const carreraSeleccionada = ref<number | null>(null)
+const areaSeleccionada = ref<number | null>(null)
 const involucrados = ref<InvolucradosDto[]>([])
 const cantidadTotal = ref<number | null>(null)
 const busquedaRealizada = ref(false)
 
-const carreras = [
+const areas = [
   { id: 1, nombre: 'Ingeniería Química' },
   { id: 2, nombre: 'Ingeniería en Sistemas' },
   { id: 3, nombre: 'Ingeniería Electrónica' },
@@ -24,14 +24,14 @@ const carreras = [
 ]
 
 const handleSearch = async () => {
-  if (!carreraSeleccionada.value) return
+  if (!areaSeleccionada.value) return
 
   loading.value = true
   busquedaRealizada.value = false
   involucrados.value = []
   cantidadTotal.value = null
 
-  const result = await InvolucradoService.GetInvolucradosByCarrera(carreraSeleccionada.value)
+  const result = await InvolucradoService.GetInvolucradosByArea(areaSeleccionada.value)
 
   loading.value = false
   busquedaRealizada.value = true
@@ -50,10 +50,10 @@ const handleSearch = async () => {
     <div class="row mb-4">
       <div class="col-12">
         <h2 class="text-primary fw-bold mb-3">
-          <i class="bi bi-people-fill me-2"></i>Involucrados por Carrera
+          <i class="bi bi-people-fill me-2"></i>Involucrados por área
         </h2>
         <p class="text-muted">
-          Seleccione una carrera para ver el listado de personas involucradas.
+          Seleccione un área para ver el listado de personas involucradas en algún convenio.
         </p>
       </div>
     </div>
@@ -63,11 +63,11 @@ const handleSearch = async () => {
       <div class="card-body p-4">
         <div class="row align-items-end g-3">
           <div class="col-md-6 col-lg-4">
-            <label class="form-label fw-bold">Carrera</label>
-            <select class="form-select" v-model="carreraSeleccionada">
-              <option :value="null" disabled>Seleccione una carrera...</option>
-              <option v-for="carrera in carreras" :key="carrera.id" :value="carrera.id">
-                {{ carrera.nombre }}
+            <label class="form-label fw-bold">Área</label>
+            <select class="form-select" v-model="areaSeleccionada">
+              <option :value="null" disabled>Seleccione un área...</option>
+              <option v-for="area in areas" :key="area.id" :value="area.id">
+                {{ area.nombre }}
               </option>
             </select>
           </div>
@@ -75,7 +75,7 @@ const handleSearch = async () => {
             <button
               class="btn btn-primary w-100"
               @click="handleSearch"
-              :disabled="!carreraSeleccionada || loading"
+              :disabled="!areaSeleccionada || loading"
             >
               <span
                 v-if="loading"
@@ -159,7 +159,7 @@ const handleSearch = async () => {
       <div v-else class="text-center py-5 text-muted">
         <i class="bi bi-inbox fs-1 d-block mb-3 opacity-50"></i>
         <h5>No se encontraron resultados</h5>
-        <p>No hay involucrados registrados para la carrera seleccionada.</p>
+        <p>No hay involucrados registrados para el área seleccionada.</p>
       </div>
     </div>
   </div>
