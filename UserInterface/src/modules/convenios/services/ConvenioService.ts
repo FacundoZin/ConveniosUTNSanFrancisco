@@ -14,6 +14,7 @@ import type { CargarConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecif
 import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/UpdateConvenioMarco'
 import type { UpdateConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/UpdateConvenioEspecifico'
 import type { ComboBoxConvenioMarcoDto } from '@/Types/ConvenioMarco/ComboBoxConvenioMarcoDto'
+import type { InvolucradosWithConveniosDto } from '@/Types/Involucrados/InvolucradosWithConveniosDto'
 
 import { API_URL, getErrorMessage } from '@/Services/apiBaseService'
 
@@ -153,6 +154,15 @@ export default class ConvenioService {
     try {
       const response = await axios.delete(`${API_URL}/ConveniosEspecificos/${idConvenioEspecifico}/empresa`)
       return { isSuccess: true, value: null, status: response.status }
+    } catch (Ex: any) {
+      return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
+    }
+  }
+
+  static async GetConveniosPorInvolucrado(id: number): Promise<Result<InvolucradosWithConveniosDto>> {
+    try {
+      const response = await axios.get(`${API_URL}/Convenios/involucrado/${id}`)
+      return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
     }

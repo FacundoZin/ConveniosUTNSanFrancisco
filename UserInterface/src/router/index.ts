@@ -8,6 +8,7 @@ import DashBoardView from '@/modules/convenios/views/DashBoardView.vue'
 import DashboardEmpresas from '@/modules/empresas/views/DashboardEmpresas.vue'
 import EmpresaConveniosView from '@/modules/empresas/views/EmpresaConveniosView.vue'
 import InvolucradosPorAreaView from '@/modules/involucrados/views/InvolucradosPorAreaView.vue'
+import InvolucradoConveniosView from '@/modules/involucrados/views/InvolucradoConveniosView.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
@@ -45,6 +46,12 @@ const router = createRouter({
       path: '/involucrados-por-area',
       name: 'InvolucradosPorArea',
       component: InvolucradosPorAreaView,
+    },
+    {
+      path: '/involucrado/:id/convenios',
+      name: 'InvolucradoConvenios',
+      component: InvolucradoConveniosView,
+      props: true,
     },
   ],
 })

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import InvolucradoService from '@/modules/involucrados/services/InvolucradoService'
 import type { TableInvolucradosByAreaDto, InvolucradosDto } from '@/Types/Involucrados/InvolucradosByArea'
 import { useToast } from 'vue-toastification'
 
 const toast = useToast()
+const router = useRouter()
 
 const loading = ref(false)
 const areaSeleccionada = ref<number | null>(null)
@@ -42,6 +44,10 @@ const handleSearch = async () => {
   } else {
     toast.error(result.error?.message || 'Error al obtener los involucrados')
   }
+}
+
+const handleVerConvenios = (id: number) => {
+  router.push({ name: 'InvolucradoConvenios', params: { id } })
 }
 </script>
 
@@ -117,6 +123,7 @@ const handleSearch = async () => {
                   <th class="py-3">Teléfono</th>
                   <th class="py-3">Legajo</th>
                   <th class="py-3">Rol</th>
+                  <th class="py-3 text-end pe-4">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -148,6 +155,16 @@ const handleSearch = async () => {
                     <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
                       {{ involucrado.rolInvolucrado }}
                     </span>
+                  </td>
+                  <td class="text-end pe-4">
+                    <button
+                      class="btn btn-sm btn-outline-primary rounded-pill px-3"
+                      @click="handleVerConvenios(involucrado.id)"
+                      title="Ver convenios"
+                    >
+                      <i class="bi bi-eye me-1"></i>
+                      Ver convenios
+                    </button>
                   </td>
                 </tr>
               </tbody>
