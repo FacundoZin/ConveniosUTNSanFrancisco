@@ -6,23 +6,15 @@ namespace APIconvenios.Data
 {
     public static class DbSeeder
     {
-        public static void Seed(ApplicationDbContext context, bool deleteExistingData = false)
+        public static void Seed(ApplicationDbContext context)
         {
-            if (deleteExistingData)
-            {
-                Console.WriteLine("Eliminando datos existentes...");
-                context.ArchivosAdjuntos.ExecuteDelete();
-                context.ConveniosEspecificos.ExecuteDelete();
-                context.ConveniosMarcos.ExecuteDelete();
-                context.Involucrados.ExecuteDelete();
-                context.Empresas.ExecuteDelete();
-                Console.WriteLine("Datos eliminados correctamente.");
-            }
-            else if (context.Empresas.Any() || context.ConveniosMarcos.Any() || context.ConveniosEspecificos.Any())
-            {
-                Console.WriteLine("La base de datos ya contiene datos. Saltando seeder...");
-                return;
-            }
+            Console.WriteLine("Eliminando datos existentes para re-sembrar...");
+            context.ArchivosAdjuntos.ExecuteDelete();
+            context.ConveniosEspecificos.ExecuteDelete();
+            context.ConveniosMarcos.ExecuteDelete();
+            context.Involucrados.ExecuteDelete();
+            context.Empresas.ExecuteDelete();
+            Console.WriteLine("Datos eliminados correctamente.");
 
             Console.WriteLine("Iniciando Seeding de datos...");
 

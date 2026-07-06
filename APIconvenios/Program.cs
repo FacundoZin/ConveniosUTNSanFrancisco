@@ -107,8 +107,7 @@ using (var scope = app.Services.CreateScope())
     // 👉 Lógica de Seeding por consola
     if (args.Contains("--seed"))
     {
-        bool reset = args.Contains("--reset");
-        DbSeeder.Seed(dbContext, reset);
+        DbSeeder.Seed(dbContext);
         Console.WriteLine("Seeding finalizado. Saliendo...");
         return;
     }
