@@ -79,5 +79,25 @@ namespace APIconvenios.Services
             await _UnitOfWork._EmpresaRepository.EditEmpresaDto(idEmpresa, dto);
             return Result<bool>.Exito(true);
         }
+
+        public async Task<Result<EmpresaDto>> ObtenerEmpresaPorId(int id)
+        {
+            var empresa = await _UnitOfWork._EmpresaRepository.GetById(id);
+            if (empresa == null)
+                return Result<EmpresaDto>.Error("Empresa no encontrada", 404);
+
+            var dto = new EmpresaDto
+            {
+                Id = empresa.Id,
+                Nombre_Empresa = empresa.Nombre,
+                RazonSocial = empresa.RazonSocial,
+                Cuit = empresa.Cuit,
+                Direccion_Empresa = empresa.Direccion,
+                Telefono_Empresa = empresa.Telefono,
+                Email_Empresa = empresa.Email
+            };
+
+            return Result<EmpresaDto>.Exito(dto);
+        }
     }
 }

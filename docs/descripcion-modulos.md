@@ -60,28 +60,37 @@
 
 ## Módulo: Empresas
 
-- **Objetivo**: Permitir la visualización de empresas con convenios asociados y listar los convenios vinculados a cada empresa.
+- **Objetivo**: Permitir la administración completa de empresas: visualización, registro, edición, y consulta de los convenios vinculados a cada empresa.
 
 - **Usuarios**:
   - `Usuario Consultor` — visualiza y lista empresas y sus convenios.
+  - `Usuario Gestor` — registra nuevas empresas y edita información de empresas existentes.
 
 - **Pantallas**:
-  - `DashboardEmpresas.vue` — dashboard de empresas (`/empresas`).
+  - `DashboardEmpresas.vue` — dashboard de empresas (`/empresas`) con grilla de cards. Cada card muestra el nombre de la empresa, botón "Ver Convenios" y un botón de edición (lápiz) en la esquina superior que aparece al hacer hover.
   - `EmpresaConveniosView.vue` — listado de convenios por empresa (`/empresa/:id/convenios`).
   - Componentes:
     - `EmpresaCard.vue`, `EmpresaCardReadOnly.vue`, `EmpresaAsociada.vue`.
-    - `modals/CreateEmpresaModal.vue`, `modals/EditEmpresaModal.vue` (alcance administrativo de empresas — ver nota abajo).
+    - `modals/CreateEmpresaModal.vue` — modal para registrar una nueva empresa con todos sus campos (nombre, razón social, CUIT, dirección, teléfono, email).
+    - `modals/EditEmpresaModal.vue` — modal para editar los datos de una empresa existente, con los campos precargados.
 
-- **Casos de uso** (2 UC, todos asociados a `Usuario Consultor`):
-  1. **Visualizar empresas con convenios**.
-  2. **Listar convenios por empresa**.
+- **Casos de uso** (4 UC, distribuidos por actor lógico):
+
+  | # | Caso de uso | Actor |
+  |---|---|---|
+  | 1 | Visualizar empresas con convenios | Usuario Consultor |
+  | 2 | Listar convenios por empresa | Usuario Consultor |
+  | 3 | Registrar empresa | Usuario Gestor |
+  | 4 | Editar empresa | Usuario Gestor |
 
 - **Interfaces relacionadas**:
   - **API REST .NET**:
     - `GET /api/Empresa` (paginado), `GET /api/Empresa/all` — listado de empresas.
+    - `GET /api/Empresa/{id}` — datos completos de una empresa específica.
+    - `POST /api/Empresa` — registro de nueva empresa.
+    - `PUT /api/Empresa/{id}` — edición de empresa existente.
     - `GET /api/Convenios/empresa/{id}` — convenios de una empresa.
-    - `POST /api/Empresa`, `PUT /api/Empresa/{id}` — creación/edición de empresas (expuestos en la API aunque no modelados como UC en el diagrama por estar fuera del alcance funcional inicial descripto).
-  - **Base de datos**: lectura de tabla `Empresas` y join con convenios asociados.
+  - **Base de datos**: tabla `Empresas` con lectura/escritura, y join con convenios asociados.
 
 ---
 
@@ -250,12 +259,12 @@
 | Módulo | Consultor | Gestor | Firmante |
 |---|:---:|:---:|:---:|
 | Panel de Búsqueda | ✅ (6 UC) | ❌ | ❌ |
-| Empresas | ✅ (2 UC) | ❌ | ❌ |
+| Empresas | ✅ (2 UC) | ✅ (2 UC) | ❌ |
 | Involucrados | ✅ (3 UC) | ❌ | ❌ |
 | Convenios Marcos | ✅ (1 UC) | ✅ (5 UC) | ✅ (1 UC) |
 | Convenios Específicos | ✅ (1 UC) | ✅ (5 UC) | ✅ (1 UC) |
 
-**Total**: 21 casos de uso repartidos en 3 actores lógicos sobre 5 módulos.
+**Total**: 23 casos de uso repartidos en 3 actores lógicos sobre 5 módulos.
 
 ---
 

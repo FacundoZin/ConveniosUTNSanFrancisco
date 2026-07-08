@@ -5,6 +5,7 @@ import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import type { EmpresaWithConveniosDto } from '@/Types/Empresa/EmpresaWithConveniosDto'
 import type { EditEmpresaDto } from '@/Types/Empresa/EditEmpresaDto'
 import type { InsertEmpresaDto } from '@/Types/Empresa/InsertEmpresa'
+import type { EmpresaDto } from '@/Types/ViewModels/ViewModels'
 
 import { API_URL, getErrorMessage } from '@/Services/apiBaseService'
 
@@ -56,6 +57,15 @@ export default class EmpresaService {
   static async CrearEmpresa(dto: InsertEmpresaDto): Promise<Result<number>> {
     try {
       const response = await axios.post(`${API_URL}/Empresa`, dto)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
+    }
+  }
+
+  static async GetEmpresaById(id: number): Promise<Result<EmpresaDto>> {
+    try {
+      const response = await axios.get(`${API_URL}/Empresa/${id}`)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }

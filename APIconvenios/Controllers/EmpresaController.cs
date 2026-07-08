@@ -44,5 +44,13 @@ namespace APIconvenios.Controllers
             if (!result.Exit) return BadRequest(result.Errormessage);
             return Ok(result.Data);
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> ObtenerEmpresaPorId(int id)
+        {
+            var result = await _empresaService.ObtenerEmpresaPorId(id);
+            if (!result.Exit) return NotFound(result.Errormessage);
+            return Ok(result.Data);
+        }
     }
 }

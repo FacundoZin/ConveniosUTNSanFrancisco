@@ -9,5 +9,6 @@ namespace APIconvenios.Interfaces.Servicios
         Task<Result<int>> CrearEmpresa(InsertEmpresaDto dto);
         Task<Result<bool>> EditarEmpresa(int idEmpresa, EditEmpresaDto dto);
         Task<Result<List<ComboBoxEmpresasDto>>> ListarTodasLasEmpresas();
+        Task<Result<EmpresaDto>> ObtenerEmpresaPorId(int id);
     }
 }
