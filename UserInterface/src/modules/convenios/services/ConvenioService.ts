@@ -13,6 +13,7 @@ import type { CargarConvenioMarcoRequestDto } from '@/Types/ConvenioMarco/Create
 import type { CargarConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/CreateConvenioEspecifico'
 import type { UpdateConvenioMarcoRequetsDto } from '@/Types/ConvenioMarco/UpdateConvenioMarco'
 import type { UpdateConvenioEspecificoRequestDto } from '@/Types/ConvenioEspecifico/UpdateConvenioEspecifico'
+import type { UltimosConveniosDto } from '@/Types/Convenios/ConvenioUltimoDto'
 import type { ComboBoxConvenioMarcoDto } from '@/Types/ConvenioMarco/ComboBoxConvenioMarcoDto'
 import type { InvolucradosWithConveniosDto } from '@/Types/Involucrados/InvolucradosWithConveniosDto'
 
@@ -171,6 +172,15 @@ export default class ConvenioService {
   static async GetAllConveniosMarcos(): Promise<Result<ComboBoxConvenioMarcoDto[]>> {
     try {
       const response = await axios.get(`${API_URL}/ConveniosMarcos`)
+      return { isSuccess: true, value: response.data, status: response.status }
+    } catch (Ex: any) {
+      return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
+    }
+  }
+
+  static async GetUltimosConvenios(cantidad: number = 5): Promise<Result<UltimosConveniosDto>> {
+    try {
+      const response = await axios.get(`${API_URL}/Convenios/ultimos?cantidad=${cantidad}`)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }

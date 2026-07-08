@@ -63,5 +63,16 @@ namespace APIconvenios.Controllers
 
             return Ok(result.Data);
         }
+
+        [HttpGet("ultimos")]
+        public async Task<IActionResult> ObtenerUltimosConvenios([FromQuery] int cantidad = 5)
+        {
+            var result = await _conveniosGetterService.ObtenerUltimosConvenios(cantidad);
+
+            if (!result.Exit)
+                return StatusCode(result.Errorcode, result.Errormessage);
+
+            return Ok(result.Data);
+        }
     }
 }

@@ -1,4 +1,5 @@
 using APIconvenios.Common;
+using APIconvenios.DTOs.Convenios;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.DTOs.Involucrado;
 
@@ -8,5 +9,6 @@ namespace APIconvenios.Interfaces.Servicios
     {
         Task<Result<EmpresaWithConveniosDto>> ListarConveniosPorEmpresa(int empresaId);
         Task<Result<InvolucradosWithConveniosDto>> ListarConveniosPorInvolucrado(int involucradoId);
+        Task<Result<UltimosConveniosDto>> ObtenerUltimosConvenios(int cantidad = 5);
     }
 }

@@ -2,6 +2,7 @@
 import { KeyFilters } from '@/Common/KeyFilter'
 import ConvenioList from '@/modules/convenios/components/ConvenioList.vue'
 import FilterPanel from '@/modules/convenios/components/FilterPanel.vue'
+import UltimosConvenios from '@/modules/convenios/components/UltimosConvenios.vue'
 import SearchByAntiguedad from '@/modules/convenios/components/search/SearchByAntiguedad.vue'
 import SearchByAnio from '@/modules/convenios/components/search/SearchByAnio.vue'
 import SearchByAreas from '@/modules/convenios/components/search/SearchByAreas.vue'
@@ -141,6 +142,8 @@ const handleFilterSelected = (filterKey: string) => {
 
 const resetSearch = () => {
   showNoResultsMode.value = false
+  activeFilterComponent.value = null
+  typeofConvenioToSearch.value = 'marco'
   store.clearAllFilters() // Asegurar limpieza total
   listadoConvenios.value = CreateListConveniosDto(null)
   countResult.value = null
@@ -349,6 +352,17 @@ const changePage = (page: number) => {
   </div>
 
   <ConvenioList :convenios="listadoConvenios" :isloading="isloading" @reset-search="resetSearch" />
+
+  <UltimosConvenios
+    v-if="
+      !isloading &&
+      listadoConvenios.Type === '' &&
+      activeFilterComponent === null &&
+      countResult === null &&
+      countResultBoth === null &&
+      !errorMensaje
+    "
+  />
   
   <div v-if="!isloading && !showNoResultsMode && (listadoConvenios.Type !== 'ambos' ? listadoConvenios.data.length > 0 : (listadoConvenios.conveniosMarcos?.length > 0 || listadoConvenios.conveniosEspecificos?.length > 0))" class="d-flex justify-content-center mb-5">
     <AppPagination 
