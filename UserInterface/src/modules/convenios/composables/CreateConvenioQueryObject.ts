@@ -7,7 +7,7 @@ export function useConvenioQuery() {
     ByTitulo: null,
     ByEmpresa: null,
     ByAntiguedadDto: null,
-    ByCarrera: null,
+    ByArea: null,
     ByEstado: null,
     ByIsActa: null,
     ByIsRefrendado: null,

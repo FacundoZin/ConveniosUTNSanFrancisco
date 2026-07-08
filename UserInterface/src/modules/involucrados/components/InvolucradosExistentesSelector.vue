@@ -50,6 +50,7 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits<{
   (e: 'update:modelValue', value: number[] | null): void
+  (e: 'agregar-area', idCarrera: number): void
 }>()
 
 const involucrados = ref<ComboBoxInvolucradosDto[]>([])
@@ -68,12 +69,15 @@ const toggleSelection = (id: number) => {
   const currentSelection = props.modelValue || []
 
   if (currentSelection.includes(id)) {
-    // Remover de la selección
     const newSelection = currentSelection.filter((selectedId) => selectedId !== id)
     emit('update:modelValue', newSelection.length > 0 ? newSelection : null)
   } else {
-    // Agregar a la selección
     emit('update:modelValue', [...currentSelection, id])
+
+    const involucrado = involucrados.value.find((i) => i.id === id)
+    if (involucrado?.idCarrera) {
+      emit('agregar-area', involucrado.idCarrera)
+    }
   }
 }
 

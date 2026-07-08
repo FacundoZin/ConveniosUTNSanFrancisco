@@ -42,6 +42,7 @@ namespace APIconvenios.Controllers
             {
                 Id = i.Id,
                 FullName = $"{i.Nombre} {i.Apellido}",
+                IdCarrera = i.IdCarrera
             }).ToList();
 
             return Ok(dto);
@@ -56,6 +57,7 @@ namespace APIconvenios.Controllers
             {
                 Id = i.Id,
                 FullName = $"{i.Nombre} {i.Apellido}",
+                IdCarrera = i.IdCarrera
             }).ToList();
 
             return Ok(dto);

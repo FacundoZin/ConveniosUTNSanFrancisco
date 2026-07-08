@@ -20,7 +20,7 @@ interface CreateConvenioEspecificoComposable {
   UpdateConvEspRequest: Ref<UpdateConvenioEspecificoRequestDto>
   errorMensaje: Ref<string | null>
   empresas: Ref<ComboBoxEmpresasDto[]>
-  Areas: Area[]
+  Carreras: Area[]
   cargarNuevaEmpresa: Ref<boolean>
   ConvenioCreado: Ref<ConvenioCreated | null>
   empresaForm: Ref<InsertEmpresaDto>
@@ -39,7 +39,7 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
   const empresas = ref<ComboBoxEmpresasDto[]>([])
   const cargarNuevaEmpresa = ref(false)
   const ConvenioCreado = ref<ConvenioCreated | null>(null)
-  const Areas: Area[] = areasList
+  const Carreras: Area[] = areasList
   const route = useRoute()
 
   // --- STATE ---
@@ -186,7 +186,7 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
     InfoConvenioEspecificoCompleta,
     errorMensaje,
     empresas,
-    Areas,
+    Carreras,
     cargarNuevaEmpresa,
     ConvenioCreado,
     empresaForm,

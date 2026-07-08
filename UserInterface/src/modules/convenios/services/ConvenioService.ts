@@ -126,7 +126,7 @@ export default class ConvenioService {
 
   static async DesvincularConvenioEspecifico(idConvenioMarco: number, idConvenioEspecifico: number): Promise<Result<null>> {
     try {
-      const response = await axios.delete(`${API_URL}/ConveniosMarcos/${idConvenioMarco}/especificos/${idConvenioEspecifico}`)
+      const response = await axios.patch(`${API_URL}/ConveniosMarcos/${idConvenioMarco}/especificos/${idConvenioEspecifico}/desvincular`)
       return { isSuccess: true, value: null, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
@@ -135,7 +135,7 @@ export default class ConvenioService {
 
   static async DesvincularEmpresaDeMarco(idConvenioMarco: number): Promise<Result<null>> {
     try {
-      const response = await axios.delete(`${API_URL}/ConveniosMarcos/${idConvenioMarco}/empresa`)
+      const response = await axios.patch(`${API_URL}/ConveniosMarcos/${idConvenioMarco}/desvincular-empresa`)
       return { isSuccess: true, value: null, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
@@ -144,7 +144,7 @@ export default class ConvenioService {
 
   static async DesvincularConvenioMarco(idConvenioEspecifico: number): Promise<Result<null>> {
     try {
-      const response = await axios.delete(`${API_URL}/ConveniosEspecificos/${idConvenioEspecifico}/marco`)
+      const response = await axios.patch(`${API_URL}/ConveniosEspecificos/${idConvenioEspecifico}/desvincular-marco`)
       return { isSuccess: true, value: null, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
@@ -153,7 +153,7 @@ export default class ConvenioService {
 
   static async DesvincularEmpresaDeEspecifico(idConvenioEspecifico: number): Promise<Result<null>> {
     try {
-      const response = await axios.delete(`${API_URL}/ConveniosEspecificos/${idConvenioEspecifico}/empresa`)
+      const response = await axios.patch(`${API_URL}/ConveniosEspecificos/${idConvenioEspecifico}/desvincular-empresa`)
       return { isSuccess: true, value: null, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }

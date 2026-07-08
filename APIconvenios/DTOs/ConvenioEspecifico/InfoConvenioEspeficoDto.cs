@@ -27,6 +27,6 @@ namespace APIconvenios.DTOs.ConvenioEspecifico
         public EmpresaDto? empresa { get; set; }
         public List<InvolucradosDto>? Involucrados { get; set; }
         public List<viewArchivoDto>? DocumentosAdjuntos { get; set; }
-        public List<Area>? CarrerasInvolucradas { get; set; }
+        public List<Area>? AreasInvolucradas { get; set; }
     }
 }

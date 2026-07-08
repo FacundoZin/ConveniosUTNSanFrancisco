@@ -169,6 +169,11 @@ namespace APIconvenios.Services
 
             await cmd.ExecuteAsync(convenio, _UnitOfWork);
 
+            int rowsAffected = await _UnitOfWork.Save();
+
+            if (rowsAffected == 0)
+                return Result<bool>.Error("No se pudo desvincular.", 500);
+
             return Result<bool>.Exito(true);
         }
 
@@ -184,6 +189,11 @@ namespace APIconvenios.Services
             var cmd = new UnlinkConvMarcoCmd();
 
             await cmd.ExecuteAsync(convenio, _UnitOfWork);
+
+            int rowsAffected = await _UnitOfWork.Save();
+
+            if (rowsAffected == 0)
+                return Result<bool>.Error("No se pudo desvincular.", 500);
 
             return Result<bool>.Exito(true);
         }

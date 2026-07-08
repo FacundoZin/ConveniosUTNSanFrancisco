@@ -24,7 +24,7 @@ namespace APIconvenios.Controllers
         public async Task<IActionResult> GetAllConveniosMarcos()
         {
             var result = await _ConvenioService.GetAllConveniosMarcos();
-            if(!result.Exit)
+            if (!result.Exit)
                 return StatusCode(result.Errorcode, result.Errormessage);
 
             return Ok(result.Data);
@@ -84,7 +84,7 @@ namespace APIconvenios.Controllers
             return Ok(result.Data);
         }
 
-        [HttpDelete("{idConvenioMarco:int}/empresa")]
+        [HttpPatch("{idConvenioMarco:int}/desvincular-empresa")]
         public async Task<IActionResult> DesvincularEmpresa(int idConvenioMarco)
         {
             var result = await _ConvenioService.DesvincularEmpresa(idConvenioMarco);
@@ -94,7 +94,7 @@ namespace APIconvenios.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{idConvenioMarco:int}/especificos/{idConvenioEspecifico:int}")]
+        [HttpPatch("{idConvenioMarco:int}/especificos/{idConvenioEspecifico:int}/desvincular")]
         public async Task<IActionResult> DesvincularConvenioEspecifico(int idConvenioMarco, int idConvenioEspecifico)
         {
             var result = await _ConvenioService.DesvincularEspecifico(idConvenioMarco, idConvenioEspecifico);

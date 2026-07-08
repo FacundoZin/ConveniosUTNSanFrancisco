@@ -35,10 +35,10 @@
             {{ rolesMap[involucrado.rolInvolucrado] }}
           </span>
           <span
-            v-if="involucrado.idarea && areasMap[involucrado.idarea]"
+            v-if="involucrado.idCarrera && areasMap[involucrado.idCarrera]"
             class="badge bg-info text-dark"
           >
-            {{ areasMap[involucrado.idarea] }}
+            {{ areasMap[involucrado.idCarrera] }}
           </span>
         </div>
       </div>

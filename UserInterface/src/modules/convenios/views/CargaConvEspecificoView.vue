@@ -250,6 +250,7 @@
         <h4 class="text-primary mb-3">Vincular Involucrados Existentes</h4>
         <InvolucradosExistentesSelector
           v-model="ConvenioEspecificoRequest.idsInvolucradosExistentes"
+          @agregar-area="agregarArea"
         />
       </div>
 
@@ -297,6 +298,20 @@ const toast = useToast()
 
 const agregarInvolucrado = (nuevo: InsertInvolucradosDto) => {
   involucradosForm.value.push(nuevo)
+
+  if (nuevo.idCarrera) {
+    const ids = ConvenioEspecificoRequest.value.idCarreras ?? []
+    if (!ids.includes(nuevo.idCarrera)) {
+      ConvenioEspecificoRequest.value.idCarreras = [...ids, nuevo.idCarrera]
+    }
+  }
+}
+
+const agregarArea = (idCarrera: number) => {
+  const ids = ConvenioEspecificoRequest.value.idCarreras ?? []
+  if (!ids.includes(idCarrera)) {
+    ConvenioEspecificoRequest.value.idCarreras = [...ids, idCarrera]
+  }
 }
 
 const eliminarInvolucrado = (index: number) => {

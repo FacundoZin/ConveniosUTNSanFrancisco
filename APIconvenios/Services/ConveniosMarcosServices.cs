@@ -165,7 +165,7 @@ namespace APIconvenios.Services
 
         public async Task<Result<bool>> DesvincularEspecifico(int IdMarco, int IdEspecifico)
         {
-            int[] IdsEspecificos = new int[IdEspecifico];
+            int[] IdsEspecificos = new int[] { IdEspecifico };
             var convenioMarco = await _UnitOfWork._ConvenioMarcoReadRepository.GetByidWithConvEspecifico(IdMarco);
 
             if (convenioMarco == null)
@@ -176,6 +176,11 @@ namespace APIconvenios.Services
             var cmd = new UnlinkConvEspCmd(IdsEspecificos);
 
             await cmd.ExecuteAsync(convenioMarco, _UnitOfWork);
+
+            int rowsAffected = await _UnitOfWork.Save();
+
+            if (rowsAffected == 0)
+                return Result<bool>.Error("No se pudo desvincular.", 500);
 
             return Result<bool>.Exito(true);
         }
@@ -192,6 +197,11 @@ namespace APIconvenios.Services
             var cmd = new UnlinkEmpresaFromMarcoCmd();
 
             await cmd.ExecuteAsync(convenioMarco, _UnitOfWork);
+
+            int rowsAffected = await _UnitOfWork.Save();
+
+            if (rowsAffected == 0)
+                return Result<bool>.Error("No se pudo desvincular.", 500);
 
             return Result<bool>.Exito(true);
         }

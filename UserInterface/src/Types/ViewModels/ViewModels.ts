@@ -69,7 +69,7 @@ export interface InvolucradosDto {
   email?: string
   telefono?: string
   legajo?: number
-  carrera?: string
+  area?: string
   rolInvolucrado: string
 }
 

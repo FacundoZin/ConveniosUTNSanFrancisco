@@ -164,8 +164,8 @@
     - `POST /api/ConveniosMarcos` — alta.
     - `PUT /api/ConveniosMarcos` — actualización.
     - `DELETE /api/ConveniosMarcos/{id}` — borrado.
-    - `DELETE /api/ConveniosMarcos/{idConvenioMarco}/especificos/{idConvenioEspecifico}` — desvincular específico.
-    - `DELETE /api/ConveniosMarcos/{idConvenioMarco}/empresa` — desvincular empresa.
+    - `PATCH /api/ConveniosMarcos/{idConvenioMarco}/desvincular-empresa` — desvincular empresa (muta FK a NULL; la empresa queda intacta).
+    - `PATCH /api/ConveniosMarcos/{idConvenioMarco}/especificos/{idConvenioEspecifico}/desvincular` — desvincular convenio específico (muta FK a NULL).
     - `GET /api/ConveniosMarcos/archivos/{idConvenio}` — archivos asociados.
   - **Servicio de documentos**: `POST /api/Documents` (multipart/form-data) — subida de archivos al FS local del servidor.
   - **Base de datos**: tablas `ConveniosMarcos`, `Empresas`, `Involucrados`, `ArchivosAdjuntos`, `ConveniosEspecificos`.
@@ -210,8 +210,8 @@
     - `POST /api/ConveniosEspecificos` — alta.
     - `PUT /api/ConveniosEspecificos` — actualización.
     - `DELETE /api/ConveniosEspecificos/{id}` — borrado.
-    - `DELETE /api/ConveniosEspecificos/{idConvenioEspecifico}/marco` — desvincular convenio marco.
-    - `DELETE /api/ConveniosEspecificos/{idConvenioEspecifico}/empresa` — desvincular empresa.
+    - `PATCH /api/ConveniosEspecificos/{idConvenioEspecifico}/desvincular-marco` — desvincular convenio marco (muta FK a NULL).
+    - `PATCH /api/ConveniosEspecificos/{idConvenioEspecifico}/desvincular-empresa` — desvincular empresa (muta FK a NULL; la empresa queda intacta).
     - `GET /api/ConveniosEspecificos/archivos/{idConvenio}` — archivos asociados.
   - **Servicio de documentos**: `POST /api/Documents` (multipart/form-data) — subida de archivos al FS local del servidor.
   - **Base de datos**: tablas `ConveniosEspecificos`, `ConveniosMarcos` (relación jerárquica), `Empresas`, `Involucrados`, `ArchivosAdjuntos`.
@@ -264,7 +264,7 @@
 | Convenios Marcos | ✅ (1 UC) | ✅ (5 UC) | ✅ (1 UC) |
 | Convenios Específicos | ✅ (1 UC) | ✅ (5 UC) | ✅ (1 UC) |
 
-**Total**: 23 casos de uso repartidos en 3 actores lógicos sobre 5 módulos.
+**Total**: 27 casos de uso repartidos en 3 actores lógicos sobre 5 módulos.
 
 ---
 
@@ -279,3 +279,20 @@
 4. **"Un caso de uso por filtro"** sería un anti-patrón UML: un caso de uso representa un objetivo con valor medible para el actor, no un campo de búsqueda. Los 12 filtros paramétricos se agruparon en un único UC `Buscar convenios por criterio`; las búsquedas directas (Próximos a vencer, Refrendados, Actas) y los reportes (cantidad por mes/rango) son UC separados porque devuelven distinto tipo de valor.
 
 5. **Interfaces (APIs/BD) en el diagrama**: según convención UML, las interfaces internas del propio sistema (API REST, base de datos) no se modelan en el diagrama de casos de uso — solo se documentan como "Interfaces relacionadas" en este archivo. Modelar BD o API como actor es un error clásico: son componentes internos, no actores externos.
+
+6. **Verbo HTTP `PATCH` para operaciones de desvinculación (decisión de diseño aplicada)**:
+
+   Los endpoints que desvinculan entidades (empresa / convenio específico / convenio marco) usan `PATCH` **sin body**. La justificación: estos endpoints NO eliminan un recurso, solo mutan el estado del convenio propietario de la relación (setean su FK a `NULL`). Esto es semánticamente una mutación parcial del recurso "convenio", que es exactamente el contrato de `PATCH` en REST.
+
+   Implementación: los `Unlink*Cmd` (`APIconvenios/Commands/ConvenioMarcoCommands/commands/` y `APIconvenios/Commands/ConvenioEspecificoCommands/Commands/`) solo setean `null` en la navigation property y la FK; **ninguno ejecuta `DELETE FROM`** contra la tabla relacionada — la entidad "desvinculada" (Empresa / Convenio Específico / Convenio Marco) permanece intacta en su tabla. La persistencia se invoca en el service (`await _UnitOfWork.Save();`) y no en cada comando, manteniendo la convención de los flujos de actualización compuesta (ver `ActualizarConvenioMarco`).
+
+   Endpoints alcanzados:
+
+   | Endpoint | Acción real en DB |
+   |---|---|
+   | `PATCH /api/ConveniosMarcos/{idConvenioMarco}/desvincular-empresa` | `UPDATE ConveniosMarcos SET EmpresaId = NULL` |
+   | `PATCH /api/ConveniosMarcos/{idConvenioMarco}/especificos/{idConvenioEspecifico}/desvincular` | `UPDATE ConveniosEspecificos SET ConvenioMarcoId = NULL` |
+   | `PATCH /api/ConveniosEspecificos/{idConvenioEspecifico}/desvincular-empresa` | `UPDATE ConveniosEspecificos SET EmpresaId = NULL` |
+   | `PATCH /api/ConveniosEspecificos/{idConvenioEspecifico}/desvincular-marco` | `UPDATE ConveniosEspecificos SET ConvenioMarcoId = NULL` |
+
+   **Por qué PATCH plano (sin JSON Patch RFC 6902)**: aunque JSON Patch (`[{ "op": "remove", "path": "/empresa" }]`) es el formato más puro, agrega overhead de spec y.require refactor del controller y del service frontend. PATCH plano con sub-recurso `desvincular-*` cumple el contrato semántico (mutación parcial, idempotente) con mínimo cambio y mayor claridad del API surface.

@@ -44,7 +44,7 @@
 
       <div class="col-md-6">
         <label class="form-label">area</label>
-        <select v-model.number="form.idarea" class="form-select" required>
+        <select v-model.number="form.idCarrera" class="form-select" required>
           <option value="" disabled>Seleccione una area...</option>
           <option v-for="area in areas" :key="area.id" :value="area.id">
             {{ area.nombre }}
@@ -86,7 +86,7 @@ const form = ref<InsertInvolucradosDto>({
   email: null,
   telefono: null,
   legajo: null,
-  idarea: 0,
+  idCarrera: 0,
   rolInvolucrado: 0,
 })
 
@@ -120,7 +120,7 @@ const agregar = async () => {
     email: form.value.email ? form.value.email : null,
     telefono: form.value.telefono ? form.value.telefono : null,
     legajo: form.value.legajo ? form.value.legajo : null,
-    idarea: form.value.idarea,
+    idCarrera: form.value.idCarrera,
     rolInvolucrado: form.value.rolInvolucrado,
   }
 
@@ -133,7 +133,7 @@ const agregar = async () => {
     email: null,
     telefono: null,
     legajo: null,
-    idarea: 0,
+    idCarrera: 0,
     rolInvolucrado: 0,
   }
 }

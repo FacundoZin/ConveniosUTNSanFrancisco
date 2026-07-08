@@ -76,7 +76,7 @@ namespace APIconvenios.Helpers.Mappers
                 NumeroResolucion = convenio.NumeroResolucion,
                 Refrendado = convenio.Refrendado,
 
-                CarrerasInvolucradas = convenio.CarrerasInvolucradas?.Select(c => new Area
+                AreasInvolucradas = convenio.CarrerasInvolucradas?.Select(c => new Area
                 {
                     Id = c.Id,
                     Nombre = c.Nombre

@@ -83,7 +83,7 @@ namespace APIconvenios.Controllers
         }
 
 
-        [HttpDelete("{idConvenioEspecifico:int}/empresa")]
+        [HttpPatch("{idConvenioEspecifico:int}/desvincular-empresa")]
         public async Task<IActionResult> DesvincularEmpresa(int idConvenioEspecifico)
         {
             var result = await _ConvenioEspecifcoService.DesvincularEmpresa(idConvenioEspecifico);
@@ -93,7 +93,7 @@ namespace APIconvenios.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{idConvenioEspecifico:int}/marco")]
+        [HttpPatch("{idConvenioEspecifico:int}/desvincular-marco")]
         public async Task<IActionResult> DesvincularConvenioMarco(int idConvenioEspecifico)
         {
             var result = await _ConvenioEspecifcoService.DesvincularMarco(idConvenioEspecifico);

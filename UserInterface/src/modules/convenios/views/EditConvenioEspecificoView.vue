@@ -244,7 +244,8 @@
         </p>
         <InvolucradosExistentesSelector v-if="UpdateConvEspRequest.updateConvenioDto.id"
           v-model="UpdateConvEspRequest.idsInvolucradosExistentes"
-          :id-convenio-excluded="UpdateConvEspRequest.updateConvenioDto.id" />
+          :id-convenio-excluded="UpdateConvEspRequest.updateConvenioDto.id"
+          @agregar-area="agregarArea" />
       </div>
 
       <div class="col-12 mt-4 text-end">
@@ -378,6 +379,20 @@ const cancelarDesvinculacion = () => {
 
 const agregarInvolucrado = (nuevo: InsertInvolucradosDto) => {
   involucradosForm.value = [...involucradosForm.value, nuevo]
+
+  if (nuevo.idCarrera) {
+    const ids = UpdateConvEspRequest.value.idCarreras ?? []
+    if (!ids.includes(nuevo.idCarrera)) {
+      UpdateConvEspRequest.value.idCarreras = [...ids, nuevo.idCarrera]
+    }
+  }
+}
+
+const agregarArea = (idCarrera: number) => {
+  const ids = UpdateConvEspRequest.value.idCarreras ?? []
+  if (!ids.includes(idCarrera)) {
+    UpdateConvEspRequest.value.idCarreras = [...ids, idCarrera]
+  }
 }
 
 const eliminarInvolucrado = (index: number) => {
