@@ -1,6 +1,7 @@
 using APIconvenios.DTOs.Involucrado;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace APIconvenios.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Secretario")]
     public class InvolucradosController : ControllerBase
     {
         private readonly _UnitOfWork _UnitOfWork;

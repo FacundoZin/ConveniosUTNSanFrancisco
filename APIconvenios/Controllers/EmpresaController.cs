@@ -1,11 +1,13 @@
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Interfaces.Servicios;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIconvenios.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Secretario")]
     public class EmpresaController : ControllerBase
     {
         private readonly IEmpresaService _empresaService;

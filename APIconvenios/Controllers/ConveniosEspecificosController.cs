@@ -2,6 +2,7 @@
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.Involucrados;
 using APIconvenios.Interfaces.Servicios;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,6 +11,7 @@ namespace APIconvenios.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Secretario")]
     public class ConveniosEspecificosController : ControllerBase
     {
         private readonly IConvenioEspecifcoService _ConvenioEspecifcoService;

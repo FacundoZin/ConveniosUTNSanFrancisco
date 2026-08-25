@@ -2,6 +2,7 @@
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.Interfaces.Servicios;
 using APIconvenios.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace APIconvenios.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Secretario")]
     public class DocumentsController : ControllerBase
     {
         private readonly IConveniosDocumentManager _ConvenioDocumentsManager;

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace APIconvenios.Migrations
 {
     /// <inheritdoc />
-    public partial class migracionFinalProduccion : Migration
+    public partial class MigracionInicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,6 +46,23 @@ namespace APIconvenios.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Username = table.Column<string>(type: "TEXT", nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: false),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: true),
+                    Rol = table.Column<int>(type: "INTEGER", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Involucrados",
                 columns: table => new
                 {
@@ -58,14 +75,14 @@ namespace APIconvenios.Migrations
                     Legajo = table.Column<int>(type: "INTEGER", nullable: true),
                     RolInvolucrado = table.Column<int>(type: "INTEGER", nullable: false),
                     IdCarrera = table.Column<int>(type: "INTEGER", nullable: true),
-                    CarrerasId = table.Column<int>(type: "INTEGER", nullable: true)
+                    AreaId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Involucrados", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Involucrados_Carreras_CarrerasId",
-                        column: x => x.CarrerasId,
+                        name: "FK_Involucrados_Carreras_AreaId",
+                        column: x => x.AreaId,
                         principalTable: "Carreras",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -257,9 +274,9 @@ namespace APIconvenios.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Involucrados_CarrerasId",
+                name: "IX_Involucrados_AreaId",
                 table: "Involucrados",
-                column: "CarrerasId");
+                column: "AreaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Involucrados_IdCarrera",
@@ -270,6 +287,12 @@ namespace APIconvenios.Migrations
                 name: "IX_InvolucradosConvenioEspecifico_InvolucradosId",
                 table: "InvolucradosConvenioEspecifico",
                 column: "InvolucradosId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Username",
+                table: "Usuarios",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -283,6 +306,9 @@ namespace APIconvenios.Migrations
 
             migrationBuilder.DropTable(
                 name: "InvolucradosConvenioEspecifico");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "ConveniosEspecificos");

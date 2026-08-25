@@ -5,6 +5,7 @@ using APIconvenios.DTOs.ConvenioMarco;
 using APIconvenios.DTOs.Empresa;
 using APIconvenios.Helpers.Validators;
 using APIconvenios.Interfaces.Servicios;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -12,6 +13,7 @@ namespace APIconvenios.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Secretario")]
     public class ConveniosMarcosController : ControllerBase
     {
         private readonly IConvenioMarcoService _ConvenioService;

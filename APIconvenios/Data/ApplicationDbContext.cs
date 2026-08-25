@@ -18,10 +18,14 @@ namespace APIconvenios.Data
         public DbSet<Involucrados> Involucrados { get; set; }
         public DbSet<ArchivosAdjuntos> ArchivosAdjuntos { get; set; }
         public DbSet<Area> Carreras { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // 👉 Índice único para Usuario.Username
+            modelBuilder.Entity<Usuario>().HasIndex(u => u.Username).IsUnique();
 
             // 👉 Seed fijo de Carreras (esto sí queda)
             modelBuilder.Entity<Area>().HasData(

@@ -9,6 +9,7 @@ import DashboardEmpresas from '@/modules/empresas/views/DashboardEmpresas.vue'
 import EmpresaConveniosView from '@/modules/empresas/views/EmpresaConveniosView.vue'
 import InvolucradosPorAreaView from '@/modules/involucrados/views/InvolucradosPorAreaView.vue'
 import InvolucradoConveniosView from '@/modules/involucrados/views/InvolucradoConveniosView.vue'
+import { useAuthStore } from '@/modules/auth/stores/authStore'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
@@ -53,7 +54,51 @@ const router = createRouter({
       component: InvolucradoConveniosView,
       props: true,
     },
+    {
+      path: '/admin',
+      name: 'AdminUsuarios',
+      component: () => import('@/modules/usuarios/views/AdminUsuariosView.vue'),
+      meta: { requiresAdmin: true },
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('@/modules/auth/views/LoginView.vue'),
+    },
   ],
+})
+
+router.beforeEach(async (to) => {
+  const authStore = useAuthStore()
+
+  if (to.path === '/login') {
+    // Un usuario ya autenticado no debe ver el login.
+    const autenticado = await authStore.restaurarSesion()
+    if (autenticado) {
+      return authStore.esAdmin ? '/admin' : '/'
+    }
+    return
+  }
+
+  // Toda ruta privada exige sesión activa; si Pinia está vacío se
+  // intenta restaurarla desde la cookie consultando /Auth/me.
+  const autenticado = await authStore.restaurarSesion()
+  if (!autenticado) {
+    return '/login'
+  }
+
+  // Si el usuario es Administrador, únicamente tiene acceso a /admin
+  if (authStore.esAdmin) {
+    if (to.path !== '/admin') {
+      return '/admin'
+    }
+    return
+  }
+
+  // Un usuario no Administrador no puede acceder a rutas que requieren rol de Admin
+  if (to.meta.requiresAdmin && !authStore.esAdmin) {
+    return '/'
+  }
 })
 
 export default router
