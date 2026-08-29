@@ -88,6 +88,15 @@ namespace APIconvenios.Data
                 .WithOne(cm => cm.Empresa)
                 .HasForeignKey<ConvenioMarco>(cm => cm.EmpresaId)
                 .IsRequired(false);
+
+            // 👉 Índice único compuesto para evitar duplicados Nombre+Apellido+Telefono
+            modelBuilder.Entity<Involucrados>()
+                .HasIndex(i => new { i.Nombre, i.Apellido, i.Telefono })
+                .IsUnique();
+
+            modelBuilder.Entity<Involucrados>()
+                .Property(i => i.Telefono)
+                .IsRequired();
         }
     }
 }

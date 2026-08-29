@@ -18,7 +18,7 @@
 
       <div class="col-md-6">
         <label class="form-label">Teléfono</label>
-        <input v-model="form.telefono" type="text" class="form-control" />
+        <input v-model="form.telefono" type="text" class="form-control" required />
       </div>
 
       <div class="col-md-6">
@@ -74,6 +74,10 @@ import { areasList } from '@/Types/AreasInvolucradas/AreasInvolucradas'
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 
+const props = defineProps<{
+  involucradosExistentes?: InsertInvolucradosDto[]
+}>()
+
 const emit = defineEmits<{ (evento: 'agregar', inv: InsertInvolucradosDto): void }>()
 const toast = useToast()
 
@@ -84,19 +88,40 @@ const form = ref<InsertInvolucradosDto>({
   nombre: '',
   apellido: '',
   email: null,
-  telefono: null,
+  telefono: '',
   legajo: null,
   idCarrera: 0,
   rolInvolucrado: 0,
 })
 
+const normalize = (s: string | null | undefined) => (s ?? '').toLowerCase().trim()
+
 const agregar = async () => {
-  // Validar que no exista el involucrado
+  if (!form.value.telefono || !form.value.telefono.trim()) {
+    toast.error('El teléfono es obligatorio')
+    return
+  }
+
+  // Check in-memory duplicates via prop
+  const existentes = props.involucradosExistentes ?? []
+  const dupInMemory = existentes.some(
+    (ex) =>
+      normalize(ex.nombre) === normalize(form.value.nombre) &&
+      normalize(ex.apellido) === normalize(form.value.apellido) &&
+      normalize(ex.telefono) === normalize(form.value.telefono),
+  )
+  if (dupInMemory) {
+    toast.error('Ya existe un involucrado con el mismo nombre, apellido y teléfono en el formulario')
+    return
+  }
+
+  // Validar contra BD con Nombre+Apellido+Telefono
   isValidating.value = true
 
   const validationResult = await InvolucradoService.ValidateInvolucrado({
     nombre: form.value.nombre || '',
     apellido: form.value.apellido || '',
+    telefono: form.value.telefono || '',
   })
 
   isValidating.value = false
@@ -118,7 +143,7 @@ const agregar = async () => {
     nombre: form.value.nombre,
     apellido: form.value.apellido,
     email: form.value.email ? form.value.email : null,
-    telefono: form.value.telefono ? form.value.telefono : null,
+    telefono: form.value.telefono ? form.value.telefono.trim() : '',
     legajo: form.value.legajo ? form.value.legajo : null,
     idCarrera: form.value.idCarrera,
     rolInvolucrado: form.value.rolInvolucrado,
@@ -131,7 +156,7 @@ const agregar = async () => {
     nombre: '',
     apellido: '',
     email: null,
-    telefono: null,
+    telefono: '',
     legajo: null,
     idCarrera: 0,
     rolInvolucrado: 0,

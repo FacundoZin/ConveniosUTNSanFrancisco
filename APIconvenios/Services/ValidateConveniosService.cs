@@ -57,9 +57,41 @@ namespace APIconvenios.Services
                 var result3 = await task3;
                 if (!result3.Exit) return Result<object?>.Error(result3.Errormessage, result3.Errorcode);
             }
+
+            // Validación de involucrados: intra-lote y contra BD (Nombre+Apellido+Telefono)
+            if (_Dto.InsertInvolucradosDto != null && _Dto.InsertInvolucradosDto.Any())
+            {
+                var involucradoValidation = await ValidateInvolucradosAsync(_Dto.InsertInvolucradosDto);
+                if (!involucradoValidation.Exit) return involucradoValidation;
+            }
             
 
             return Result<object?>.Exito(null);  
+        }
+
+        private async Task<Result<object?>> ValidateInvolucradosAsync(List<DTOs.Involucrados.InsertInvolucradosDto> involucrados)
+        {
+            // Intra-lote duplicados (case-insensitive trim)
+            var seen = new HashSet<string>();
+            foreach (var inv in involucrados)
+            {
+                if (string.IsNullOrWhiteSpace(inv.Telefono))
+                    return Result<object?>.Error($"El involucrado {inv.Nombre} {inv.Apellido} debe tener teléfono obligatorio", 400);
+
+                var key = $"{inv.Nombre.ToLower().Trim()}|{inv.Apellido.ToLower().Trim()}|{inv.Telefono.ToLower().Trim()}";
+                if (!seen.Add(key))
+                    return Result<object?>.Error($"Involucrado duplicado en el request: {inv.Nombre} {inv.Apellido} ({inv.Telefono})", 400);
+            }
+
+            // Contra BD
+            foreach (var inv in involucrados)
+            {
+                var exists = await _UnitOfWork._InvolucradosRepository.involucradoExistConTelefono(inv.Nombre, inv.Apellido, inv.Telefono);
+                if (exists)
+                    return Result<object?>.Error($"El involucrado {inv.Nombre} {inv.Apellido} con teléfono {inv.Telefono} ya existe en la base de datos", 400);
+            }
+
+            return Result<object?>.Exito(null);
         }
 
         public async Task<Result<object?>> ValidateCargaConvenioMarco(CargarConvenioMarcoRequestDto _Dto)
@@ -155,6 +187,12 @@ namespace APIconvenios.Services
             {
                 var result3 = await task3;
                 if (!result3.Exit) return Result<object?>.Error(result3.Errormessage, result3.Errorcode);
+            }
+
+            if (_Dto.InsertInvolucradosDtos != null && _Dto.InsertInvolucradosDtos.Any())
+            {
+                var involucradoValidation = await ValidateInvolucradosAsync(_Dto.InsertInvolucradosDtos);
+                if (!involucradoValidation.Exit) return involucradoValidation;
             }
 
 

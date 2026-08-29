@@ -9,10 +9,10 @@ namespace APIconvenios.Helpers.Mappers
         {
             return involucradosDtos.Select(i => new Involucrados
             {
-                Nombre = i.Nombre,
-                Apellido = i.Apellido,
-                Email = i.Email,
-                Telefono = i.Telefono,
+                Nombre = i.Nombre.Trim(),
+                Apellido = i.Apellido.Trim(),
+                Email = i.Email?.Trim(),
+                Telefono = i.Telefono.Trim(),
                 Legajo = i.Legajo,
                 RolInvolucrado = i.RolInvolucrado,
                 IdCarrera = i.IdCarrera

@@ -6,6 +6,7 @@ namespace APIconvenios.Interfaces.Repositorio
     public interface IInvolucradosRepository
     {
         Task<bool> involucradoExist(string nombre, string apellido);
+        Task<bool> involucradoExistConTelefono(string nombre, string apellido, string telefono);
         Task< List<Involucrados>> GetAllInvolucraods();
         Task<List<Involucrados>> GetInvolucradosByIds(int[] ids);
         Task<List<Involucrados>> GetInvolucradosByArea(int IdArea);

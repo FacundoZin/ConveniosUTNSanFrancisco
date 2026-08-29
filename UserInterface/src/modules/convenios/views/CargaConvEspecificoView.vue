@@ -230,7 +230,7 @@
       <div class="p-4 bg-light border rounded mb-4">
         <h4 class="text-primary mb-3">Cargar Involucrados</h4>
 
-        <InvolucradoForm @agregar="agregarInvolucrado" />
+        <InvolucradoForm :involucrados-existentes="involucradosForm" @agregar="agregarInvolucrado" />
 
         <div class="mt-4 d-flex flex-wrap gap-3">
           <InvolucradosCard
@@ -308,6 +308,16 @@ const empresaOptions = computed(() => {
 })
 
 const agregarInvolucrado = (nuevo: InsertInvolucradosDto) => {
+  const dup = involucradosForm.value.some(
+    (inv) =>
+      (inv.nombre ?? '').toLowerCase().trim() === (nuevo.nombre ?? '').toLowerCase().trim() &&
+      (inv.apellido ?? '').toLowerCase().trim() === (nuevo.apellido ?? '').toLowerCase().trim() &&
+      (inv.telefono ?? '').trim() === (nuevo.telefono ?? '').trim(),
+  )
+  if (dup) {
+    toast.error('Involucrado duplicado: ya existe con el mismo nombre, apellido y teléfono')
+    return
+  }
   involucradosForm.value.push(nuevo)
 
   if (

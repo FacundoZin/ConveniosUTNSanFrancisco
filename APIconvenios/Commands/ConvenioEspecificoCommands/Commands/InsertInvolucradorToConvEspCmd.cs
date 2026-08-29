@@ -20,6 +20,13 @@ namespace APIconvenios.Commands.ConvenioEspecificoCommands.Commands
 
             foreach (var involucrado in involucrados)
             {
+                var existsInMemory = Convenio.Involucrados != null && Convenio.Involucrados.Any(e =>
+                    e.Nombre.ToLower().Trim() == involucrado.Nombre.ToLower().Trim() &&
+                    e.Apellido.ToLower().Trim() == involucrado.Apellido.ToLower().Trim() &&
+                    (e.Telefono ?? string.Empty).ToLower().Trim() == (involucrado.Telefono ?? string.Empty).ToLower().Trim());
+
+                if (existsInMemory) continue;
+
                 Convenio.Involucrados!.Add(involucrado);
             }
 

@@ -26,7 +26,7 @@ interface CreateConvenioEspecificoComposable {
   ConvenioCreado: Ref<ConvenioCreated | null>
   empresaForm: Ref<InsertEmpresaDto>
   involucradosForm: Ref<InsertInvolucradosDto[]>
-  submitForm: () => Promise<ConvenioCreated | null>
+  submitForm: () => Promise<boolean>
   GetInfoConvenioEspecifico: (id: number) => Promise<InfoConvenioEspecificoDto | null>
 }
 
@@ -76,7 +76,7 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
     }
   }
 
-  const submitForm = async (): Promise<ConvenioCreated | null> => {
+  const submitForm = async (): Promise<boolean> => {
     IsLoading.value = true
     errorMensaje.value = null
 
@@ -105,17 +105,17 @@ export function UseUpdateConvEspComposable(): CreateConvenioEspecificoComposable
       if (!result.isSuccess) {
         IsLoading.value = false
         errorMensaje.value = result.error.message
-        return null
+        return false
       }
       IsLoading.value = false
-      return result.value
+      return result.value === true || !!result.value
     } catch (error) {
       IsLoading.value = false
       errorMensaje.value = isAxiosError(error)
         ? getErrorMessage(error)
         : 'Ocurrió un error al cargar el convenio'
       console.error('Error al actualizar el convenio específico:', error)
-      return null
+      return false
     }
   }
 

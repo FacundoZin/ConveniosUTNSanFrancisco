@@ -53,7 +53,16 @@ namespace APIconvenios.Repositorio
         public async Task<bool> involucradoExist(string nombre, string apellido)
         {
             return await _context.Involucrados
-                .AnyAsync(i => i.Nombre.ToLower().Trim() == nombre.ToLower().Trim() && i.Apellido.ToLower() == apellido.ToLower());
+                .AnyAsync(i => i.Nombre.ToLower().Trim() == nombre.ToLower().Trim() && i.Apellido.ToLower().Trim() == apellido.ToLower().Trim());
+        }
+
+        public async Task<bool> involucradoExistConTelefono(string nombre, string apellido, string telefono)
+        {
+            var n = nombre.ToLower().Trim();
+            var a = apellido.ToLower().Trim();
+            var t = telefono.ToLower().Trim();
+            return await _context.Involucrados
+                .AnyAsync(i => i.Nombre.ToLower().Trim() == n && i.Apellido.ToLower().Trim() == a && i.Telefono != null && i.Telefono.ToLower().Trim() == t);
         }
 
         public async Task<Involucrados?> GetInvolucradoWithConvenios(int id)

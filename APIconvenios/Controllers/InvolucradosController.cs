@@ -27,7 +27,15 @@ namespace APIconvenios.Controllers
                 return BadRequest("el involucrado debe tener nombre y apellido para validarlo");
             }
 
-            var existe = await _UnitOfWork._InvolucradosRepository.involucradoExist(_dto.nombre, _dto.apellido);
+            bool existe;
+            if (!string.IsNullOrWhiteSpace(_dto.telefono))
+            {
+                existe = await _UnitOfWork._InvolucradosRepository.involucradoExistConTelefono(_dto.nombre, _dto.apellido, _dto.telefono);
+            }
+            else
+            {
+                existe = await _UnitOfWork._InvolucradosRepository.involucradoExist(_dto.nombre, _dto.apellido);
+            }
 
             if(existe)
                 return Ok(new InvolucradoExistDto { existe= true, message = "el involucrado que quiere agregar ya existe"});

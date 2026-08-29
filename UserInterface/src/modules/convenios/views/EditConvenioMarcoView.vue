@@ -336,10 +336,12 @@ const cancelarDesvinculacion = () => {
 
 const submitForm = async () => {
   const result = await submitFormLogic()
-  if (result !== null) {
+  if (result) {
     toast.success('Convenio editado con éxito')
   } else if (errorMensaje.value) {
     toast.error(errorMensaje.value)
+  } else if (!result) {
+    toast.error('No se pudo editar el convenio')
   }
 }
 

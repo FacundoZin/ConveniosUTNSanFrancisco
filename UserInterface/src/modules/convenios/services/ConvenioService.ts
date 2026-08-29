@@ -88,19 +88,23 @@ export default class ConvenioService {
     }
   }
 
-  static async EditarConvenioMarco(Dto: UpdateConvenioMarcoRequetsDto): Promise<Result<null>> {
+  static async EditarConvenioMarco(Dto: UpdateConvenioMarcoRequetsDto): Promise<Result<boolean>> {
     try {
       const response = await axios.put(`${API_URL}/ConveniosMarcos`, Dto)
-      return { isSuccess: true, value: null, status: response.status }
+      const raw = response.data
+      const value = raw != null && raw !== '' ? Boolean(raw) : true
+      return { isSuccess: true, value, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
     }
   }
 
-  static async EditarConvenioEspecifico(Dto: UpdateConvenioEspecificoRequestDto): Promise<Result<null>> {
+  static async EditarConvenioEspecifico(Dto: UpdateConvenioEspecificoRequestDto): Promise<Result<boolean>> {
     try {
       const response = await axios.put(`${API_URL}/ConveniosEspecificos`, Dto)
-      return { isSuccess: true, value: null, status: response.status }
+      const raw = response.data
+      const value = raw != null && raw !== '' ? Boolean(raw) : true
+      return { isSuccess: true, value, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
     }

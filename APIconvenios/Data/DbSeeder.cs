@@ -75,11 +75,22 @@ namespace APIconvenios.Data
                     Nombre = nombres[random.Next(nombres.Length)],
                     Apellido = apellidos[random.Next(apellidos.Length)],
                     Email = $"user{i}@utn.edu.ar",
-                    Telefono = $"3564-{random.Next(100000, 999999)}",
+                    Telefono = $"+54911{100000 + i:D6}",
                     Legajo = random.Next(10000, 99999),
                     RolInvolucrado = (Roles)random.Next(0, 5),
                     IdCarrera = carreras[random.Next(carreras.Count)].Id
                 });
+            }
+            // Ensure Nombre+Apellido+Telefono uniqueness (hash collision guard)
+            var uniqueKeys = new HashSet<string>();
+            foreach (var inv in involucrados)
+            {
+                var key = $"{inv.Nombre.ToLower().Trim()}|{inv.Apellido.ToLower().Trim()}|{inv.Telefono.ToLower().Trim()}";
+                if (!uniqueKeys.Add(key))
+                {
+                    inv.Telefono = $"+54911{200000 + uniqueKeys.Count:D6}";
+                    uniqueKeys.Add($"{inv.Nombre.ToLower().Trim()}|{inv.Apellido.ToLower().Trim()}|{inv.Telefono.ToLower().Trim()}");
+                }
             }
             context.Involucrados.AddRange(involucrados);
             context.SaveChanges();
