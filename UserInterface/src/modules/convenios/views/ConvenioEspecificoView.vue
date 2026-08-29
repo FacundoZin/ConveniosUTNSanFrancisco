@@ -275,7 +275,7 @@ const CargarDocumento = async ({ file, nombre }: { file: File; nombre: string })
   isLoading.value = true
 
   try {
-    const ArchivoCargado = await DocumentService.CargarArchivoToMarco(
+    const ArchivoCargado = await DocumentService.CargarArchivoToEspecifico(
       nombre,
       file,
       Convenio.value!.id,

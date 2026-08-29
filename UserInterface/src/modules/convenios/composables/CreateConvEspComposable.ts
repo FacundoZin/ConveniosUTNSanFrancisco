@@ -11,6 +11,7 @@ import type { InsertEmpresaDto } from '@/Types/Empresa/InsertEmpresa'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
 import type { ConvenioCreated } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
+import { getErrorMessage } from '@/Services/apiBaseService'
 import { onMounted, ref, type Ref, watch } from 'vue'
 
 interface CreateConvenioEspecificoComposable {
@@ -100,19 +101,10 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
       return result.value
     } catch (error) {
       IsLoading.value = false
-      errorMensaje.value = 'Ocurrió un error al cargar el convenio'
-      if (isAxiosError(error)) {
-        if (error.response) {
-          console.log(
-            `Error al cargar el convenio (${error.response.status}):`,
-            error.response.data,
-          )
-        } else {
-          console.log('Error al cargar el convenio: no se recibió respuesta del servidor')
-        }
-      } else {
-        console.error(error)
-      }
+      errorMensaje.value = isAxiosError(error)
+        ? getErrorMessage(error)
+        : 'Ocurrió un error al cargar el convenio'
+      console.error('Error al cargar el convenio específico:', error)
       return null
     }
   }

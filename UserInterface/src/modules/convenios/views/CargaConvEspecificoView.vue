@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="container mt-4 position-relative">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <button
@@ -325,6 +325,8 @@ const guardarConvenio = async () => {
     ConvenioCreado.value = result
     resetForm()
     toast.success('Convenio cargado con éxito')
+  } else if (errorMensaje.value) {
+    toast.error(errorMensaje.value)
   }
 }
 

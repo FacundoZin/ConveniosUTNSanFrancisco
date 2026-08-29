@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="container mt-4 position-relative">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <!-- Botón visible cuando se actualiza el convenio -->
@@ -431,11 +431,11 @@ const ejecutarDesvinculacionMarco = () => {
 }
 
 const submitForm = async () => {
-  try {
-    await submitFormLogic()
+  const result = await submitFormLogic()
+  if (result !== null) {
     toast.success('Convenio editado con éxito')
-  } catch (error) {
-    toast.error('Error al actualizar el convenio', { position: POSITION.BOTTOM_CENTER })
+  } else if (errorMensaje.value) {
+    toast.error(errorMensaje.value)
   }
 }
 

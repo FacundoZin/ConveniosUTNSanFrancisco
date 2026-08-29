@@ -1,4 +1,4 @@
-﻿using APIconvenios.Common;
+using APIconvenios.Common;
 using APIconvenios.Data;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
@@ -89,6 +89,17 @@ namespace APIconvenios.Repositorio
             bool Exist = await context.ConveniosEspecificos.AnyAsync(c => c.numeroconvenio == numeroConvenio && c.Id != id);
 
             if (Exist) return Result<object?>.Error("Ya existe un convenio marco con ese numero", 400);
+
+            return Result<object?>.Exito(null);
+        }
+
+        public async Task<Result<object?>> EmpresaHasConvenioMarco(int empresaId, int? currentConvenioMarcoId = null)
+        {
+            var context = _ContextFactory.CreateDbContext();
+            bool exist = await context.ConveniosMarcos
+                .AnyAsync(cm => cm.EmpresaId == empresaId && (currentConvenioMarcoId == null || cm.Id != currentConvenioMarcoId));
+
+            if (exist) return Result<object?>.Error("La empresa seleccionada ya posee un Convenio Marco asociado.", 400);
 
             return Result<object?>.Exito(null);
         }

@@ -1,4 +1,4 @@
-﻿
+
 using APIconvenios.Common;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.ConvenioMarco;
@@ -75,9 +75,16 @@ namespace APIconvenios.Services
                 task2 = _UnitOfWork._ConvenioMarcoReadRepository.NumeroConvenioExist(_Dto.InsertConvenioDto.numeroconvenio);
             }
 
-            if (_Dto.InsertEmpresaDto != null && _Dto.InsertEmpresaDto.Id == null)
+            if (_Dto.InsertEmpresaDto != null)
             {
-                task3 = _UnitOfWork._EmpresaRepository.NameEmpresaExist(_Dto.InsertEmpresaDto.Nombre);
+                if (_Dto.InsertEmpresaDto.Id == null)
+                {
+                    task3 = _UnitOfWork._EmpresaRepository.NameEmpresaExist(_Dto.InsertEmpresaDto.Nombre);
+                }
+                else
+                {
+                    task3 = _UnitOfWork._ConvenioMarcoReadRepository.EmpresaHasConvenioMarco(_Dto.InsertEmpresaDto.Id.Value);
+                }
             }
 
             var tasks = new List<Task<Result<object?>>>();
@@ -169,9 +176,16 @@ namespace APIconvenios.Services
                     .NumeroConvenioExistForUpdate(_Dto.UpdateConvenioMarcoDto.numeroconvenio, _Dto.UpdateConvenioMarcoDto.Id);
             }
 
-            if (_Dto.InsertEmpresaDto != null && _Dto.InsertEmpresaDto.Id == null)
+            if (_Dto.InsertEmpresaDto != null)
             {
-                task3 = _UnitOfWork._EmpresaRepository.NameEmpresaExist(_Dto.InsertEmpresaDto.Nombre);
+                if (_Dto.InsertEmpresaDto.Id == null)
+                {
+                    task3 = _UnitOfWork._EmpresaRepository.NameEmpresaExist(_Dto.InsertEmpresaDto.Nombre);
+                }
+                else
+                {
+                    task3 = _UnitOfWork._ConvenioMarcoReadRepository.EmpresaHasConvenioMarco(_Dto.InsertEmpresaDto.Id.Value, _Dto.UpdateConvenioMarcoDto.Id);
+                }
             }
 
             var tasks = new List<Task<Result<object?>>>();

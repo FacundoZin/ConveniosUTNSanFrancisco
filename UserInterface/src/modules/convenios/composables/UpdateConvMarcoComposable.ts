@@ -9,6 +9,7 @@ import type { ComboBoxEmpresasDto } from '@/Types/Empresa/ComboBoxEmpresaDto'
 import type { InsertEmpresaDto } from '@/Types/Empresa/InsertEmpresa'
 import type { ConvenioCreated, InfoConvenioMarcoDto } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
+import { getErrorMessage } from '@/Services/apiBaseService'
 import { computed, onMounted, ref, watch, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -133,19 +134,10 @@ export function useUpdateConvMarcoComposable(): CreateConvenioMarcoComposable {
       return result.value
     } catch (error) {
       IsLoading.value = false
-      errorMensaje.value = 'Ocurrió un error al cargar el convenio'
-      if (isAxiosError(error)) {
-        if (error.response) {
-          console.log(
-            `Error al cargar el convenio (${error.response.status}):`,
-            error.response.data,
-          )
-        } else {
-          console.log('Error al cargar el convenio: no se recibió respuesta del servidor')
-        }
-      } else {
-        console.error(error)
-      }
+      errorMensaje.value = isAxiosError(error)
+        ? getErrorMessage(error)
+        : 'Ocurrió un error al cargar el convenio'
+      console.error('Error al actualizar el convenio:', error)
       return null
     }
   }

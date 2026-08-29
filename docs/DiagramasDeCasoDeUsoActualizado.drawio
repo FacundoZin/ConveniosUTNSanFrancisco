@@ -1,0 +1,520 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0" pages="7">
+  <diagram name="01 - Panel de Búsqueda" id="modulo-panel-busqueda">
+    <mxGraphModel dx="1471" dy="2953" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="640" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="system1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;verticalAlign=top;align=center;" value="Sistema de gestión para secretaria de vinculación&amp;nbsp; Tecnológica UTN San Francisco.&lt;div&gt;Módulo: Panel de Búsqueda&lt;/div&gt;" vertex="1">
+          <mxGeometry height="710" width="700" x="330" y="-2005" as="geometry" />
+        </mxCell>
+        <mxCell id="actor1_con" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Secretario&lt;div&gt;de Vinculación Tecnologica&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="180" y="-1650" as="geometry" />
+        </mxCell>
+        <mxCell id="note1" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontStyle=2;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-style: normal;&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Criterios disponibles:&lt;/b&gt;&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;b style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;font style=&quot;&quot;&gt;Título, Empresa, Estado, N° Resolución, N° Convenio,&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;font style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;font style=&quot;&quot;&gt;Área (solo específicos), Fecha Firma, Fecha Fin,&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;font style=&quot;&quot;&gt;Antigüedad, Mes Firma, Año Firma, Rango Firma&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;/font&gt;&lt;/b&gt;&lt;/span&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="90" width="290" x="720" y="-1925" as="geometry" />
+        </mxCell>
+        <mxCell id="uc1_1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Buscar convenios por criterio&#xa;(marcos / específicos / ambos)" vertex="1">
+          <mxGeometry height="60" width="300" x="380" y="-1905" as="geometry" />
+        </mxCell>
+        <mxCell id="uc1_2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Ver convenios próximos a vencer" vertex="1">
+          <mxGeometry height="50" width="300" x="450" y="-1765" as="geometry" />
+        </mxCell>
+        <mxCell id="uc1_3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Ver convenios refrendados" vertex="1">
+          <mxGeometry height="50" width="300" x="510" y="-1655" as="geometry" />
+        </mxCell>
+        <mxCell id="uc1_4" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Ver convenios con acta (específicos)" vertex="1">
+          <mxGeometry height="50" width="300" x="510" y="-1565" as="geometry" />
+        </mxCell>
+        <mxCell id="uc1_5" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Consultar cantidad de convenios firmados por mes" vertex="1">
+          <mxGeometry height="50" width="300" x="510" y="-1475" as="geometry" />
+        </mxCell>
+        <mxCell id="uc1_6" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Consultar cantidad de convenios firmados por rango" vertex="1">
+          <mxGeometry height="50" width="300" x="380" y="-1385" as="geometry" />
+        </mxCell>
+        <mxCell id="e1_1" edge="1" parent="1" source="actor1_con" style="endArrow=none;html=1;" target="uc1_1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1_2" edge="1" parent="1" source="actor1_con" style="endArrow=none;html=1;" target="uc1_2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1_3" edge="1" parent="1" source="actor1_con" style="endArrow=none;html=1;" target="uc1_3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1_4" edge="1" parent="1" source="actor1_con" style="endArrow=none;html=1;" target="uc1_4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1_5" edge="1" parent="1" source="actor1_con" style="endArrow=none;html=1;" target="uc1_5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1_6" edge="1" parent="1" source="actor1_con" style="endArrow=none;html=1;" target="uc1_6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="02 - Empresas" id="modulo-empresas">
+    <mxGraphModel dx="1030" dy="127" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="640" pageHeight="400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="system2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;verticalAlign=top;align=center;" value="Sistema de gestión para secretaria de vinculación&amp;nbsp; Tecnológica UTN San Francisco.&lt;div&gt;Módulo: Empresas&lt;/div&gt;" vertex="1">
+          <mxGeometry height="400" width="380" x="260" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="actor2_con" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Secretario&lt;div&gt;de Vinculación Tecnologica&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="100" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="uc2_1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Visualizar empresas con convenios" vertex="1">
+          <mxGeometry height="50" width="300" x="310" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="uc2_2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Listar convenios por empresa" vertex="1">
+          <mxGeometry height="50" width="300" x="310" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="e2_1" edge="1" parent="1" source="actor2_con" style="endArrow=none;html=1;" target="uc2_1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2_2" edge="1" parent="1" source="actor2_con" style="endArrow=none;html=1;" target="uc2_2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nylS-jQ2Ky4wdGWltOxw-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Registrar empresa" vertex="1">
+          <mxGeometry height="50" width="300" x="310" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="nylS-jQ2Ky4wdGWltOxw-2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Editar empresa" vertex="1">
+          <mxGeometry height="50" width="300" x="310" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="ISshXCLe01Bg4cechnz4-1" edge="1" parent="1" source="actor2_con" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="nylS-jQ2Ky4wdGWltOxw-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="490" as="sourcePoint" />
+            <mxPoint x="453" y="504" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ISshXCLe01Bg4cechnz4-2" edge="1" parent="1" source="actor2_con" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="nylS-jQ2Ky4wdGWltOxw-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="730" as="sourcePoint" />
+            <mxPoint x="340" y="824" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="03 - Involucrados" id="modulo-involucrados">
+    <mxGraphModel dx="1030" dy="527" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="640" pageHeight="460" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="system3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=14;fontStyle=1;verticalAlign=top;align=center;" value="Sistema de gestión para secretaria de vinculación&amp;nbsp; Tecnológica UTN San Francisco.&lt;div&gt;Módulo: Involucrados&lt;/div&gt;" vertex="1">
+          <mxGeometry height="350" width="380" x="210" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor3_con" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Secretario de&amp;nbsp;&lt;div&gt;Vinculación Tecnologica&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="70" y="211" as="geometry" />
+        </mxCell>
+        <mxCell id="uc3_1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Visualizar personas involucradas en convenios" vertex="1">
+          <mxGeometry height="50" width="300" x="260" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="uc3_2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Filtrar personas involucradas en convenios por área" vertex="1">
+          <mxGeometry height="50" width="300" x="260" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="uc3_3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Ver convenios en los que se encuentra involucrado&lt;div&gt;cada persona&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="330" x="235" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="e3_1" edge="1" parent="1" source="actor3_con" style="endArrow=none;html=1;" target="uc3_1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3_2" edge="1" parent="1" source="actor3_con" style="endArrow=none;html=1;" target="uc3_2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3_3" edge="1" parent="1" source="actor3_con" style="endArrow=none;html=1;" target="uc3_3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="04 - Convenios Marcos" id="modulo-convenios-marcos">
+    <mxGraphModel dx="2111" dy="753" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="640" pageHeight="820" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="system4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;fontStyle=1;verticalAlign=top;align=center;" value="Sistema de gestión para secretaria de vinculación&amp;nbsp; Tecnológica UTN San Francisco.&lt;div&gt;Módulo: Convenios Marcos&lt;/div&gt;" vertex="1">
+          <mxGeometry height="742" width="380" x="-380" y="39" as="geometry" />
+        </mxCell>
+        <mxCell id="uc4_1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Cargar convenio marco" vertex="1">
+          <mxGeometry height="40" width="300" x="-340" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="uc4_2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Actualizar convenio marco" vertex="1">
+          <mxGeometry height="40" width="300" x="-340" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="uc4_3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Ver detalles de convenio marco" vertex="1">
+          <mxGeometry height="40" width="300" x="-340" y="284" as="geometry" />
+        </mxCell>
+        <mxCell id="uc4_4" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Asociar empresas a convenio marco" vertex="1">
+          <mxGeometry height="40" width="300" x="-340" y="364" as="geometry" />
+        </mxCell>
+        <mxCell id="uc4_5" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Asociar involucrados a convenio marco" vertex="1">
+          <mxGeometry height="40" width="300" x="-340" y="444" as="geometry" />
+        </mxCell>
+        <mxCell id="uc4_6" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Asociar convenios específicos" vertex="1">
+          <mxGeometry height="40" width="300" x="-340" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="uc4_7" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Subir documentos (Word, PDF, Excel, etc.)" vertex="1">
+          <mxGeometry height="40" width="300" x="-340" y="711" as="geometry" />
+        </mxCell>
+        <mxCell id="e4_con_3" edge="1" parent="1" source="BXb6bGV4lJfAsWQA2fl9-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc4_3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-510" y="304" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4_ges_1" edge="1" parent="1" source="BXb6bGV4lJfAsWQA2fl9-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc4_1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="334.357142857143" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4_ges_2" edge="1" parent="1" source="BXb6bGV4lJfAsWQA2fl9-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc4_2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="340.07142857142867" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4_ges_4" edge="1" parent="1" source="BXb6bGV4lJfAsWQA2fl9-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc4_4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="350.64453741269733" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4_ges_5" edge="1" parent="1" source="BXb6bGV4lJfAsWQA2fl9-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc4_5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="357.21428571428567" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4_ges_6" edge="1" parent="1" source="BXb6bGV4lJfAsWQA2fl9-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc4_6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="362.92857142857133" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4_fir_7" edge="1" parent="1" source="BXb6bGV4lJfAsWQA2fl9-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc4_7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-480" y="696" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ThljrvrbsFHMPbX8d3kC-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Descargar documentos (Word, PDF, Excel, etc.)" vertex="1">
+          <mxGeometry height="40" width="300" x="-340" y="651" as="geometry" />
+        </mxCell>
+        <mxCell id="ThljrvrbsFHMPbX8d3kC-3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Borrar documentos (Word, PDF, Excel, etc.)" vertex="1">
+          <mxGeometry height="40" width="300" x="-340" y="591" as="geometry" />
+        </mxCell>
+        <mxCell id="ThljrvrbsFHMPbX8d3kC-5" edge="1" parent="1" source="BXb6bGV4lJfAsWQA2fl9-1" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ThljrvrbsFHMPbX8d3kC-1" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="-480" y="688.5" as="sourcePoint" />
+            <mxPoint x="-610" y="591" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ThljrvrbsFHMPbX8d3kC-6" edge="1" parent="1" source="BXb6bGV4lJfAsWQA2fl9-1" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ThljrvrbsFHMPbX8d3kC-3" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="-480" y="681" as="sourcePoint" />
+            <mxPoint x="-490" y="601" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BXb6bGV4lJfAsWQA2fl9-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Secretario de&amp;nbsp;&lt;div&gt;Vinculación Tecnologica&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="-590" y="380" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="05 - Convenios Específicos" id="modulo-convenios-especificos">
+    <mxGraphModel dx="1585" dy="1631" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="640" pageHeight="820" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="system5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;fontStyle=1;verticalAlign=top;align=center;" value="Sistema de gestión para secretaria de vinculación&amp;nbsp; Tecnológica UTN San Francisco.&lt;div&gt;Módulo: Convenios Específicos&lt;/div&gt;" vertex="1">
+          <mxGeometry height="770" width="380" x="260" y="-800" as="geometry" />
+        </mxCell>
+        <mxCell id="uc5_1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Cargar convenio específico" vertex="1">
+          <mxGeometry height="40" width="300" x="300" y="-715" as="geometry" />
+        </mxCell>
+        <mxCell id="uc5_2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Actualizar convenio específico" vertex="1">
+          <mxGeometry height="40" width="300" x="300" y="-635" as="geometry" />
+        </mxCell>
+        <mxCell id="uc5_3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Ver detalles de convenio específico" vertex="1">
+          <mxGeometry height="40" width="300" x="300" y="-555" as="geometry" />
+        </mxCell>
+        <mxCell id="uc5_4" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Asociar convenio marco" vertex="1">
+          <mxGeometry height="40" width="300" x="300" y="-475" as="geometry" />
+        </mxCell>
+        <mxCell id="uc5_5" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Asociar empresas a convenio específico" vertex="1">
+          <mxGeometry height="40" width="300" x="300" y="-395" as="geometry" />
+        </mxCell>
+        <mxCell id="uc5_6" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Asociar involucrados a convenio específico" vertex="1">
+          <mxGeometry height="40" width="300" x="300" y="-315" as="geometry" />
+        </mxCell>
+        <mxCell id="uc5_7" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Subir documentos (Word, PDF, Excel, etc.)" vertex="1">
+          <mxGeometry height="40" width="300" x="300" y="-235" as="geometry" />
+        </mxCell>
+        <mxCell id="e5_con_3" edge="1" parent="1" source="MlVK0GoMbkMw9EMUUEt_-1" style="endArrow=none;html=1;" target="uc5_3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="-535" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5_ges_1" edge="1" parent="1" source="MlVK0GoMbkMw9EMUUEt_-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc5_1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="-513.9285714285713" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5_ges_2" edge="1" parent="1" source="MlVK0GoMbkMw9EMUUEt_-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc5_2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="-508.21428571428555" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5_ges_4" edge="1" parent="1" source="MlVK0GoMbkMw9EMUUEt_-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc5_4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="-496.7857142857142" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5_ges_5" edge="1" parent="1" source="MlVK0GoMbkMw9EMUUEt_-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc5_5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="-491.07142857142867" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5_ges_6" edge="1" parent="1" source="MlVK0GoMbkMw9EMUUEt_-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc5_6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="-485.3571428571429" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5_fir_7" edge="1" parent="1" source="MlVK0GoMbkMw9EMUUEt_-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc5_7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="-161.31578947368416" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gjK89sLJN2I8wRgFdspV-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Subir documentos (Word, PDF, Excel, etc.)" vertex="1">
+          <mxGeometry height="40" width="300" x="300" y="-170" as="geometry" />
+        </mxCell>
+        <mxCell id="gjK89sLJN2I8wRgFdspV-2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Subir documentos (Word, PDF, Excel, etc.)" vertex="1">
+          <mxGeometry height="40" width="300" x="300" y="-100" as="geometry" />
+        </mxCell>
+        <mxCell id="gjK89sLJN2I8wRgFdspV-4" edge="1" parent="1" source="MlVK0GoMbkMw9EMUUEt_-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="gjK89sLJN2I8wRgFdspV-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="-154.47368421052624" as="sourcePoint" />
+            <mxPoint x="371" y="-220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gjK89sLJN2I8wRgFdspV-5" edge="1" parent="1" source="MlVK0GoMbkMw9EMUUEt_-1" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="gjK89sLJN2I8wRgFdspV-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="-147.10526315789457" as="sourcePoint" />
+            <mxPoint x="290" y="-17" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MlVK0GoMbkMw9EMUUEt_-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Secretario de&amp;nbsp;&lt;div&gt;Vinculación Tecnologica&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="60" y="-500" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="CZBMpMWcwM2iw2DzP4D6" name="Modulo de usuarios">
+    <mxGraphModel dx="1030" dy="527" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="EPNO87VF-lztlzTYxmIV-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;verticalAlign=top;align=center;" value="Sistema de gestión para&amp;nbsp;&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Secretaria de&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;vinculación&amp;nbsp; Tecnológica&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;UTN San Francisco.&lt;/span&gt;&lt;div&gt;&lt;div&gt;Módulo: Gestión de usuarios&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="430" width="390" x="220" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="EPNO87VF-lztlzTYxmIV-2" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Secretario&lt;div&gt;de Vinculación Tecnologica&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="80" y="415" as="geometry" />
+        </mxCell>
+        <mxCell id="EPNO87VF-lztlzTYxmIV-4" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Login" vertex="1">
+          <mxGeometry height="50" width="150" x="340" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="EPNO87VF-lztlzTYxmIV-10" edge="1" parent="1" source="EPNO87VF-lztlzTYxmIV-2" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="EPNO87VF-lztlzTYxmIV-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="55Hqw0FgRYz7T_JcMySD-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Crear usuario" vertex="1">
+          <mxGeometry height="50" width="150" x="340" y="495" as="geometry" />
+        </mxCell>
+        <mxCell id="55Hqw0FgRYz7T_JcMySD-2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Eliminar usario" vertex="1">
+          <mxGeometry height="50" width="150" x="340" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="55Hqw0FgRYz7T_JcMySD-3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Actualizar contraseña de usario" vertex="1">
+          <mxGeometry height="60" width="160" x="335" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="55Hqw0FgRYz7T_JcMySD-4" edge="1" parent="1" source="55Hqw0FgRYz7T_JcMySD-3" style="endArrow=none;html=1;" target="55Hqw0FgRYz7T_JcMySD-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="626" y="389" as="sourcePoint" />
+            <mxPoint x="856" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="55Hqw0FgRYz7T_JcMySD-5" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Administrador de&amp;nbsp;&lt;div&gt;Sistema&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="730" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="55Hqw0FgRYz7T_JcMySD-6" edge="1" parent="1" source="55Hqw0FgRYz7T_JcMySD-2" style="endArrow=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="55Hqw0FgRYz7T_JcMySD-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="670" y="580" as="sourcePoint" />
+            <mxPoint x="1056" y="604" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="55Hqw0FgRYz7T_JcMySD-7" edge="1" parent="1" source="55Hqw0FgRYz7T_JcMySD-1" style="endArrow=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="55Hqw0FgRYz7T_JcMySD-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="673" as="sourcePoint" />
+            <mxPoint x="1120" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ogTQVjA6Gg44B3L06Y1L-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=12;" value="Listar usuarios" vertex="1">
+          <mxGeometry height="50" width="150" x="340" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="ogTQVjA6Gg44B3L06Y1L-2" edge="1" parent="1" source="ogTQVjA6Gg44B3L06Y1L-1" style="endArrow=none;html=1;" target="55Hqw0FgRYz7T_JcMySD-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="748" as="sourcePoint" />
+            <mxPoint x="730" y="670" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="06 - Vista de Conjunto" id="vista-conjunto">
+    <mxGraphModel dx="4273" dy="2358" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sys6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=16;fontStyle=1;verticalAlign=top;align=center;" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;Sistema de gestión para secretaria de vinculación&amp;nbsp; Tecnológica UTN San Francisco.&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="940" width="1440" x="-1870" y="-1190" as="geometry" />
+        </mxCell>
+        <mxCell id="actor6_con" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Secretario&amp;nbsp;&lt;span style=&quot;background-color: light-dark(rgb(255, 255, 255), rgb(18, 18, 18)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;de Vinculación&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;background-color: light-dark(rgb(255, 255, 255), rgb(18, 18, 18)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Tecnologica&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="-1790" y="-990" as="geometry" />
+        </mxCell>
+        <mxCell id="actor6_ges" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Secretario&lt;div&gt;de Vinculación Tecnologica&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="-1790" y="-700" as="geometry" />
+        </mxCell>
+        <mxCell id="actor6_fir" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Secretario&lt;div&gt;de Vinculación Tecnologica&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="-550" y="-870" as="geometry" />
+        </mxCell>
+        <mxCell id="mod1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;align=center;" value="Módulo&#xa;Panel de Búsqueda" vertex="1">
+          <mxGeometry height="70" width="200" x="-1600" y="-550" as="geometry" />
+        </mxCell>
+        <mxCell id="mod3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;fontStyle=1;align=center;" value="Módulo&#xa;Involucrados" vertex="1">
+          <mxGeometry height="70" width="200" x="-900" y="-620" as="geometry" />
+        </mxCell>
+        <mxCell id="mod4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;fontStyle=1;align=center;" value="Módulo&#xa;Convenios Marcos" vertex="1">
+          <mxGeometry height="70" width="200" x="-810" y="-1030" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_con_mod1" edge="1" parent="1" source="actor6_con" style="endArrow=none;html=1;fontSize=10;" target="mod1" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;opera&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_con_mod2" edge="1" parent="1" source="actor6_con" style="endArrow=none;html=1;fontSize=10;" target="mod2" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;opera&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_con_mod3" edge="1" parent="1" source="actor6_con" style="endArrow=none;html=1;fontSize=10;" target="mod3" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;opera&lt;/b&gt;&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_con_mod4" edge="1" parent="1" source="actor6_con" style="endArrow=none;html=1;fontSize=10;" target="mod4" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;consulta&lt;/b&gt;&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_con_mod5" edge="1" parent="1" source="actor6_con" style="endArrow=none;html=1;fontSize=10;" target="oJuQ6tZxGF93a8QTJn1H-12" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;consulta&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1310" y="-908.6363636363635" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_ges_mod4" edge="1" parent="1" source="mod2" style="endArrow=none;html=1;fontSize=10;" target="mod4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_ges_mod5" edge="1" parent="1" source="actor6_ges" style="endArrow=none;html=1;fontSize=10;" target="oJuQ6tZxGF93a8QTJn1H-12" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;gestiona&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1310" y="-868.6363636363635" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_fir_mod4" edge="1" parent="1" source="actor6_fir" style="endArrow=none;html=1;fontSize=10;" target="mod4" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;Firma&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_fir_mod5" edge="1" parent="1" source="actor6_fir" style="endArrow=none;html=1;fontSize=10;" target="oJuQ6tZxGF93a8QTJn1H-12" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;firma&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1110" y="-877.7272727272727" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_mod1_mod4" edge="1" parent="1" source="mod1" style="endArrow=open;html=1;fontSize=10;dashed=1;" target="mod4" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;filtra&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_mod1_mod5" edge="1" parent="1" source="mod1" style="endArrow=open;html=1;fontSize=10;dashed=1;" target="oJuQ6tZxGF93a8QTJn1H-12" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;filtra&lt;/b&gt;&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1241" y="-860" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_mod2_mod4" edge="1" parent="1" source="mod2" style="endArrow=open;startArrow=open;html=1;fontSize=10;" target="mod4" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;asocia&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_mod2_mod5" edge="1" parent="1" source="mod2" style="endArrow=open;startArrow=open;html=1;fontSize=10;" target="oJuQ6tZxGF93a8QTJn1H-12" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;asocia&lt;/b&gt;&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1208" y="-930" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_mod3_mod4" edge="1" parent="1" source="mod3" style="endArrow=open;startArrow=open;html=1;fontSize=10;" target="mod4" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;asocia&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_mod3_mod5" edge="1" parent="1" source="mod3" style="endArrow=open;startArrow=open;html=1;fontSize=10;" target="oJuQ6tZxGF93a8QTJn1H-12" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;asocia&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1175" y="-860" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_mod4_mod5" edge="1" parent="1" source="mod4" style="endArrow=open;startArrow=open;html=1;fontSize=10;strokeColor=#b85450;" target="oJuQ6tZxGF93a8QTJn1H-12" value="&lt;b&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;asocia (jerárquica)&lt;/font&gt;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1110" y="-915" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NbGBcDSUerodoLt9TqgW-1" edge="1" parent="1" source="actor6_ges" style="endArrow=none;html=1;fontSize=10;" target="mod2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1620" y="-794" as="sourcePoint" />
+            <mxPoint x="-1020" y="-906" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mod2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;align=center;" value="Módulo&#xa;Empresas" vertex="1">
+          <mxGeometry height="70" width="200" x="-1320" y="-1140" as="geometry" />
+        </mxCell>
+        <mxCell id="C0iEO_8JkyWdTV6ElMUN-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=1;align=center;fontColor=#333333;" value="Modulo Usuarios" vertex="1">
+          <mxGeometry height="70" width="200" x="-1300" y="-460" as="geometry" />
+        </mxCell>
+        <mxCell id="C0iEO_8JkyWdTV6ElMUN-2" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Secretario&lt;div&gt;de Vinculación Tecnologica&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="-1440" y="-400" as="geometry" />
+        </mxCell>
+        <mxCell id="C0iEO_8JkyWdTV6ElMUN-3" edge="1" parent="1" source="C0iEO_8JkyWdTV6ElMUN-2" style="endArrow=none;html=1;fontSize=10;" target="C0iEO_8JkyWdTV6ElMUN-1" value="&lt;span style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Loguin&lt;/b&gt;&lt;/span&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1325" y="-284" as="sourcePoint" />
+            <mxPoint x="-1005" y="-375" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C0iEO_8JkyWdTV6ElMUN-4" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;fontStyle=1;" value="Administrador de sistema" vertex="1">
+          <mxGeometry height="80" width="40" x="-960" y="-400" as="geometry" />
+        </mxCell>
+        <mxCell id="C0iEO_8JkyWdTV6ElMUN-7" edge="1" parent="1" source="C0iEO_8JkyWdTV6ElMUN-1" style="endArrow=none;html=1;fontSize=10;" target="C0iEO_8JkyWdTV6ElMUN-4" value="&lt;span style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Administra&lt;/b&gt;&lt;/span&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1205" y="-465" as="sourcePoint" />
+            <mxPoint x="-1035" y="-465" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oJuQ6tZxGF93a8QTJn1H-6" edge="1" parent="1" source="mod3" style="endArrow=open;html=1;fontSize=10;dashed=1;" target="C0iEO_8JkyWdTV6ElMUN-1" value="&lt;span style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Autentica&lt;/b&gt;&lt;/span&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1050" y="-115" as="sourcePoint" />
+            <mxPoint x="-691" y="-560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oJuQ6tZxGF93a8QTJn1H-7" edge="1" parent="1" source="mod1" style="endArrow=open;html=1;fontSize=10;dashed=1;" target="C0iEO_8JkyWdTV6ElMUN-1" value="&lt;span style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Autentica&lt;/b&gt;&lt;/span&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1155" y="-540" as="sourcePoint" />
+            <mxPoint x="-1230" y="-475" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oJuQ6tZxGF93a8QTJn1H-8" edge="1" parent="1" source="oJuQ6tZxGF93a8QTJn1H-12" style="endArrow=open;html=1;fontSize=10;dashed=1;" target="C0iEO_8JkyWdTV6ElMUN-1" value="&lt;span style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Autentica&lt;/b&gt;&lt;/span&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1210.6730769230771" y="-860" as="sourcePoint" />
+            <mxPoint x="-1077" y="-565" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oJuQ6tZxGF93a8QTJn1H-9" edge="1" parent="1" source="mod4" style="endArrow=open;html=1;fontSize=10;dashed=1;" target="C0iEO_8JkyWdTV6ElMUN-1" value="&lt;span style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Autentica&lt;/b&gt;&lt;/span&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1100" y="-850" as="sourcePoint" />
+            <mxPoint x="-1095" y="-485" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oJuQ6tZxGF93a8QTJn1H-11" edge="1" parent="1" source="mod2" style="endArrow=open;html=1;fontSize=10;dashed=1;" target="C0iEO_8JkyWdTV6ElMUN-1" value="&lt;span style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Autentica&lt;/b&gt;&lt;/span&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1162" y="-960" as="sourcePoint" />
+            <mxPoint x="-1170" y="-510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oJuQ6tZxGF93a8QTJn1H-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;align=center;" value="Módulo&#xa;Convenios Específicos" vertex="1">
+          <mxGeometry height="70" width="200" x="-1200" y="-920" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

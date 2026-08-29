@@ -238,6 +238,8 @@ const submitForm = async () => {
     ConvenioCreado.value = result
     resetForm()
     toast.success('Convenio cargado con éxito')
+  } else if (errorMensaje.value) {
+    toast.error(errorMensaje.value)
   }
 }
 

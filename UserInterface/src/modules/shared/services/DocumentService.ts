@@ -67,7 +67,7 @@ export default class DocumentService {
 
   static async GetArchivosConvMarco(idConvenio: number): Promise<Result<ViewArchivoDto[]>> {
     try {
-      const response = await axios.get(`${API_URL}/ConveniosMarcos/archivos${idConvenio}`)
+      const response = await axios.get(`${API_URL}/ConveniosMarcos/archivos/${idConvenio}`)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
@@ -76,7 +76,7 @@ export default class DocumentService {
 
   static async GetArchivosConvEspecifico(idConvenio: number): Promise<Result<ViewArchivoDto[]>> {
     try {
-      const response = await axios.get(`${API_URL}/ConveniosEspecificos/archivos${idConvenio}`)
+      const response = await axios.get(`${API_URL}/ConveniosEspecificos/archivos/${idConvenio}`)
       return { isSuccess: true, value: response.data, status: response.status }
     } catch (Ex: any) {
       return { isSuccess: false, error: { message: getErrorMessage(Ex), status: Ex.response?.status } }
