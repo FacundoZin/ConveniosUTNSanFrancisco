@@ -175,8 +175,19 @@
     <!-- Botones finales -->
     <div class="mt-5 d-flex gap-3 justify-content-center">
       <button class="btn btn-primary" @click="editConvenio">Editar Convenio</button>
-      <button class="btn btn-danger" @click="DeleteConvenio">Eliminar Convenio</button>
+      <button class="btn btn-danger" @click="showDeleteModal = true">Eliminar Convenio</button>
     </div>
+
+    <ConfirmacionModal
+      :show="showDeleteModal"
+      titulo="Eliminar Convenio Específico"
+      :mensaje="`¿Estás seguro de que querés eliminar el convenio &quot;${Convenio?.titulo}&quot;? Esta acción no se puede deshacer.`"
+      textoConfirmar="Sí, eliminar"
+      textoCancelar="Cancelar"
+      tipo="danger"
+      @confirmar="confirmarDelete"
+      @cancelar="showDeleteModal = false"
+    />
   </div>
 
   <!--  mensaje mientras carga -->
@@ -189,6 +200,7 @@
 
 <script setup lang="ts">
 import AreasCardList from '@/modules/involucrados/components/AreasCardList.vue'
+import ConfirmacionModal from '@/modules/shared/components/ConfirmacionModal.vue'
 import ConvMarcoCardReadOnly from '@/modules/convenios/components/ConvMarcoCardReadOnly.vue'
 import EmpresaCardReadOnly from '@/modules/empresas/components/EmpresaCardReadOnly.vue'
 import FileUploader from '@/modules/convenios/components/FileUploader.vue'
@@ -204,6 +216,7 @@ import { useRoute } from 'vue-router'
 import { POSITION, useToast } from 'vue-toastification'
 
 const isLoading = ref(false)
+const showDeleteModal = ref(false)
 const errorMessage = ref<string>('')
 const toast = useToast()
 const route = useRoute()
@@ -266,6 +279,11 @@ const DeleteConvenio = async () => {
       console.log(`Lo sentimos, algo ha salido mal. ${error}`)
     }
   }
+}
+
+const confirmarDelete = async () => {
+  showDeleteModal.value = false
+  await DeleteConvenio()
 }
 
 // Funciones de desvinculación eliminadas (código muerto)
