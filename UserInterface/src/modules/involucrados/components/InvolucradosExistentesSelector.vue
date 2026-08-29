@@ -1,36 +1,48 @@
 <template>
   <div class="dropdown w-100">
-    <button class="btn btn-light border w-100 text-start" type="button" data-bs-toggle="dropdown">
-      Seleccionar...
+    <button class="btn btn-light border w-100 text-start d-flex align-items-center justify-content-between" type="button" data-bs-toggle="dropdown">
+      <span>{{ selectedCount > 0 ? `${selectedCount} seleccionado(s)` : 'Seleccionar involucrados...' }}</span>
+      <i class="bi bi-chevron-down small text-muted"></i>
     </button>
 
-    <ul class="dropdown-menu w-100" data-bs-auto-close="outside">
+    <ul class="dropdown-menu w-100 shadow-sm p-2" data-bs-auto-close="outside" style="max-height: 320px; overflow-y: auto;">
+      <!-- Campo de Búsqueda Pegajoso -->
+      <li class="px-1 mb-2 position-sticky top-0 bg-white z-1">
+        <input
+          v-model="searchTerm"
+          type="text"
+          class="form-control form-control-sm"
+          placeholder="Buscar por nombre o legajo..."
+          @click.stop
+        />
+      </li>
+
       <li v-if="isLoading" class="text-center py-2">
         <div class="spinner-border spinner-border-sm text-primary" role="status">
           <span class="visually-hidden">Cargando...</span>
         </div>
       </li>
 
-      <li v-if="!isLoading && involucrados.length === 0" class="dropdown-item text-muted">
-        No hay involucrados disponibles
+      <li v-if="!isLoading && filteredInvolucrados.length === 0" class="dropdown-item text-muted text-center small">
+        No se encontraron involucrados
       </li>
 
-      <li v-if="errorMensaje" class="dropdown-item text-danger">
+      <li v-if="errorMensaje" class="dropdown-item text-danger small">
         {{ errorMensaje }}
       </li>
 
-      <li v-for="involucrado in involucrados" :key="involucrado.id" @click.stop>
-        <label class="dropdown-item d-flex align-items-center gap-2">
+      <li v-for="involucrado in filteredInvolucrados" :key="involucrado.id" @click.stop>
+        <label class="dropdown-item d-flex align-items-center gap-2 rounded cursor-pointer small">
           <input type="checkbox" :value="involucrado.id" :checked="isSelected(involucrado.id)"
             @change="toggleSelection(involucrado.id)" />
-          {{ involucrado.fullName }}
+          <span>{{ involucrado.fullName }}</span>
         </label>
       </li>
     </ul>
   </div>
 
-  <div v-if="selectedCount > 0" class="mt-2 text-success">
-    <i class="bi bi-check-circle me-2"></i>
+  <div v-if="selectedCount > 0" class="mt-2 text-success small">
+    <i class="bi bi-check-circle me-1"></i>
     {{ selectedCount }} involucrado{{ selectedCount > 1 ? 's' : '' }} seleccionado{{
       selectedCount > 1 ? 's' : ''
     }}
@@ -56,6 +68,15 @@ const emit = defineEmits<{
 const involucrados = ref<ComboBoxInvolucradosDto[]>([])
 const isLoading = ref(false)
 const errorMensaje = ref('')
+const searchTerm = ref('')
+
+const filteredInvolucrados = computed(() => {
+  if (!searchTerm.value.trim()) return involucrados.value
+  const term = searchTerm.value.toLowerCase().trim()
+  return involucrados.value.filter((inv) =>
+    inv.fullName.toLowerCase().includes(term)
+  )
+})
 
 const selectedCount = computed(() => {
   return props.modelValue?.length || 0
@@ -75,7 +96,7 @@ const toggleSelection = (id: number) => {
     emit('update:modelValue', [...currentSelection, id])
 
     const involucrado = involucrados.value.find((i) => i.id === id)
-    if (involucrado?.idCarrera) {
+    if (involucrado?.idCarrera != null && involucrado.idCarrera !== 0) {
       emit('agregar-area', involucrado.idCarrera)
     }
   }

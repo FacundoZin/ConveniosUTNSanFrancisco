@@ -150,12 +150,11 @@
           <!-- Empresa existente -->
           <div v-if="!cargarNuevaEmpresa" class="col-md-6">
             <label class="form-label">Seleccionar Empresa</label>
-            <select v-model="empresaForm.id" class="form-select" required>
-              <option value="" disabled>Seleccionar...</option>
-              <option v-for="empresa in empresas" :key="empresa.idEmpresa" :value="empresa.idEmpresa">
-                {{ empresa.nombreEmpresa }}
-              </option>
-            </select>
+            <SearchableSelect
+              v-model="empresaForm.id"
+              :options="empresaOptions"
+              placeholder="Buscar o seleccionar empresa..."
+            />
           </div>
 
           <!-- Nueva empresa -->
@@ -275,9 +274,11 @@ import InvolucradosCard from '@/modules/involucrados/components/InvolucradosCard
 import InvolucradosExistentesSelector from '@/modules/involucrados/components/InvolucradosExistentesSelector.vue'
 import InvolucradosExistingCard from '@/modules/involucrados/components/InvolucradosExistingCard.vue'
 import VincularConvMarco from '@/modules/convenios/components/VincularConvMarco.vue'
+import SearchableSelect from '@/modules/shared/components/SearchableSelect.vue'
 import { UseUpdateConvEspComposable } from '@/modules/convenios/composables/UpdateConvEspComposable'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
-import { ref } from 'vue'
+import { RolInvolucrado } from '@/Types/Enums/Enums'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { POSITION, useToast } from 'vue-toastification'
 
@@ -299,6 +300,13 @@ const {
   submitForm: submitFormLogic,
   GetInfoConvenioEspecifico,
 } = UseUpdateConvEspComposable()
+
+const empresaOptions = computed(() => {
+  return empresas.value.map((e) => ({
+    id: e.idEmpresa,
+    label: e.nombreEmpresa,
+  }))
+})
 
 const handleActualizarEmpresa = async () => {
   if (UpdateConvEspRequest.value.updateConvenioDto.id) {
@@ -380,7 +388,11 @@ const cancelarDesvinculacion = () => {
 const agregarInvolucrado = (nuevo: InsertInvolucradosDto) => {
   involucradosForm.value = [...involucradosForm.value, nuevo]
 
-  if (nuevo.idCarrera) {
+  if (
+    nuevo.idCarrera != null &&
+    nuevo.idCarrera !== 0 &&
+    nuevo.rolInvolucrado !== RolInvolucrado.Externo
+  ) {
     const ids = UpdateConvEspRequest.value.idCarreras ?? []
     if (!ids.includes(nuevo.idCarrera)) {
       UpdateConvEspRequest.value.idCarreras = [...ids, nuevo.idCarrera]

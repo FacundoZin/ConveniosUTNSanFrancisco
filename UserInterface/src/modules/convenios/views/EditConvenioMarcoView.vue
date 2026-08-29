@@ -164,16 +164,11 @@
           <!-- Empresa existente -->
           <div v-if="!cargarNuevaEmpresa" class="col-md-6">
             <label class="form-label">Seleccionar Empresa</label>
-            <select v-model="selectedEmpresaId" class="form-select" required>
-              <option value="" disabled>Seleccionar...</option>
-              <option
-                v-for="empresa in empresas"
-                :key="empresa.idEmpresa"
-                :value="empresa.idEmpresa"
-              >
-                {{ empresa.nombreEmpresa }}
-              </option>
-            </select>
+            <SearchableSelect
+              v-model="selectedEmpresaId"
+              :options="empresaOptions"
+              placeholder="Buscar o seleccionar empresa..."
+            />
           </div>
 
           <!-- Nueva empresa -->
@@ -257,9 +252,10 @@
 import ConfirmacionModal from '@/modules/shared/components/ConfirmacionModal.vue'
 import ConveniosEspecificosTable from '@/modules/convenios/components/ConveniosEspecificosTable.vue'
 import EmpresaCard from '@/modules/empresas/components/EmpresaCard.vue'
+import SearchableSelect from '@/modules/shared/components/SearchableSelect.vue'
 import { useUpdateConvMarcoComposable } from '@/modules/convenios/composables/UpdateConvMarcoComposable'
 import { POSITION, useToast } from 'vue-toastification'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const toast = useToast()
 const {
@@ -277,6 +273,13 @@ const {
   IrAConvenioEspecifico,
   getInfoConvenio,
 } = useUpdateConvMarcoComposable()
+
+const empresaOptions = computed(() => {
+  return empresas.value.map((e) => ({
+    id: e.idEmpresa,
+    label: e.nombreEmpresa,
+  }))
+})
 
 const handleActualizarEmpresa = async () => {
   if (ConvenioMarcoRequest.value.updateConvenioMarcoDto.id) {

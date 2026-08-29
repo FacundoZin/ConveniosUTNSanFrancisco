@@ -40,12 +40,18 @@ export const useConvenioStore = defineStore('convenio', () => {
     lastMarcoId.value = null
   }
 
+  function invalidateMarcoCache() {
+    currentConvenioMarco.value = null
+    lastMarcoId.value = null
+  }
+
   return {
     // Individual
     currentConvenioMarco,
     lastMarcoId,
     setConvenioMarco,
     clearConvenioMarco,
+    invalidateMarcoCache,
 
     // Dashboard state
     listadoConvenios,

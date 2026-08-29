@@ -149,7 +149,7 @@ import DocumentService from '@/modules/shared/services/DocumentService'
 import { EstadoConvenioTexto } from '@/Types/Enums/Enums'
 import type { InfoConvenioMarcoDto } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { POSITION, useToast } from 'vue-toastification'
 import { useConvenioStore } from '../stores/convenioStore'
@@ -159,22 +159,24 @@ const isLoading = ref(false)
 const errorMessage = ref<string>('')
 const toast = useToast()
 const route = useRoute()
-const idparam = route.params.id
-let id = 0
 
-if (Array.isArray(idparam)) {
-  id = parseInt(idparam[0])
-} else {
-  id = parseInt(idparam)
+const getId = () => {
+  const idparam = route.params.id
+  if (Array.isArray(idparam)) return parseInt(idparam[0])
+  return parseInt(idparam as string)
 }
 
 const store = useConvenioStore()
 const { currentConvenioMarco: Convenio } = storeToRefs(store)
 
 const fetchConvenio = async (forceLoad = false) => {
-  if (!forceLoad && store.lastMarcoId === id && store.currentConvenioMarco) {
-    return
-  }
+  const id = getId()
+  if (Number.isNaN(id)) return
+
+  // Fix asimetría Marco→Específico: siempre refetch desde servidor.
+  // El cache de Pinia causaba que el Marco no mostrara el nuevo Específico vinculado.
+  // Se mantiene lastMarcoId solo como referencia, pero no como bloqueo de fetch.
+  // forceLoad se conserva por compatibilidad; el early-return stale se elimina.
 
   isLoading.value = true
   try {
@@ -197,6 +199,13 @@ const fetchConvenio = async (forceLoad = false) => {
 onMounted(async () => {
   await fetchConvenio()
 })
+
+watch(
+  () => route.params.id,
+  async () => {
+    await fetchConvenio(true)
+  },
+)
 
 const editConvenio = () => {
   if (Convenio.value) {

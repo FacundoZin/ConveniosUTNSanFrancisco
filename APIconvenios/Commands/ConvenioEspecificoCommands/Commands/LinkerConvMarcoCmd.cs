@@ -13,10 +13,17 @@ namespace APIconvenios.Commands.ConvenioEspecificoCommands.Commands
         public async Task ExecuteAsync(ConvenioEspecifico Convenio, _UnitOfWork _UnitOfWork)
         {
             var convenioMarco = await _UnitOfWork._ConvenioMarcoRepository.GetByid(_idConvMarco);
-            
-            if(convenioMarco != null)
+
+            if (convenioMarco != null)
+            {
                 Convenio.ConvenioMarcoId = convenioMarco.Id;
                 Convenio.ConvenioMarco = convenioMarco;
+            }
+            else
+            {
+                // Marco no encontrado: no se vincula; log opcional
+                Console.WriteLine($"[LinkerConvMarcoCmd] ConvenioMarco id {_idConvMarco} no encontrado.");
+            }
         }
     }
 }

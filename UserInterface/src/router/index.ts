@@ -31,7 +31,7 @@ const router = createRouter({
     },
     { path: '/CargarConvenioMarco', name: 'CargarConvenioMarco', component: CargaConvMarcoView },
     {
-      path: '/CargarConvenioEspecifico',
+      path: '/CargarConvenioEspecifico/:id?',
       name: 'CreateConvenioEspecifico',
       component: CargaConvEspecificoView,
       props: true,

@@ -1,14 +1,14 @@
 <template>
   <div class="d-flex flex-column">
-    <label for="convenioMarcoSelect" class="form-label">
+    <label class="form-label fw-semibold">
       Seleccione el convenio marco a vincular
     </label>
-    <select id="convenioMarcoSelect" v-model="selectedId" @change="handleChange" class="form-select">
-      <option value="" disabled>Seleccione un convenio marco...</option>
-      <option v-for="convenio in conveniosMarcos" :key="convenio.id" :value="convenio.id">
-        {{ convenio.titulo }}
-      </option>
-    </select>
+    <SearchableSelect
+      v-model="selectedId"
+      :options="convenioMarcoOptions"
+      placeholder="Buscar o seleccionar convenio marco..."
+      :disabled="isLoading"
+    />
 
     <div v-if="isLoading" class="text-center py-2 mt-2">
       <div class="spinner-border spinner-border-sm text-primary" role="status">
@@ -24,7 +24,7 @@
       No hay convenios marcos disponibles
     </div>
 
-    <div v-if="selectedId" class="alert alert-success mt-2" role="alert">
+    <div v-if="selectedId" class="alert alert-success mt-2 py-2 small" role="alert">
       <i class="bi bi-check-circle me-2"></i>
       Convenio marco seleccionado
     </div>
@@ -32,9 +32,10 @@
 </template>
 
 <script setup lang="ts">
-import ConvenioService from '@/modules/convenios/services/ConvenioService';
+import ConvenioService from '@/modules/convenios/services/ConvenioService'
+import SearchableSelect from '@/modules/shared/components/SearchableSelect.vue'
 import type { ComboBoxConvenioMarcoDto } from '@/Types/ConvenioMarco/ComboBoxConvenioMarcoDto'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 interface RequestWithConvenioMarco {
   idConvenioMarco?: number | null
@@ -52,8 +53,15 @@ const selectedId = ref<number | null>(
   props.request.idConvenioMarco ?? props.request.idMarcoVinculado ?? null,
 )
 
-const handleChange = () => {
-  const val = selectedId.value || null
+const convenioMarcoOptions = computed(() => {
+  return conveniosMarcos.value.map((cm) => ({
+    id: cm.id,
+    label: cm.titulo,
+  }))
+})
+
+watch(selectedId, (newVal) => {
+  const val = (newVal as number) || null
 
   if ('idConvenioMarco' in props.request) {
     props.request.idConvenioMarco = val
@@ -62,7 +70,16 @@ const handleChange = () => {
   if ('idMarcoVinculado' in props.request) {
     props.request.idMarcoVinculado = val
   }
-}
+})
+
+watch(
+  () => props.request.idConvenioMarco ?? props.request.idMarcoVinculado,
+  (newVal) => {
+    if (newVal != null && newVal !== selectedId.value) {
+      selectedId.value = newVal
+    }
+  },
+)
 
 const fetchConveniosMarcos = async () => {
   isLoading.value = true

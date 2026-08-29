@@ -172,12 +172,11 @@
 
         <div v-if="!cargarNuevaEmpresa" class="col-md-6">
           <label class="form-label">Seleccionar Empresa</label>
-          <select v-model="empresaForm.id" class="form-select" required>
-            <option value="" disabled>Seleccionar...</option>
-            <option v-for="empresa in empresas" :key="empresa.idEmpresa" :value="empresa.idEmpresa">
-              {{ empresa.nombreEmpresa }}
-            </option>
-          </select>
+          <SearchableSelect
+            v-model="empresaForm.id"
+            :options="empresaOptions"
+            placeholder="Buscar o seleccionar empresa..."
+          />
         </div>
 
         <div v-else class="border rounded p-3 bg-white">
@@ -273,12 +272,17 @@ import InvolucradoForm from '@/modules/involucrados/components/InvolucradoForm.v
 import InvolucradosCard from '@/modules/involucrados/components/InvolucradosCard.vue'
 import InvolucradosExistentesSelector from '@/modules/involucrados/components/InvolucradosExistentesSelector.vue'
 import VincularConvMarco from '@/modules/convenios/components/VincularConvMarco.vue'
+import SearchableSelect from '@/modules/shared/components/SearchableSelect.vue'
 import { useCreateConvEspComposable } from '@/modules/convenios/composables/CreateConvEspComposable'
 import type { InsertInvolucradosDto } from '@/Types/Involucrados/InsertInvolucrados'
+import { RolInvolucrado } from '@/Types/Enums/Enums'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import { useConvenioStore } from '@/modules/convenios/stores/convenioStore'
 
 const router = useRouter()
+const convenioStore = useConvenioStore()
 
 const {
   IsLoading,
@@ -296,10 +300,21 @@ const {
 
 const toast = useToast()
 
+const empresaOptions = computed(() => {
+  return empresas.value.map((e) => ({
+    id: e.idEmpresa,
+    label: e.nombreEmpresa,
+  }))
+})
+
 const agregarInvolucrado = (nuevo: InsertInvolucradosDto) => {
   involucradosForm.value.push(nuevo)
 
-  if (nuevo.idCarrera) {
+  if (
+    nuevo.idCarrera != null &&
+    nuevo.idCarrera !== 0 &&
+    nuevo.rolInvolucrado !== RolInvolucrado.Externo
+  ) {
     const ids = ConvenioEspecificoRequest.value.idCarreras ?? []
     if (!ids.includes(nuevo.idCarrera)) {
       ConvenioEspecificoRequest.value.idCarreras = [...ids, nuevo.idCarrera]
@@ -323,6 +338,7 @@ const guardarConvenio = async () => {
 
   if (result) {
     ConvenioCreado.value = result
+    convenioStore.invalidateMarcoCache()
     resetForm()
     toast.success('Convenio cargado con éxito')
   } else if (errorMensaje.value) {

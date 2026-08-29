@@ -63,8 +63,8 @@ namespace APIconvenios.Repositorio
 
         public async Task<List<ComboBoxConvenioEspecificoDto>> GetAllWithoutTracking()
         {
-            var convenios =  await _context.ConveniosMarcos.AsNoTracking()
-                .Select(ce => new ComboBoxConvenioEspecificoDto { Id = ce.Id, Titulo = ce.Titulo}).ToListAsync();
+            var convenios =  await _context.ConveniosEspecificos.AsNoTracking()
+                .Select(ce => new ComboBoxConvenioEspecificoDto { Id = ce.Id, Titulo = ce.TituloConvenio}).ToListAsync();
 
             if (convenios == null || convenios.Count == 0) return new List<ComboBoxConvenioEspecificoDto>();
 

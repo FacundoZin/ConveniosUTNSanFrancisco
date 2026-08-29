@@ -13,6 +13,7 @@ import type { ConvenioCreated } from '@/Types/ViewModels/ViewModels'
 import { isAxiosError } from 'axios'
 import { getErrorMessage } from '@/Services/apiBaseService'
 import { onMounted, ref, type Ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 interface CreateConvenioEspecificoComposable {
   IsLoading: Ref<boolean>
@@ -30,10 +31,20 @@ interface CreateConvenioEspecificoComposable {
 }
 
 export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable {
+  const route = useRoute()
   const IsLoading = ref(false)
   const ConvenioEspecificoRequest = ref<CargarConvenioEspecificoRequestDto>(
     createRequestConvEspecifico(),
   )
+
+  const initMarcoFromRoute = () => {
+    const raw = (route.params as Record<string, unknown>).id ?? (route.query as Record<string, unknown>).marcoId
+    const val = Array.isArray(raw) ? raw[0] : raw
+    const parsed = val != null ? parseInt(String(val), 10) : NaN
+    if (!isNaN(parsed) && parsed > 0) {
+      ConvenioEspecificoRequest.value.idConvenioMarco = parsed
+    }
+  }
   const errorMensaje = ref<string | null>(null)
   const empresas = ref<ComboBoxEmpresasDto[]>([])
   const cargarNuevaEmpresa = ref(false)
@@ -128,9 +139,20 @@ export function useCreateConvEspComposable(): CreateConvenioEspecificoComposable
 
   onMounted(async () => {
     IsLoading.value = true
+    initMarcoFromRoute()
     await getEmpresas()
     IsLoading.value = false
   })
+
+  watch(
+    () => route.params.id,
+    () => initMarcoFromRoute(),
+  )
+
+  watch(
+    () => (route.query as Record<string, unknown>).marcoId,
+    () => initMarcoFromRoute(),
+  )
 
   return {
     IsLoading,

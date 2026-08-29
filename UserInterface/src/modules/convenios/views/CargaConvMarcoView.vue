@@ -147,12 +147,11 @@
         <!-- Empresa existente -->
         <div v-if="!cargarNuevaEmpresa" class="col-md-6">
           <label class="form-label">Seleccionar Empresa</label>
-          <select v-model="selectedEmpresaId" class="form-select" required>
-            <option value="" disabled>Seleccionar...</option>
-            <option v-for="empresa in empresas" :key="empresa.idEmpresa" :value="empresa.idEmpresa">
-              {{ empresa.nombreEmpresa }}
-            </option>
-          </select>
+          <SearchableSelect
+            v-model="selectedEmpresaId"
+            :options="empresaOptions"
+            placeholder="Buscar o seleccionar empresa..."
+          />
         </div>
 
         <!-- Nueva empresa -->
@@ -208,8 +207,9 @@
 
 <script setup lang="ts">
 import VincularConvEspecifico from '@/modules/convenios/components/VincularConvEspecifico.vue'
+import SearchableSelect from '@/modules/shared/components/SearchableSelect.vue'
 import { useCreateConvMarcoComposable } from '@/modules/convenios/composables/CreateConvMarcoComposable'
-import { toRefs } from 'vue'
+import { computed, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
@@ -227,6 +227,13 @@ const {
   empresaForm,
   selectedEmpresaId
 } = toRefs(convMarcoState)
+
+const empresaOptions = computed(() => {
+  return empresas.value.map((e) => ({
+    id: e.idEmpresa,
+    label: e.nombreEmpresa,
+  }))
+})
 
 const { submitForm: submitFormLogic, resetForm } = convMarcoState
 

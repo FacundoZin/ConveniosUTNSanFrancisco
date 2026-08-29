@@ -1,11 +1,13 @@
 ﻿using APIconvenios.Commands.ConvenioEspecificoCommands;
 using APIconvenios.Commands.ConvenioEspecificoCommands.Commands;
 using APIconvenios.Common;
+using APIconvenios.Common.Enums;
 using APIconvenios.DTOs.Archivo;
 using APIconvenios.DTOs.ConvenioEspecifico;
 using APIconvenios.DTOs.Convenios;
 using APIconvenios.Helpers.Mappers;
 using APIconvenios.Interfaces.Servicios;
+using APIconvenios.Models;
 using APIconvenios.UnitOfWork;
 
 
@@ -49,6 +51,8 @@ namespace APIconvenios.Services
 
             foreach (var command in Commnands)
                 await command.ExecuteAsync(Convenio, _UnitOfWork);
+
+            await EnsureCarrerasFromInvolucradosAsync(Convenio);
 
             _UnitOfWork._ConvenioEspecificoRepository.CreateConvenio(Convenio);
             int rowsAffected = await _UnitOfWork.Save();
@@ -128,6 +132,8 @@ namespace APIconvenios.Services
 
             foreach (var command in commands)
                 await command.ExecuteAsync(Convenio, _UnitOfWork);
+
+            await EnsureCarrerasFromInvolucradosAsync(Convenio);
 
             _UnitOfWork._ConvenioEspecificoRepository.ModificarConvenioEspecifico(Convenio);
             int rowsAffected = await _UnitOfWork.Save();
@@ -229,6 +235,31 @@ namespace APIconvenios.Services
             catch(Exception ex)
             {
                 return Result<List<ComboBoxConvenioEspecificoDto>>.Error("Ocurrio un error al obtener los convenios especificos", 500);
+            }
+        }
+
+        private async Task EnsureCarrerasFromInvolucradosAsync(ConvenioEspecifico convenio)
+        {
+            if (convenio.Involucrados == null || convenio.Involucrados.Count == 0) return;
+
+            convenio.CarrerasInvolucradas ??= new List<Area>();
+
+            var existingIds = new HashSet<int>(convenio.CarrerasInvolucradas.Select(c => c.Id));
+
+            var neededIds = convenio.Involucrados
+                .Where(inv => inv.IdCarrera != null && inv.IdCarrera != 0 && inv.RolInvolucrado != Roles.Externo)
+                .Select(inv => inv.IdCarrera!.Value)
+                .Distinct()
+                .Where(id => !existingIds.Contains(id))
+                .ToArray();
+
+            if (neededIds.Length == 0) return;
+
+            var carreras = await _UnitOfWork._CarreraRepository.GetCarrerasByID(neededIds);
+            foreach (var carrera in carreras)
+            {
+                if (!convenio.CarrerasInvolucradas.Any(c => c.Id == carrera.Id))
+                    convenio.CarrerasInvolucradas.Add(carrera);
             }
         }
     }
