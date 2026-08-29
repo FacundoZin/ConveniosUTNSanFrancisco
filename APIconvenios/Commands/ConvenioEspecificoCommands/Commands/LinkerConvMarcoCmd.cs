@@ -18,6 +18,12 @@ namespace APIconvenios.Commands.ConvenioEspecificoCommands.Commands
             {
                 Convenio.ConvenioMarcoId = convenioMarco.Id;
                 Convenio.ConvenioMarco = convenioMarco;
+                // Herencia automática: si el específico no tiene empresa explícita, hereda la del marco
+                if (Convenio.EmpresaId == null && Convenio.empresa == null && convenioMarco.EmpresaId != null)
+                {
+                    Convenio.EmpresaId = convenioMarco.EmpresaId;
+                    Convenio.empresa = convenioMarco.Empresa;
+                }
             }
             else
             {

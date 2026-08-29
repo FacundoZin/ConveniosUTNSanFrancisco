@@ -19,7 +19,7 @@ namespace APIconvenios.Repositorio
 
         public async Task<ConvenioMarco?> GetByid(int id)
         {
-            var convenio = await _Context.ConveniosMarcos.FirstOrDefaultAsync(c => c.Id == id);
+            var convenio = await _Context.ConveniosMarcos.Include(c => c.Empresa).FirstOrDefaultAsync(c => c.Id == id);
             if (convenio == null) return null;
             return convenio;
         }

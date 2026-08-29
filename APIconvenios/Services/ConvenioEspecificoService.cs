@@ -46,6 +46,8 @@ namespace APIconvenios.Services
             if(Dto.idsInvolucradosExistentes != null)
                 Commnands.Add(new LinkToInvolucradosExistentes(Dto.idsInvolucradosExistentes));
 
+            // Regla de prioridad empresa: LinkEmpresa corre antes que LinkMarco.
+            // Si InsertEmpresaDto != null, EmpresaId ya estará seteado y LinkerConvMarcoCmd no heredará (solo hereda si EmpresaId==null && empresa==null).
             if (Dto.idConvenioMarco != null)
                 Commnands.Add(new LinkerConvMarcoCmd((int)Dto.idConvenioMarco));
 
@@ -127,6 +129,9 @@ namespace APIconvenios.Services
             if (Dto.DesvincularConvenioMarco)
                 commands.Add(new UnlinkConvMarcoCmd());
 
+            // Regla de prioridad empresa (Edit): DesvincularEmpresa/Unlink + LinkEmpresa corren antes que LinkMarco.
+            // LinkerConvMarcoCmd solo hereda si EmpresaId==null && empresa==null, por lo que respeta empresa explícita.
+            // Si DesvincularEmpresa==true y luego se vincula un marco con empresa, hereda — comportamiento definido (desvinculó y vinculó marco => hereda).
             if (Dto.idMarcoVinculado != null)
                 commands.Add(new LinkerConvMarcoCmd((int)Dto.idMarcoVinculado));
 
