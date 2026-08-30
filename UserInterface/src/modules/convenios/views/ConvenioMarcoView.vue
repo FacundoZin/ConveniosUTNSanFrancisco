@@ -245,7 +245,10 @@ const DeleteConvenio = async () => {
       const response = await ConvenioService.DeleteConvenioMarco(Convenio.value.id)
       if (response.isSuccess) {
         isLoading.value = false
-        toast.success(`"${Convenio.value.titulo}" eliminado con �xito`)
+        toast.success(`"${Convenio.value.titulo}" eliminado con éxito`)
+        const deletedId = Convenio.value.id
+        store.removeFromListado(deletedId)
+        store.invalidateMarcoCache()
         router.push({ name: 'ListaConvenios' })
       }
     }

@@ -214,6 +214,7 @@ import { isAxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { POSITION, useToast } from 'vue-toastification'
+import { useConvenioStore } from '../stores/convenioStore'
 
 const isLoading = ref(false)
 const showDeleteModal = ref(false)
@@ -230,6 +231,7 @@ if (Array.isArray(idparam)) {
 }
 
 const Convenio = ref<InfoConvenioEspecificoDto | null>(null)
+const store = useConvenioStore()
 
 onMounted(async () => {
   isLoading.value = true
@@ -267,6 +269,10 @@ const DeleteConvenio = async () => {
       if (response.isSuccess) {
         isLoading.value = false
         toast.success(`"${Convenio.value.titulo}" eliminado con éxito`)
+        const deletedId = Convenio.value.id
+        const store = useConvenioStore()
+        store.removeFromListado(deletedId)
+        store.invalidateMarcoCache()
         router.push({ name: 'ListaConvenios' })
       }
     }
